@@ -1,0 +1,6 @@
+Article assez peu technique. 
+Décrit un algorithme très similaire à la SBD pour l'évaluation (en 3D) du potentiel de Coulomb. 
+Mentionne la FMM en expliquant que c'est plus versatile vis à vis du noyau. 
+Il y a aussi un découpage en partie proche partie lointaine. 
+Renvoie à un article technique pour décrire comment sont obtenus les poids en Fourier. 
+Tests numériques. 

@@ -1,0 +1,108 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration build-checksum="1424854703" file="/home/martin/MatlabCodes/Toolboxes_dev/SBD.prj" location="/home/martin/MatlabCodes/Toolboxes_dev" name="SBD" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>SBD</param.appname>
+    <param.authnamewatermark>Martin Averseng</param.authnamewatermark>
+    <param.email>martin.averseng@polytechnique.edu</param.email>
+    <param.company>CMAP polytechnique</param.company>
+    <param.summary>Fast and compressed discrete convolution in R² usign Sparse Bessel Decomposition.</param.summary>
+    <param.description>The SBD package, for Sparse Bessel Decomposition, is dedicated to accelerating and compressing the discrete convolutions in 2D using decompositions in sums of Bessel functions and Non uniform Fast Fourier Transform. The code allows to create operators A(i,j) = K(|x_i - x_j|) where K is a R⁺ -&gt; R function called the Kernel of the convlution, and x is a cloud of points in R². The matrix vector product A*b is computed in less than N² operations and not all the terms A(i,j) need to be stored.</param.description>
+    <param.screenshot>${PROJECT_ROOT}/SBD/iconCustom.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.output>${PROJECT_ROOT}/SBD.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>14495b5a-b5db-4a11-9ee0-11e41fd5fb89</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+
+iconCustom.png
+.gitattributes
+.git/
+Validation/</param.exclude.filters>
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.docs />
+    <param.matlabpath.excludes />
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.version />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.docs />
+      <param.matlabpath.excludes />
+    </unset>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}/SBD</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}/SBD/Cp.m</file>
+      <file>${PROJECT_ROOT}/SBD/Examples.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels</file>
+      <file>${PROJECT_ROOT}/SBD/Op</file>
+      <file>${PROJECT_ROOT}/SBD/Utils</file>
+      <file>${PROJECT_ROOT}/SBD/dSBD</file>
+      <file>${PROJECT_ROOT}/SBD/gramMatrix.m</file>
+      <file>${PROJECT_ROOT}/SBD/readme.txt</file>
+      <file>${PROJECT_ROOT}/SBD/scalarProdsDictionary</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included>
+      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
+      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/sumStruct.m</file>
+    </fileset.depfun.included>
+    <fileset.depfun.excluded>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/AbstractMatrix/code/AbstractMatrix.m</file>
+    </fileset.depfun.excluded>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/home/martin/MatlabCodes/Toolboxes_dev" name="SBD.mltbx" optional="false">/home/martin/MatlabCodes/Toolboxes_dev/SBD.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/usr/local/MATLAB/R2016a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>false</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>true</linux>
+      <solaris>false</solaris>
+      <osver>4.13.0-36-generic</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>glnxa64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

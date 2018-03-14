@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{dauge1986regularites}
+Monique Dauge.
+\newblock {\em R{\'e}gularit{\'e}s et singularit{\'e}s des solutions de
+  probl{\`e}mes aux limites elliptiques sur des domaines singuliers de type
+  {\`a} coins}.
+\newblock PhD thesis, 1986.
+
+\bibitem{mclean2000strongly}
+William Charles~Hector McLean.
+\newblock {\em Strongly elliptic systems and boundary integral equations}.
+\newblock Cambridge university press, 2000.
+
+\bibitem{petersdorff1990decompositions}
+Tv~Petersdorff and Ernst~P Stephan.
+\newblock Decompositions in edge and corner singularities for the solution of
+  the dirichlet problem of the laplacian in a polyhedron.
+\newblock {\em Mathematische Nachrichten}, 149(1):71--103, 1990.
+
+\end{thebibliography}

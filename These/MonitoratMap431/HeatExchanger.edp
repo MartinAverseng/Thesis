@@ -1,0 +1,25 @@
+
+bool debug = true;
+
+int C1 = 99;
+int C2 = 98;
+border C0(t =0,2*pi){x = 10*cos(t); y = 10*sin(t);}
+real delta = 0.3, h = 6., d = 1.;
+
+border C11(t = 0,1){x = delta/2+t*d; y = h/2; label = C1;}
+border C12(t = 0,1){x = delta/2+d; y = h/2-h*t; label = C1;}
+border C13(t = 0,1){x = delta/2+d*(1-t); y = -h/2; label = C1;}
+border C14(t = 0,1){x = delta/2; y = -h/2 +h*t; label = C1;}
+
+border C21(t = 0,1){x = - delta - d + delta/2+t*d; y = h/2; label = C2;}
+border C22(t = 0,1){x = - delta - d +delta/2+d; y = h/2-h*t; label = C2;}
+border C23(t = 0,1){x = - delta - d +delta/2+d*(1-t); y = -h/2; label = C2;}
+border C24(t = 0,1){x = - delta - d +delta/2; y = -h/2 +h*t; label = C2;}
+
+mesh Th = buildmesh(C0(200) + C11(5) + C12(30) + C13(5) + C14(30) + C21(-5) + C22(-30) + C23(-5) + C24(-30));
+plot(Th,wait = debug);
+
+fespace Vh(Th,P2); Vh u,v;
+Vh kappa = 1 + 5*(x<-1)*(x>-2)*(y<3)*(y>-3);
+solve a(u,v) = int2d(Th)(kappa*(dx(u)*dx(v) + dy(u)*dy(v))) + on(C1,u = 90) + on(C0,u=20);
+plot(u,wait = debug, value = true, fill = true);

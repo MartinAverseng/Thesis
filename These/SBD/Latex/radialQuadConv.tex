@@ -1,0 +1,454 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{url}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Martin}
+\title{Approximation of radial functions by Laplacian eigenvectors}
+\begin{document}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Cor}{Corollary}[section]
+\newtheorem{Lem}{Lemma}[section]
+
+\theoremstyle{definition}
+\newtheorem{Rem}{Remark}[section]
+\newtheorem{Def}{Definition}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\A}{\mathcal{A}_{a,b}}
+\newcommand{\Crad}{C^\infty_{c,rad}(B)}
+\newcommand{\Lrad}{L^2_{rad}(B)}
+\newcommand{\Lradab}{L^2_{rad}(\mathcal{A}_{a,b})}
+\newcommand{\duality}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\Hrad}{H^1_{rad}(B)}
+\newcommand{\Hzrad}{H^1_{0,rad}(B)}
+
+\section{Introduction}
+The aim of this document is to study the approximation, on a ring of the form \[\mathcal{A}(a,b) = \enstq{x \in \RN}{a\leq |x| \leq b}\] of a radial functions $f$ as a series of eigenfunctions of the Laplacian. The functions to be approximated are for example $x \mapsto |x|^{-\alpha}$ with $\alpha \geq 0$ or $x \mapsto \log(|x|)$. The eigenfunctions considered will be related to the Laplacian operator on the unit ball with Robin condition $\frac{\partial u}{\partial r} + cu$ with $c\in \left] \nu, +\infty\right[$, where $\nu = \frac{N}{2}-1$. We will provide estimates for the number of components in the approximation based on the derivatives of $f$. More precisely, we will show that when $\varepsilon$ is the desired accuracy of the approximation on a ring of the form $\mathcal{A}(a,b)$, the number $P$ of components required in the decomposition is bounded by an inequality of the type
+\[ P \leq C\frac{\log(\varepsilon)}{\min(a,(1-b)^2)}\]  
+(\textbf{Je ne suis pas encore sûr du résultat final, car je dois revérifier mes calculs et ce sera sans doute un peu plus moche au niveau de $b$, et puis ça dépend de la fonction à approcher. Je mets ça juste pour la forme pour l'instant.) }
+
+\section{Space of radial $L^2$ functions}
+
+In the following, $B$ denotes the open unit ball of $\RN$ with $N \geq 2$. 
+
+\begin{Def} A real valued function $f \in L^1_{loc}(\RN)$ is said to be radial if there exists a real-valued function $g \in L^1_{loc}(\R)$ such that for almost every $x\in \RN$, $f(x) = g(|x|)$.  
+\end{Def}
+
+\begin{Def} We define the space $\Lrad = \enstq{f \in L^2(B)}{\text{f is radial}}$. It is a Hilbert space with associated scalar product \[\duality{f}{g}_{\Lrad} = \int_{B}f(x)g(x)dx\]
+as a closed subspace of $L^2(B)$.
+\end{Def}
+
+Before stating the next result, let us remind that there exists a unique Borel measure $\sigma$ over $\mathbbm{S}^{N-1} = \enstq{x\in \RN}{|x| = 1}$ such that for any integrable function $f$ on $\RN$, one has
+\[ \int_{\RN} f(x)dx = \int_{0}^{+\infty} \int_{\mathbbm{S}^{N-1}}r^{N-1}f(ru)d\sigma(u)\]
+We further define de radial averaging operator as $\text{Rad} : \varphi\in \mathcal{C}^{\infty} \mapsto \left(x\mapsto\displaystyle \frac{1}{\text{vol}\left(\mathbbm{S}^{N-1}\right)}\int_{\mathbb{S}^{N-1}}\varphi(|x|u)d\sigma(u) \right)$. For any $\varphi \in \mathcal{C}^{\infty}$, $\text{Rad}\varphi \in \Crad$. A proof of this statement can be found in \cite{SphericalAverage}, and relies on the properties of Fourier transform and Haar measure.
+This enables us to prove the following density result
+\begin{Prop} The space $\Crad = \enstq{f \in \mathcal{C}_c^\infty(B)}{\text{f is radial}}$ is a dense subspace of $\Lrad$
+
+\end{Prop}
+\begin{proof}
+Let $f \in \Lrad$ and $\varepsilon >0$, we know that $\mathcal{C}_c^\infty(B)$ is dense in $L^2(B)$ thus there exists a function $\chi \in \mathcal{C}_c^\infty(B)$ such that $\norm{f - \chi}_{L^2(B)} \leq \varepsilon$. For such a function, one can write for any $r \in (0,1)$ and $w \in \mathbbm{S}^{N-1} : $\[\left|f(rw) - \text{Rad}\varphi(rw)\right|^2 = \left|\text{Rad} f(rw) - \text{Rad}\varphi(rw)\right|^2 = \left|\frac{1}{\text{vol}\left(\mathbbm{S}^{N-1}\right)} \int_{\mathbbm{S}^{N-1}}f(ru) - \varphi(ru)d\sigma(u) \right|^2 \]
+Applying Jensen inequality, we get \[\left|f(rw) - \text{Rad}\varphi(rw)\right|^2 \leq \frac{1}{\text{vol}\left(\mathbbm{S}^{N-1}\right)} \int_{\mathbbm{S}^{N-1}}\left|f(ru) - \varphi(ru) \right|^2 d\sigma(u)\]
+Thus, \[ \int_{0}^1 \int_{\mathbbm{S}^{N-1}} r^{N-1}\left| f(rw) - \text{Rad}\varphi(rw)\right|^2 dr d\sigma(w) \leq \int_{0}^1 \int_{\mathbbm{S}^{N-1}} r^{N-1}\left| f(ru) - \varphi(ru)\right|^2 dr d\sigma(u)\]
+Which proves that $\norm{f - \text{Rad}\varphi}_{\Lrad} \leq \varepsilon$ and thus the density of $\Crad$ in $\Lrad$.  
+\end{proof}
+\begin{Def} We define the space $\Hrad = \enstq{f \in \Lrad}{\forall i\in \llbracket 1,N \rrbracket, \dfrac{\partial f}{\partial x_i}\in L^2(B)}$. It is also a Hilbert space with associated scalar product \[\duality{f}{g}_{\Hrad} = \int_{B} \nabla f(x) \cdot \nabla g(x) + f(x)g(x)dx\]. 
+\end{Def}
+
+\begin{Prop} The canonical injection from $\Hrad$ to $\Lrad$ is compact. 
+\begin{proof}
+This comes naturally from the fact that the inclusion of $H^1(B)$ in $L^2(B)$ is compact. 
+\end{proof}
+\end{Prop}
+
+\begin{Def} We define the Robin Laplacian associated with Robin condition $c>0$ as the operator $\Delta_c$ on $\Lrad$ defined by 
+\[\begin{array}{rl}
+{Dom}(\Delta_c) &= \enstq{u \in \Lrad}{u \in \Hrad ; \quad \Delta u \in \Lrad ;\quad  \dfrac{\partial u}{\partial r} = -c u|_{\partial B}} \\
+\Delta_c u & = \Delta u
+\end{array}\]
+Where the last condition on the traces is to be understood in the following weak sense : 
+\[\forall v \in \Hrad, \int_B (\Delta u) v + \int_B \nabla u \nabla v = -c \int_B uv\]
+$Dom(\Delta_c)$ is dense in $\Lrad$ since $\Crad \subset Dom(\Delta_c)$.
+\end{Def}
+We also need the following classical result : 
+\begin{Prop} There exists a constant $K >0$ such that for all $u\in \Hrad$, one has \[\norm{u}_{\Hrad} \leq K \left( \int_{B}\nabla u \nabla v + c\int_{\partial B} uv \right)\]
+\begin{proof}
+Let us show it by contradiction. Assume that for any integer $n$, there exists $u_n\in H^1$ such that 
+$\norm{u_n}_{\Lrad} \geq n a(u_n,u_n)$.  It can be assumed that $\norm{u_n}_{\Lrad} = 1$ and we can extract from $u_n$ a subsequence that converges weakly towards $u \in \Hrad$. Furthermore, $u_n \to u$ strongly in $\Lrad$ because of the compactness of the injection from $\Hrad$ to $\Lrad$. We have $\nabla u =0$ which implies that $u$ is constant on $B$. But we must also have $\displaystyle\int_{\partial B} |u|^2 = 0$  which implies $u=0$ on B. This is impossible since for any $n$, $\norm{u_n}_{\Lrad} = 1$. The Proposition is proved. 
+\end{proof}
+\end{Prop}
+
+
+\section{Eigenvalues of the Laplacian operator}
+
+We have the following classical result :  
+\begin{The} There exists an Hilbert basis of $\Lrad$ constituted of $(u_n)_{n\in \mathbb{N}}$ and an increasing sequence of positive numbers $(\lambda_n)_{n\in \mathbb{N}}$  such that $\lambda_n \underset{n \to +\infty}{\longrightarrow} +\infty$ and such that for all $n$, \[- \Delta u_n = \lambda_n u_n\] such that the functions $u_n$ are of class $\mathcal{C}^{\infty}$ and respect the boundary condition 
+\begin{equation}
+\dfrac{\partial u}{\partial r} + c u = 0 \quad \textup{on } \partial B
+\label{boundaryCondition}
+\end{equation}
+\begin{proof}
+We have shown all the hypothesis necessary to apply the Theorem $7.3.2$ of \cite{allaire2005analyse} (p. 219). We conclude that there exist functions $u_n \in \Hrad$ such that for all $v \in \Hrad$, 
+\begin{equation}
+\int_{B} \nabla u_n  \nabla v + c\int_{\partial B} uv = \lambda_n \int_{B} u_n v
+\label{formVarLocal}
+\end{equation}
+Applying this to functions $v\in \Crad$, we conclude that $-\Delta u_n = \lambda_n u_n$. Because of the theorem of elliptic regularity, and because the unit ball $B$ is a $\mathcal{C}^\infty$ domain, the functions $u_n$ are almost everywhere equal to a $\mathcal{C}^\infty$ function. We can thus choose $u_n \in \mathcal{C}^\infty$. Finally, $u_n$ must respect the boundary condition (\ref{boundaryCondition}) because because for any $v \in \Hrad$, using equation (\ref{formVarLocal}) and integrating by part the first term, one has \[ \int_{\partial B}\left(\dfrac{\partial u}{\partial r} + cu\right) v = 0\]
+\end{proof}
+\end{The}
+
+
+\begin{Rem} The same result is well-known to apply also in the case of Dirichlet boundary conditions. We extend the notations with $c = \infty$ to refer to the Dirichlet boundary condition in the following.
+\end{Rem}
+
+
+It follows from this that there exists a Hilbert basis of $\Lrad$ constituted of eigenvectors of the operator $\Delta_c$. Because the unit ball is a $\mathcal{C}^\infty$ domain, the eigenvectors belong to $\Crad$.  
+
+
+\begin{Rem} When $c \leq 0$, the Laplacian is still self-adjoint with compact resolvant, but its eigenvalues are no longer positive. The results that are shown in the following do not apply in this case. 
+\end{Rem}
+
+\begin{Def} We denote by $\rho_{c,k}$ the $k-th$ root of $x J'_\nu(x) + (c - \nu) J_\nu(x)$ (or simply of $J_\nu(x)$ for Dirichlet conditions) where $J_\nu$ is the Bessel function of first kind with $\nu = \frac{N}{2}-1$. We denote by $e_{c,k}$ the functions on defined on $\RN$ by \[e_{c,k}(x) = C_{c,k} \dfrac{J_{\nu}(\rho_{c,k}|x|)}{(\rho_{c,k}|x|)^\nu}\] where $C_{c,k}$ is a normalization constant chosen such that $e_{c,k}$ has unit norm in $\Lrad$. It is readily shown that \[\rho_{c,k} \sim k\pi \] for large $k$ (this can be shown using Dixon's theorem, see for example \cite{watson1995treatise} p. 480). Finally, we have the following bound for the $L^\infty$ norm of $e_{c,k}$ :  \[ \norm{e_{c,k}}_{\infty} = O\left(k^{\nu + 1/2}\right)\] 
+
+%Pour le dernier point, utiliser : http://dlmf.nist.gov/10.14
+%Développement asymptotique 
+%https://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&ved=0ahUKEwjU3Lu_u6rNAhUDXBoKHa1ADM4QFgguMAM&url=http%3A%2F%2Fwww.ams.org%2Fmcom	%2F1958-12-061%2FS0025-5718-1958-0102906-3%2FS0025-5718-1958-0102906-3.pdf&usg=AFQjCNHJAduxgNyuy28p-kOG3fNQnJbyvw&sig2=DQgtWRa3lPx-Lieu67zUuw&cad=rja
+
+\begin{proof}
+Let us give an equivalent of the constant $C_{c,k}$, which is given by 
+\[C_{c,k} = \left(\int_{B} \left(\dfrac{J_{\nu}(\rho_{c,k}|x|)}{\left(\rho_{c,k}|x|\right)^\nu}\right)^2dx\right)^{-1/2} \]
+For this, we use the classical asymptotic expansion of the bessel functions  (see for example \cite{watson1995treatise} p. 199) under the form 
+\[ J_\nu(x) = \sqrt{\dfrac{2}{\pi x}} \cos(x + \varphi) + o\left(\dfrac{1}{x^{3/2}}\right)\]
+From which we conclude that for large $x$, 
+\begin{equation}
+\int_{0}^\rho t J_\nu(x)^2 \sim \dfrac{\rho}{\pi}
+\label{equivalentAux}
+\end{equation}
+Since, by a change of variables \[ \int_{B} \left(\dfrac{J_{\nu}(\rho_{c,k}|x|)}{\left(\rho_{c,k}|x|\right)^\nu}\right)^2dx =   \rho^{-N}\int_{\rho_{c,k}B} \left(\dfrac{J_{\nu}(|x|)}{|x|^\nu}\right)^2dx\]
+which can be further reduced to 
+\[ c_N \rho_{c,k}^{-N} \int_{0}^{\rho_{c,k}} x \left(J_\nu(x)\right)^2dx\]
+Using (\ref{equivalentAux}) and $\rho_{c,k} \underset{k\to +\infty}{\sim }k\pi$ we deduce that for large $k$, \[C_{c,k} \sim \sqrt{\dfrac{c_N}{\pi}}\left(k\pi\right)^{\nu+\frac{1}{2}} \]
+Using the fact that $\dfrac{J_{\nu}(x)}{x^\nu}$ is bounded (see for example \cite{watson1995treatise} p. 49) we conclude that $\norm{e_{c,k}}_{\infty} = O\left(k^{\nu+1/2}\right)$
+\end{proof}
+\end{Def}
+
+\begin{Prop} The eigenvalues of $\Delta_c$  are given by $\enstq{\rho_{c,k}^2}{k\in \mathbb{N}^*}$, and the eigenfunctions associated with $\rho_{c,k}$ are proportional to $e_{c,k}$. 
+\begin{proof}
+Let $f$ be an eigenfunciton of the Robin Laplacian associated to eigenvalue $\lambda$, and Let $\tilde{f}$ the function defined by $\tilde{f}(r) = f(rw)$ for any unit vector $w$. Then $\tilde{f}$ is a solution of the equation $- f'' - \dfrac{N-1}{r}f' = \lambda f$. Straightforward calculations the show that the function $J$ defined by $J(r) = r^\nu f(\frac{r}{\sqrt{\lambda}})$ (here we need that $\lambda$ be positive) is a solution of the Bessel equation $J'' + xJ' + (x^2 - \nu^2)J = 0$. The general solution of this equation is of the form $A J_\nu(x) + B Y_\nu(x)$ where $Y_\nu$ is the Bessel function of second kind and of order $\nu$ and $A$ and $B$ are two constants. $J$ must be $\mathcal{C^\infty}$ since $f$ is. $Y_{nu}$ being singular at the origin, there exists a constant $A$ such that $J = A J_\nu(x)$. Finally, the fact that $f$ must verify the boundary condition $\frac{\partial f}{\partial r} + c f = 0$ implies that $\sqrt{\lambda}J'_\nu(\sqrt{\lambda}) + (c - \nu)J_\nu(\sqrt{\lambda}) =0$ 
+\end{proof}
+\end{Prop}
+
+
+\section{Expansions in series of eigenfunctions}
+
+In this paragraph we fix a constant $c$ and $e_{k}$ denotes the family of the orthonormal eigenfunctions of the Robin-Laplacian associated with the Robin condition $\dfrac{\partial f}{\partial r} + c f = 0$ on $\partial B$. 
+We can express any function $f$ of $\Lrad$ in the following way : 
+\[f = \sum_{k\in \mathbb{N}^*}c_k(f)e_{k}\]
+Which is called the Fourier-Bessel expansion of $f$. The generalized Fourier coefficients $c_k(f)$ are defined by $c_k(f) = \displaystyle \int_B f(x)e_{k}(x) dx$. We have the following result : 
+
+\begin{Prop} Let $n\in \mathbb{N}^*$ and $f \in H^{2n}(B)$. Assume that for any integer $s\leq n-1$, the s-th iterate $\Delta^s f$ verifies the boundary condition $\dfrac{\partial \Delta^s f}{\partial r} + c \Delta^s f = 0$ on $\partial B$. Then one has 
+
+\[ c_k(f) = (-1)^{n}\dfrac{c_k(\Delta^n f)}{\rho_{c,k}^{2n}}\] for any $k \in \mathbb{N}^*$
+\begin{proof}
+This is easily proven by recurrence by observing that for any function $f$ in $Dom(\Delta_c)$, using the fact that $e_{c,k}$ is an eigenfunction of the Laplacian, \[c_k(f) = -\frac{1}{\rho_{c,k}^2}\int_B f \Delta e_{k}\] and using integration by part \[c_k(f) = -\frac{1}{\rho_{c,k}^2} \left(c_k(\Delta f) + \int_{\partial B} f \dfrac{\partial e_{k}}{\partial r} - e_{k} \dfrac{\partial f}{\partial r}\right) \]
+The integral on $\partial B$ vanishes as $f$ and $e_{k}$ both verify the Robin condition with constant $c$.
+\end{proof}
+\label{PropDecrCond}
+\end{Prop}
+
+\begin{Cor} If $f$ follows the same assumptions as in the previous proposition, there exists a constant $K$ independent of the function $f$ such that for all $k \in \mathbb{N^*}$, 
+\[ |c_k(f)| \leq  K \dfrac{\norm{\Delta^n f}_{\Lrad}}{(\pi k)^{2n}}\] 
+\end{Cor}
+\begin{proof}
+This is a direct consequence of the previous proposition and the equivalent $\rho_{c,k} \sim k\pi$ for large $k$. 
+\end{proof}
+
+\begin{Cor} If $f$ follows the same assumptions as in the previous proposition for an integer $n$ such that $ 2n > \dfrac{N+1}{2}$, the Fourier-Bessel expansion of $f$ converges normally to $f$ almost everywhere. Moreover, if $R_P(f)$ is defined as $R_P(f) = \displaystyle\sum_{k = P+1}^{+\infty} c_{k}(f) e_{k}$, we have the following bound for $R_P$ : 
+\[\norm{R_P(f)}_\infty \leq K \dfrac{\norm{\Delta^n f}_{2}}{\pi^{2n}}\dfrac{1}{(2n-\frac{N+1}{2})(P+1)^{2n-\frac{N+1}{2}}}\]
+\label{EstimationRest}
+\end{Cor}
+
+\begin{Rem} One can remark here that the assumption on $f$ imply that $f$ is equal almost everywhere to a continuous function since it belongs to a Sobolev space $H^m$ where $m > \frac{N+1}{2}$ (more precisely, it implies that $f$ is in $C^{0,\alpha}$ for some $\alpha > 1/2$). This agrees with the fact that $f$ has a normally convergent Fourier-Bessel series (the functions $e_k$ are continuous thus their sum must be continuous since it is normally convergent). This agrees also with the classical result on Fourier series stating that $C^{0,\alpha}$ functions with $\alpha > 1/2$ have normally convergent Fourier series. 
+% https://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=7&ved=0ahUKEwiLlO2Ej6zNAhXLXRoKHT6oBcEQFghSMAY&url=http%3A%2F%2Fwww.normalesup.org%2F~heriveau%2FPrepagreg%2FFourier2.pdf&usg=AFQjCNGc78Qsgv6O-ER14_66RgAqH1OCJg&sig2=xrnmkyI9udct41ixHBtkfQ&cad=rja
+\end{Rem}
+
+
+\section{A bound on the number of components}
+
+The conditions on $f$ that are required to apply the previous results are very restrictive. In particular, they are not fit for functions that have singularities at the origin or that do not verify the boundary conditions on $\partial B$. However, it is possible to derive from the previous results a strategy to approximate $f$ in a ring $\mathcal{A}(a,b)$. Suppose one can find a function $\tilde{f}$ that coincides with $f$ on this ring and satisfies the conditions of the previous section. Then the Fourier-Bessel series of $\tilde{f}$ will converge rapidly to $\tilde{f}$ and the partial sums will yield good approximations of $f$ on the ring. 
+The idea underlying the following is thus to construct from $f$ such a function $\tilde{f}$. In order to enforce the conditions of the previous section, we will choose $\tilde{f}$ in $\mathcal{C}^{2n}$ that will be equal to $f$ in the ring and polynomial outside, such that all of its derivatives at the origin and on $\partial B$ are 0 up to the order $2n$.
+
+\begin{Def} Let $f$ a locally integrable function on $B$. Assume $f$ is $C^{2n}$ on the ring $\mathcal{A}(a,b)$. We define $\tilde{f}$ as the extension of $f$ outside $\mathcal{A}(a,b)$ by 
+\begin{itemize}
+\item[-] $\tilde{f}(x) = \displaystyle\sum_{k=0}^{2n} \frac{a_k}{k!}(|x|-a)^{k}|x|^{2n}$ if $|x|<a$
+\item[-] $\tilde{f}(x) = \displaystyle\sum_{k=0}^{2n} \frac{b_k}{k!}(|x|-b)^{k}\left(1-|x|\right)^{2n}$ if $|x|<a$
+\end{itemize}
+
+Where the coefficients $a_k$ and $b_k$ are chosen such that the derivatives of $\tilde{f}$ and $f$ agree up to the $2n-th$ order, namely 
+\[ \begin{array}{rl}
+a_k  &= \dfrac{d^k }{dx^k}\left(t\mapsto \dfrac{f(t)}{t^{2n}}\right)\Bigr|_{t=a}\\
+b_k &= \dfrac{d^k }{dx^k}\left(t\mapsto \dfrac{f(t)}{(1-t)^{2n}}\right)\Bigr|_{t=b}
+\end{array}\] 
+\label{ProlongementDef}
+\end{Def}
+
+\begin{Prop} The function $\tilde{f}$ is of class $\mathcal{C}^{2n}$ and for any $s \leq n-1$, \[\dfrac{\partial}{\partial r}\Delta^s \tilde{f} + c \Delta^s \tilde{f} = 0 \textup{ on } \partial B\]
+\begin{proof}
+The regularity of $\tilde{f}$ is obvious for $0<|x|<a$, $a<|x|<b$ and $b<|x|<1$. For $|x| = a$ and $|x| = b$, it is enforced by the choice of the coefficients $a_k$ and $b_k$. The only point where the regularity must be verified is at $|x| = 0$. This is also obvious since $\tilde{f}$ is polynomial in $|x|$ with $0$ being a root of order $2n$. 
+For the second point, observe that for any $s  \in \mathbb{N}$, $\Delta^s \tilde{f}$ is given by an expression of the form 
+\[\Delta^s \tilde{f} = \sum_{k=0}^{2s} d_k\dfrac{\tilde{f}^{(k)}}{r^{s-k}}\]
+for some coefficients $d_k$ (this is easily proved by recurrence using $\Delta f = f'' + \frac{f'}{r}$). Thus the quantity $\dfrac{\partial}{\partial r}\Delta^s \tilde{f} + c \Delta^s \tilde{f}$ is of the form 
+\[\dfrac{\partial}{\partial r}\Delta^s \tilde{f} + c \Delta^s \tilde{f} = \sum_{k=0}^{2s+1} e_k\dfrac{\tilde{f}^{(k)}}{r^{s-k}}\] for some coefficients $e_k$. On $\partial B$, all $\tilde{f}^{(k)}$ vanishes for all $k \leq 2n$ thus the Robin boundary condition is respected up to $s=n-1$. 
+\end{proof}
+\end{Prop}
+
+In view of Proposition \ref{EstimationRest}, we need to derive a bound for $||\Delta^n \tilde{f}||_{2}$. For any integer $k$, define $c_N(k) = k(k+N-2)$. 
+\begin{Lem} for $|x| \leq a$, we have
+\[\Delta^n \tilde{f}(x) = \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{a_k}{k!}(-a)^{k-l}c_N(2n+l)c_N(2(n-1)+l)\times ... \times c_N(2+l)|x|^l\]
+for $|x| > b$ we have 
+\[\Delta^n \tilde{f}(x) = \sum_{j=0}^{2n}\sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{2n}{j}\dbinom{k}{l}\dfrac{b_k}{k!}(-b)^{k-l}(-1)^{j}c_N(j+l)c_N(j+l-2)\times ... \times c_N(j+l-2n+2)|x|^{j+l-2n}\]
+\begin{proof}
+These results are obtained by expanding the sums in the definition of $\tilde{f}$ and using the fact that $\Delta |x|^k = c_N(k) |x|^{k-2}$
+\end{proof}
+\end{Lem} 
+
+
+
+We then show the following estimation : 
+
+\begin{Lem} for $|x| < a$, we have
+\begin{equation}
+|\Delta^n \tilde{f}(x)| \leq c_N(4n)c_N(4n-2)...c_N(2n+2)2^{2n+1}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)
+\label{bigBadEq1}
+\end{equation}
+for $|x| > b$ we have 
+\begin{equation}
+|\Delta^n \tilde{f}(x)| \leq c_N(4n)\times...\times c_N(2n+2)\frac{1}{2}\left(\dfrac{2(1+b)}{b}\right)^{2n+1}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|b_k|}{k!}\right) 
+\label{bigBadEq2}
+\end{equation}
+\begin{proof}For $|x|<a$, using triangular inequality
+\[|\Delta^n \tilde{f}(x)| \leq \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{|a_k|}{k!}a^{k-l}c_N(2n+l)c_N(2(n-1)+l)\times ... \times c_N(2+l)|x|^l\]
+Now we have for any $l\in\llbracket 0,2n\rrbracket$ : \[c_N(2n+l)c_N(2(n-1)+l)\times ... \times c_N(2+l) \leq c_N(4n)c_N(4n-2) \times ... \times c_N(2n+2)\]
+Therefore : 
+\[|\Delta^n \tilde{f}(x)| \leq c_N(4n)c_N(4n-2) \times ... \times c_N(2n+2)\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)\sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}a^{-l}|x|^l\]
+Which yields
+\[|\Delta^n \tilde{f}(x)| \leq c_N(4n)c_N(4n-2) \times ... \times c_N(2n+2)\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)\sum_{k=0}^{2n}\left(1+\frac{|x|}{a}\right)^k\]
+Finally, since $|x|<a$, the last sum is bounded by $\displaystyle\sum_{k=0}^{2n}2^k = 2^{2n+1}-1 < 2^{2n+1}$
+
+For $|x| > b$, triangular inequality and the same arguments as above yield \[|\Delta \tilde{f}(x)| \leq c_N(4n)\times...\times c_N(2n+2)\left(\frac{1}{|x|}\right)^{2n}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|b_k|}{k!}\right) \sum_{j=0}^{2n}\sum_{k=0}^{2n}\sum_{l=0}^{k}\dbinom{2n}{j}|x|^j\dbinom{k}{l} b^{k-l}|x|^l\]
+The triple sum reduces to 
+\[\sum_{j=0}^{2n}\sum_{k=0}^{2n}\sum_{l=0}^{k}\dbinom{2n}{j}|x|^j\dbinom{k}{l} b^{k-l}|x|^l = \left(1+|x|\right)^{2n} \sum_{k=0}^{2n}\left(b + |x|\right)^k\]
+Then since $|x|<1$ :
+\[\left(1+|x|\right)^{2n} \sum_{k=0}^{2n}\left(b + 1\right)^k < 2^{2n}\frac{\left(1+b\right)^{2n+1}}{b}\]
+We finally obtain, using the fact that $|x|>b$
+\[|\Delta \tilde{f}(x)| \leq c_N(4n)\times...\times c_N(2n+2)\frac{1}{2}\left(\dfrac{2(1+b)}{b}\right)^{2n+1}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|b_k|}{k!}\right) \]
+\end{proof}
+\end{Lem} 
+
+We will now look for an equivalent of the term $c_N(4n) \times ... \times cN(2n+2)$ for large $n$ 
+\begin{Lem}
+
+For large $n$, the we have the following equivalent : \[c_N(4n)c_N(4n-2)\times...\times c_N(2n+2) \sim 2^{\frac{N-1}{2}}\left(\dfrac{8n}{e}\right)^{2n}\]
+
+\begin{proof}
+We first notice that $c_N(4n)\times...\times c_N(2n)$ can be written as \[c_N(4n)\times...\times c_N(2n) = \dfrac{4n!!}{2n!!}\times \dfrac{\left(4n+N-2\right)!!}{\left(2n+N-2\right)!!}\]
+If $N-2$ is even, we note $N-2 = 2h$. In this case we can write 
+\[ \dfrac{(4n+N-2)!!}{(2n+N-2)!!} = \dfrac{2^{2n+h}}{2^{n+h}}\dfrac{(2n+h)!}{(n+h)!}\]
+Using Stiling formula for large $n$, we get
+\[\dfrac{(4n+N-2)!!}{(2n+N-2)!!} \sim 2^n\dfrac{\sqrt{2\pi\times 2n}}{\sqrt{2\pi n}} \dfrac{\left(\dfrac{2n+h}{e}\right)^{2n+h}}{\left(\dfrac{n+h}{e}\right)^{n+h}}\]
+This leads to 
+\[\dfrac{(4n+N-2)!!}{(2n+N-2)!!} \sim 2^{h+1/2} \left(\dfrac{8n}{e}\right)^n \]
+If $N-2$ is odd, we note $N-2 = 2h+1$. In this case we can write 
+\[ \dfrac{(4n+N-2)!!}{(2n+N-2)!!} = \dfrac{(4n+N-2)!}{(2n+N-2)!} \times \dfrac{(2n+N-3)!!}{(4n + N-3)!!} \]
+Since we have $N-3 = 2h$, we can apply the first result to the second fraction. Now, Striling formula applied to the first one leads to 
+\[\dfrac{(4n+N-2)!}{(2n+N-2)!} \sim \dfrac{\sqrt{2\pi \times 4n}}{\sqrt{2\pi\times 2n}} \times \dfrac{\left(\dfrac{4n+N-2}{e}\right)^{4n+N-2}}{\left(\dfrac{2n+N-2}{e}\right)^{2n+N-2}}\]
+This leads to 
+\[\dfrac{(4n+N-2)!}{(2n+N-2)!} \sim 2^{\frac{1}{2}+N-2}\left(\dfrac{8n}{e}\right)^{2n}\]
+Finally, we obtain 
+\[\dfrac{(4n+N-2)!!}{(2n+N-2)!!} \sim 2^{h+1}\left(\dfrac{8n}{e}\right)^n\]
+It can be noted that in both cases, 
+\[\dfrac{(4n+N-2)!!}{(2n+N-2)!!} \sim 2^{\frac{N-1}{2}} \left(\frac{8n}{e}\right)^n\]
+From this, we conclude that 
+\[c_N(4n)c_N(4n-2) \times ... \times c_N(2n+2) \sim 2^{\frac{N-1}{2}}\left(\dfrac{8n}{e}\right)^{2n}\]
+\end{proof}
+\end{Lem}
+
+
+We now use this equivalent to reduce estimates (\ref{bigBadEq1}) and (\ref{bigBadEq2})
+\begin{Lem} 
+There exist constants $C_1$ and $C_2$ such that for $|x|<a$
+\begin{equation}
+|\Delta^n \tilde{f}(x)| \leq  C_1\left( \frac{16n}{e}\right)^{2n}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)
+\label{bigBadEq1Reduced}
+\end{equation}
+and for $|x| > b$ 
+\begin{equation}
+|\Delta^n \tilde{f}(x)| \leq C_2\left(\dfrac{16(1+b)n}{be}\right)^{2n}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|b_k|}{k!}\right) 
+\label{bigBadEq2Reduced}
+\end{equation}
+\label{LemAkDeltanf}
+\end{Lem}
+
+We are now able to use these inequalities to provide bounds on the number of components in the approximation of special radial kernels needed to reach a given accuracy. 
+
+\begin{The} Let $G$ be equal to the fundamental solution of the Laplace equation on $\mathbb{R}^N$. Let $R>0$ and $f : x\mapsto G(Rx)$. There exist a constant $C$ such that for any $P \in \mathbb{N}$, and for any $a \in (0,1)$ there exist coefficients $\alpha_1,...,\alpha_{P}$ such that $\forall x \in \mathcal{A}(a,1)$ 
+\begin{itemize}
+\item[-] if $N=2$ \[ \left| f(x) - A - \sum_{p=1}^P \alpha_p e_{\infty,p}(x)\right| \leq C e^{-\frac{aP\pi}{32}}\]
+\item[-] if $N >2$ 
+ \[ \left| f(x)- A - \sum_{p=1}^P \alpha_p e_{\infty,p}(x)\right| \leq C \sqrt{a} P^{\frac{N-2}{2}}e^{-\frac{aP\pi}{32}}\]
+\end{itemize}
+where $A$ is the (constant) value taken by $f$ on the unit sphere. 
+
+\begin{proof}
+Let $g$ the function defined on $\mathbb{R}^+$ such that $\forall x\in \mathbb{R}^N, f(x) = g(|x|)$. The function $f - A$ satisfies Dirichlet boundary condition on the unit sphere. Since we have $\Delta G = 0$ in a neighborhood of the unit sphere $|x|=1$, for any $n\in \mathbb{N}^*$, $\Delta^n G = 0$ in this neighborhood, $\Delta^n (f-A)$ also satisfies the boundary condition of Proposition \ref{PropDecrCond} at $\partial B$. Let $\tilde{f}$ be the extension of $f-A$ on $\mathcal{A}(a,1)$ as defined in Definition \ref{ProlongementDef}. If $N=2$, let the Laplace fundamental solution is proportional to $G= x\mapsto \log(|x|)$, and therefore $(f - A)(x)$ is proportional to $\log(R|x|) - \log(R) = \log(|x|)$. We may compute the coefficients $a_k$ using Leibniz formula : 
+\[\begin{array}{rl}
+
+\dfrac{d^k }{dr^k}\left(r^{-2n}\log(r)\right) &= \displaystyle\sum_{j=0}^k\dbinom{k}{j}\dfrac{d^j}{dx^j}\left(r^{-2n}\right)\dfrac{d^{k-j}}{dx^{k-j}}\left(\log(r)\right)\\
+&= \displaystyle\sum_{j=0}^{k-1} \dbinom{k}{j}(-1)^j \dfrac{(2n+j-1)!}{(2n-1)!}r^{-2n-j}(-1)^{k-j-1}\left(k-j-1\right)!r^{-k+j}\\ & + (-1)^k \dfrac{(2n+k-1)!}{(2n-1)!}r^{-2n-k}\log(r)\\
+& = \dfrac{(-1)^k k!}{r^{2n+k}} \left(-\displaystyle\sum_{j=0}^{k-1}\dbinom{2n+j-1}{j}\dfrac{1}{k-j}+\dbinom{2n+k-1}{k}\log(r)\right)
+\end{array}\]
+Which leads to \[\dfrac{|a_k|}{k!}a^k \leq a^{-2n} \dbinom{2n + k -1}{k}\left(\frac{k}{2n}-\log(a)\right)\]
+Where we used the identity 
+\begin{equation}
+\sum_{j=0}^{k-1}\dbinom{j+2n-1}{j} = \dfrac{k}{2n}\dbinom{k+2n-1}{k}
+\label{sommekparmminplusk}
+\end{equation}
+We conclude that \begin{equation}
+\max_{0\leq k \leq 2n}\left(\dfrac{|a_k|}{k!}a^k\right) \leq \left(\frac{4}{a}\right)^{2n}\dfrac{1}{2\sqrt{2\pi n}}\left(\log\left(\frac{e}{a}\right)\right)
+\label{majorAkLog} 
+\end{equation}
+Because for any $k \in \llbracket 0,2n\rrbracket$, one has 
+\begin{equation}
+\dbinom{2n+k-1}{k}\leq \dbinom{4n-1}{2n} = \frac{1}{2}\dbinom{4n}{2n} \leq \dfrac{4^{2n}}{2\sqrt{2\pi n}}
+\label{nparmi2n}
+\end{equation}
+Combining (\ref{majorAkLog}) with estimation (\ref{bigBadEq1Reduced}), we find that there exist a new constant $C$ (we keep the notation $C$ but the constant may change from line to line for commodity) such that, for $|x|<a$
+\[|\Delta^n \tilde{f} (x)|\leq \dfrac{C}{\sqrt{n}}\left( \frac{16n}{e}\right)^{2n}\left(\frac{4}{a}\right)^{2n}\log\left(\dfrac{e}{a}\right)  \]
+Therefore, integrating on $B(0,a)$, we get
+\[ \norm{\Delta^n \tilde{G}(x)}_{L^2(B(0,a))} \leq \dfrac{C a^2}{\sqrt{n}}\log\left(\frac{e}{a}\right)\left( \frac{64n}{ae}\right)^{2n}\]
+And since $\Delta^n \tilde{f}(x) = \Delta^n f(x) = 0$ for $|x|>a$, $\norm{\Delta^n \tilde{f}(x)}_{\Lrad}$ is bounded by the same quantity. 
+We now plug this estimate into the inequality of corollary \ref{EstimationRest}, and using the fact that $x\mapsto x^{1/2}\log\left(\frac{e}{x}\right)$ is bounded on [0,1], we get
+\[ \norm{\tilde{f} - \sum_{k=1}^{P}c_k(\tilde{G})e_{c,k}}_{\infty} \leq C \dfrac{P^{3/2}}{n^{\frac{3}{2}}} a^{3/2}\left( \frac{64 n}{ae P \pi}\right)^{2n}\] 
+The, previous inequality holds true for any integer $n$ such that $n>2$ and any $P \in \mathbb{N}$. We assume that $\frac{aP\pi}{64} >2$, then choosing $n = \lfloor \frac{aP\pi}{64}\rfloor $ we obtain, 
+\[ \norm{\tilde{f} - \sum_{k=1}^{P}c_k(\tilde{G})e_{c,k}}_{\infty} \leq C e^{-\frac{aP\pi}{32}}\] 
+From this we deduce that for any $\varepsilon_0$, choosing an integer $P \geq \dfrac{32}{a\pi} \log\left(\dfrac{C}{\varepsilon_0}\right)$ will ensure 
+\[ \norm{\tilde{f} - \sum_{k=1}^{P}c_k(\tilde{G})e_{c,k}}_{\infty} \leq \varepsilon_0\] 
+
+If $N>2$, the same developments lead to an estimate of the form 
+\[ \norm{\tilde{f} - \sum_{k=1}^{P}c_k(\tilde{G})e_{c,k}}_{\infty} \leq C \sqrt{a} P^{\frac{N-2}{2}}e^{-\frac{aP\pi}{32}}\]
+So in order to reach a given accuracy $\varepsilon_0$, using the fact that $P^{\frac{N-2}{2}}e^{-\frac{aP\pi}{64}}$ is bounded, we find that $P \geq \dfrac{64}{a\pi}\log\left(\dfrac{C}{\varepsilon_0}\right)$ is sufficient, where the constant $C$ is independent of $\varepsilon_0$. 
+\end{proof}
+\label{TheLaplace}
+\end{The}
+
+In dimension $N=2$, the fundamental solution of the Helmholtz equation involves the Bessel function of second kind $Y_0$, defined as 
+\[Y_0(x) = \lim_{\nu\to0 } \dfrac{\cos(\nu\pi)J_{\nu}(x) - J_{-\nu}(x)}{\sin(\nu\pi)}\]
+
+We recall the classical expression in ascending series for $Y_0$ \cite{watson1995treatise}
+\[ Y_0(x) = 2\left(\gamma + \log\left(\dfrac{x}{2}\right)\right) J_0(x) - 2 \sum_{m=1}^{+\infty}\dfrac{(-1)^mx^{2m}}{2^{2m}(m!)^2}\left(1+ \dfrac{1}{2} + \cdots + \frac{1}{m}\right) \]
+where $\gamma$ is the Euler-Mascheroni constant ($\gamma \approx 0.5772...)$
+We show that it is again possible to provide an approximation of $Y_0$ as a finite sum of the functions $e_{c,k}$ with an error decaying exponentially in the number of terms.
+\begin{The} Let $R$ be a root of $Y_0$ and $f : x \mapsto Y_0(R|x|)$. 
+
+\begin{proof} The proof follows the same ideas as the previous one, though it is slightly more difficult.
+As in the previous proof, the function $f$ satisfies a Dirichlet boundary condition on the unit sphere. Moreover, one has $-\Delta f = R^2 f$ on $\mathbb{R}^N\setminus{\{0\}}$ which implies that for any $n \in \mathbb{N}$, the function $\Delta^n f = - R^{2n} f$ also satisfies a Dirichlet boundary condition on $\mathbbm{S}^{N-1}$. Let $\tilde{f}$ be the extension of $f$ as in Definition \ref{ProlongementDef} on $\mathcal{A}(a,1)$. Again, we need to provide a bound for the quantities $\dfrac{a_k}{k!}a^k$. For this, let us write, using Leibniz formula
+\[ \begin{array}{rl}
+a_k = \dfrac{d^k}{dx^k} \left(r^{-2n} Y_0(Rr)\right)\big|_{r=a} &= \displaystyle\sum_{j=0}^k \dbinom{k}{j} \dfrac{d^j}{dr^j}\left(r^{-2n}\right)\big|_{r=a}\dfrac{d^{k-j}}{dr^{k-j}}Y_0(Rr)\big|_{r=a} \\
+|a_k| & \leq C e^{Ra}\displaystyle\sum_{j=0}^{k-1}\dbinom{k}{j}\dfrac{(2n+j-1)!}{(2n-1)!}a^{-2n-j} R^{k-j}(k-j-1)!\left(\dfrac{Ra+1}{Ra}\right)^{k-j}\\
+& + C \dfrac{(2n+k-1)!}{(2n-1)!}a^{-2n-k}\left(1+|\log(Ra)|\right) \\ 
+\end{array} \] 
+For a constant $C$ using Lemma \ref{LemDeriveesY0} 
+Therefore, 
+\[\begin{array}{rl}
+\dfrac{|a_k|}{k!}a^k & \leq C e^{Ra} a^{-2n}\displaystyle\sum_{j=0}^{k-1}\dbinom{2n+j-1}{j}\dfrac{(Ra+1)^{k-j}}{k-j} + \dbinom{2n+k-1}{k} \left(1+\left|\log(Ra)\right|\right)  \\
+& \leq Ce^{Ra}a^{-2n}\left(1+Ra\right)^{k-1} \dbinom{k+2n-1}{k} \left(1+\dfrac{k}{2n}+\left|\log(Ra)\right|\right)
+\end{array} \] 
+Using again identity (\ref{sommekparmminplusk}). With the estimation (\ref{nparmi2n}) we conclude
+\[\max_{k\in\llbracket 0,2n\rrbracket} \dfrac{|a_k|}{k!}a^k \leq Ce^{Ra}\left(\dfrac{4\left(Ra+1\right)}{a}\right)^{2n}\dfrac{1+|\log(Ra)|}{\sqrt{n}}\]
+Now we use the first inequality in Lemma \ref{LemAkDeltanf} to obtain, for $|x| < a$ : \[ \left| \Delta^n \tilde{f}(x)\right| \leq \dfrac{Ce^{Ra}(1+|\log(Ra)|)}{\sqrt{n}}\left(\dfrac{64(Ra+1)n}{ae}\right)^{2n}\]
+For $|x| > a$, we know that $\Delta^n \tilde{f}(x) = (-1)^nR^{2n}\tilde{f}$ thus 
+\[\left|\Delta^n \tilde{f}(x)\right| \leq C R^{2n}\left(1+\left|\log(Rx)\right|\right)\]
+
+\end{proof}
+
+\end{The}
+
+Let us prove the lemma we used in the proof of the previous theorem :
+\begin{Lem} There exists a constant $C$ such that for any $x $ 
+\[\left|Y_0(x)\right| \leq C\left(1+\left|\log(x)\right|\right)\] and for any $k \geq 1$ and any $x \leq 1$  
+\[ \left|Y_0^{(k)}(x)\right| \leq Ce^x(k-1)!\left(\dfrac{x+1}{x}\right)^k\] 
+\label{LemDeriveesY0}
+\begin{proof}
+We will show this result by using the development of $Y_0$ in ascending series. We provide bounds for the derivatives of the following three terms : 
+\begin{itemize}
+\item[-] $f_1(x) = J_0(x)$ 
+\item[-] $f_2(x) = \log\left(x\right) J_0(x)$
+\item[-] $f_3(x) = \displaystyle\sum_{m=1}^{+\infty}\dfrac{(-1)^mx^{2m}}{2^{2m}(m!)^2}\left(1+ \dfrac{1}{2} + \cdots + \dfrac{1}{m}\right) $
+\end{itemize} 
+First, we know that $f_1 = \displaystyle\sum_{m = 0}^{+\infty}\dfrac{(-1)^m}{2^{2m}(m!)^2} x^{2m}$
+it is possible to differentiate term by term to obtain 
+\[  \begin{array}{rl}
+f_1^{(k)}(x) &= \displaystyle\sum_{m = \lfloor \frac{k}{2}\rfloor}^{+\infty}\dfrac{(-1)^m}{2^{2m}(m!)^2} x^{2m-k}\dfrac{2m!}{(2m-k)!} \\
+|f_1^{(k)}(x)| & \leq  \displaystyle\sum_{m = \lfloor \frac{k}{2}\rfloor}^{+\infty}\dbinom{2m}{m}\dfrac{1}{2^{2m}} \dfrac{x^{2m-k}}{(2m-k)!} \\
+ & \leq  \displaystyle\sum_{m = \lfloor \frac{k}{2}\rfloor}^{+\infty}\dfrac{x^{2m-k}}{(2m-k)!}  
+\end{array}
+\]
+Since $\dfrac{1}{2^{2m}} \dbinom{2m}{m} \leq \dfrac{1}{\sqrt{\pi m}}$.
+Thus 
+\[|f_1^{(k)}(x)| \leq e^{x}\]
+For $f_3$, using the same arguments, one can see that 
+\[  \begin{array}{rl}
+|f_3^{(k)}(x)| \leq  \displaystyle\sum_{m = \lfloor \frac{k}{2}\rfloor}^{+\infty}\dfrac{x^{2m-k}}{(2m-k)!}\dfrac{1+ \dfrac{1}{2} + \cdots + \dfrac{1}{m}}{\sqrt{\pi m}}
+\end{array}
+\]
+Since $1+ \dfrac{1}{2} + \cdots + \dfrac{1}{m} \sim \log(m)$ for large $m$, there exists a constant $C$ (here again, the constant $C$ may change from line to line) such that  $1+ \dfrac{1}{2} + \cdots + \dfrac{1}{m} \leq C \sqrt{m} $
+Which implies that \[|f_3^{(k)}(x)| \leq C e^x\]
+Lastly, we can compute the $k-th$ derivative of $f_2$ using Leibniz formula : 
+\[ \begin{array}{rl}
+f_2^{(k)}(x) &= \displaystyle\sum_{j=0}^k \dbinom{k}{j} \dfrac{d^{k-j}}{dx^{k-j}}J_0(x) \dfrac{d^{j}}{dx^{j}} \log(x)\\
+\left| f_2^{(k)}(x)\right|& \leq \displaystyle\sum_{j=1}^k J_0^{(k-j)}(x)\dbinom{k}{j}\dfrac{(j-1)!}{x^{j}} + |J_0^{(k)}(x)||\log(x)| \\
+& \leq e^x \left( \displaystyle\sum_{j=1}^k \dbinom{k}{j}\dfrac{(j-1)!}{x^{j}} + |\log\left(x\right)| \right)
+\end{array}\]
+Using the fact that $|J_{0}^{(k)}(x)| \leq e^x$ as we just showed.
+
+\end{proof}
+\end{Lem}
+
+\begin{Rem} This estimation is only efficient for small values of $x$. 
+\end{Rem}
+
+\section{Least square estimation of coefficients with Gram-Schmidt method}
+
+L'idée du paragraphe est qu'en fait c'est irréalisable de calculer les prolongements et en pratique beaucoup moins rapide de toutes façons. D'où l'ntérêt de passer en Gram-Schmidt, où on est pour autant garantit de faire au moins aussi bien. 
+
+
+
+\bibliographystyle{plain}
+\bibliography{biblio} 
+
+
+
+\end{document}
+

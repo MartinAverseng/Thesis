@@ -1,0 +1,313 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{amsthm}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Integral equations on open Arcs}
+\begin{document}
+\section{Introduction}
+
+Let $\Gamma \subset \mathbb{R}^2$ a $C^{\infty}$ open curve in $\mathbb{R}^2$ not intersecting itself. Denote by \newcommand{\Omegam}{\Omega_\Gamma} $\Omega_\Gamma$ the set $\mathbb{R}^2\setminus \Gamma$. The aim of this work is to provide an efficient method for the numerical solution of exterior Dirichlet and Neumann problems for the Laplace operator, with the boundary condition given on $\Gamma$, namely: 
+\begin{itemize}
+	\item[-] The Dirichlet problem: 
+	 \begin{equation}
+			\left\{\begin{array}{rlll}
+			\Delta u_D &= 0 & \text{in } \Omegam,\\
+			u_D &= u^{0} & \text{on } \Gamma,\\
+		    u_D(x) & = O(1) & \text{as} |x| \to \infty	
+			\end{array}\right.
+			\label{DirichletProblem}
+		\end{equation}
+	\item[-] The Neumann problem: 
+		\begin{equation}
+			\left\{\begin{array}{rlll}
+			\Delta u_N &= 0 & \text{in } \Omegam,\\
+			\partial_n u_N &= g & \text{on } \Gamma, \\
+			u_N(x) &= O(|x|^{-1}) & \text{as} |x| \to \infty		 
+			\end{array}\right.
+			\label{NeumannProblem}
+		\end{equation}
+\end{itemize}
+Here, $\Delta = \partial_1^2 + \partial_2^2$ is the usual Laplace operator. 
+The asymptotic conditions for $|x| \to \infty$ in the two problems are necessary for the solutions to be unique when they exist and allow to interpret $u_D$ and $u_N$ as "outgoing" solutions of the equations, in the sense that they are the superposition of divergent spherical waves.  
+
+\subsection*{Existence and uniqueness for the Dirichlet problem: }
+
+We use the usual definition of the Sobolev spaces, and we introduce, as in \cite{stephan1984augmented}, the space
+\begin{equation}
+	H^{1}_c(\Omegam) = \overline{\mathbb{R}\oplus C^{\infty}_0(\mathbb{R}^2)}^{||\cdot||_{1,c}},
+\end{equation}
+with the norm 
+\newcommand{\Hc}{H^{1}_c(\Omegam)}
+\begin{equation}
+	\norm{f}_{1,c} = \left(\int_{\Omegam} \abs{\nabla f}^2 + \int_{\Gamma} \abs{f}^2\right)^{1/2}
+\end{equation}
+The following result is shown in \cite{stephan1984augmented}
+\begin{The}
+	For each $u_0 \in H^{1/2}(\Gamma)$, there exists a unique solution $u_D \in \Hc$ of problem (\ref{DirichletProblem}). 
+\end{The}
+
+\subsection*{Uniqueness for the Neumann problem}
+
+We shall prove here that the solutions of (\ref{NeumannProblem}) are unique. We will later show existence of the solution using potential methods. Let us introduce the following spaces:
+\begin{Def}
+	Let $g \in H^{-1/2}(\Gamma)$. A function $u \in H^1_{\text{loc}}(\Delta,\Omegam)$ is called a generalized solution of the Laplace problem with Neumann boundary condition $g$ if for any $v \in H^1_{\text{loc}}(\Omegam)$ compactly supported, 
+	\begin{equation}
+		\int_{\Omegam} \nabla u \cdot \nabla v = \duality{g}{v_1 - v_2}_{H^{-1/2}(\Gamma),\tilde{H}^{1/2}(\Gamma)},
+		\label{NeumannGeneralized}
+	\end{equation}
+	and if it satisfies the same asymptotic conditions as in (\ref{NeumannProblem}) (the limit must be taken uniformly in $|x|$). 
+	In this definition, $v_2$ is trace of $v$ when the limit is taken from the side "exterior" to $\Gamma$ as indicated by the normal vector, and $v_1$ is the trace on the opposite side.\\
+\end{Def}
+Obviously, the first condition implies that $\Delta u = 0$ on $\Omegam$, so it must be $C^{\infty}$ on $\Omegam$. This justifies that the asymptotic conditions in (\ref{NeumannProblem}) make sense also for a generalized solution. 
+The following lemma shows how this definition captures the boundary condition. 
+\begin{Lem}
+	For each $g \in H^{-1/2}(\Gamma)$, any solution $u$ of the generalized problem with Neumann boundary condition $g$, satisfies
+	$\dfrac{\partial u}{\partial n}\Big|_{\Gamma} = g  \text{ in } H^{-1/2}(\Gamma)$.
+	\begin{proof}
+		Fix a smooth domain $G$ enclosing $\Gamma$, and extend $\Gamma$ into a smooth curve that splits $G$ into two parts $G_1$ and $G_2$. Let $\phi \in\tilde{H}^{1/2}(\Gamma)$, and $\tilde{\phi}$ denote its extension by $0$ on $\partial G_1$. By definition of $\tilde{H}^{1/2}(\Gamma)$, we have $\tilde{\phi} \in H^{1/2}(\partial G_1)$. Thus, there exists $v_1 \in H^{1}(G_1)$ such that the trace of $v_1$ on $\partial G_1$ is equal to $\phi$. Let $v$ the extension of $v_1$ by $0$ on $\mathbb{R}^2$. Since $v_1$ vanishes on $\partial G_1 \setminus \Gamma$, standard results for traces in sobolev spaces ensure that $v\in H^1(\Omegam)$. Applying Green's identity and using \ref{NeumannGeneralized}, we get 
+		\begin{equation}
+			\duality{\frac{\partial u}{\partial n}}{\phi}_{H^{-1/2}(\Gamma),\tilde{H}^{1/2}(\Gamma)} = \duality{g}{\phi}_{H^{-1/2}(\Gamma),\tilde{H}^{1/2}(\Gamma)}
+		\end{equation}
+	\end{proof}
+\end{Lem}
+Adapting the proof of \cite[The 4.1 p. 56]{wilcox1975scattering}, one obtains:
+\begin{Lem}
+	For any $g \in H^{-1/2}(\Gamma)$, there exists at most one generalized solution of the Laplace problem with Neumann boundary conditions $g$. 
+\end{Lem}
+
+\subsection*{Equivalent formulation as integral equations}
+
+\subsubsection*{Integral equation for the Dirichlet problem}
+
+Problems (\ref{DirichletProblem}) and (\ref{NeumannProblem}) can be reformulated in the form of integral equations. To this end, we introduce the Green kernel 
+\[G(x,x') = -\frac{1}{2\pi}\ln(|x-x'|).\] 
+We introduce the classical single-layer potential acting on any smooth function $u$ defined on $\Gamma$ as:
+\begin{equation}
+\SL \lambda(x) = \int_\Gamma G(x,x')\lambda(x')d\Gamma(x'), \quad x \notin \Gamma.
+\label{SLuDef}
+\end{equation}
+
+Let $S = \gamma \mathcal S$ where $\gamma$ is the trace operator. We have the following result: 
+\begin{The}
+	\label{TheoSopenArc}
+	Fix a smooth cutoff function $\chi \in C^{\infty}_{0}(\R^2)$. For any $\sigma \in [-\frac{1}{2}, \frac{1}{2}]$, The following mappings are continuous
+	\begin{enumerate}
+		\item[-] $\chi\mathcal \SL : \tilde{H}^{-\frac{1}{2} + \sigma}(\Gamma) \to H^{1+ \sigma}(\Omegam),$
+		\item[-] $S : \tilde{H}^{-\frac{1}{2} + \sigma}(\Gamma) \to H^{\frac{1}{2}+ \sigma}(\Gamma).$
+	\end{enumerate}
+	Furthermore, for any function $\lambda \in L^{2}(\Gamma)$, one has the following integral representation with a weakly singular kernel
+	\begin{equation}
+		S\lambda(x) = \int_{\Gamma} G(x,x') \lambda(x') d\Gamma(x'), \quad x \in \Gamma		
+	\end{equation}
+	\begin{proof}
+		It is well-known (see for example \cite[chap. 6]{mclean2000strongly}) that when $\Gamma$ is a closed (Lipschitz) curve, the corresponding single-layer operator and its trace are continuous from $H^{-\frac{1}{2}+ \sigma}(\Gamma)$ to $H^{1+\sigma}(\Gamma)$ and $H^{-\frac{1}{2}+ \sigma}(\Gamma)$ to $H^{
+		\frac{1}{2}+\sigma}(\Gamma)$. Therefore, extend $\Gamma$ to some smooth closed curve $\partial G$, enclosing a bounded domain $G_1$ and let $G_2 = \mathbb{R}^2\setminus G_1$. Let $\SL_{\partial G}$ and $S_{\partial G}$ denote the corresponding single-layer potential and its trace on $\partial G$. Fix any $\lambda \in \tilde{H}^{-\frac{1}{2} + \sigma}$, denote by $\tilde{\lambda}$ its zero extension on $\partial G$. Since $\tilde{\lambda} \in H^{1/2+\sigma}(\partial G_1)$, we get $\SL_G\lambda\in H^{1 + \sigma}(G_1)$ with $\norm{\SL_G \tilde{\lambda}}_{H^{1+\sigma}(G_1)} \leq C \norm{\tilde{\lambda}}_{H^{-\frac{1}{2}+ \sigma}(\Gamma)}$. Obviously, $\SL\lambda = \SL_{\partial G} \tilde{\lambda}$ and $\norm{\lambda}_{\tilde{H}^{-\frac{1}{2}+\sigma}(\Gamma)} = \norm{\tilde{u}}_{H^{-\frac{1}{2} + \sigma}(\partial G)}$ This result being true for any choice of the smooth curve $\partial G$, we obtain $\SL\lambda\in H^{1}_{\loc}(\Omegam)$. Similarly, we know that $S_\partial G \tilde{\lambda} \in H^{\frac{1}{2}+\sigma}(\partial G)$ thus, by restriction, $S \lambda \in H^{\frac{1}{2}+\sigma}(\Gamma)$ with continuity. 
+	
+		The last property is easily obtained from the corresponding result for single-layer potentials on closed curves.  
+	\end{proof}
+\end{The} 
+\begin{The}
+	For any $u_0 \in H^{\frac{1}{2}}(\Gamma)$, if the integral equation
+	\begin{equation}
+		S \lambda = u_0
+		\label{eqIntDirichlet}
+	\end{equation}
+	has a solution $\lambda$ in $\tilde{H}^{-\frac{1}{2}}(\Gamma)$, then the solution $u_D$ of (\ref{DirichletProblem}) can be obtained from $\lambda$ by
+	\begin{equation}
+		u_D(x) =	\SL \left[\lambda - \frac{1}{|\Gamma|}\duality{1}{\lambda}_{\Gamma}\right](x)  \quad \text{ in } \Omegam,
+	\end{equation}
+	where $\duality{1}{\lambda}_{\Gamma} = \int_{\Gamma} \lambda$. 
+	\begin{proof}
+		Assume the equation $S\lambda = u_0$ has a solution in $\tilde{H}^{-\frac{1}{2}}$ (we will show later that it is always the case). Then $v= \SL \left[\lambda - \frac{1}{|\Gamma|}\duality{1}{\lambda}_{\Gamma}\right]$ satisfies: 
+		\begin{enumerate}
+			\item $\Delta v = 0$ in $\Omegam$. 
+			\item $\gamma v = u_0$ on $\Gamma$.  
+		\end{enumerate}
+		Moreover, a limited expansion of (\ref{SLuDef}) shows that for any $\psi \in \tilde{H}^{-\frac{1}{2}}(\Gamma)$, one has
+		\[\SL \psi = \frac{1}{2\pi} \duality{1}{\psi}\log(x) + O(|x|^{-1})\] 
+		This implies that $v$ is indeed a solution of (\ref{DirichletProblem}). 
+	\end{proof}
+\end{The}
+
+
+\subsubsection*{Integral equation for the Neumann problem}
+We introduce the classical double-layer operator defined by 
+\begin{equation}
+	\DL \mu (x) = \int_{\Gamma} \frac{\partial G}{\partial n_x'}(x,x') \mu(x') d\Gamma(x'), \quad x\notin \Gamma
+	\label{DLmuDef}
+\end{equation}
+We define the classical hypersingular operator $H$ as 
+\[N \mu = \frac{\partial}{\partial n} \DL \mu.\]
+Using the same arguments as in Theorem \ref{TheoSopenArc}
+\begin{The} Fix a smooth cutoff function $\chi \in C^{\infty}_{0}(\R^2)$. For any $\sigma \in [-\frac{1}{2}, \frac{1}{2}]$, The following mappings are continuous
+	\begin{enumerate}
+		\item[-] $\chi\mathcal \DL : \tilde{H}^{\frac{1}{2} + \sigma}(\Gamma) \to H^{1+ \sigma}(\Omegam),$
+		\item[-] $N : \tilde{H}^{\frac{1}{2} + \sigma}(\Gamma) \to H^{-\frac{1}{2}+ \sigma}(\Gamma).$
+	\end{enumerate}
+	Furthermore, for any function $\mu \in \tilde{H}^{\frac{1}{2}}(\Gamma)$, one has the following integral representation with a singular kernel
+	\begin{equation}
+	N\mu(x) = \fp \int_{\Gamma \setminus B_\varepsilon(x)} \frac{\partial ^2}{\partial n_x \partial n_x'} G(x,x') \mu(x')d\Gamma(x'), \quad x \in \Gamma
+	\label{NDef}
+	\end{equation}
+\end{The}
+\begin{The}
+	For any $g \in H^{-\frac{1}{2}}(\Gamma)$, assume that there exists a solution $\mu \in \tilde{H}^{\frac{1}{2}}(\Gamma)$ to the equation
+	\begin{equation}
+		N \mu = g
+	\end{equation}
+	then the solution of (\ref{NeumannProblem}) can be obtained from $\mu$ by
+	\[ u_N(x) = \DL \mu (x) \quad \text{in } \Omegam\]
+	\begin{proof}
+		Assume the equation $N\mu = g$ has a solution in $\tilde{H}^{\frac{1}{2}}(\Gamma)$ (we will show later that it is always the case). Then $v= \DL \mu$ satisfies: 
+		\begin{enumerate}
+			\item $\Delta v = 0$ in $\Omegam$. 
+			\item $\partial_n v = g$ on $\Gamma$.  
+		\end{enumerate}
+		Moreover, a limited expansion of (\ref{DLmuDef}) shows that for any $\psi \in \tilde{H}^{\frac{1}{2}}(\Gamma)$, one has
+		\[\DL \psi = O(|x|^{-1}).\]
+	\end{proof}
+\end{The}
+
+\subsection*{Numerical resolution of the integral equations}
+
+The advantage of the equivalent formulations of (\ref{DirichletProblem}) and (\ref{NeumannProblem}) in terms of integral equations is that the latter only involve the unknown functions on the bounded domain $\Gamma$. However, because of the singularity of the domain (the tips of the open curve $\Gamma$), the solutions $u_D$ and $u_N$ possess well-known singularities. More precisely, 
+
+\begin{The}
+	Assume the data $u^0$ in eq. (\ref{eqIntDirichlet}) is in the space $H^{s}(-1,1)$. Then the solution $f$ is of the form 
+	\[ f = \frac{\alpha}{\omega}\]
+	where $\alpha$ belongs to $H^s$. 
+\end{The}
+
+
+
+When the Galerkin method is employed, the rate of convergence of the numerical solution to the exact solution is limited by this default of regularity. Several methods have been proposed in order to recover the optimal rate of convergence. Here, we follow closely the method of \cite{bruno2012second}, but using piecewise constant discretization instead of spectral discretization and prove that optimal rates of convergence occur. The analysis is based on a "cosine change of variables" as in \cite{yan1988integral,yan1990cosine,bruno2012second}, which recasts the single-layer integral equation into the Symm's equation. It turns out that the operator in the former equation is diagonal in the Fourier basis, which makes its study straightforward.  
+
+
+
+
+\subsection{Eigenvectors of $S$ and $N$ when $\Gamma = (-1,1)$}
+
+We first consider $S_0$ and $N_0$ the single-layer potential
+on the segment $(-1,1)$, as the operators in the general case are obtained as compact perturbations of $S_0$ and $N_0$. We denote by $T_n(x)$ and $U_n(x)$ the $n$-th Chebyshev's polynomial of first and second kind respectively. Let $\omega(x) = \sqrt{1 - x^2}$, and recall the following orthogonality properties: 
+\begin{equation}
+	\int_{-1}^{1} \frac{T_m(x)T_n(x)}{\omega(x)}dx = t_m \delta_{m,n}
+\end{equation}
+where $\delta_{n,m}$ stands for the Kroenecker symbol and $t_0 = \pi$ and $t_m = \frac{\pi}{2}, m \geq 1$.  
+\begin{equation}
+\int_{-1}^{1} {U_m(x)U_n(x)}{\omega(x)}dx = u_m \delta_{m,n}
+\end{equation}
+where $u_m = \frac{\pi}{2}$ for all $m \geq 0$. 
+
+Let us also define some spaces of functions on the interval $(-1,1)$ that will help describe the operators $S$ and $N$. For any real-valued and locally integrable function $\alpha$ on the interval $\overline{(-1,1)}$, and for any $s\geq 0$, we define the following norm :
+\[\norm{\alpha}_s:= |\alpha_0|^2 + \sum_{n=1}^{+\infty} |\alpha_n|^2 n^{2s},\]
+where for all $n \geq 0$, 
+\[\alpha_n := \frac{1}{\sqrt{t_n}}\int_{-1}^{1} \frac{\alpha(x) T_n(x)}{\omega(x)}dx.\] 
+Using the change of variables $x = \cos\theta$ and the properties of Chebyshev's polynomials, it can be easily seen that the coefficients $\alpha_n$ are closely related to the Fourier coefficients of the even function $\tilde{\alpha}(\theta) := \alpha(\cos\theta)$
+\[\alpha_n = \frac{1}{\sqrt{2\pi}}\int_{-\pi}^{\pi} \tilde{\alpha}(\theta)e^{-in\theta}d\theta, \quad n \geq 1, \]
+\[\alpha_0 = \frac{1}{2\sqrt{\pi}}\int_{-\pi}^{-\pi} \tilde{\alpha}(\theta)d\theta\]
+This encourages us to define a scale of weighted Sobolev spaces $X^s$ based on the norm $\norm{\cdot}_s$ : 
+\[X_s := \enstq{\alpha}{\norm{\alpha}_s < +\infty}\]
+For any $s \geq 0$, $X^s$ is a Hilbert space for the scalar product 
+\[\scalProd{\alpha}{\beta}_{X^s} = \alpha_0\beta_0 + \sum_{n=1}^{+\infty} \alpha_n \beta_n n^{2s}\] 
+Moreover, the spaces $X^{-s}$ can be defined  as the dual of $X^{s}$, using the bilinear form 
+\[b(\alpha,\beta) = \int_{-1}^{1} \frac{\alpha(x)\beta(x)}{\omega(x)}dx = \alpha_0\beta_0 + \sum_{n=1}^{+\infty} \alpha_n \beta_n.\]
+Standard Fourier arguments show that $\cap_{s \in \mathbb{R}} X^s = C^{\infty}(-1,1)$. 
+We will later investigate further the link between $X^s$ and more usual spaces. 
+
+The following theorem is the basis of the subsequent analysis. 
+\begin{The}
+	For all $n \geq 0$, 
+	\begin{align}
+		S_0\frac{T_n}{\omega} &= \lambda_n T_n\\
+		N_0\omega U_n &= \mu_n U_n
+	\end{align}
+	with $\lambda_0 = \frac{\ln(2)}{2}$, $\lambda_n = \frac{1}{2n}$ for $m \geq 1$, and $\mu_n = \frac{n+1}{2}$ for all $n$. 
+\end{The}
+
+\begin{Rem}
+	It was proved in \cite{bruno2012second} that $S\frac{1}{\omega}$ and $N_\omega$ are Fredholm operators and that their product has zero index, meaning they can be efficiently used as mutual preconditioners.
+\end{Rem}
+
+The following formula was obtained in \cite{jerez2010boundary}:
+\begin{Cor}
+	For almost all $(x,y) \in (-1,1)^2$, one has: 
+	\begin{equation}
+		\ln(|x-y|) = -\ln(2) - \sum_{n=1}^{+\infty}\frac{2}{n} T_n(x)T_n(y).
+		\label{doubleSumLn}
+	\end{equation}
+\end{Cor}
+
+\begin{Cor}
+	$S_0$ and $N_0$ are symmetric operators, invertible and bounded below. 
+\end{Cor}
+
+In particular, this implies that problems (\ref{DirichletProblem}) and (\ref{NeumannProblem}) are always solvable. 
+
+Let $Y$ the operator defined by 
+\[Y\varphi(x) = \fp \int_{(-1,1)\setminus(-\varepsilon,\varepsilon)} \frac{1-xy}{\omega(x)\omega(y)|x-y|^2}\varphi(y)dy\]
+
+By applying the operator $(\omega(x) D_x)^2$ on both sides of (\ref{doubleSumLn}), we obtain
+\begin{Cor}
+	$Y$ is well defined for $\varphi \in H^{\frac{1}{2}}(\Gamma)$ and is the inverse of $S$.
+\end{Cor}
+
+\begin{Cor}
+	Assume that $u^0 \in X^s$ for some $s \in \mathbb{R}$. Then the solution $f$ to equation (\ref{eqIntDirichlet}) is of the form 
+	\[f = \frac{\alpha}{\omega},\] 
+	with $\alpha \in X^{s+1}$. 
+\end{Cor}
+In other words, $S^{-1}$ maps $X^s$ into $\frac{1}{\omega}X^{s+1}$. In particular, it maps $C^{\infty}$ into $\frac{1}{\omega}C^{\infty}$. 
+
+\begin{The}
+	 We have the following characterization of some Sobolev spaces on $\tilde{H}^s(-1,1)$ in terms of $X^s$:
+	\begin{equation}
+	 	f \in \tilde{H}^{-1/2}(-1,1) \iff \alpha := \omega f \in X^{-1/2} 
+ 	\end{equation}
+ 	Moreover, 
+ 	\[ \norm{f}_{\tilde{H}^{-1/2}(-1,1)} \sim \norm{\alpha}_{-1/2}\]
+ 	\label{EquivalenceNorm}
+\end{The}
+
+\section{Cosine change of variable and numerical resolution of the Dirichlet problem}
+
+In eq. (\ref{eqIntDirichlet}), we use the change of variable $x = \cos\theta$ to transform the equation into the well-known Symm's integral equation:
+\begin{equation}
+	-\frac{1}{2\pi} \int_{0}^{\pi} \ln|\cos\theta - \cos \theta'|\tilde{\alpha}(\theta') = \tilde{u}^0(\theta)
+	\label{Symm}
+\end{equation}
+Once $\tilde{\alpha}$ is obtained, the original solution $f$ is given by $u_D(x) = \frac{\tilde{\alpha}(\arccos(x))}{\omega(x)}$. 
+In order to solve the Dirichlet problem, we use a Galerkin approximation of the unique solution to equation (\ref{eqIntDirichlet}). Using Galerkin approximation on Symm's equation (\ref{Symm}) instead of eq. (\ref{eqIntDirichlet}) is more advantageous because this time the unknown $\tilde{alpha}$ belongs to $H^{s}(-\pi,\pi)$ whenever the data $u^0$ is in $X^s$. We will show that this allows to regain optimal rates of convergence. 
+
+For this, we introduce a regular mesh of the interval $x_0, ..., x_N$ of $(0,\pi)$ and define the finite element space as the spaces of piecewise constant functions on each $(x_i, x_{i+1})$. We introduce $\tilde{\alpha_h}(\theta) = \alpha_h(\cos\theta)$ the solution of the variational formulation 
+\begin{equation}
+	\forall \tilde{\beta}_h \in V_h, \frac{-1}{2\pi}\int_{0}^{\pi}\int_{0}^{\pi} \ln|\cos\theta - \cos\theta'|\tilde{\alpha}_h(\theta)\tilde{\beta}_h(\theta')d\theta d\theta' = \int_{0}^{\pi} \tilde{u^0}(\theta)\tilde{\beta}_h(\theta)d\theta
+\end{equation}
+
+Finally, we set $u_h(x) = \frac{\alpha_h(x)}{\omega(x)}$. 
+Let us investigate the rate of convergence of this approximation with repsect to $h$:
+\begin{Prop}
+	There exists a constant $C$ such that for all $h$ small enough, 
+	\[ \norm{u_D - u_h}_{\tilde{H}^{-1/2}(-1,1)} \leq C \norm{\tilde{\alpha}}_{1}h^{3/2}\]
+	\begin{proof}
+		We first prove a Céa type lemma: by definition of $\alpha_h$, we have, for all $\tilde{\beta}_h \in V_h$, letting $\beta_h(x) = \tilde{\beta}_h(\arccos(x))$, 
+		\[\duality{S\frac{\alpha_h}{\omega}}{\frac{\beta_h}{\omega}} = \duality{u^0}{\frac{\beta_h}{\omega}}\]	
+		We now repeat the classical argument leading to Céa's lemma. Since the former inequality is also true when we replace $\alpha_h$ by $\alpha$, we obtain , for any $\tilde{\beta}_h \in V_h$, 
+		\[\duality{S \frac{\alpha- \alpha_h}{\omega}}{\frac{\beta_h}{\omega}} = 0 \]			
+		Using the fact that $S$ is positive and bounded below on $\tilde{H}^{-1/2}(-1,1)$, this leads to 
+		\[ \norm{u_D - u_h}_{\tilde{H}^{-1/2}} \leq C \inf_{\tilde{\beta}_h \in V_h} \norm{\frac{\alpha - \beta_h}{\omega}}_{\tilde{H}^{-1/2}}\]
+		According to theorem \ref{EquivalenceNorm}, we conclude that for some constant $C$, 
+		\[ \norm{u_D - u_h}_{\tilde{H}^{-1/2}} \leq C \inf_{\tilde{\beta}_h \in V_h} \norm{\tilde{\alpha} - \tilde{\beta}_h}_{-1/2}\]
+		the result announced follows form classical interpolation results on the uniform mesh $x_1, x_2,...x_N$ for $\tilde{\alpha}$. 
+	\end{proof}
+\end{Prop}
+
+\begin{Rem} From the proof of the above theorem, it can  be observed that for the result to hold, it is sufficient to have a quasi-uniform mesh of the interval $(0,\pi)$. After change of variable, we can see that this amounts to a local mesh grading near the edges of the segment $(-1,1)$ with a local mesh width $h(x) \sim d(x,\partial \Omega)^2$. If a uniform mesh of the segemnt (-1,1) is chosen instead, the theoretical rate of convergence is divided by $2$.  
+\end{Rem}
+
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio}
+	
+	
+\end{document}
+
+

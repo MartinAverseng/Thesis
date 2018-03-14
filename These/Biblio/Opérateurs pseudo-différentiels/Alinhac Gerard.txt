@@ -1,0 +1,14 @@
+Titre : Opérateurs pseudo-différentiels et théorème de Nash-Moser
+Auteurs : Serge Alinhac, Patrick Gérard 
+Acheté en Novembre 2016. 
+
+Référence Bibtex : 
+@book{alinhac2012operateurs,
+  title={Op{\'e}rateurs pseudo-diff{\'e}rentiels et th{\'e}oreme de Nash-Moser},
+  author={Alinhac, Serge},
+  year={2012},
+  publisher={EDP Sciences}
+}
+
+
+

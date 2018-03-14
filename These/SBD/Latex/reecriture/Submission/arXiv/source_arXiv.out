@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Summary of the algorithm}{}% 1
+\BOOKMARK [1][-]{section.2}{Series of Bessel functions and error estimates}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Radial eigenvalues of the Laplace operator with Dirichlet conditions}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Truncature error for Fourier-Bessel series of smooth functions}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Other boundary conditions}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Sparse Bessel Decomposition}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Definition of the SBD}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Numerical computation of the SBD}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Conditioning of the linear system}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Application to Laplace and Helmholtz kernels}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Laplace kernel}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Helmholtz kernel}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{General kernel : enforcing the multi-Dirichlet condition}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Circular quadrature}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Theoretical bound}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{Estimations of complexities}{}% 16
+\BOOKMARK [2][-]{subsection.6.1}{Offline computations}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.2}{On-line Computations}{section.6}% 18
+\BOOKMARK [1][-]{section.7}{Numerical examples}{}% 19
+\BOOKMARK [2][-]{subsection.7.1}{System of NN particles}{section.7}% 20
+\BOOKMARK [2][-]{subsection.7.2}{Sound canceling}{section.7}% 21

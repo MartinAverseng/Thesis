@@ -1,0 +1,143 @@
+\begin{thebibliography}{10}
+
+\bibitem{abramowitz1964handbook}
+Milton Abramowitz and Irene~A Stegun.
+\newblock {\em Handbook of mathematical functions: with formulas, graphs, and
+  mathematical tables}, volume~55.
+\newblock Courier Corporation, 1964.
+
+\bibitem{allaire2005analyse}
+G~Allaire.
+\newblock Analyse num{\'e}rique et optimisation: Une introduction à la
+  mod{\'e}lisation math{\'e}matique eta la simulation num{\'e}rique.
+\newblock {\em Math{\'e}matiques appliqu{\'e}es. Ecole polytechnique,
+  Palaiseau}, 2005.
+
+\bibitem{Alouges2015}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{Balodis1999}
+P.~Balodis and A.~C{\'o}rdoba.
+\newblock The convergence of multidimensional fourier-bessel series.
+\newblock {\em Journal d'Analyse Math{\'e}matique}, 77(1):269--286, 1999.
+
+\bibitem{SphericalAverage}
+B.~J.~C. Baxter.
+\newblock On spherical averages of radial basis functions.
+\newblock {\em Foundations of Computational Mathematics}, 8(3):395--407, 2008.
+
+\bibitem{borm2003introduction}
+Steffen B{\"o}rm, Lars Grasedyck, and Wolfgang Hackbusch.
+\newblock Introduction to hierarchical matrices with applications.
+\newblock {\em Engineering analysis with boundary elements}, 27(5):405--422,
+  2003.
+
+\bibitem{cheng1999fast}
+Hongwei Cheng, Leslie Greengard, and Vladimir Rokhlin.
+\newblock A fast adaptive multipole algorithm in three dimensions.
+\newblock {\em Journal of computational physics}, 155(2):468--498, 1999.
+
+\bibitem{coifman1993fast}
+Ronald Coifman, Vladimir Rokhlin, and Stephen Wandzura.
+\newblock The fast multipole method for the wave equation: A pedestrian
+  prescription.
+\newblock {\em IEEE Antennas and Propagation Magazine}, 35(3):7--12, 1993.
+
+\bibitem{colzani1993equiconvergence}
+Leonardo Colzani, Antonio Crespi, Giancarlo Travaglini, and Marco Vignati.
+\newblock Equiconvergence theorems for fourier-bessel expansions with
+  applications to the harmonic analysis of radial functions in euclidean and
+  non-euclidean spaces.
+\newblock {\em Transactions of the American Mathematical Society},
+  338(1):43--55, 1993.
+
+\bibitem{cooley1965algorithm}
+James~W Cooley and John~W Tukey.
+\newblock An algorithm for the machine calculation of complex fourier series.
+\newblock {\em Mathematics of computation}, 19(90):297--301, 1965.
+
+\bibitem{NuFFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\bibitem{greengard1988rapid}
+Leslie Greengard.
+\newblock {\em The rapid evaluation of potential fields in particle systems}.
+\newblock MIT press, 1988.
+
+\bibitem{greengard2004accelerating}
+Leslie Greengard and June-Yub Lee.
+\newblock Accelerating the nonuniform fast fourier transform.
+\newblock {\em SIAM review}, 46(3):443--454, 2004.
+
+\bibitem{guadalupe1993mean}
+JJ~Guadalupe, M~P{\'e}rez, FJ~Ruiz, and JL~Varona.
+\newblock Mean and weak convergence of fourier-bessel series.
+\newblock {\em Journal of mathematical analysis and applications},
+  173(2):370--389, 1993.
+
+\bibitem{gaussFFT}
+Michael~T Heideman, Don~H Johnson, and C~Sidney Burrus.
+\newblock Gauss and the history of the fast fourier transform.
+\newblock {\em Archive for history of exact sciences}, 34(3):265--277, 1985.
+
+\bibitem{lorch2008monotonic}
+Lee Lorch and Martin~E Muldoon.
+\newblock Monotonic sequences related to zeros of bessel functions.
+\newblock {\em Numerical Algorithms}, 49(1):221--233, 2008.
+
+\bibitem{poplau2006calculation}
+Gisela P{\"o}plau, Daniel Potts, and Ursula van Rienen.
+\newblock Calculation of 3d space-charge fields of bunches of charged particles
+  by fast summation.
+\newblock In {\em Scientific Computing in Electrical Engineering}, pages
+  241--246. Springer, 2006.
+
+\bibitem{potts2004fast}
+Daniel Potts, Gabriele Steidl, and Arthur Nieslony.
+\newblock Fast convolution with radial kernels at nonequispaced knots.
+\newblock {\em Numerische Mathematik}, 98(2):329--351, 2004.
+
+\bibitem{rokhlin1990rapid}
+Vladimir Rokhlin.
+\newblock Rapid solution of integral equations of scattering theory in two
+  dimensions.
+\newblock {\em Journal of Computational Physics}, 86(2):414--439, 1990.
+
+\bibitem{rokhlin1993diagonal}
+Vladimir Rokhlin.
+\newblock Diagonal forms of translation operators for the helmholtz equation in
+  three dimensions.
+\newblock {\em Applied and Computational Harmonic Analysis}, 1(1):82--93, 1993.
+
+\bibitem{stempak2002convergence}
+Krzysztof Stempak.
+\newblock On convergence and divergence of fourier--bessel series.
+\newblock {\em Electronic Transactions on Numerical Analysis}, 14:223--235,
+  2002.
+
+\bibitem{tolstov2012fourier}
+Georgi~P Tolstov.
+\newblock {\em Fourier series}.
+\newblock Courier Corporation, 2012.
+
+\bibitem{watson1995treatise}
+George~Neville Watson.
+\newblock {\em A treatise on the theory of Bessel functions}.
+\newblock Cambridge university press, 1995.
+
+\bibitem{wilton1928gibbs}
+JR~Wilton.
+\newblock The gibbs phenomenon in fourier-bessel series.
+\newblock {\em J. reine angew. Math}, 159:144--153, 1928.
+
+\bibitem{wolf2013integral}
+Kurt Wolf.
+\newblock {\em Integral transforms in science and engineering}, volume~11.
+\newblock Springer Science \& Business Media, 2013.
+
+\end{thebibliography}

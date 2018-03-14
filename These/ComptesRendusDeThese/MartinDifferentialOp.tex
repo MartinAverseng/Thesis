@@ -1,0 +1,27 @@
+
+\documentclass[]{article}
+\input{/home/martin/Thesis/These/DefLatex/Definitions.tex}
+
+\begin{document}
+	
+\begin{Def}
+	Let the M-transform be defined by
+	\[\mathcal{M}\phi(\xi) \isdef \sqrt{2}\int_{0}^{+\infty} \cos(\xi \sqrt{u})\dfrac{\phi(u)}{\sqrt{u}}du\]
+\end{Def}
+\begin{Def}
+	For any function $\phi$ defined on $\R^+$, let $C$ the operator defined by 
+	\[C\phi(t) = \phi(t^2), \quad t \in  \R\]
+	For any function even function $\phi$ defined on $\mathbb{R}$, $C^{-1}\phi$ is a function defined on $\R^+$ by 
+	\[C^{-1}\phi(u) = \phi(\sqrt{u})\] 
+\end{Def}
+\begin{Def}
+	We note $\mathcal{S}\left(\sqrt{\R^+}\right)$ the space of $\phi$ such that $C\phi \in \mathcal{S}(\mathbb{R})$. Let $S_p(\R)$ the subspace of even functions that belong to the Schwartz class. 
+\end{Def}
+\begin{Prop}
+	$C\mathcal{S}\left(\sqrt{\R^+}\right) = \mathcal{S}_p(\R)$
+\end{Prop}
+\begin{Prop}
+	The operator $\opFromTo{\mathcal{M}}{\mathcal{S}\left(\sqrt{\R^+}\right)}{S_p(\R)}$ is a bijection, with inverse 
+	\[\mathcal{M}^{-1}f = \sqrt{2}\int_{0}^{+\infty}\cos(\xi\sqrt{u})f(\xi) d\xi\]
+\end{Prop}
+\end{document}

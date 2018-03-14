@@ -1,0 +1,698 @@
+\documentclass[11pt,a4paper]{article}
+\IfFileExists{Definitions.tex}{\input{Definitions.tex}}{\input{/home/martin/Documents/These/DefLatex/Definitions.tex}}
+
+\author{François Alouges, Martin Averseng}
+\title{Sparse Bessel Decomposition for fast 2D non-uniform convolution}
+
+\begin{document}
+\maketitle
+	
+	
+\abstract{We describe an efficient algorithm for computing the matrix vector products that appear in the numerical resolution of boundary integral equations in 2 space dimension. This work is an extension of the so-called Sparse Cardinal Sine Decomposition algorithm proposed in \cite{Alouges2015}, which is restricted to three-dimensional setups. Although the approach is analog, significant differences appear throughout the analysis of the method. This leads, in particular, to longer series for the same accuracy, with a slight increase in the global complexity, which remains nevertheless sub-quadratic.}
+
+\section{Introduction}
+The Boundary Element Method requires the resolution of fully populated linear systems $Au = b$. As the number of unknowns gets large, the storage of the matrix $A$ and the computational cost for solving the system through direct methods (e.g. LU factorization) become prohibitive. Instead, iterative methods can be used, which require very fast evaluations of matrix vector products. In the context of boundary integral formulations, this takes the form of discrete convolutions:
+\begin{equation}
+	q_k = \sum_{l=1}^{N_z} G(\boldsymbol{z}_k - \boldsymbol{z}_l) f_l, \quad k \in \left\{1, \cdots, N_z\right\}.
+	\label{discreteConv}					
+\end{equation}
+Here, $G$ is the Green's kernel of the partial differential equation being solved, $\bs{z} = \varInRange{\bs{z}}{k}{1}{N_z}$  is a set of points in $\mathbb{R}^2$, with diameter $\rmax$, $\abs{\cdot}$ is the Euclidian norm and $f = \varInRange{f}{k}{1}{N_z}$ is a vector (typically the values of a function at the points $\bs{z}_k$). For example, the resolution of the Laplace equation with Dirichlet boundary conditions leads to \eqref{discreteConv} with $G(\bs{x}) = \log \abs{\bs{x}}$ (the kernel of the single layer potential). 
+
+In principle, the effective computation of the $(q_k)_{1 \leq k\leq N_z}$ using \eqref{discreteConv} requires $O(N_z^2)$ operations. However, several more efficient algorithms have emerged to compute an approximation of \eqref{discreteConv} with only quasilinear complexity in $N_z$. Among those are the celebrated Fast Multipole Method (see for example \cite{greengard1988rapid,rokhlin1990rapid, rokhlin1993diagonal, coifman1993fast, cheng1999fast} and references therein), the Hierarchical Matrix \cite{borm2003introduction}, and more recently, the Sparse Cardinal Sine Decomposition (SCSD) \cite{Alouges2015}.
+
+One of the key ingredients in all those methods consists in writing the following local variable separation:
+\[G(\bs{z}_k- \bs{z}_l) \approx \sum_j \lambda_j G^j_1(\bs{z}_k)G^j_2(\bs{z}_l),\] 
+which needs to be valid for $\bs{z}_k$ and $\bs{z}_l$ distant from each other, and up to a controlled accuracy. This eventually results in compressed matrix representations and accelerated matrix-vector product. Notice that, to be fully effective, the former separation is made locally with the help of a geometrical splitting of the cloud of points $\bs{z}$ (octree).
+
+Here we present an alternative compression and acceleration technique, which we call the Sparse Bessel Decomposition (SBD). This is an extension of the SCSD adapted to 2-dimensional problems. The SBD and SCSD methods achieve performances almost comparable to the aforementioned algorithms, they are flexible with respect to the kernel $G$, and do not rely on the construction of octrees, which makes them easier to implement. In addition, they express in an elegant way the intuition according to which a discrete convolution is nothing but a product of Fourier spectra. 
+
+The method heavily relies on the Non Uniform Fast Fourier Transform (NUFFT) of type III (see the seminal paper \cite{NuFFT} and also refer to \cite{greengard2004accelerating,poplau2006calculation} and references therein for numerical aspects and open source codes).  The NUFFT is a fast algorithm, which we denote by $\operatorname{NUFFT}_\pm[\bs{z},\boldsymbol{\xi}](\alpha)$ for later use, that returns, for arbitrary sets of points $\bs{z},\bs{\xi}$ in $\mathbb{R}^2$ and a complex vector $\alpha$, the vector $q$ defined by:
+\[ q_\nu = \sum_{k = 1}^{N_z} e^{\pm i \bs{z}_k \cdot \boldsymbol{\xi}_\nu} \alpha_k, \quad \nu \in \left\{1,\cdots,N_\xi \right\}.\]
+This algorithm generalizes the classical Fast Fourier Transform (FFT) \cite{cooley1965algorithm}, (in fact, Gauss himself had found an equally powerful algorithm for computing Fourier transforms, see the interesting paper \cite{gaussFFT}), to nonequispaced data, preserving the quasi-linear complexity in $N_{z,\xi} \isdef \max(N_z,N_\xi)$.
+The SBD method first produces a discrete and sparse approximation of the spectrum of $G$,
+\begin{equation}
+	\label{Gapprox}
+	G(\bs{x}) \approx G_{\text{approx}}(\boldsymbol{x}) \isdef \sum_{\nu=1}^{N_\xi} e^{i  \boldsymbol{x}\cdot \boldsymbol{\xi}_\nu} \hat{\omega}_\nu, \quad \abs{\bs{x}} \leq \rmax.
+\end{equation}
+This approximation is replaced in \eqref{discreteConv} to yield 
+\begin{equation}
+	\begin{split}	q_{k} &\approx \left(\sum_{\nu = 1}^{N_\xi} e^{+i  \bs{z}_k  \cdot\boldsymbol{\xi}_\nu } \left[\hat{\omega}_\nu \sum_{l=1}^{N_z} e^{- i \bs{z}_l \cdot \boldsymbol{\xi}_\nu} f_l) \right]\right)_{1 \leq k \leq N_z}\\
+		&= \operatorname{NuFFT}_+[\bs{z},\boldsymbol{\xi}]\left(\hat{\omega} \odot \operatorname{NuFFT}_-[\bs{z},\boldsymbol{\xi}]\big(f\big)\right).
+	\end{split}
+	\label{far convolution}					
+\end{equation}
+(Here, $\odot$ denotes the elementwise product between vectors.) The decomposition \eqref{Gapprox} is obtained "off-line" and depends on the value of $\rmax$, but is independent of the choice of the vector $f$ and can thus be used for any evaluation of the matrix vector product \eqref{discreteConv}. 
+The approximation \eqref{far convolution} reduces the complexity from $O(N_z^2)$ to $O(N_{z,\xi}\log (N_{z,\xi}))$, stemming from the NUFFT complexity.
+
+The NUFFT has already been used in the literature for the fast evaluation of quantities of the form \eqref{discreteConv}. In particular, our algorithm shares many ideas with the approach in \cite{potts2004fast}. The method presented therein also relies on an approximation of the form \eqref{Gapprox}. However, we choose the set of frequencies $\bs{\xi}$ in a different way, leading to a sparser representation of $G$ (see Remark \autoref{RemarqueQuiTuePotts}). 
+ 
+The kernel $G$ is usually singular near the origin, and consequently the approximation can only be accurate for $|\bs{z}|$ above some threshold $\rmin$. Part of the SBD algorithm is thus dedicated to computing a local correction using a sparse matrix product to account for the closer interactions. This threshold must be chosen so as to balance the time spent for computing the far \eqref{far convolution} and those close contributions. As a matter of fact, we shall prove the following:
+
+\begin{The} Assume the points $\bs{z}$ are uniformly distributed on a curve, and $G(\bs{x}) = \log \abs{\bs{x}}$. Let $\varepsilon > 0$ the desired accuracy of the method, and assume $N_z > 2\abs{\log{\varepsilon}}$. Fix 
+	\[a =\dfrac{\abs{\log\varepsilon}^{2/3}}{N_z^{1/2+ \alpha}}\]
+	for some $\alpha \in \left[0,\frac{1}{6}\right]$, and let 
+	\[\rmin = a \rmax.\] 
+	Then:
+	\label{The:GlobalComplexity}
+	\begin{itemize}
+		\item[(i)]  The number of operations needed for the computation of representation \eqref{Gapprox} is bounded by
+		      \[ C_{\textup{off}}(N_z,\varepsilon,\alpha) \leq C \abs{\log \varepsilon} N_z^{2 - 3\alpha},\]
+		      for some constant $C$ independent of $\varepsilon$, $N_z$ and $\alpha$. 
+		\item[(ii)] Once the off-line computations have been done, \eqref{discreteConv} is evaluated for any choice of vector $f$ at a precision at least $\varepsilon \displaystyle\sum_l \abs{f_l}$ with a number of operations bounded by
+		      \[C_{\textup{on}}(N_z,\varepsilon,\alpha) \leq C \abs{\log\varepsilon}^{2/3} C_{\textup{NUFFT}}(\varepsilon) N_z ^{4/3 + \alpha} \log(N_z),\] 
+		      where $C_{\textup{NUFFT}}(\varepsilon)$ represents the complexity factor of the Type III \textup{NUFFT} related to the target tolerance. 
+	\end{itemize} 
+\end{The}
+
+The next section gives a brief overview of our algorithm before treating each steps in full details. We will then prove \autoref{The:GlobalComplexity} using the following steps. We will first introduce the Fourier-Bessel series (\autoref{sec:FourierBesselSeries}). In \autoref{sec:SBD} we present the Sparse Bessel Decomposition, and provide some numerical analysis. In section \autoref{sec:ApplicationLaplace}, we apply this method to the Laplace kernel, and give estimates for the number of terms to reach a fixed accuracy. We will then show how such decompositions lead to an approximation of the form \eqref{Gapprox} in \autoref{sec:circQuad}. In \autoref{sec:choiceOfa}, we detail the choice of $\rmin$ leading to the estimation of complexity stated in the previous theorem. We conclude with some numerical examples of accelerated matrix-vector products \eqref{discreteConv}. 
+
+
+
+%\toDo{En parler plus tard}
+%The choice $\lambda = 1$ in the previous theorem yields the minimal complexity for on-line computations. This is the appropriate choice when \eqref{discreteConv} needs to be evaluated a lot of times for different $\phi$. In the case where \eqref{discreteConv} only has to be computed a few times, $\lambda$ can be chosen so as to minimize the total computation time (off-line $+$ on-line), that is $\lambda = \frac{N_z^{1/6}}{C_{\textup{NuFFT}(\varepsilon)}^{1/4}}$, yielding a complexity of $O\left( \abs{\log(\varepsilon)}^{3/4}C_{\textup{NuFFT}}(\varepsilon)^{3/4}N_z^{3/2}\log(N_z)\right)$. 
+
+\section{Summary of the algorithm}
+\label{sec:overview}
+
+The SBD algorithm can be summarized as follows:
+
+\subsection*{Off-line part}
+\begin{itemize}
+	\item[]\textbf{Inputs:} A radially symmetric kernel $G$, a set of $N_z$ points $\bs{z}$ in $\mathbb{R}^2$ of diameter $\rmax$, a value for the parameter $\rmin$, a tolerance $\varepsilon > 0$.
+	\item[]\textbf{Sparse spectrum sampling:} Compute a set of $N_\xi$ complex weights $\hat{\omega}$ and $N_\xi$ frequencies $\boldsymbol{\xi}$ so that \eqref{Gapprox} is valid for $\rmin \leq |\boldsymbol{x}| \leq \rmax$ up to tolerance $\varepsilon$. 
+	\item[]\textbf{Correction Matrix:} Determine the set $\mathcal{P}$ of all pairs $(k,l)$ such that $\abs{\bs{z}_k - \bs{z}_l} \leq \delta_{\min}$. Assemble the close correction sparse matrix:
+	      \[B_{kl} = \delta_{(k,l) \in \mathcal{P}} \left( G({\bs{z}_k - \bs{z}_l}) - \sum_{\nu = 1}^{N_{\xi}}e^{i (\bs{z}_k - \bs{z}_l)\cdot \boldsymbol{\xi}_\nu} \hat{\omega}_\nu\right).\]
+	\item[] \textbf{Outputs}: The set of weights $\hat{\omega}$, the frequencies $\boldsymbol{\xi}$ and the sparse matrix $B$. 
+\end{itemize}
+	
+\subsection*{On-line part}
+	
+\begin{itemize}
+	\item[] \textbf{Input:} All outputs of the off-line part, and a complex vector $f$ of size $N_z$. 
+	\item[] \textbf{Far approximation:} Compute, for all $k$, 
+	      \[ q^{\text{far}} = \sum_{l=1}^{N_z} G_{\textup{approx}}(\bs{z}_k - \bs{z}_l) f_l.\]
+	      For this, follow three steps
+	      \begin{itemize}
+	      	\item[(i)] \textbf{Space $\rightarrow$ Fourier: } Compute $\hat{f} = \textup{NUFFT}_-[\bs{z},\boldsymbol{\xi}](f).$
+	      	\item[(ii)] \textbf{Fourier multiply} Perform elementwise multiplication by $\hat{\omega}$: $\hat{g}_{\nu} = \hat{\omega}_\nu \hat{f_\nu}.$
+	      	\item[(iii)] \textbf{Fourier $\rightarrow$ Space: } Compute $q^{\text{far}} =  \textup{NUFFT}_+[\bs{z},\boldsymbol{\xi}](\hat{g}).$
+	      \end{itemize}
+	\item[] \textbf{Close correction:} Compute the sparse matrix product:
+	      \[q^{\textup{close}} = Bf.\]
+	\item[] \textbf{Output:} The vector $q = q^{\textup{far}} + q^{\textup{close}}$, with, for any $k \in \left\{1,\cdots,N_z\right\},$	
+	      \[ \abs{q_k - \sum_{l = 1}^{N_z} G({\bs{z}_k - \bs{z}_l}) f_l} \leq \varepsilon \sum_{l=1}^{N_z} \abs{f_l}.\]
+\end{itemize}
+
+\subsection*{More on sparse spectrum sampling}
+The main novelty in our algorithm is the method for producing an approximation of the form \eqref{Gapprox}. We proceed in two steps, uncoupling the radial and circular coordinates. 
+
+\paragraph{-Sparse Bessel Decomposition:} In a first part, we compute a Bessel series approximating $G(r)$ on $[\rmin,\rmax]$, which we call a Sparse Bessel Decomposition. It takes the form
+\[G(r) \approx G(\rmax) + \sum_{p=1}^P \alpha_p J_0(\rmax \rho_p r), \quad r \in [\rmin,\rmax],\]
+where $J_0$ is the Bessel function of first kind and order zero and $(\rho_p)_{p \in \N*}$ is the sequence of its roots (see \autoref{defJ0} for more details). Here is how we compute the coefficients $\varInRange{\alpha}{p}{1}{P}$. We choose a starting value for $P$ and compute the weights $\alpha_1,\cdots, \alpha_{P}$ that minimize
+\[\bigintsss_{\rmin \leq |\bs{x}|\leq \rmax} \abs{\nabla \left(G(\bs{x}) - \sum_{p=1}^P \alpha_p J_0(\rho_p \rmax \abs{\bs{x}})\right)}^2 d\bs{x}.\]
+This amounts to solving a linear system. We keep increasing $P$ until the residual error goes below the required tolerance. To choose the stopping criterion, we suggest monitoring the $L^{\infty}$ error near $\rmin$ where it is usually the highest. 
+
+To keep the number of coefficients $\alpha_p$ as low as possible, we have to compute them for increasing values of $P$ until the accuracy is reached. A priori, all coefficients must be recomputed for each new value of $P$. When the initial guess for $P$ is far from the target, this can severely increase the computation time. To avoid this issue, we use a Gram-Schmidt process detailed in \autoref{Cholesky}.
+
+\paragraph{-Circular quadrature:} In a second step, we use approximations of the form:
+\[J_0(\rho_p \abs{\bs{x}}) \approx \dfrac{1}{M_p}\sum_{m=0}^{M_p-1}e^{i \rho_p \bs{\xi}_p^m \cdot \bs{x}}, \quad p \in \{1,\cdots,P\}\]
+which are discrete versions of the identity:
+\[ J_0(\rho_p\abs{\bs{x}}) = \frac{1}{2\pi}\int_{\abs{\bs{\xi}}=1}{e^{i \rho_p\bs{x} \cdot \bs{\xi}}} d\sigma(\bs{\xi}).\]
+We sum them to eventually obtain the formula \eqref{Gapprox}. 
+\begin{Rem}
+	In the SCSD method \cite{Alouges2015}, the Bessel functions are replaced by cardinal sine functions, since, for $\bs{x} \in \R^3$
+	\[ \frac{1}{4\pi}\int_{\abs{\bs{\xi}}=1} e^{i \bs{x}\cdot \bs{\xi}} d\sigma(\bs{\xi}) = \sinc(\abs{\bs{x}}),\]
+	where the integral is now taken over $\mathcal{S}^2 \subset \R^3$.
+\end{Rem}
+
+
+\section{Series of Bessel functions and error estimates}
+\label{sec:FourierBesselSeries}
+In this section, we give a short introduction to Fourier-Bessel series. A reference on this topic is \cite{watson1995treatise}, chapter XVIII. 
+The main result needed for our purpose is \autoref{DecroissanceFourierBessel},  an equivalent statement of which can be found in to Theorem $1$ in \cite{tolstov2012fourier} chapter 8, section 20. 
+
+In \autoref{FunctionalFramework}, we provide a self-contained proof for the characterization of the Laplacian eigenfunctions with Dirichlet conditions on the unit ball. The results we need for the subsequent analysis are mainly estimations \eqref{EncadrementCp}, \autoref{EncadrementRhop}, and \autoref{epEstUneBaseDeHilbert}). Those are classical results, and the reader already familiar with them may skip this first subsection. 
+The way we define the Fourier-Bessel series is closer to \cite{wolf2013integral} (chapter 6). That is, we keep the analysis in two variables but with radial symmetry, rather than going to one variable. We prefer this approach because it does not depend on the space dimension. In $\R^3$, for instance, the radial eigenvalues of the Laplacian are proportional to
+\[  \bs{x} \mapsto \dfrac{J_{1/2}(2\pi p\abs{\bs{x}})}{\bs{|x|}^{1/2}}, \quad  p\in\N^*.\] 
+Therefore, our approach generalizes \cite{Alouges2015} to any dimension.  
+\subsection{Radial eigenvalues of the Laplace operator with Dirichlet conditions}
+\label{FunctionalFramework}
+Let $J_0$ be the Bessel function of first kind (see \autoref{defJ0}), and $(\rho_p)_{p \in \N*}$ the sequence of its roots. 
+The aim of this paragraph is to show that the functions 
+\[ \bs{x} \mapsto J_0(\rho_p \abs{\bs{x}})\]
+can be used to construct a Hilbert basis of a space of radial functions (see \autoref{epEstUneBaseDeHilbert}).
+
+In the following, $B$ denotes the unit ball in $\mathbb{R}^2$, and $\mathcal{C}$ its boundary. We say that a function $u\from\mathbb{R}^2\rightarrow \mathbb{R}$ is radial if there exists $\tilde{u}\from\mathbb{R}^+\to \R$ such that for any $\bs{z} \in \R^2$, 
+\[ u(\bs{x}) = \tilde{u}(\abs{\bs{x}}).\] 
+We will drop the $\texttildelow$ superscript and use the abusive notation $u(r)$ for $u(\bs{x})$ when $\abs{\bs{x}} = r$. With this notation, in particular, integrals of radial functions on $B$ reduce to 1-D integrals:
+\begin{equation}
+	\int_{B} u(\bs{x})d\bs{x} = 2\pi \int_0^1 r u(r) dr.
+\end{equation}
+We let $\Lrad$ the subspace of radial functions that are square integrable on $B$. $\Lrad$ is a closed subspace of $L^2(B)$ thus it is a Hilbert space associated with the usual $L^2$ scalar product. 
+Let 
+\[\Crad = \enstq{\varphi \in \Cinf_c(B)}{\varphi \text{ is radial }}\]
+the set of smooth compactly supported radial functions. Moreover, let
+\[\Hrad = \enstq{ u \in \Lrad}{ \forall 1 \leq i \leq 2, \dfrac{\partial u}{\partial x_i} \in L^2(B)}.\]
+This is a Hilbert space with the scalar product
+\[\duality{u}{v}_{\Hrad} = \int_{B} u(\bs{x})v(\bs{x}) + \nabla u(\bs{x}) \cdot \nabla v(\bs{x}) dx.\]
+Finally, let $\Hzrad$ the closure of $\Crad$ in $\Hrad$. 
+
+Let us introduce the radial averaging operator, also studied in \cite{SphericalAverage}:  
+\begin{Lem} \label{RadialAveraging}
+	Let $\textup{Rad}\from L^2(B) \to \Lrad$ be defined by:
+	\[{\mathop\textup{Rad }} v(r) = \frac{1}{2\pi} \int_{\mathcal{C}} v(r\bs{u})d\sigma(\bs{u}),\]
+	where $\sigma$ is the usual uniform measure on $\mathcal{C}$. Then, 
+	\item[(i)] For any $u \in \Lrad$ and $v \in L^2(B)$,
+	\[ \int_{B} u(\bs{x})v(\bs{x})d\bs{x} = \int_B u(\bs{x}){\mathop\textup{Rad }} v(\bs{x})d\bs{x}.\]
+	\item[(ii)] If $v \in C^{2}(B),$
+	\[ \Delta\textup{Rad }v   = \textup{Rad }\Delta v.\]
+	\begin{proof}
+		To prove (i), write
+		\begin{equation}
+			\begin{split}
+				\int_{B}u(\bs{x}) v(\bs{x}) d\bs{x} &= \int_{0}^{1} \int_{\mathcal{C}}r u(r \bs{u}) v(r\bs{u})d\sigma(\bs{u})dr\\
+				&=\int_{0}^1 r u(r)\left( \int_{\mathcal{C}} v(r\bs{u})d\sigma(\bs{u})\right) dr\\
+				&=2\pi \int_{0}^{1} r u(r) \textup{Rad }v(r) dr\\
+			\end{split}
+		\end{equation}	
+		For (ii), writing $v(\bs{x}) = v(r,\theta)$ with $(r,\theta)$ the standard polar coordinates, we have
+		\[ \Delta v = \dfrac{\partial^2v}{\partial r^2} + \dfrac{1}{r} \dfrac{\partial v}{\partial r} + \dfrac{1}{r^2}\dfrac{\partial^2 v}{\partial \theta^2},\]
+		therefore, 
+		\begin{equation}
+			\begin{split}
+				\textup{Rad } \Delta v &= \int_{0}^{2\pi} \dfrac{\partial^2v}{\partial r^2} + \dfrac{1}{r} \dfrac{\partial v}{\partial r} + \dfrac{1}{r^2}\dfrac{\partial^2 v}{\partial \theta^2} d\theta\\
+				&= \dfrac{\partial^2}{\partial r^2} \textup{Rad } v + \dfrac{1}{r}\dfrac{\partial }{\partial r} \textup{Rad }v \\
+				&= \Delta \textup{Rad } v.
+			\end{split}
+		\end{equation}
+		Indeed, the term $\dfrac{1}{r^2}\displaystyle\int_{0}^{2\pi} \dfrac{\partial^2 v}{\partial \theta^2} d\theta$ vanishes since $v$ is periodic in $\theta$. \qedhere
+	\end{proof}
+\end{Lem}
+
+The standard Sobolev results apply to radial functions:
+
+\begin{Prop} \text{ }\label{SobolevRadialResults}
+	\begin{itemize}
+		\item[(i)] $\Crad$ is a dense subspace of $\Lrad$. 
+		\item[(ii)] The canonical injection $\Hzrad \xhookrightarrow{} \Lrad$ is compact.
+		\item[(iii)] There exists a constant $C > 0$ such that for any $u \in \Hzrad$
+		      \begin{equation}
+		      	\label{inegaliteDePoincare}
+		      	\int_{B}\abs{u(\bs{x})}^2dx \leq C \int_B\abs{\nabla u (\bs{x})}^2d\bs{x}.
+		      \end{equation}
+	\end{itemize}
+\end{Prop}
+\noindent Therefore, 
+\[ \norm{u}_{\Hzrad} \isdef \sqrt{\int_B \abs{\nabla u}^2}\]
+defines a norm on $\Hzrad$ equivalent to $\norm{\cdot}_{H^1(B)}$.
+\begin{proof}
+	Only (i) needs a proof, the other two results are just straightforward consequences of the analogous results of classical Sobolev spaces theory.
+	Let $f \in \Lrad$ and $\varepsilon >0$. We know that $\mathcal{C}_c^\infty(B)$ is dense in $L^2(B)$ thus there exists a function $\chi \in \mathcal{C}_c^\infty(B)$ such that $\norm{f - \chi}_{L^2(B)} \leq \varepsilon$. Let $\chi_r = \textup{Rad }\chi$. It can be shown (see \cite{SphericalAverage}) that $\chi_r \in \Crad$.
+	For any $r \in (0,1)$: 
+	\[\abs{f(r) - \chi_r(r)}^2 = \abs{\frac{1}{2\pi} \int_{\mathcal{C}} \left[f(r\bs{u}) - \chi(r \bs{u})\right]d\sigma(\bs{u})}^2 \]
+	by Jensen inequality, 
+	\[\left|f(r) - \chi_r(r)\right|^2 \leq \frac{1}{2\pi} \int_{\mathcal{C}}\left|f(r\bs{u}) - \chi(r\bs{u}) \right|^2 d\sigma({\bs{u}}).\]
+	Thus, \[ 2\pi \int_{0}^1 r \abs{ f(r) - \chi_r(r)}^2 dr \leq \int_{0}^1 \int_{\mathcal{C}}\left| f(r\bs{u}) - \varphi(r\bs{u})\right|^2 r dr d\sigma(\bs{u}),\]
+	which proves that $\norm{f - \chi_r}_{\Lrad} \leq \varepsilon$.\qedhere
+\end{proof}
+We now briefly recall some facts on Bessel functions. All the results that we will be using on this topic can be found in the comprehensive book \cite{abramowitz1964handbook} of Abramowitz and Stegun. 
+\begin{Def}
+	\label{defJ0}
+	The Bessel function of the first kind and order $\alpha$, $J_\alpha$ is defined by the following series: 
+	\[J_\alpha(r) \isdef \sum_{m=0}^\infty \frac{(-1)^m}{m! \, \Gamma(m+1+\alpha)} {\bigg(\frac{r}{2}\bigg)}^{2m+\alpha}.\]
+	When $\alpha=0$, we get a $\Cinf$ solution of Bessel's differential equation 
+	\begin{equation}
+		\label{BesselDifferentialEquation}
+		r^2f''(r) + r f'(r) + r^2 f(r) = 0.
+	\end{equation}
+	The roots $(\rho_p)_{p \in \N^*}$ of $J_0$, behave, for large $p$, as 
+	\[ \rho_p \underset{p \to \infty}{\sim} \pi p.\]
+	More precisely, $\rho_p = \pi p - \frac{\pi}{4} + O\left(\frac{1}{p}\right)$. It is well-known that, for any $p$, 
+	\begin{equation}
+		\pi(p - 1/4)\leq \rho_p \leq \pi(p - 1/8)
+		\label{EncadrementRhop}
+	\end{equation}.
+\end{Def}
+
+For any $p\in \N*$, we introduce:
+\[e_p(\bs{x}) = C_p J_0(\rho_p \abs{\bs{x}}),\]
+where the constant $C_p$ is chosen such that $\norm{e_p}_{\Hrad} = 1$, that is 
+\[C_p = \frac{1}{\left(\int_{B} \abs{\nabla e_p}^2\right)^{1/2}}.\]
+Explicitly, 
+\[C_p = \dfrac{1}{\sqrt{\pi}\rho_p\abs{J_0'(\rho_p)}},\]
+One can check, using asymptotic expansions of Bessel functions, that
+\begin{equation}
+	\label{equivalentCp}
+	C_p = \dfrac{1}{\sqrt{2 \pi p}} + O\left(\frac{1}{p^{3/2}}\right), 
+\end{equation}
+Moreover, we observed numerically that:
+\begin{equation}
+	\label{EncadrementCp}
+	\frac{1}{\sqrt{2\pi p}} \leq C_p \leq \frac{1}{\sqrt{2\pi (p-1/4)}}.
+\end{equation}
+The first part can be established with asymptotic expansions of $J_1$. The second inequality however, seems difficult to prove. The first $1000$ terms are shown in \autoref{figure:encadrementCp}\\
+\begin{figure}[H]
+	\centering
+	\input{EncadremeentCp.tex}
+	\captionsetup{width=0.5\textwidth}
+	\caption{Numerical values of the first $1000$ terms of the sequences ${v_p = \sqrt{2\pi p}C_p - 1}$~\ref{addplot:EncadremeentCp0} and ${w_p = \sqrt{2\pi (p-1/4)}C_p - 1}$~\ref{addplot:EncadremeentCp1}.}
+	\label{figure:encadrementCp}
+\end{figure}
+\begin{equation}
+	\label{estimationNormeInfinieEp}
+	\norm{e_p}_{\infty} = O\left(\frac{1}{\sqrt{p}}\right).
+\end{equation}
+For any $p$, 
+\begin{equation}
+	\label{epEstUnVP}
+	-\Delta e_p = \rho_p^2 e_p.
+\end{equation}
+
+
+\begin{The} 
+	\label{epEstUneBaseDeHilbert}
+	The family $\left\{e_p, p\in \N^*\right\}$ is a Hilbert basis of $\Hzrad$.
+\end{The}
+\begin{proof}
+	First, notice that $(e_p)_{p \in \N^*}$ is a free family in $\Hzrad$, as it is composed of eigenvectors of the Laplace operator with distinct eigenvalues. On the other hand, in \autoref{SobolevRadialResults}, we have shown all the hypothesis required to apply Theorem 7.3.2 of \cite{allaire2005analyse} (p. 219). Accordingly, the eigenvalues of the bilinear form  
+	\[(u,v)\mapsto \int_{B} \nabla u \cdot \nabla v\]
+	form an increasing sequence of positive numbers $(\lambda_n)_{n \in \N^*}$ going to infinity, and there exists a Hilbert basis of associated eigenvectors $\left\{u_n, n\in \N^*\right\}$ in $\Hzrad$, that is 							
+	\begin{equation}
+		\label{formulationVaritionnellePropHilbert}
+		\forall n \in \N, \forall v \in \Hzrad, \quad \int_{B}\nabla u_n \cdot \nabla v = \lambda_n \int_B u_n v.
+	\end{equation}
+	Without loss of generality, we can assume that for all $n$, $\norm{u_n}_{\Hrad} = 1$. In view of \eqref{epEstUnVP}, it is sufficient to show that for any $n \in \N^*$, $\sqrt{\lambda_n}$ is a root of $J_0$. We first obtain that $u_n \in \Cinf_0(B)$ and 
+	\[ - \Delta u_n = \lambda_n u_n, \quad n \in \N^*\]
+	Indeed, restricting assertion \eqref{formulationVaritionnellePropHilbert} to $v \in \Crad$, and by integration by part, we get, 
+	\begin{equation}
+		\label{aux1}
+		{\mathop-}\int_{B} u_n \Delta v = \lambda_n \int_{B} u_n v.
+	\end{equation}
+	More generally, for $v \in C^{\infty}_c(B)$, remark that, using \autoref{RadialAveraging},
+	\begin{align*}
+		-\duality{u_n}{\Delta v} & = -\duality{u_n}{\textup{Rad }\Delta v},  & \text{from (i)}          \\
+		                         & =-\duality{u_n}{\Delta \textup{Rad }v},   & \text{from (ii)}         \\
+		                         & =\lambda_n \duality{u_n}{\textup{Rad }v}, & \text{from \eqref{aux1}} \\
+		                         & =\lambda_n \duality{u_n}{v},              & \text{again from (i)},   
+	\end{align*}	
+	so $-\Delta u_n = \lambda_n u_n$ in the sense of distributions. By elliptic regularity, this implies that $u_n \in \Crad$ for all $n \in \N$ since $B$ is a $\Cinf$ domain. We now fix $n \in \N$, and let 
+	\[f(r) = u_n\left( \frac{r}{\sqrt{\lambda_n}}\right).\]
+	Using the classical expression of the Laplace operator in polar coordinates, it is easy to check that $f$ is a solution of Bessel's equation:	
+	\[ f''(r) + r f'(r) + r^2 f(r) = 0.\]
+	All smooth solutions of this equation are proportional to $J_0$, so there exists a constant $A_n$ such that
+	\[u_n(\bs{x}) = A_n J_0\big(\sqrt{\lambda_n} \abs{\bs{x}}\big).\]
+	Since $u_n$ is in $\Crad$, it must vanish on $\mathcal{C}$ so $\sqrt{\lambda_n}$ must be a root of $J_0$. \qedhere
+\end{proof}
+
+\subsection{Truncature error for Fourier-Bessel series of smooth functions}
+\label{FourierBesselTruncError}
+We now introduce the Fourier-Bessel series and prove a bound for the norm of the remainder. 
+In \autoref{epEstUneBaseDeHilbert}, we have shown that any function $f \in \Hzrad$ can be expanded through its so-called Fourier-Bessel series as
+\[f = \sum_{p\in \mathbb{N}^*}c_p(f)e_{p}.\]
+The generalized Fourier coefficients are obtained by the orthonormal projection: 
+\[c_p(f) = \displaystyle \int_B \nabla f(\bs{x}) \cdot \nabla e_{p}(\bs{x}) dx = \rho_k^2 \int_{B}{f(\bs{x}) e_p(\bs{x})d\bs{x}}.\]
+Most references on this topic focus on proving pointwise convergence of the series even for not very regular functions $f$ (e.g. piecewise continuous, square integrable, etc.) \cite{stempak2002convergence,guadalupe1993mean,Balodis1999,colzani1993equiconvergence}.  In such cases, the Fourier-Bessel series may exhibit a Gibb's phenomenon \cite{wilton1928gibbs}. On the contrary here, we need to establish that the Fourier-Bessel series of very smooth functions converges exponentially fast. To this aim, we first introduce the following terminology: 
+\begin{Def}
+	We say that a radial function $f$ satisfies the multi-Dirichlet condition of order $n \in \N^*$ if 
+	\begin{itemize}
+		\item[(i)] $f$ is in $H^{2n}(B) ;$
+		\item[(ii)] for all $s \leq n-1$, the $s-th$ iterate of $-\Delta$ on $f$, denoted by $(-\Delta)^s f$, vanishes on $\mathcal{C}$ (with the convention $(-\Delta)^0 f = f$). 
+	\end{itemize} 
+\end{Def}
+\begin{Prop} 
+	\label{DecroissanceFourierBessel}
+	If $f$ satisfies the multi-Dirichlet condition of order $n$, then for any $p \in \mathbb{N}^*$:
+	\[ c_p(f) = \dfrac{1}{\rho_{p}^{2n-2}} \int_{B}\left(-\Delta\right)^{n} f(\bs{x})e_p(\bs{x}) d\bs{x}.\] 
+	\begin{proof}
+		Let $f \in \Hzrad$, we have:
+		\[c_p(f) = \int_{B} \nabla  f(\bs{x})\cdot \nabla e_p(\bs{x})d\bs{x}. \] 
+		If $f$ satisfies the multi-Dirichlet condition of order $n=1$, then by integration by parts:
+		\[c_p(f) = \int_{B}(-\Delta)f(\bs{x}) e_p(\bs{x})d\bs{x},\]
+		since $e_p$ vanishes on $\mathcal{C}$.
+		Assume the result is true for some $n \geq 1$ and let $f$ satisfy the multi-Dirichlet condition of order $n+1$. Then, using the fact that $e_p$ is an eigenvector of $-\Delta$ associated to the eigenvalue $\rho_p^2$, 
+		\[c_p(f) = \frac{1}{\rho_p^{2n}}\int_{B}(-\Delta)^{n}f(\bs{x})~ (-\Delta) e_p(\bs{x}) d\bs{x}.\]
+		The result follows from integration by parts where we successively use that $(-\Delta)^{n}f$ and $e_p$ vanish on $\mathcal{C}$.
+	\end{proof}
+	\label{PropDecrCond}
+\end{Prop}
+
+\begin{Cor} If $f$ satisfies the multi-Dirichlet condition of order $n$, there exists a constant $C$ independent of the function $f$ such that for all $p \in \mathbb{N^*}$, 
+	\[ |c_p(f)| \leq  C \dfrac{\norm{(-\Delta)^n f}_{\Lrad}}{(\pi p)^{2n-1}}.\] 
+\end{Cor}
+\noindent Notice that this is similar to the fact that the Fourier coefficients of smooth functions decay fast. 
+\begin{proof}
+	We apply the result of the previous proposition and remark that since $e_p$ is an eigenfunction of the Laplace operator with unit norm in $\Hzrad$, $\norm{e_p}_{\Lrad} = \dfrac{1}{\rho_p}\norm{e_p}_{\Hzrad} = \dfrac{1}{\rho_p}$. To conclude, recall $\rho_{p} \sim p\pi$ for large $p$.\qedhere
+\end{proof}
+
+\begin{Cor} Let the remainder be defined as 
+	\[R_P(f) = \displaystyle\sum_{k = P+1}^{+\infty} c_{k}(f) e_{k}.\]
+	If $f$ satisfies the multi-Dirichlet condition of order $n$, there exists a constant $C$ independent of $n$ and $P$ such that: 
+	\[\norm{R_P(f)}_{\Hzrad} \leq C\dfrac{\norm{(-\Delta)^n f}_{\Lrad}}{(\pi P)^{2n}}\sqrt{\dfrac{P^3}{n}}.\]
+	\label{EstimationRest}
+																																																								
+	\begin{proof}
+		One has 
+		\[R_P(f) = \sum_{p=P+1}^{+\infty}c_p(f) e_p,\]
+		and Parseval's identity implies
+		\[\norm{R_P(f)}_{\Lrad} = \sum_{p=P+1}^{+\infty}|c_p(f)|^2.\]
+																																				
+		According to the previous results, we find that:
+		\[\norm{R_P}_{\Lrad} \leq C \norm{(-\Delta)^n f}_{\Lrad}\sqrt{\sum_{p= P+1}^{+\infty} \dfrac{1}{(\pi p)^{4n-2}}}.\]
+		The announced result follows from $\displaystyle\sum_{p > P} \frac{1}{p^{\alpha}} \propto \frac{1}{P^{\alpha-1}}$ for $\alpha > 1$. \qedhere
+	\end{proof}
+\end{Cor}
+
+\subsection{Other boundary conditions}
+
+When we replace the Dirichlet boundary condition by the following Robin boundary conditions
+\begin{equation}
+	\label{robinCondition}
+	\dfrac{\partial u}{\partial n} + H u = 0
+\end{equation}
+for some constant $H \geq 0$, the same analysis can be conducted, leading to Dini series (also covered in \cite{watson1995treatise}). This time, we construct a Hilbert basis of $H^1(B)$ with respect to the bilinear form
+\[a_H(u,v) \isdef \int_{B} \nabla u(\bs{x} ) \cdot \nabla v(\bs{x} ) d\bs{x} + H \int_{\mathcal{C}}{u(\bs{x} )v(\bs{x} )}d\sigma(\bs{x} ).\]
+\begin{The}
+	Let $(\rho_p^H)_{p \in \N*}$ the sequence of positive roots of the function
+	\[r J_0'(r) + H J_0(r).\]
+	\item[-] If $H>0$, the functions 
+	\[e_p^H(r) = C_p J_0(\rho_p^H r),\]
+	with $C_p$ such that $a_H(e_p^H,e_p^H) = 1$, form a Hilbert basis of $H^1(B)$. 
+	\item[-]If $H = 0$, a constant function must be added to form a complete family. 
+\end{The}
+It can be easily checked that the truncature error estimates \autoref{EstimationRest} extend to this case, for functions satisfying multi-Robin conditions of order $n \geq 1$, that is 
+\item[-] $u \in H^{2n}(B)$
+\item[-] For all $s\leq n-1$, $(-\Delta)^s u$ satisfies \eqref{robinCondition}.
+
+%The case $H < 0$ can be treated, with a slight change. In this instance, the function $r J_0'(r) + H J_0(r)$ also has two purely imaginary roots $\pm i \lambda_0$, and an eigenfunction proportional to $I_0(\lambda_0 r)$ must be added, where $I_0$ is the hyperbolic Bessel function of first kind. 
+
+\section{Sparse Bessel Decomposition}
+\label{sec:SBD}
+\subsection{Choice of the coefficients}
+
+Consider the kernel $G$ involved in \eqref{discreteConv}. Up to a rescaling, we can assume without loss of generality that the diameter $\rmax$ of $\bs{z}$ is bounded by some $b \leq 1$. 
+If we wish to approximate $G$ in series of Bessel functions, the multi-Dirichlet condition of order $n$ is too restrictive in applications of interest. Two kinds of complications are encountered:
+\begin{itemize}
+	\item[(i)] $G$ is usually singular near the origin, therefore not in $H^{2n}(B)$ (even for $n=1$). 
+	\item[(ii)] Conditions of the type 
+	      \[(-\Delta)^s G \text{ vanishes on }\mathcal{C}\]   
+	      may not be fulfilled (though for a special category of kernels, among which the Laplace and Helmholtz equation, they are indeed up to appropriate rescaling). 
+\end{itemize}
+Here is a strategy to overcome this problem. For the approximation 
+\[G \approx \sum_{p = 1}^P \alpha_p e_p,\]
+we know by \autoref{epEstUneBaseDeHilbert} that the minimal $H^1_0$ error on $B$ is reached for $\alpha_p = c_p(G)$. However, if the closest interaction in \eqref{discreteConv} are computed explicitly, it can be sufficient to approximate $G$ in a domain of the form $a \leq r \leq b$ for some $a$. For this reason, we propose to define the coefficients $(\alpha_1,\cdots,\alpha_P)$ as the minimizers of the quadratic form
+\[ Q^P(t_1,t_2,...,t_P) = \bigintsss_{\mathcal{A}(a,b)} \left|\nabla \!\left( G(\bs{x}) - \sum_{p=1}^P t_p J_0(\rho_p |\bs{x}|)\right)\right|^2d\bs{x},\]
+where $\mathcal{A}(a,b)$ is the annulus $\enstq{\bs{x} \in \R^2}{a < \abs{\bs{x}} < b}$. In the sequel, those coefficients will be called the SBD coefficients of $G$ of order $P$. Obviously, for any radial function $\tilde{G}$ defined on $B$ that coincides with $G$ on $\mathcal{A}(a,b)$, one has 
+\[ Q^P(\alpha_1,\cdots,\alpha_P) \leq \bigintsss_{B} \left|\nabla \!\left( \tilde{G}(\bs{x}) - \sum_{p=1}^P c_p(\tilde{G}) J_0(\rho_p |\bs{x}|)\right)\right|^2d\bs{x} \]
+In particular, when $\tilde{G}$ satisfies the multi-Dirichlet condition of order $n$ for some $n \geq 1$, this gives an error estimation via \autoref{EstimationRest}. By setting the parameters $a>0$ and $b<1$, we allow such extensions to exist and therefore ensure the fast decay of the coefficients. 
+\begin{Rem}
+	\label{RemarqueQuiTuePotts}
+	The SBD weights do not depend on any specific extension of $G$ outside the annulus. Therefore, they provide a sparser approximation of the kernel than the usual approach where an explicit regularization $\tilde{G}$ of the kernel is constructed and the coefficients $c_p(\tilde{G})$ are used (see e.g. \cite{potts2004fast}). 
+\end{Rem}
+
+For $b = 1$, the next result shows that the $H_0^1$ norm on $\mathcal{A}(a,1)$ controls the $L^{\infty}$ norm on the same domain, thus ruling out any risk of Gibb's phenomenon in this case.
+\begin{Lem}
+	Let $e \in \Lrad$ and $a\in (0,1)$ such that:
+	\begin{itemize}
+		\item[(i)]$\displaystyle \int_{\mathcal{A}(a,1)} \abs{\nabla e(\bs{x})}^2 d\bs{x} < +\infty$,
+		\item[(ii)] The function $e$ vanishes on $\mathcal{C}$.
+	\end{itemize}
+	Then the restriction of $e$ to $\mathcal{A}(a,1)$ is equal almost everywhere to a continuous function with
+	\[\abs{e(\bs{x}_0)} \leq \sqrt{\dfrac{-\log \abs{\bs{x}_0}}{2\pi}}\sqrt{\int_{\mathcal{A}(a,1)} \abs{\nabla e(\bs{x})}^2} d\bs{x},\quad  \forall \bs{x}_0 \in \mathcal{A}(a,1).\]
+	\begin{proof}
+		It is sufficient to show the inequality for smooth $e$, the general result following by density. Let $\bs{x}_0 \in \mathcal{A}(a,1)$, we have, since $e(1)=0$:
+		\begin{align*}
+			\abs{e(\bs{x}_0)} & \leq \int_{\abs{\bs{x}_0}}^1 \abs{e'(r)}dr,                                                                             \\
+			                  & \leq \sqrt{2\pi \int_{\abs{\bs{x}_0}}^1 r \abs{e'(r)}^2 dr} \sqrt{\int_{\abs{\bs{x}_0}}^1 \frac{1}{2\pi r} dr}.\qedhere 
+		\end{align*}					
+	\end{proof}
+\end{Lem}
+
+\subsection{Numerical computation}
+\label{sub:Chol}
+
+For a given kernel $G$, the SBD coefficients $\alpha_p$ are obtained numerically by solving the following linear system: 
+\begin{equation}
+	\sum_{q = 1}^P \left(\int_{\mathcal{A}(a,b)} \rho_ q J_1(\rho_p|\bs{x}|) J_1(\rho_q|\bs{x}|) d\bs{x}\right) \alpha_q = -\int_{\mathcal{A}(a,b)} G'(\bs{x}) J_1(\rho_p|\bs{x}|)d\bs{x} \quad 1\leq p \leq P,
+	\label{LinearSystem}
+\end{equation}
+Where $J_1$ is the Bessel function of first kind and order $1$ (in fact, $J_0' = - J_1$). We solve this system for increasing values of $P$ until a required tolerance is reached. It turns out that the matrix $A^P$ whose entries are given by
+\[ A^P_{k,l} = \int_{\mathcal{A}(a,b)} \!\!\!\!\!\!\!\! \nabla e_k \cdot \nabla e_l,\quad k,l \in \{1,\cdots,P\},\]
+is explicit:
+\begin{Prop}
+	For $(i,j) \in \{1,\cdots,P\}^2$, the non-diagonal entries of $A^P$ are
+	\begin{equation*}
+		A_{i,j} = \frac{2\pi C_i C_j \rho_i \rho_j}{\rho_j^2 - \rho_i^2}\bigg[F_{i,j}(b) - F_{j,i}(b) - F_{i,j}(a) + F_{j,i}(a)\bigg]
+	\end{equation*}
+	where 
+	\[	 F_{i,j}(r) =  \rho_i r J_0(\rho_i r)J_0'(\rho_j r)\]
+	while the diagonal entries are
+	\begin{equation*}
+		A_{i,i} = 2\pi C_i^2 \big(F_i(b) - F_i(a)\big)
+	\end{equation*}
+	where 
+	\[F_i(r) = \rho_i^2r^2\left[\dfrac{1}{2}J_0(\rho_ir)^2 + \frac{1}{2}J_0'(\rho_ir)^2\right] + \rho_irJ_0(\rho_i r)J_0'(\rho_ir)\]
+\end{Prop}
+
+\subsection{Stability}
+\newcommand{\Pa}{\gamma}
+\newcommand{\Pastar}{\Pa^*}
+Here we discuss the numerical stability of inverting the matrix $A$, in the case $b=1$. It will appear in the sequel that the conditioning of $A$ depends mainly on the parameter $\Pa \isdef Pa$. We were able to compute an accurate estimate of the conditioning of $A$ when $\Pa$ is small enough. For large $\Pa$, we will show some numerical evidence for a conjectured bound of the conditioning of $A$.   
+\vspace{0.3cm}
+\noindent \begin{minipage}{0.5\textwidth}
+\subsubsection*{Conditioning of $A$ for small $\Pa$:}
+\begin{The} Assume $b=1$. The eigenvalues of $A$ lie in the interval~ ${[F(\Pa) - \frac{\pi^4}{144}\frac{\gamma^4}{P},1]}$ where
+	\[F(\Pa) = 1 - \int_{0}^{\pi \gamma} \frac{t}{2}(J_1(t)^2 - J_0(t)J_2(t) )dt.\]
+	\label{The:lowBoundCon}
+\end{The}
+A plot of $F$ is provided at right, \autoref{figure:Fconditionnement}, and some numerical approximations of $\lambda_{\min}$ are shown in function of $\Pa$ for several values of $P$. 			
+This estimate is only useful when ${F(\Pa) > 0}$, that is ${\Pa < \Pastar}$ where $\Pastar$ is the first positive root of $F(z)$. One has 
+\[\Pastar \approx 1.471.\]
+In particular, for $\gamma = 1$, $A$ is well conditioned, the ratio of its largest to its smallest eigenvalues being of the order $F(1)^{-1} < 2$. 
+\end{minipage}%
+%
+\begin{minipage}{0.5\textwidth}
+	\begin{figure}[H]
+		\centering			
+		\input{Fconditionnement.tex}
+		\captionsetup{width=0.7\textwidth}
+		\caption{Graph of $F$\ref{addplot:Fconditionnement0}, and numerical estimation of the curves $\lambda_{\min}(\Pa)$, where \ref{addplot:Fconditionnement2} corresponds to ${P=50}$~and~\ref{addplot:Fconditionnement3} to ${P=500}$. }
+		\label{figure:Fconditionnement}
+	\end{figure}
+\end{minipage}
+\begin{proof}
+	Let $u \in \text{span}\{e_1,e_2,\cdots,e_P\}$ and let $\alpha$ its coordinates on this basis. Then 
+	\[\alpha^T A \alpha = \int_{\mathcal{A}(a,1)} \!\!\!\!\! \nabla{u}^2 < \int_{B} \nabla{u}^2 = \norm{\alpha}_2^2,\]
+	showing that the eigenvalues of $A$ are bounded by $1$. For the lowest eigenvalue, fix $P>0$, and let us note $A = A(a)$ to highlight the dependence in $a$. We have
+	\[\lambda_{\min}(A) \geq 1 - \text{tr}(I - A),\]
+	which yields:
+	\[\lambda_{\min} \geq 1 - 2\pi \sum_p^P \int_{0}^a u \rho_p^2 C_p^2 J_1(\rho_p u)^2 du.\]	
+	\begin{eqnarray*}
+		\lambda_{\min} &\geq& 1 - 2\pi \sum_{p=1}^{P}C_p^2\int_{0}^{\rho_p a} u J_1(u)^2 du
+	\end{eqnarray*}
+	We now use \ref{EncadrementCp}, which implies
+	\[2\pi C_p^2 \leq \dfrac{1}{p} + \dfrac{1}{3p^2},\]
+	combined with \ref{EncadrementRhop}, to get
+	\[\lambda_{\min} \geq 1 - \int_{0}^{P} \frac{dt}{t} \int_{0}^{\pi t a} u J_1(u)^2du \hspace{1pt} - \frac{1}{3}\sum_{p=1}^P \frac{1}{p^2} \int_{0}^{\rho_p a} u J_1(u)^2du\]
+	Note that $\int u J_1(u)^2 = \frac{u^2}{2} \left(J_1^2(u) - J_0(u)J_2(u)\right)$, and $J_1(u) \leq \dfrac{u}{2}$ for all $u \geq 0$. Therefore
+	\[\lambda_{\min} \geq 1 - \int_{0}^{\pi\gamma} \dfrac{t}{2} \left(J_1(t)^2 - J_0(t)J_2(t)\right)dt - \frac{1}{48} \sum_{p=1}^P \frac{(\rho_p a)^4}{p^2}\]
+	Using again \ref{EncadrementRhop},
+	\[\lambda_{\min} \geq 1 - F(\gamma) - \gamma^4\frac{\pi^4}{48} \frac{1}{P^4} \sum_{p=1}^P p^2,\]
+	which obviously implies the announced result.
+\end{proof}
+\subsubsection*{Conditioning of $A$ for large $\Pa$:}
+
+The behavior of $\lambda_{\min}$ is more difficult to study for large $\Pa$. Based on numerical observations, we make the following conjecture:
+
+	\begin{Conj}
+		For any $P \geq 10$, and $\gamma \geq 1.4$, the minimal eigenvalue of $A$ is bounded below as
+		\[\lambda_{\min}(\gamma) \geq 180 \exp(-5.8\gamma)\]
+	\end{Conj}
+	\begin{figure}[H]
+		\centering
+		\input{minEigA1.tex}
+		\captionsetup{width=0.888\textwidth}
+		\caption{Estimated minimal eigenvalue of $A$ in function of $\gamma$ for $P=50$\ref{addplot:minEigA12}, $P=150$\ref{addplot:minEigA13}, $P=500$\ref{addplot:minEigA14} and $P=1500$\ref{addplot:minEigA15}. Lower bound\ref{addplot:minEigA10}, lower bound established in \autoref{The:lowBoundCon}\ref{addplot:minEigA11}.}
+	\end{figure}
+
+
+\begin{Rem} The conditioning of the system matrix can be an issue. For $b \neq 1$, we sometimes observed numerical instabilities. For $b=1$, the error in the matrix inversion $\alpha = A^{-1}b$ is of the order $\kappa(a,P) \varepsilon_{\textup{mach}}$ where $\varepsilon_{\textup{mach}}$ is the machine precision. For any $a$, the function $P \mapsto \kappa(a,P)$ is increasing as shown in Figure \ref{ConditionNumIncrease}. This means that the error $e_{\textup{cond}}(a,P)$ related to the numerical error in the inversion of matrix $A$ increases with $P$. Since for any $a \in (0,1)$, the theoretical error of quadrature $e_{H_0^1}(P)$ decreases with $P$, there exists some value $P = P_{\times}(a)$ at which 
+	\[e_{\textup{cond}}(a,P_{\times}(a)) \approx  e_{H_0^1}(P_{\times}(a)) \defis e_{\min}(a).\]
+	Therefore, the error in the SBD is bounded below by $e_{\min(a)}$. 
+	In our tests, we found that the function $e_{\min}(a)$ did not seem to depend much on $a$ and was located at about $e_{\min} \approx 10^{-10}$, as shown in Figure \ref{emina}. If one needs to compute a more precise approximation, it would be necessary to increase the machine precision. 
+\end{Rem}
+
+\toDo{(En cours) étude numérique de l'influence de b sur le conditionnement}
+%
+%\begin{figure}[H]
+%	\centering 
+%	\input{../../Figures/condNumA(a).tex}
+%	\caption{Evolution of the condition number $\kappa(a,P)$ of the matrix $A$ as a function of the number of components $P$ in the radial approximation of $G$ on $\mathcal{A}(a)$ for different values of the parameter $a$.}
+%	\label{ConditionNumIncrease}
+%\end{figure}
+%
+%\begin{figure}[H]
+%	\centering 
+%	\input{../../Figures/emin(a).tex}
+%	\caption{Solid line: residual $L^{\infty}$ error of the numerical approximation $G(x) \approx \sum_{p=1}^P\alpha_p J_0(\rho_p |x|)$. Dashed line: estimated contribution of the level of error in the numerical inversion of matrix $A$. The latter is computed as $C ||A (\hat{X}x) - x||$ where $\hat{X}$ is the numerical inversion of $A$ and $C$ is a constant is estimated graphically.}
+%	\label{emina}
+%\end{figure}
+
+\section{Application to the Laplace kernel}
+\label{sec:ApplicationLaplace}
+Solving PDE's involving the Laplace operator (for example heat conduction of electrostatics), one is led to \eqref{discreteConv} with the Laplace kernel $G(r) = \log(r)$ (we have dropped the $\frac{1}{2\pi}$ constant for simplicity). Here we show that its SBD converges exponentially fast:
+\begin{The} 
+	\label{theRadialQuadLaplaceErreur}
+	There exist two positive constants $D_1$ and $D_2$ such that
+	\[ \forall a \in (0,1), \forall P \in \N^*, \forall r \in (a,1), \quad \abs{G(r) - \sum_{p=1}^P \alpha_p e_p(r)} \leq D_1 e^{-D_2 a P} \]
+	where $\alpha_1,\cdots,\alpha_P$ are the SBD coefficients of $G$ of order $P$.  
+\end{The}
+
+Following the ideas of the previous paragraph, we will show this by exhibiting an extension $\tilde{G}$ for which we are able to estimate the remainder of the Fourier-Bessel series. Observe that for all $s \in \N$:
+\[(-\Delta)^s G \text{ vanishes on } \mathcal{C}.\]
+This allows to choose $b=1$ and we will thus note $\mathcal{A}(a) \isdef \mathcal{A}(a,1)$. 
+
+For any $n \in \N^{*}$, let us define extensions $\tilde{G}_n$ of $G$ for $r \leq a$, as
+\[\tilde{G}_n(r) = \sum_{k=0}^{2n} \dfrac{a_{k,n}}{k!}(r-a)^k r^{2n},\]
+where the coefficients $a_{k,n}$ are chosen so that $\tilde{G}_n$ has continuous derivatives up to the order $2n$:
+\[a_{k,n} = {\dfrac{d^k}{dr^k}\left(\dfrac{\log(r)}{r^{2n}}\right)\bigg|}_{r=a}.\]
+Notice that the $r^{2n}$ term ensures the boundedness of $(-\Delta)^n \tilde{G}_n$. We now go into some tedious computations to provide a crude bound for $\norm{(-\Delta)^n \tilde{G}_n}_{L^2(B)}$ in terms of the coefficients $a_{k,n}$.
+
+\begin{Lem} 
+	\label{LemmeDegueu}
+	There exists a constant $C$ independent of $n$ and $a$ such that for $r<a$
+	\begin{equation}
+		\left|\Delta^n \tilde{G}_n(r)\right| \leq  C \left( \frac{16n}{e}\right)^{2n}\!\!\!\!\!\max_{k\in \left\{1,\cdots,2n\right\}}\left(\dfrac{|a_{k,n}|}{k!}a^k\right).
+		\label{bigBadEq1Reduced}
+	\end{equation}
+	\label{LemAkDeltanf}
+\end{Lem}
+
+\begin{proof} For $r \leq a$, we have
+	\[\Delta^n \tilde{G}_n(r) = \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{a_{k,n}}{k!}(-a)^{k-l}(2n+l)^2 (2(n-1)+l)^2\times ... \times (2+l)^2 r^{l}.\]
+	This result is obtained by expanding the sum in the definition of $\tilde{G}_n$ and using the fact that $\Delta r^k = k^2r^{k-2}$. Hence, using triangular inequality
+	\[|(-\Delta)^n \tilde{G}_n(r)| \leq \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{|a_{k,n}|}{k!}a^{k-l}(2n+l)^2(2(n-1)+l)^2\times ... \times (2+l)^2r^{l}.\]	
+	For $l\in \{1,\cdots,2n\}$, we apply the following (crude) inequality:
+	\begin{equation}
+		(2n+l)^2(2(n-1)+l)^2\times ... \times (2+l)^2 \leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2
+		\label{estimationTresGrossiere}
+	\end{equation}
+	to obtain: 
+	\begin{equation*}
+		\begin{split}
+			|(-\Delta)^n \tilde{G}_n(r)| &\leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_{k,n}|}{k!}a^k\right)\sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}a^{-l}r^l\\
+			&\leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_{k,n}|}{k!}a^k\right)\sum_{k=0}^{2n}\left(1+\frac{r}{a}\right)^k.		
+		\end{split}
+	\end{equation*}
+	Since $r<a$, the last sum is bounded by $\displaystyle\sum_{k=0}^{2n}2^k = 2^{2n+1}-1 < 2^{2n+1}$,
+	while 
+	\[(4n)^2(4n-2)^2\times...\times (2n+2)^2 \sim 2\left(\dfrac{8n}{e}\right)^{2n}\]
+	follows from Stirling formula. \qedhere
+	%for large $n$, we get
+	%	\[\dfrac{(2n)!}{(n)!} \sim \dfrac{\sqrt{2\pi\times 2n}}{\sqrt{2\pi n}} \dfrac{\left(\dfrac{2n}{e}\right)^{2n}}{\left(\dfrac{n}{e}\right)^{n}}.\]
+	%	This leads to 
+	%	\[\dfrac{(4n)!!}{(2n)!!} \sim \sqrt{2} \left(\dfrac{8n}{e}\right)^n \]
+	%	which  
+\end{proof}
+We are now able to prove the following, which implies \autoref{theRadialQuadLaplaceErreur}.
+\begin{The}
+	There exists a constant $C$ such that, for any $P \in \N^*$ and $a \in (0,1)$, there exists a radial function $\tilde{G}$ which coincides with $G$ on $\mathcal{A}(a)$ satisfying:
+	\[\norm{\tilde{G} - \sum_{p=1}^{P}c_p(\tilde{G})e_p}_{H^1_0(B)} \hspace{-0.7cm}\leq C \sqrt{P} \exp\left(-\frac{aP\pi}{32}\right).\]
+	\begin{proof}
+		Let $n \in \N^*$. We may compute the coefficients $a_{k,n}$ using Leibniz formula: 
+		\begin{eqnarray*}						
+			\dfrac{d^k }{dr^k}\left(r^{-2n}\log(r)\right) & = & \displaystyle\sum_{j=0}^k\dbinom{k}{j}\dfrac{d^j}{dx^j}\left(r^{-2n}\right)\dfrac{d^{k-j}}{dx^{k-j}}\left(\log(r)\right)           \\
+			& = & \displaystyle\sum_{j=0}^{k-1} \dbinom{k}{j}(-1)^j \dfrac{(2n+j-1)!}{(2n-1)!}r^{-2n-j}(-1)^{k-j-1}\left(k-j-1\right)!r^{-k+j}       \\ 
+			& &+ (-1)^k \dfrac{(2n+k-1)!}{(2n-1)!}r^{-2n-k}\log(r)                                                                                  \\
+			& = & \dfrac{(-1)^k k!}{r^{2n+k}}  \left(-\displaystyle\sum_{j=0}^{k-1}\dbinom{2n+j-1}{j}\dfrac{1}{k-j}+\dbinom{2n+k-1}{k}\log(r)\right). \\
+		\end{eqnarray*}
+		This leads to \[\dfrac{|a_{k,n}|}{k!}a^k \leq a^{-2n} \dbinom{2n + k -1}{k}\left(\frac{k}{2n}-\log(a)\right),\]
+		where we used the identity
+		\begin{equation*}
+			\sum_{j=0}^{k-1}\dbinom{j+2n-1}{j} = \dfrac{k}{2n}\dbinom{k+2n-1}{k}.
+		\end{equation*}
+		Observe that
+		\begin{equation*}
+			\dbinom{2n+k-1}{k}\leq \dbinom{4n-1}{2n} = \frac{1}{2}\dbinom{4n}{2n} \leq \dfrac{4^{2n}}{2\sqrt{2\pi n}} \quad k \in \{1,\cdots,2n\},
+		\end{equation*}
+		and thus,
+		\begin{equation}
+			\max_{0\leq k \leq 2n}\left(\dfrac{|a_{k,n}|}{k!}a^k\right) \leq \left(\frac{4}{a}\right)^{2n}\dfrac{1}{2\sqrt{2\pi n}}\left(\log\left(\frac{e}{a}\right)\right).
+			\label{majorAkLog} 
+		\end{equation}							
+		Combining (\ref{majorAkLog}) with estimation (\ref{bigBadEq1Reduced}), we find that there exists a constant $C$ such that, for $r<a$
+		\[|(-\Delta)^n \tilde{G}_n (r)|\leq \dfrac{C}{\sqrt{n}}\left( \frac{16n}{e}\right)^{2n}\left(\frac{4}{a}\right)^{2n}\log\left(\dfrac{e}{a}\right).\]
+		Therefore, integrating on $B(0,a)$, we get
+		\[ \norm{(-\Delta)^n \tilde{G}_n}_{L^2(B(0,a))} \leq \dfrac{C a^2}{\sqrt{n}}\log\left(\frac{e}{a}\right)\left( \frac{64n}{ae}\right)^{2n},\]
+		and since 
+		\[(-\Delta)^n \tilde{G}_n(x) = (-\Delta)^n G(x) = 0\]
+		for $|x|>a$, the same bound applies to $\norm{(-\Delta)^n \tilde{G}_n(x)}_{L^2(B)}$. 
+		We now plug this estimate into the inequality of corollary \ref{EstimationRest}, to get
+		\[ \norm{\tilde{G}_n - \sum_{p=1}^{P}c_p(\tilde{G}_n)e_p}_{H^1_0(B)} \!\!\!\!\!\!\!\!\!\!\leq~~ C \dfrac{P^\frac{3}{2}}{n} a^2 \log\left(\dfrac{e}{a}\right)\left( \frac{64 n}{ae P \pi}\right)^{2n}.\] 
+		The previous inequality holds true for any integer $n$ such that $n>1$ and any $P \in \mathbb{N}$. Without loss of generality, one can assume that $\frac{aP\pi}{64} >1$. In this case, let $n_P = \lfloor \frac{aP\pi}{64}\rfloor $, and $\tilde{G} = \tilde{G}_{n_P}$. Using the fact that $x\mapsto x \log\left(\dfrac{e}{x}\right)$ is bounded on $(0,1]$, we get 
+		\[ \norm{\tilde{G} - \sum_{p=1}^{P}c_p(\tilde{G})e_p}_{H^1_0(B)} \leq C \sqrt{P} e^{-\frac{aP\pi}{32}}. 	\qedhere\]
+	\end{proof}
+\end{The}
+
+\subsection{Numerical results}
+
+\section{Circular quadrature}
+\label{sec:circular}
+In this section, we study an approximation of the form
+\[ J_0(\rho_p|x|) \approx \dfrac{1}{M_p}\sum_{m=0}^{M_p-1}e^{i \rho_p \xi^p_m \cdot x}, \]
+for some integer $M_p$ and some quadrature points $(\xi_m^p)_{1 \leq m \leq M_p}$. 
+
+\subsection{Theoretical bound}
+\begin{The} There exists a constant $C$ such that for any $r>0$, $M\in \N^*$, $\varphi \in \R$ 
+	\[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)} \right| \leq C \left(\dfrac{er}{2M}\right)^M\]
+	\label{QuadratureCirc}
+\end{The}
+\noindent In order to prove this proposition, we first prove a result on Fourier series
+\begin{Lem} For any $\mathcal{C}^2$ function $f$ defined on $\mathbb{R}$ and complex-valued, that is $2\pi-$periodic, one has \[\dfrac{1}{2\pi}\int_{0}^{2\pi}f - \dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M} \right) = - \sum\limits_{k \in \Z^*}c_{kM}(f),\]
+	where $c_n(f)$ denotes the Fourier coefficient of $f$ defined as \[c_n(f) = \dfrac{1}{2\pi}\int_{0}^{2\pi}f(x)e^{-inx}dx\]
+	\begin{proof}
+		Since $f$ is $\mathcal{C}^2$, it is equal to its Fourier Series, which converges normally: \[\forall x \in \mathbb{R}, f(x) = \sum_{k\in\Z} c_k(f)e^{ikx}\] Using this expression, we obtain \[\dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M}\right) = \sum\limits_{k\in \Z^*}c_k(f)\left(\frac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}}\right)\] Now observe that if $k\notin M\Z$, \[\dfrac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}} = 0\] and if $k\in M\Z$ then \[\dfrac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}} = 1\] Therefore \[\int_{0}^{2\pi}f(x)dx - \dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M} \right) = c_0(f) - \sum\limits_{k \in M\Z}c_{k}(f) = - \sum\limits_{k \in \Z^*}c_{kM}(f)\qedhere\]
+	\end{proof}
+\end{Lem}
+\noindent Let us now prove the proposition: 
+\begin{proof}
+	The result is based on the fact that 
+	\[J_0(r) =  \int_0^{2\pi} e^{ir\sin(x)}dx = \int_0^{2\pi} e^{ir\sin(x - \varphi)}dx.\] 
+	Let $f : x \mapsto e^{ir\sin(x - \varphi)}$. Let us recall the integral representation of the Bessel function of the first kind and of order $k$ where $k$ is a relative integer: \[J_k(r) =  \int_{0}^{2\pi}e^{ir\sin(x)}e^{-ikx}dx =  e^{-ik\varphi}\int_{0}^{2\pi}e^{ir\sin(x - \varphi)}e^{-ikx}dx.\] Thus, one has $c_k(f) = e^{ik\varphi}J_k(r)$. Consequently, the former Lemma yields 
+	\[J_0(r) -  \dfrac{1}{M} \sum_{j=0}^{M-1} e^{ir \sin \left( \frac{2j\pi}{M}-\varphi \right)} = -\sum_{k\in \Z^*}e^{iNk\varphi}J_{Nk}(r).\] 
+	For large $\abs{k}$,
+	\[J_k(r) \sim \left(\dfrac{er}{2\abs{k}}\right)^{\abs{k}}.\]
+	Therefore, there exists a constant $C'$ such that: 
+	\begin{eqnarray*}
+		\abs{J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)}} &\leq& C' \sum_{k\in \Z^*} \left(\dfrac{er}{2M|k|}\right)^{M|k|}\\
+		&\leq& 2 C' \left(\dfrac{er}{2M}\right)^M
+	\end{eqnarray*}
+	As announced.\qedhere	
+\end{proof}
+We conclude with the following result
+\begin{Prop} Let $\varepsilon >0$, $r>0$, and assume $M > \dfrac{e}{2}r + \log\left(\dfrac{C}{\varepsilon}\right)$. Then 
+	\[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)} \right| \leq \varepsilon \]
+	\label{suboptCirc}
+	\begin{proof}
+		This result is a direct consequence of the previous proposition together with the following inequality: for any $(A,B) \in \left(\mathbb{R}_+^*\right)^2$ one has
+		\[ \left( \dfrac{A}{A+B}\right)^{A+B} \leq e^{-B}\]
+		To prove it, we take the logarithm of this quantity, $f(A,B) = -B\left(1+\dfrac{A}{B}\right)\log\left(1+\dfrac{B}{A}\right)$ and observe that for any positive $x$, \[\left(1+\dfrac{1}{x}\right)\log(1+x) \geq 1.\qedhere\]
+	\end{proof}
+\end{Prop}
+
+Hence, we can approximate very efficiently the functions $e_p$ of the previous paragraph as a finite sum as follows. We define the quadrature points $\xi_0^p, \xi_1^p, ..., \xi^p_{M_p-1}$  by
+\begin{equation}
+	\label{defXimp}
+	\xi_m^p := \displaystyle e^{i\frac{2\pi m}{M_p}} \quad \text{for any } 1\leq p \leq P  \text{ and } 0 \leq m \leq M_p -1
+\end{equation}
+With this definition, for any $x \in \mathbb{R}^2$
+\[ e_p(|x|) = C_p J_0(\rho_p |x|)\approx \dfrac{C_p}{M_p}\sum_{m=0}^{M_p-1}{e^{i \rho_px \cdot \xi_m^p}}\]
+Where the approximation is valid at a precision $\varepsilon$ as soon as $M > \frac{e}{2}\rho_p|x| + \log\left(\dfrac{C}{\varepsilon}\right)$.
+
+
+
+%% BIBLIO
+																																							
+\IfFileExists{biblio.bib}{\bibliography{biblio}}{\bibliography{/home/martin/Documents/These/Biblio/biblio}}
+\bibliographystyle{plain}
+																																									
+\end{document} 

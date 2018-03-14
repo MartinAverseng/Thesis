@@ -1,0 +1,132 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration build-checksum="2572449359" file="/home/martin/MatlabCodes/Toolboxes_dev/BEM2D.prj" location="/home/martin/MatlabCodes/Toolboxes_dev" name="BEM2D" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>BEM2D</param.appname>
+    <param.authnamewatermark>Martin Averseng</param.authnamewatermark>
+    <param.email>martin.averseng@polytechnique.edu</param.email>
+    <param.company>CMAP polytechnique</param.company>
+    <param.summary>Toolbox for BEM method in R^2</param.summary>
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}/BEM2D/BEM.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.output>${PROJECT_ROOT}/BEM2D.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>91843fa6-f80f-4551-ac72-39fe72fd87ce</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+
+BEM.png
+Validation/
+Main.m</param.exclude.filters>
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.docs />
+    <param.matlabpath.excludes>
+      <item>/Validation</item>
+    </param.matlabpath.excludes>
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.description />
+      <param.version />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.docs />
+    </unset>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}/BEM2D</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}/BEM2D/BIO</file>
+      <file>${PROJECT_ROOT}/BEM2D/FEspace</file>
+      <file>${PROJECT_ROOT}/BEM2D/Geometry</file>
+      <file>${PROJECT_ROOT}/BEM2D/IntegrationEnv</file>
+      <file>${PROJECT_ROOT}/BEM2D/Operators</file>
+      <file>${PROJECT_ROOT}/BEM2D/singularIntegrals</file>
+      <file>${PROJECT_ROOT}/BEM2D/utils</file>
+      <file>${PROJECT_ROOT}/BEM2D/variationalSol.m</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included>
+      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
+      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/sumStruct.m</file>
+    </fileset.depfun.included>
+    <fileset.depfun.excluded>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/AbstractMatrix/AbstractMatrix.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Cp.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/H0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/J0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/LogKernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/Y0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/Op.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/Quad2D/Quad2D.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/RadialQuadrature.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/besselJroots.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/besselYroots.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/mergeQuads.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/newton.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/nextY0root.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/scalProds.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/coeff2der.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/coeff2func.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/radialQuad.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/libGgNufft2D/nufft2d.mexa64</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/libGgNufft2D/nufft2d3.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/printStarLine.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/gramMatrix.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/scalarProdsDictionary/helmholtzSP.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/scalarProdsDictionary/laplaceSP.m</file>
+    </fileset.depfun.excluded>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/home/martin/MatlabCodes/Toolboxes_dev" name="BEM2D.mltbx" optional="false">/home/martin/MatlabCodes/Toolboxes_dev/BEM2D.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/usr/local/MATLAB/R2016a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>false</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>true</linux>
+      <solaris>false</solaris>
+      <osver>4.13.0-36-generic</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>glnxa64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

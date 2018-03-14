@@ -1,0 +1,78 @@
+\begin{thebibliography}{10}
+
+\bibitem{allaire2005analyse}
+G~Allaire.
+\newblock Analyse num{\'e}rique et optimisation: Une introduction à la
+  mod{\'e}lisation math{\'e}matique eta la simulation num{\'e}rique.
+\newblock {\em Math{\'e}matiques appliqu{\'e}es. Ecole polytechnique,
+  Palaiseau}, 2005.
+
+\bibitem{Alouges2015}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{Balodis1999}
+P.~Balodis and A.~C{\'o}rdoba.
+\newblock The convergence of multidimensional fourier-bessel series.
+\newblock {\em Journal d'Analyse Math{\'e}matique}, 77(1):269--286, 1999.
+
+\bibitem{SphericalAverage}
+B.~J.~C. Baxter.
+\newblock On spherical averages of radial basis functions.
+\newblock {\em Foundations of Computational Mathematics}, 8(3):395--407, 2008.
+
+\bibitem{colzani1993equiconvergence}
+Leonardo Colzani, Antonio Crespi, Giancarlo Travaglini, and Marco Vignati.
+\newblock Equiconvergence theorems for fourier-bessel expansions with
+  applications to the harmonic analysis of radial functions in euclidean and
+  non-euclidean spaces.
+\newblock {\em Transactions of the American Mathematical Society},
+  338(1):43--55, 1993.
+
+\bibitem{de2016elementary}
+Pablo~L De~N{\'a}poli and Irene Drelichman.
+\newblock Elementary proofs of embedding theorems for potential spaces of
+  radial functions.
+\newblock In {\em Methods of Fourier Analysis and Approximation Theory}, pages
+  115--138. Springer, 2016.
+
+\bibitem{NuFFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\bibitem{NDFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\bibitem{guadalupe1993mean}
+JJ~Guadalupe, M~P{\'e}rez, FJ~Ruiz, and JL~Varona.
+\newblock Mean and weak convergence of fourier-bessel series.
+\newblock {\em Journal of mathematical analysis and applications},
+  173(2):370--389, 1993.
+
+\bibitem{Ni}
+Wei-Ming Ni.
+\newblock A nonlinear dirichlet problem on the unit ball and its applications.
+\newblock {\em Indiana Univ. Math. J.}, 31:801--807, 1982.
+
+\bibitem{stempak2002convergence}
+Krzysztof Stempak.
+\newblock On convergence and divergence of fourier--bessel series.
+\newblock {\em Electronic Transactions on Numerical Analysis}, 14:223--235,
+  2002.
+
+\bibitem{watson1995treatise}
+George~Neville Watson.
+\newblock {\em A treatise on the theory of Bessel functions}.
+\newblock Cambridge university press, 1995.
+
+\bibitem{wilton1928gibbs}
+JR~Wilton.
+\newblock The gibbs phenomenon in fourier-bessel series.
+\newblock {\em J. reine angew. Math}, 159:144--153, 1928.
+
+\end{thebibliography}

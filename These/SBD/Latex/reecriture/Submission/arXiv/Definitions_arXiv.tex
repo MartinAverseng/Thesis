@@ -1,0 +1,116 @@
+
+%\usepackage{adjustbox}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+%\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{anyfontsize}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+%\usepackage{afterpage}
+%\usepackage{blindtext}
+\usepackage[hidelinks]{hyperref}
+\usepackage[english]{babel}
+\usepackage{bbm}
+\usepackage{bigints}
+%\usepackage{bm}
+\usepackage{cite}
+\usepackage{color}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{mathtools}
+%\usepackage{mdframed}
+\usepackage{pgfplots} 
+\usetikzlibrary{external}
+\tikzexternalize
+\usepackage{subcaption}
+\usepackage{stmaryrd}
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+					%%%
+\usepackage{textcomp}
+\usepackage{tikz}
+\usepackage{url}
+
+  % flush right qed marks, e.g. at end of proof
+
+%\renewcommand{\proofname}{Proof}
+%\newtheorem{monTheoNumrote}{Théorème} % Environnement numéroté en fonction de la section
+%\newtheorem*{monTheoNonNumerote}{Théorème}  % Environnement non numéroté
+\newtheorem{Theorem}{Theorem}
+%\newtheorem*{The*}{Theorem}
+\newtheorem{proposition}{Proposition}
+%\newtheorem*{Prop*}{Proposition} 
+\newtheorem{corollary}{Corollary}
+%\newtheorem*{Cor*}{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}{Lemma}
+%\renewcommand{\qed}{\unskip\nobreak\quad\qedsymbol}%
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{Remark}{Remark}
+%\newtheorem*{Rem*}{Remark}
+%\newtheorem*{Lem*}{Lemma}
+%\newtheorem{Que}{Question}
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\Rd}[0]{\mathbb{R}^d}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\Rn}[0]{\mathbb{R}^n}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+\newcommand{\Theoremautorefname}{Theorem}
+\newcommand{\propositionautorefname}{Proposition}
+\newcommand{\corollaryautorefname}{Corollary}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\definitionautorefname}{Definition}
+\newcommand{\conjectureautorefname}{Conjecture}
+\newcommand{\Remarkautorefname}{Remark}
+%\renewcommand{\sectionautorefname}{Section}
+%\renewcommand{\suectionautorefname}{Subsection}
+%\renewcommand{\algorithmicrequire}{\textbf{Inputs:}}
+%\renewcommand{\algorithmicensure}{\textbf{Outputs:}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}_{a,b}}
+\newcommand{\Crad}{C^\infty_{c,rad}(B)}
+\newcommand{\Lrad}{L^2_{rad}(B)}
+\newcommand{\Lradab}{L^2_{rad}(\mathcal{A}_{a,b})}
+\newcommand{\duality}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\Hrad}{H^1_{rad}(B)}
+\newcommand{\Hzrad}{H^1_{0,rad}(B)}
+\newcommand{\rmin}{\delta_{\min}}
+\newcommand{\rmax}{\delta_{\max}}
+\newcommand{\corr}{\gamma}
+%\newcommand{\question}[1]{\begin{Que} \ 
+%#1
+%\end{Que}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\CL}[2]{\textup{CL}\left(\enstq{#1}{#2}\right)}
+\newcommand{\Script}[1]{`\texttt{#1}`}
+\newcommand{\espace}{\text{ }\qquad} 
+\newcommand{\loc}{\text{loc}}
+\newcommand{\SL}{\textup{SL}\hspace{1.5pt}}
+\newcommand{\DL}{\textup{DL}\hspace{1.5pt}}
+\newcommand{\fp}{\underset{\varepsilon \to 0}{\textup{f.p.}}}
+\newcommand{\scalProd}[2]{\left(#1|#2\right)}
+\newcommand{\toDo}[1]{{\color{red}#1}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\varInRange}[4]{(#1_{#2})_{#3 \leq #2 \leq #4}}
+\newcommand{\from}{\colon}
+\newcommand{\Cinf}{C^{\infty}}
+\newcommand{\isdef}{\mathrel{\mathop:}=}
+\newcommand{\defis}{=\mathrel{\mathop:}}
+
+
+\pgfplotsset{compat=newest}

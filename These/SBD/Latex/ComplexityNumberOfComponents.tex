@@ -1,0 +1,58 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.436in,
+height=3.245in,
+at={(0.843in,0.802in)},
+scale only axis,
+xmode=log,
+xmin=500,
+xmax=10000,
+xminorticks=true,
+xlabel={$\log\left(\frac{1}{a}\right)$},
+xmajorgrids,
+xminorgrids,
+ymode=log,
+ymin=100,
+ymax=100000,
+yminorticks=true,
+ylabel={$\log(P)$},
+ymajorgrids,
+yminorgrids,
+axis background/.style={fill=white},
+legend style={at={(0.7,0.2)},anchor=south west,legend cell align=left,align=left,fill=none,draw=none}
+]
+\addplot [color=mycolor1,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+500	604\\
+800	966\\
+1000	1207\\
+1500	1811\\
+2000	2414\\
+5000	5985\\
+8000	9541\\
+10000	11861\\
+};
+\addplot [color=black,dashed]
+  table[row sep=crcr]{%
+500	503.35\\
+800	803.35\\
+1000	1003.35\\
+1500	1503.35\\
+2000	2003.35\\
+5000	5003.35\\
+8000	8003.35\\
+10000	10003.35\\
+};
+\addlegendentry{$y = x + C$};
+
+\end{axis}
+\end{tikzpicture}%

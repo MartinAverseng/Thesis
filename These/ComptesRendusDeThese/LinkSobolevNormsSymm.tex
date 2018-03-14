@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Link between Sobolev norms after cosine change}
+\begin{document}	
+	\maketitle
+	\section{Notations and preliminary results}
+	In this note, when $u$ refers to a function defined on $\Gamma_x = (-1,1)$, we will denote by $\alpha$ the function such that 
+	\begin{equation}
+	u = \dfrac{\alpha}{\omega}, \quad \omega(x) = \sqrt{1-x^2},
+	\end{equation}
+	and by $\tilde{\alpha}(\theta) = \alpha(\cos\theta)$. 
+	Let $\Gamma_\theta = (0,\pi)$. Let $H^s$ stand for the usual Sobolev space of order $s$. For $\Gamma \subset \tilde{\Gamma}$, where $\tilde{\Gamma}$ is any closed Lipschitz curve, recall that $\tilde{H}^s(\Gamma)$ is defined by  
+	\[\tilde{H}^s(\Gamma) = \enstq{u \in H^s(\tilde{\Gamma})}{\tilde{u} \in H^s(\tilde{\Gamma})}, \tilde{u}(x) = \left\{
+		\begin{array}{cl}
+			u(x) &  x \in \Gamma\\
+			0 & x \in \tilde{\Gamma}\setminus\overline{\Gamma}
+		\end{array} \right.\] 
+	We denote by $\norm{\cdot}_s$ the $H^s$ norm. Also, recall that for integer $s$, the norms $\tilde{H}^s$ and $H^s$ are equivalent. Given that functions in $H^1(\mathbb{R})$ are continuous, the elements of $\tilde{H}^1(-1,1)$ must vanish at $x=-1,1$, so we have simply 
+	\[ \tilde{H}^1(\Gamma_x) = H_0^1(\Gamma_x)\]
+	with equivalent norms. 
+	
+	We first state the following lemma which is a particular case of a weighted Hardy inequality (see for example the introduction of \cite{edmunds2005weighted}). 
+	\begin{Lem}
+		\label{HardyWeighted}
+		Let $\alpha \in C^{\infty}_0(\Gamma_x)$. There holds 
+		\[ \int_{\Gamma_x} \frac{\alpha^2(x)}{\omega^3(x)} \leq \int_{\Gamma_x} \alpha'^2(x)\omega(x)dx\]		
+	\end{Lem}
+	\begin{Rem}
+		Observe that after cosine change of variable, this result is equivalent to 
+		\[ \int_{0}^{\pi} \frac{\tilde{\alpha}^2(\theta) }{\sin^2\theta}d\theta \leq \int_{0}^\pi \tilde{\alpha}'^2(\theta)d\theta,\]
+		which, taking into account $\sin\theta \underset{\theta\to 0}{\sim}\theta$, is under the form of a classical Hardy inequality. 
+	\end{Rem}
+	
+	We also introduce $S$ and $N$ the usual single layer operator and hypersingular operator on $\Gamma_x$.   The kernel of $S$ is chosen so that it is positive definite and bounded below on  $\tilde{H}^{-\frac{1}{2}}(\Gamma_x)$. For example, one can choose 
+	\begin{equation}
+		Su(x) = -\frac{1}{2\pi}\int_{-1}^{1} \ln |x-y|u(y)dy,\quad x \in \Gamma
+		\label{SimpleCouche_x}
+	\end{equation}
+	In this case, we have
+	\begin{Lem}
+		\text{ }
+		\begin{enumerate}
+			\item For any $u \in \tilde{H}^{-\frac{1}{2}}(\Gamma_x)$, one has 
+			\[ \norm{u}_{\tilde{H}^{-\frac{1}{2}}(\Gamma_x)} \sim \sqrt{\duality{Su}{u}}_{H^{\frac{1}{2}}(\Gamma_x),\tilde{H}^{-\frac{1}{2}}(\Gamma_x)}\]		
+			\item For any $u \in \tilde{H}^{\frac{1}{2}}(\Gamma_x)$, one has
+			\[\norm{u}_{\tilde{H}^\frac{1}{2}(\Gamma_x)} \sim \sqrt{\duality{Nu}{u}}_{H^{-\frac{1}{2}}(\Gamma_x),\tilde{H}^{\frac{1}{2}}(\Gamma_x)}\]
+		\end{enumerate}		
+	\end{Lem}
+	By $a \sim b$, we imply that there exist two constants $c$ and $C$ such that $ca \leq b \leq Ca$. 
+	
+	As was shown in \cite{yan1988integral}, we have the following result: (the proof will be reproduced here for convenience)
+	\begin{Prop} \label{FormuleSImpleCoucheConvol}
+		Let $x = \cos\theta$, we have the identity
+		\begin{equation}
+			Su(x) = -\frac{1}{2\pi}\int_{-\pi}^{\pi} \ln\left|\sqrt{2}\sin \frac{\theta - \theta'}{2}\right| \tilde{\alpha}(\theta')d\theta'
+		\end{equation}
+		\begin{proof}
+			In (\ref{SimpleCouche_x}), do the variable change 
+			\begin{equation}
+			x = \cos\theta, y = \cos\theta', \frac{-dy}{\omega} = d\theta'
+			\end{equation}
+			leading to 
+			\begin{equation*}
+				Su(x) = -\frac{1}{2\pi}\int_{0}^\pi \ln\abs{\cos\theta - \cos\theta'} \tilde{\alpha}(\theta)d\theta
+			\end{equation*}
+			The result is then obtained with the help of the formula $\cos\theta - \cos\theta' = -2\sin\frac{\theta - \theta'}{2} \sin\frac{\theta + \theta'}{2}$. 
+		\end{proof}
+	\end{Prop}
+	\begin{Rem}
+		This shows that, in the variable $\theta$, the single layer potential is actually a convolution by the kernel $A(\theta) = -\frac{1}{2\pi}\ln \abs{\sqrt{2}\sin\frac{\theta}{2}}$. 
+	\end{Rem}
+	
+	We easily deduce the following formula	
+	\begin{Lem} For smooth $u$ and $v$ in $C^{\infty}_0(\Gamma_x)$, 
+		\begin{equation}
+			\duality{Su}{v} = \frac{-1}{4\pi} \int_{-\pi}^{\pi}\int_{-\pi}^{\pi} \ln\abs{\sqrt{2}\sin\frac{\theta - \theta'}{2}}\tilde{\alpha}(\theta)\tilde{\beta}(\theta')d\theta d\theta'
+		\end{equation}
+		
+	\end{Lem}
+	
+	\section{Norm estimates}
+	
+	\begin{The}
+		We have the following four estimates : 
+		\begin{enumerate}
+			\item[(i)] $\norm{u}_{\tilde{H}^{-\frac{1}{2}}(\Gamma_x)}  \leq C \norm{\tilde{\alpha}}_{-1/2}$ 
+			\item[(ii)] $\norm{\sqrt{\omega}u}_{L^2(\Gamma)} \leq C \norm{\tilde{\alpha}}_{0}$
+			\item[(iii)] $\norm{\omega u}_{\tilde{H}^{\frac{1}{2}}(\Gamma_x)} \leq C \norm{\tilde{\alpha}}_{1/2}$
+			\item[(iv)] $\norm{\omega^{\frac{3}{2}} u}_{1} \leq C \norm{\tilde{\alpha}}_{1}$
+		\end{enumerate}
+	\end{The}
+	\begin{proof}
+		\textbf{Proof of (ii):}\\
+			By the change of variables $t=\cos\theta$, we can see that
+				\[ \int_{-1}^{1} \frac{\alpha^2(x)}{\omega(x)}dx = \int_{0}^\pi \tilde{\alpha}^2(\theta) d\theta\]
+		\textbf{Proof of (iv):} \\
+			The same change of variables also yields
+				\[ \int_{-1}^{1} \omega \alpha'(x)^2dx = \int_{0}^\pi \tilde{\alpha'}^2(\theta) d\theta\] 
+			Morever, observe that 
+			\begin{align*}
+				\left(\omega^{\frac{3}{2}}u\right)' &= \left(\sqrt{\omega}\alpha\right)'\\
+				&=-\frac{x\alpha}{2\omega^{\frac{3}{2}}} + \alpha' \sqrt{\omega}. 
+			\end{align*}		
+			The second term has its $L^2$ norm controlled by the $H^1$ norm of $\tilde{\alpha}$. It remains to show that this also holds for the first one that is, 
+				\[ \int_{-1}^1 \frac{\alpha^2}{\omega^3} \leq C \norm{\tilde{\alpha}}_{1},\]
+			which is a simple consequence of Lemma \ref{HardyWeighted}\\
+		\textbf{Proof of (i):}\\
+			Since $\tilde{\alpha}$ can be extended as an even $2\pi-periodic$ function, its Sobolev norm of order $s$ can be expressed as 
+			\begin{equation*}
+				\norm{\tilde{\alpha}}_{s}^2 = \abs{\alpha_0}^2 + \sum_{n=1}^{+\infty} \abs{\alpha_n}^2 n^{2s}, 
+			\end{equation*}				
+			where $\alpha_k$ are the usual Fourier coefficients. Simple calculations show that 
+			\begin{equation*}
+				\norm{\tilde{\alpha}}_{-\frac{1}{2}} = \int_{-\pi}^{\pi}\int_{-\pi}^{\pi}\tilde{\alpha}(\theta)\tilde{\alpha}(\theta') \left(\frac{1}{2} + \sum_{n=1}^{\infty} \frac{\cos \left(n \left(\theta-\theta'\right)\right)}{n}\right)
+			\end{equation*}					
+			We aim to compute the function $G$ in parenthesis:
+				\[G(\theta) = \frac{1}{2} + \sum_{n=1}^{+\infty} \frac{\cos n\theta}{n}\]
+			To achieve this, we will need the following well-known property of Chebyshev's polynomials $T_n(x)$.
+			\begin{Lem} For any $t \in (-1,1)$, 
+				\[\sum_{n=0}^{+\infty} t^n T_n(x) = \frac{1-tx}{1-2tx + t^2}\]
+			\end{Lem}
+			Integrating in $t$ and taking the value at $t=1$ leads to the following identity: 
+			\begin{equation*}
+				\sum_{n=1}^{+\infty} \frac{T_n(x)}{n} = -\ln\sqrt{2 - 2x}
+			\end{equation*}		
+			Therefore, taking $x = \cos\theta$, we find:
+			\begin{align*}
+				G(\theta) &= \frac{1}{2} - \ln\sqrt{2 - 2\cos\theta}\\
+				&= -\ln \left[2e^{-1/2}\sin\frac{\abs{\theta}}{2}\right]
+			\end{align*}
+			By Proposition \ref{FormuleSImpleCoucheConvol}, we see that there exists a constant $C$ such that 
+			\begin{equation}
+				\norm{\tilde{\alpha}}_{-1/2} = C \abs{\alpha_0}^2 + \sqrt{\duality{Su}{u}}
+			\end{equation}
+			which implies the first inequality. 
+	\end{proof}
+	
+	\bibliographystyle{plain}
+	\bibliography{../Biblio/biblio}
+	
+\end{document}

@@ -1,0 +1,144 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration file="/home/martin/MatlabCodes/openArc.prj" location="/home/martin/MatlabCodes" name="openArc" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>OpenArc</param.appname>
+    <param.authnamewatermark>Martin Averseng</param.authnamewatermark>
+    <param.email>martin.averseng@polytechnique.edu</param.email>
+    <param.company>CMAP polytechnique</param.company>
+    <param.summary />
+    <param.description />
+    <param.screenshot />
+    <param.version>1.0</param.version>
+    <param.output>${PROJECT_ROOT}/OpenArc.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>7cb87661-2f05-492c-8af2-056ac795d380</param.guid>
+    <param.exclude.filters />
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.docs />
+    <param.matlabpath.excludes />
+    <unset>
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.summary />
+      <param.description />
+      <param.screenshot />
+      <param.version />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.exclude.filters />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.docs />
+      <param.matlabpath.excludes />
+    </unset>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}/OpenArc</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}/OpenArc/NumericalTests</file>
+      <file>${PROJECT_ROOT}/OpenArc/SqrtOperator</file>
+      <file>${PROJECT_ROOT}/OpenArc/utils</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included>
+      <file>${PROJECT_ROOT}/usefulMatlabFunctions/Bytes2str.m</file>
+      <file>${PROJECT_ROOT}/usefulMatlabFunctions/sumStruct.m</file>
+    </fileset.depfun.included>
+    <fileset.depfun.excluded>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/AbstractMatrix/code/AbstractMatrix.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/BIO/BIO.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/BIO/LayerPotentials/singleLayer.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FE_func.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEcell/FEcell.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEcell/P0.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEcell/P1.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEcell/P1disc.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEcell/P2.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/FEspace.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/dof2point.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/func.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/weightedFEspace/utils/gaussQuad.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/weightedFEspace/utils/squarePol.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/FEspace/weightedFEspace/weightedFEspace.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/MeshCurve.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/R2toRfunc.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/SimpleCurve.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/utils/isClose.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/utils/openline.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Geometry/utils/unitSegment.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/IntegrationEnv/NumericalQuadrature.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/IntegrationEnv/inputOrDefaultQuad.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/IntegrationEnv/lgwt.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Operators/BilinearForm.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/Operators/LinearForm.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/I_0.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/I_1.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/I_2.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/J_0.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/J_1.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/logSingK.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/normalVector.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/parameters_singInt.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/singKernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/singularKernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/singularIntegrals/singularityDictionary.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/variationalSol.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Cp.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Kernels/H0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Kernels/J0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Kernels/Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Kernels/LogKernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Kernels/Y0Kernel.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/Op.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/Quad2D/Quad2D.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/RadialQuadrature.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/besselJroots.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/besselYroots.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/mergeQuads.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/newton.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/nextY0root.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/Subfunctions/scalProds.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/coeff2der.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/coeff2func.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Op/RadialQuad/radialQuad.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Utils/libGgNufft2D/nufft2d.mexa64</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Utils/libGgNufft2D/nufft2d3.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/Utils/printStarLine.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/gramMatrix.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/scalarProdsDictionary/helmholtzSP.m</file>
+      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/SBD/code/scalarProdsDictionary/laplaceSP.m</file>
+    </fileset.depfun.excluded>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/home/martin/MatlabCodes" name="OpenArc.mltbx" optional="false">/home/martin/MatlabCodes/OpenArc.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/usr/local/MATLAB/R2016a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>false</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>true</linux>
+      <solaris>false</solaris>
+      <osver>4.13.0-36-generic</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>glnxa64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Simple couche et Hyper-singulier sur un segment}
+\begin{document}
+\maketitle	
+
+\section{Potentiel de simple couche sur un segment}
+
+Soit $S$ l'opérateur de simple couche sur le segment $(-1,1)$ définit par
+\[Su(x) = \dfrac{1}{2\pi}\int_{-1}^1 \ln(|x-y|)u(y)dy\]
+On pose $\omega(x)= \sqrt{1-x^2}$. 
+On s'intéresse aux propriétés de l'opérateur $\alpha \mapsto \dfrac{1}{\omega} S \dfrac{1}{\omega}\alpha$. Selon la remarque du paragraphe 2.3 de \cite{bruno2012second}, on admet la conjecture suivante :
+\begin{The} Soit $f$ une fonction dans $H^s(-1,1)$, $s>0$. Alors l'unique solution de l'équation d'inconnue $\alpha \in H^1(-1,1)$ :
+\[S\left(\dfrac{\alpha}{\omega}\right) = f\]
+est dans $H^{s+1}(-1,1)$. 
+\end{The}
+L'intérêt de cette remarque est qu'on obtient une convergence rapide de l'approximation par éléments finis lorsque le pas du maillage $h$ devient petit. Ce fait se base sur une version du lemme de Céa adaptée à notre situation.
+Soit $S_{\omega} := \dfrac{1}{\omega}S\dfrac{1}{\omega}$ (ce n'est pas la même notation que celle choisie par Oscar Bruno). De manière immédiate, $S_\omega$ hérite de la propriété de coercivité de $S$. 
+\begin{Prop} Pour tout $\alpha$ tel que $\frac{\alpha}{\omega} \in H^{-1/2}(-1,1)$, on a 
+\[ (S_\omega \alpha,\alpha) \geq c \norm{\frac{\alpha}{\omega}}_{H^{-1/2}}^2\] 
+\begin{proof}
+On a
+$(S_{\omega}\alpha,\alpha) = \left(\dfrac{1}{\omega}S\dfrac{1}{\omega}\alpha , \alpha\right) = \left(S\dfrac{1}{\omega}\alpha , \dfrac{1}{\omega}\alpha\right) \geq c \norm{\dfrac{\alpha}{\omega}}_{H^{-1/2}}^2$
+\end{proof}
+\end{Prop}
+Soit $V_h$ un sous-espace vectoriel de dimension finie de $\enstq{\alpha}{\alpha/\omega \in H^{-1/2}}$. Soit $\alpha_h$ l'unique solution de la formulation variationnelle : $\forall \beta_h \in V_h$ : 
+\[(S_\omega\alpha_h,\alpha_h) = \int_{-1}^{1} f(x)\dfrac{\beta_h(x)}{w(x)}.\]
+Le lemme de Céa assure 
+\[\norm{(\alpha - \alpha_h)/\omega}_{H^{-1/2}} \leq \inf_{\beta_h \in V_h}C\norm{(\alpha-\beta_h)/\omega}_{H^{-1/2}}\]
+\paragraph{Question} Y a-t-il une bonne méthode pour montrer que le terme de droite est d'ordre $O(h)$ pour des éléments finis $\mathbbm{P}_1$ ? ?
+
+Soient $T_n$ les polynômes de Tchebychev de première espèce. 
+D'après \cite{bruno2012second}, on a 
+\[ S \left(\dfrac{T_n}{\omega}\right) = \lambda_n T_n\]
+Avec $\lambda_0 = \frac{\ln(2)}{2}$ et $\lambda_n = \dfrac{1}{2n}$ pour $n\neq 0$. D'autre part, considérons l'opérateur $\Lambda$ qui, à une fonction $g$ définie sur le segment $(-1,1)$ associe la donnée de Neumann de la solution $u$ du problème 
+$\left\{\begin{array}{rll}
+-\Delta u &= 0 & \text{ dans } \mathbb{R}^2 \setminus \{(-1,1)\times \{0\}\}\\
+u &= g & \text{ sur } (-1,1)\times\{0\}
+\end{array}\right.$
+En prenant la normale du côté des $y$ positifs. Les formules de Calderòn impliquent alors que 
+\[S\Lambda g = \frac{1}{2}g\]
+Donc $S^{-1} = 2\Lambda$. On a donc 
+\[ \omega\Lambda T_n = \mu_n T_n \]
+où $\mu_n = \frac{1}{\ln(2)}$ si $n=0$ et $\mu_n = n$ sinon. Or l'équation différentielle vérifiée par les polynômes $T_n$ nous fournit un opérateur différentiel $P$ explicite qui satisfait pour $n \neq 0$ à la relation $PT_n = -\mu_n^2 T_n$. L'opérateur $P$ est donné par  \[ P = (1-x^2) \partial_{xx} - x\partial_x = \left(\omega \partial_x\right)^2\] 
+Les polynômes $T_n$ forment une base Hilbertienne de $L^2\left[(-1,1),\omega^{-1}(x)dx\right]$. On a donc pour toute fonction $\varphi = \sum_{n=0}^{+\infty}c_n T_n(x)$ dans cet espace : 
+\[\left[P^2 + (\omega\Lambda)^2\right] \varphi = c_0\mu_0^2 T_0 \]
+L'intérêt de cette relation est qu'il permet d'exprimer l'opérateur $\omega\Lambda$ en fonction d'un opérateur différentiel donc local, qui permet une discrétisation numérique efficace. Dans l'optique de la résolution d'un problème intégral, on pourrait utiliser $\omega\Lambda$ ou une approximation de celui-ci pour préconditionner l'équation. 
+Puisque les deux opérateurs du membre de gauche sont diagonalisée par une même base Hilbertienne, ils commutent sur cet espace de Hilbert. 
+
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio}  
+\end{document}

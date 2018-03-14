@@ -1,0 +1,28 @@
+Thu Feb  8 16:56:34 2018
+latexindent version 2.1R, a script to indent .tex files
+latexindent lives here: /usr/share/texlive/texmf-dist/scripts/latexindent/
+
+Directory for backup files and indent.log: .
+Reading defaultSettings.yaml from /usr/share/texlive/texmf-dist/scripts/latexindent/defaultSettings.yaml
+
+Home directory is /home/martin
+To specify user settings you would put indentconfig.yaml here: 
+	/home/martin/indentconfig.yaml
+
+Alternatively, you can use the hidden file .indentconfig.yaml as: 
+	/home/martin/.indentconfig.yaml
+
+Line 176	 WARNING: \end{cases} found on its own line, not matched to \begin{\[}
+Line 183	 WARNING: \end{frame} found on its own line, not matched to \begin{\[}
+Line 297	 WARNING: \end{pmatrix} found on its own line, not matched to \begin{frame}
+Line 301	 WARNING: \end{pmatrix} found on its own line, not matched to \begin{frame}
+Line 316	 WARNING: \end{array} found on its own line, not matched to \begin{\[}
+Line 320	 WARNING: \end{block} found on its own line, not matched to \begin{\[}
+Line 321	 WARNING: \end{frame} found on its own line, not matched to \begin{\[}
+Line 343	 WARNING: \end{array} found on its own line, not matched to \begin{\[}
+Line 349	 WARNING: \end{frame} found on its own line, not matched to \begin{\[}
+Line 433	 WARNING: \end{document} found on its own line, not matched to \begin{\[}
+Line Count of slides.tex: 433
+Line Count of indented slides.tex: 433
+
+Line counts of original file and indented file match

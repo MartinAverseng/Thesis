@@ -1,0 +1,256 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Solving the Dirichlet problem for the Laplacian outside a open arc.</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-03-09"><meta name="DC.source" content="section1_singularity_andTitle.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Solving the Dirichlet problem for the Laplacian outside a open arc.</h1><!--introduction--><p>Our aim is to solve the boundary value problem <img src="section1_singularity_andTitle_eq08740633109457557938.png" alt="$\Delta u = 0$"> with given Dirichlet data on an open line in <img src="section1_singularity_andTitle_eq02243227017317752302.png" alt="$R^2$">. The solution has a singularity near the tips of the arc causing difficulties for numerical resolution. We show a method of resolution using a weighted version of the single layer potential and a preconditioner for the system based on an analysis when the arc is the open segment <img src="section1_singularity_andTitle_eq01251885319047943167.png" alt="$\Gamma = (-1,1)$">. This preconditioner involves a the square root of a weighted version of the Laplace operator.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">1&deg;) Singularity of the solution</a></li></ul></div><h2>1&deg;) Singularity of the solution<a name="1"></a></h2><p>We first create the curve, which is the <img src="section1_singularity_andTitle_eq13887521144266712697.png" alt="$\Gamma = [-1,1]$"> segment. <i>segment</i> is an object of type "simpleCurve", containing the parametric representation of the curve</p><pre class="codeinput">segment = unitSegment;
+figure
+plot(segment)
+title(<span class="string">'The unit segment'</span>)
+xlabel(<span class="string">'t'</span>);
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_01.png" alt=""> <p>We define a mesh on the curve.</p><pre class="codeinput">Nmesh = 10;
+mesh = MeshCurve(segment,Nmesh);
+figure
+plot(mesh);
+title(sprintf(<span class="string">'The mesh with %s segments'</span>,num2str(Nmesh)));
+xlabel(<span class="string">'t'</span>);
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_02.png" alt=""> <p>We can define 'P0' Finite elements on the mesh</p><pre class="codeinput">Vh = FEspace(mesh,<span class="string">'P0'</span>);
+figure
+plot(Vh.cell);
+title(<span class="string">'The ''P0'' finite element functions on the reference element'</span>);
+xlabel(<span class="string">'x'</span>);
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_03.png" alt=""> <p>or also 'P1' Finite elements on the mesh</p><pre class="codeinput">Vh = FEspace(mesh,<span class="string">'P1'</span>);
+figure
+plot(Vh.cell);
+title(<span class="string">'The ''P1'' finite element functions on the reference element'</span>);
+xlabel(<span class="string">'x'</span>);
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_04.png" alt=""> <p>Say we want to solve the Dirichlet scattering problem That is, let an incident field <img src="section1_singularity_andTitle_eq07515804179761612057.png" alt="$u_i$"> with <img src="section1_singularity_andTitle_eq11395802851554071393.png" alt="$\Delta u_i = 0$"> in all <img src="section1_singularity_andTitle_eq04223019192258237102.png" alt="$\bf{R}^2$">. Let us choose an incident wave that is constant.</p><pre class="codeinput">u_i = R2toRfunc(1);
+</pre><p>The scattered field <img src="section1_singularity_andTitle_eq11776305044305525613.png" alt="$u$"> satisfies <img src="section1_singularity_andTitle_eq08740633109457557938.png" alt="$\Delta u = 0$"> with <img src="section1_singularity_andTitle_eq05591838505409772066.png" alt="$u = -u_i$"> prescribed on both sides of the segment. Then, the scattered field is equal to <img src="section1_singularity_andTitle_eq09019461547986241023.png" alt="$S\lambda$"> where <img src="section1_singularity_andTitle_eq07657233533591063549.png" alt="$\lambda$"> is the jump of normal derivatives of <img src="section1_singularity_andTitle_eq11776305044305525613.png" alt="$u$"> across <img src="section1_singularity_andTitle_eq08796078824778739634.png" alt="$\Gamma$"> and <img src="section1_singularity_andTitle_eq14663648698641962978.png" alt="$S$"> is the single layer potential. On the segment, this translates to <img src="section1_singularity_andTitle_eq05384567120316049365.png" alt="$S\lambda = - u_i$">. Let us assemble the single layer potential. Here, the variable <i>S</i> is an object that contains a method for the matrix product evaluation on each vector, without storing the actual coefficients of the matrix. The linear system is solved using Krylov method (GMRES). For a function <img src="section1_singularity_andTitle_eq11776305044305525613.png" alt="$u$"> defined on <img src="section1_singularity_andTitle_eq08796078824778739634.png" alt="$\Gamma$">, the secondMember routine returns the linear form l with coefficients</p><p><img src="section1_singularity_andTitle_eq03828421795128065963.png" alt="$$l_i = \int_{\Gamma} u(x) \phi_i(x).$$"></p><p>Those coefficients are obtained via Gaussian quadratures.</p><pre class="codeinput">k = 0; <span class="comment">% Frequency.</span>
+S = singleLayer(k,Vh,[],{<span class="string">'a_factor'</span>,5}); <span class="comment">% By default, we set the evalutation points of the</span>
+<span class="comment">% Single layer on the gauss points of Vh. The a_factor parameter allows one</span>
+<span class="comment">% to control the proportion of 'close' vs 'far' interactions.</span>
+Sgalerk = S.galerkine(Vh,<span class="string">'U'</span>); <span class="comment">% A bilinear form with a matrix representation</span>
+l = Vh.secondMember(-u_i);
+lambda = variationalSol(Sgalerk,l); <span class="comment">% Here the gmres takes place.</span>
+figure
+plot(lambda);
+title(<span class="string">'The approximated solution of S \lambda = - u_i'</span>)
+</pre><pre class="codeoutput">********************************************* 
+SBD package : launching the radial decomposition
+New iterations, with number of components : 17 
+New iterations, with number of components : 34 
+Warning: Condition number too high, restarting with a =
+2.282177e-01 
+Bessel decomposition successfully computed. Number of terms : 26 
+Done 
+
+NUFFT for local correction : *
+****************
+gmres returned a solution in 6 iteration
+Warning: Imaginary part of the data ignored 
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_05.png" alt=""> <p>The exact solution of this problem is known.</p><pre class="codeinput">t = R2toRfunc(@(Z)(Z(:,1)));
+lambda_theo = -2/log(2)*1/sqrt(1-t^2);
+lambda_theo_h = Vh.Pi_h(lambda_theo);
+hold <span class="string">on</span>;
+plot(lambda_theo_h);
+legend({<span class="string">'approximated solution'</span>,<span class="string">'Theoretical solution'</span>});
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_06.png" alt=""> <p>If we refine the mesh, the approximation converges to the actual solution, however quite slowly.</p><pre class="codeinput">Nremesh = 300;
+S = S.remesh(Nremesh);
+Sgalerk = S.galerkine(S.Vh,<span class="string">'U'</span>);
+l = S.Vh.secondMember(-u_i);
+lambda = variationalSol(Sgalerk,l,[],1e-8,Nremesh); <span class="comment">% Here the gmres takes place.</span>
+figure
+plot(lambda);
+title(<span class="string">'The approximated solution of S lambda = - u_i'</span>)
+lambda_theo_h = S.Vh.Pi_h(lambda_theo);
+hold <span class="string">on</span>;
+plot(lambda_theo_h);
+legend({<span class="string">'approximated solution'</span>,<span class="string">'Theoretical solution'</span>});
+</pre><pre class="codeoutput">********************************************* 
+SBD package : launching the radial decomposition
+New iterations, with number of components : 91 
+New iterations, with number of components : 182 
+Bessel decomposition successfully computed. Number of terms : 108 
+Done 
+
+NUFFT for local correction : *
+********************************************************************************************************************
+gmres returned a solution in 56 iteration
+</pre><img vspace="5" hspace="5" src="section1_singularity_andTitle_07.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Solving the Dirichlet problem for the Laplacian outside a open arc. 
+% Our aim is to solve the boundary value problem $\Delta u = 0$ with given
+% Dirichlet data on an open line in $R^2$. The solution has a singularity
+% near the tips of the arc causing difficulties for numerical resolution.
+% We show a method of resolution using a weighted version of the single
+% layer potential and a preconditioner for the system based on an analysis
+% when the arc is the open segment $\Gamma = (-1,1)$. This preconditioner
+% involves a the square root of a weighted version of the Laplace operator. 
+
+%% 1°) Singularity of the solution
+% We first create the curve, which is the $\Gamma = [-1,1]$ segment.
+% _segment_ is an object of type "simpleCurve", containing the parametric
+% representation of the curve
+
+segment = unitSegment;
+figure
+plot(segment)
+title('The unit segment')
+xlabel('t');
+
+%%
+% We define a mesh on the curve.
+%%
+
+Nmesh = 10;
+mesh = MeshCurve(segment,Nmesh);
+figure
+plot(mesh);
+title(sprintf('The mesh with %s segments',num2str(Nmesh)));
+xlabel('t');
+
+%%
+% We can define 'P0' Finite elements on the mesh
+%%
+
+Vh = FEspace(mesh,'P0');
+figure
+plot(Vh.cell);
+title('The ''P0'' finite element functions on the reference element');
+xlabel('x');
+
+%%
+% or also 'P1' Finite elements on the mesh
+%%
+
+Vh = FEspace(mesh,'P1');
+figure
+plot(Vh.cell);
+title('The ''P1'' finite element functions on the reference element');
+xlabel('x');
+
+%%
+% Say we want to solve the Dirichlet scattering problem
+% That is, let an incident field $u_i$ with $\Delta u_i = 0$ in all $\bf{R}^2$. Let us
+% choose an incident wave that is constant.
+
+u_i = R2toRfunc(1);
+
+%%
+% The scattered field $u$ satisfies $\Delta u = 0$ with $u = -u_i$ prescribed
+% on both sides of the segment. Then, the scattered field is equal to
+% $S\lambda$ where $\lambda$ is the jump of normal derivatives of $u$ across
+% $\Gamma$ and $S$ is the single layer potential.
+% On the segment, this translates to $S\lambda = - u_i$. Let us assemble the
+% single layer potential. Here, the variable _S_ is an object that contains
+% a method for the matrix product evaluation on each vector, without
+% storing the actual coefficients of the matrix. The linear system is
+% solved using Krylov method (GMRES).
+% For a function $u$ defined on $\Gamma$, the secondMember routine returns
+% the linear form l with coefficients
+%
+% $$l_i = \int_{\Gamma} u(x) \phi_i(x).$$
+%
+% Those coefficients are obtained via Gaussian quadratures.
+
+k = 0; % Frequency.
+S = singleLayer(k,Vh,[],{'a_factor',5}); % By default, we set the evalutation points of the
+% Single layer on the gauss points of Vh. The a_factor parameter allows one
+% to control the proportion of 'close' vs 'far' interactions.
+Sgalerk = S.galerkine(Vh,'U'); % A bilinear form with a matrix representation
+l = Vh.secondMember(-u_i);
+lambda = variationalSol(Sgalerk,l); % Here the gmres takes place.
+figure
+plot(lambda);
+title('The approximated solution of S \lambda = - u_i')
+
+%%
+% The exact solution of this problem is known.
+t = R2toRfunc(@(Z)(Z(:,1)));
+lambda_theo = -2/log(2)*1/sqrt(1-t^2);
+lambda_theo_h = Vh.Pi_h(lambda_theo);
+hold on;
+plot(lambda_theo_h);
+legend({'approximated solution','Theoretical solution'});
+
+%%
+% If we refine the mesh, the approximation converges to the actual
+% solution, however quite slowly. 
+
+Nremesh = 300;
+S = S.remesh(Nremesh);
+Sgalerk = S.galerkine(S.Vh,'U');
+l = S.Vh.secondMember(-u_i);
+lambda = variationalSol(Sgalerk,l,[],1e-8,Nremesh); % Here the gmres takes place.
+figure
+plot(lambda);
+title('The approximated solution of S lambda = - u_i')
+lambda_theo_h = S.Vh.Pi_h(lambda_theo);
+hold on;
+plot(lambda_theo_h);
+legend({'approximated solution','Theoretical solution'});
+##### SOURCE END #####
+--></body></html>

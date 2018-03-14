@@ -1,0 +1,14 @@
+-- FreeFem++ v  3.380001 (date Mon Jun 29 13:19:02 GMT 2015)
+ Load: lg_fem lg_mesh lg_mesh3 eigenvalue
+    1 : bool debug = true;
+    2 : border a(t=0,2*pi){ x=cos(t); y=sin(t);label=1;}
+    3 : border b(t=0,2*pi){ x=0.8+0.3*cos(t); y=0.3*sin(t);label=2;}
+    4 : plot(a(500)+b(-30),wait=debug);
+    5 : mesh Th = buildmesh(a(500));
+    6 : plot(Th, wait = debug); sizestack + 1024 =1208  ( 184 )
+ 
+  --  mesh:  Nb of Triangles =  43142, Nb of Vertices 21822
+times: compile 0.017s, execution 0.558s,  mpirank:0
+ CodeAlloc : nb ptr  2547,  size :170328 mpirank: 0
+Ok: Normal End
+ try getConsole C:\Users\Martin\Documents\Scolaire\These\MonitoratMap431\TestsFrmeeFem.edp

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+. packCurrentVersion
+
+echo "Creation of v$(($ind+1))"
+prevFoldPath="v$ind"
+newFoldPath="v$(($ind+1))"
+
+if [ ! -d "newFoldPath" ]; then
+  mkdir "$newFoldPath" 
+  cp "$prevFoldPath/source.tex" "$newFoldPath/source.tex"
+  echo "Version v$(($ind+1)) created"
+  else
+  echo "error of communication with script 'packCurrentVersion'"
+fi
+
+
+
+
+

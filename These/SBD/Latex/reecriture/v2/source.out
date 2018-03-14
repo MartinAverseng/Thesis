@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Summary of the algorithm}{}% 2
+\BOOKMARK [1][-]{section.3}{Series of Bessel functions and error estimates}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Radial eigenvalues of the Laplace operator with Dirichlet conditions}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Truncature error for Fourier-Bessel series of smooth functions}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Other boundary conditions}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Sparse Bessel Decomposition}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Choice of the coefficients}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Numerical computation}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Stability}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Application to the Laplace kernel}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{Numerical results}{section.5}% 12
+\BOOKMARK [1][-]{section.6}{Circular quadrature}{}% 13
+\BOOKMARK [2][-]{subsection.6.1}{Theoretical bound}{section.6}% 14

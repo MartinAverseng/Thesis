@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Matrice de rigidité du simple couche sur le segment $(-1,1)$ avec les points de Tchebitchev}
+\begin{document}
+	\maketitle
+	On se propose dans cette note de donner une valeur approchée calculable numériquement de l'intégrale double
+	\[I_{ij} = \int_{x_i}^{x_{i+1}} \int_{x_j}^{x_{j+1}} \dfrac{\ln(|x - x'|)}{\sqrt{1-x^2}\sqrt{1- x'^2}}dx dx' \]
+	Où les points $x_0,...,x_{N-1}$ sont les points de Tchebitchev, définit par $x_i = \cos\left(i\frac{\pi}{N-1}\right)$
+	Dans la suite, on pose $\Delta = \pi/(N-1)$, $\theta_i = i \Delta$, $i = 0.. N-1$ $\phi_i = \frac{\theta_i + \theta_{i+1}}{2}$. 
+	
+	On commence par le changement de variable $x = \cos{\theta}$, $x' = \cos\theta'$, d'où la transformation 
+	\[I_{ij} = \int_{\theta_i}^{\theta_{i+1}} \int_{\theta_j}^{\theta_{j+1}} \ln(|\cos \theta - \cos \theta'|) d\theta d\theta'\]
+	On pose $f(\theta) = \int_{\theta_j}^{\theta{j+1}} \ln(|\cos \theta - \cos \theta'|) d\theta'$, et on fait l'approximation suivante : 
+	\[ I_{ij} \approx \Delta f(\phi_i).\]
+	Nous sommes donc ramenés à calculer $I _i = f(\phi_i)$. 
+	En utilisant l'identité $\cos p - \cos q = -2 \sin \frac{p+q}{2} \sin \frac{p-q}{2}$, on obtient 
+	\[I_i = \int_{\theta_i}^{\theta_{i+1}}\ln\left(2 \sin \frac{|\phi_i - \theta'|}{2}\right) + \int_{\theta_i}^{\theta_{i+1}}\ln\left(\sin\dfrac{\phi_i+\theta'}{2}\right)d\theta'  \]
+	On fait l'approximation $\sin u \approx u$ pour les petits arguments, en l'occurrence $|\phi_i - \theta|$ ici. On trouve donc : 
+	\[I_i \approx \int_{\theta_i}^{\theta_{i+1}}\ln\left(|\theta'-\phi_i|\right) + \int_{\theta_i}^{\theta_{i+1}}\ln\left(\sin\dfrac{\phi_i+\theta'}{2}\right)d\theta' \]
+	Pour la deuxième intégrale, on utilise une formule d'intégration à un point : 
+	\[ \int_{\theta_i}^{\theta_{i+1}}\ln\left(\sin\dfrac{\phi_i+\theta'}{2}\right)d\theta' \approx \Delta \ln(\sin \phi_i) \]
+	La première intégrale se calcule exactement : 
+	\[\int_{\theta_i}^{\theta_{i+1}}\ln\left(|\theta'-\phi_i|\right) = 2\int_{0}^{\Delta /2} \ln(u)du = \Delta\ln\left(\frac{\Delta}{2}\right)- \Delta\]
+	On obtient donc in fine 
+	\[ I_{ii} \approx \Delta^2 \left( \ln \left( \frac{\Delta}{2}\sin \phi_i\right) - 1\right)\]
+	Ce calcul est faux quand $i$ ou $j$ s'approchent de $0$ ou $\pi$.
+	\section{Meilleure approche}
+	On décompose l'intégrale en quatre parties distinctes : 
+	\[ I_{ij} = A_{ij} + B_{ij} + C_{ij} + D_{ij}, \]
+	Où on pose 
+	\[A_{ij} = \int_{\theta_i}^{\theta_{i+1}}\int_{\theta_j}^{\theta_{j+1}} \ln|\theta - \theta'|d\theta d\theta'\]
+	\[B_{ij} = \int_{\theta_i}^{\theta_{i+1}}\int_{\theta_j}^{\theta_{j+1}} \ln \frac{\theta + \theta'}{2} d\theta d\theta'\]
+	\[C_{ij} = \int_{\theta_i}^{\theta_{i+1}}\int_{\theta_j}^{\theta_{j+1}} \ln \left(\pi - \frac{\theta + \theta'}{2}\right)d\theta d\theta'\]
+	\[D_{ij} = \int_{\theta_i}^{\theta_{i+1}}\int_{\theta_j}^{\theta_{j+1}} \ln \left(\frac{\sin\frac{\theta + \theta'}{2}}{\frac{\theta + \theta'}{2} \left(\pi-\frac{\theta + \theta'}{2}\right)}\sinc \frac{\theta-\theta'}{2}\right)d\theta d\theta'\]
+	
+	Les trois premiers termes de la décomposition isolent les différentes singularités de l'intégrande et le quatrième est très régulier. 
+	
+	\subsection*{Valeur de $A$}
+	\subsubsection*{Si $i=j$}
+	Dans ce cas, on obtient $A_{ii} = \Delta^2(\ln\Delta - \frac{3}{2})$
+	\subsubsection*{Si $|i-j| = 1$}
+	Dans ce cas, on obtient $A_{ij} = \Delta^2(\ln\Delta + 2\ln2 - \frac{3}{2})$
+	\subsubsection*{Sinon ($|i-j| > 1$)}
+	Dans ce cas, on obtient $A_{ij} = \Delta^2(\ln\Delta + \ln|i-j|) + O(\Delta^4)$
+	\subsection*{Valeur de $B$}
+	\subsubsection*{Si $i = j = 0$}
+	Dans ce cas on obtient $B_{00} = \Delta^2(\ln(\Delta) + \ln(2) - \frac{3}{2})$
+	\subsubsection*{Sinon}
+	On obtient $B_{ij} = \Delta^2(\ln\Delta + \ln\frac{i+j+1}{2}) + O(\Delta^4)$
+	\subsection*{Valeur de $C$}
+	Elle se déduit de celle de $B$ par changement de variable dans l'intégrale.
+	\subsubsection*{Si $i = j = N-1$}
+	Dans ce cas on obtient $C_{N-1,N-1} = B_{0,0} = \Delta^2(\ln(\Delta) + \ln(2) - \frac{3}{2})$
+	\subsubsection*{Sinon}
+	On obtient $C_{i,j} = B_{N-1-i,N-1-j} = \Delta^2\left(\ln(\Delta) + \ln\left(N-\frac{i+j+1}{2}\right)\right) + O(\Delta^4)$
+	
+	\subsection*{Valeur de $D$}
+	On peut montrer que l'intégrande dans $D$ est infiniment régulier, donc l'intégrale est facilement approchée par n'importe quelle méthode de quadrature numérique. 
+	
+	\begin{Rem}
+		Ces résultats peuvent être vérifiés à l'aide de Maple. 	
+	\end{Rem}
+	
+	\section{Le cas $\mathbbm{P}_1$}
+	Le but est de calculer des intégrales de la forme 
+	\[ \int_{\theta_i}^{\theta_{i+1}} \int_{\theta_j}^{\theta_{j+1}}\ln{|\cos\theta- \cos\theta'|}(a\theta + b)(b\theta'+c)\] 
+	
+		
+\end{document}

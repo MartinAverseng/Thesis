@@ -1,0 +1,146 @@
+\documentclass[a4paper,french,sumlimits,12pt]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\textwidth 16.5cm \oddsidemargin -.5cm \evensidemargin -.5cm
+\addtolength{\textheight}{2cm} \addtolength{\topmargin}{-1cm}
+\def \rot{\operatorname{rot}}
+\def \Div {\operatorname{div}}
+\def \C{\mathcal C}
+\def \R {\mathbb R}
+\def \N {\mathbb N}
+\def \Z {\mathbb Z}
+\def \tr {\operatorname{tr}}
+\def \Id {\operatorname {Id}}
+\def \signature {\operatorname {sgn}}
+\def \Vol {\operatorname {Vol}}
+\def \cond {\operatorname {cond}}
+
+
+\begin{document}
+\noindent
+\begin{tabular}{lcr}
+MAP584\hspace*{0.8cm}&\textbf{Enseignement d'Approfondissement}&\hspace*{0.8cm}TP \texttt{Matlab}, Eléments finis 
+\end{tabular}\\
+\rule[0.5ex]{\textwidth}{0.2mm}
+
+\begin{center}
+{\Large{ \bf Premiers calculs par la méthode des éléments finis en 2D}}
+\end{center}
+
+
+
+\hrule
+\vspace*{0.3cm}
+
+\section{Le problème modèle}
+A partir de maintenant, nous avons la plupart des outils dont nous aurons besoin pour pouvoir appliquer la méthode des éléments finis sur des maillages bidimensionnels. Il reste les deux dernières étapes qui consistent respectivement: 
+\begin{itemize}
+\item A assembler la matrice du problème à résoudre ainsi que le second membre.
+\item A résoudre effectivement le système linéaire obtenu.
+\end{itemize}
+La première étape dépendra du problème que l'on doit résoudre, il faudra écrire une formulation variationnelle à chaque fois et assembler les systèmes correspondants.
+La deuxième étape est générique, nous ferons appel au solveur de systèmes linéaires de Matlab.\\
+
+Il est plus simple de commencer par étudier la mise en \oe uvre de la la méthode sur le problème appelé ``problème modèle de Neumann'' suivant:
+\begin{equation}
+\left\{
+\begin{array}{l}
+u-\Delta u = f \mbox{ dans } \Omega\\
+\frac{\partial u}{\partial n} = 0\mbox{ sur }\partial \Omega
+\end{array}
+\right.
+\label{pbmodele}
+\end{equation}
+
+\noindent {\bf  Question 1.} Montrer que la formulation variationnelle du problème s'écrit\\
+Trouver $u \in V$ tel que $\forall v \in V$
+$$
+\int_{\Omega} \left(u(x)v(x)+\nabla u(x)\cdot \nabla v(x)\right)\,dx = \int_\Omega f(x)v(x)\,dx\,,
+$$ 
+où $V=H^1(\Omega)$.\\
+
+Comme pour le TP1, on va résoudre la même formulation variationnelle en remplaçant $V$ par $V_h = \mathbb{P}_1(\Omega)$, c'est-à-dire que l'on veut résoudre\\
+Trouver $u_h \in V_h$ tel que $\forall v_h \in V_h$
+$$
+\int_{\Omega} \left(u_h(x)v_h(x)+\nabla u_h(x)\cdot \nabla v_h(x)\right)\,dx = \int_\Omega f(x)v_h(x)\,dx\,,
+$$ 
+
+On pose $u_h = \sum_{j=1}^{N_{ddl}} u_j \phi_j(x)$ et $v_h = \sum_{i=1}^{N_{ddl}} v_i \phi_i(x)$ et on considère les vecteurs
+$$
+U = (u_1,\cdots,u_{N_{ddl}})^t\mbox{ et }V = (v_1,\cdots,v_{N_{ddl}})^t\,.
+$$
+
+\noindent {\bf  Question 2.} Exprimer la matrice $A$ en fonction des matrices {\tt ef.u}, {\tt ef.dxu}, {\tt ef.dyu}, telle que
+$$
+\int_{\Omega} \left(u_h(x)v_h(x)+\nabla u_h(x)\cdot \nabla v_h(x)\right)\,dx = V^t \,A\,U\,.
+$$
+
+\noindent {\bf  Question 3.} De la même façon, exprimer le vecteur $F$ en fonction des valeurs de la fonction $f$ aux points d'intégration tel que
+$$
+\int_{\Omega} f(x)v(x)\,dx = V^t F = (V,F)\,.
+$$
+
+\noindent {\bf Question 4.} 
+Application. On veut résoudre le problème précédent sur le domaine $\Omega = ]0,2\pi[^2$ avec $f(x,y) = \cos(x)\cos(y)$. Vérifier tout d'abord que la solution exacte du problème est
+$$
+u(x,y) = \frac13 \cos(x)\cos(y)\,.
+$$
+Ecrire un programme qui résout ce problème par la méthode des éléments finis $\mathbb{P}^1$. On fera successivement:
+\begin{itemize}
+\item La construction du maillage du carré.
+\item La construction des formules d'intégration et de l'espace d'élément fini.
+\item La construction de la matrice du problème et du second membre.
+\item La résolution du système.
+\end{itemize}
+
+\noindent{\bf Question 5.} On a besoin d'une fonction pour visualiser la solution.
+En écrire une. Dans un premier temps, on visualisera la solution grâce à la fonction {\tt trimesh} en passant en argument les valeurs de la solution aux sommets des triangles.
+On pourra également colorier la surface en fonction de la valeur de l'inconnue. Constater, en observant le graphe de la solution, que si l'on change de second membre $f$ dans l'équation, la dérivée normale de la solution au bord est toujours nulle.\\
+
+\noindent{\bf Question 6.} Calculer les erreurs entre la solution exacte et la solution approchée, en norme $L^2$ et en norme $H^1$:
+$$
+\left(\int_\Omega (u(x)-u_h(x))^2\,dx\right)^\frac12\mbox{ et }\left(\int_\Omega (u(x)-u_h(x))^2\,dx+ \int_\Omega |\nabla(u-u_h)(x)|^2\,dx\right)^\frac12 \,.
+$$
+\\
+
+\noindent {\bf Question 7.} Analyse de la convergence de la méthode. Dans cette question, on cherche à comprendre à quelle vitesse la méthode des éléments finis converge en fonction de la finesse du maillage. Pour ce faire on va réaliser une suite de maillages de plus en plus fins en spécifiant le paramètre d'aire $a$ de plus en plus petit. Constater que lorsqu'on maille le carré, le maillage est régulier. Effectuer tous les calculs précédents et tracer la courbe de l'erreur en fonction de $h=\sqrt{a}$ en échelle loglog. Mesurer les pentes de ces droites pour les deux erreurs. Changer les éléments finis, de $\mathbb{P}_1$ à $\mathbb{P}_2$ et recommencer. Que constate-t-on?\\
+
+\noindent {\bf Question 8.} Conditions de Dirichlet. On souhaite maintenant pouvoir changer de conditions au limites et résoudre un problème de Dirichlet. On prend pour problème modèle le suivant:
+\begin{equation}
+\left\{
+\begin{array}{l}
+u-\Delta u = f \mbox{ dans } \Omega\\
+u = 0\mbox{ sur }\partial \Omega
+\end{array}
+\right.
+\label{pbmodele2}
+\end{equation}
+On souhaite adapter le(s) programme(s) précédent(s) à cette nouvelle situation. Pour cela, on doit modifier la matrice et le second membre du système linéaire précédent. \\
+Ecrire la nouvelle formulation variationnelle du problème en faisant intervenir l'espace $V=H^1_0(\Omega)$. Les fonctions que l'on doit considérer maintenant doivent s'annuler sur le bord du domaine. Un moyen facile et efficace pour réaliser cela est de construire une matrice $P$ qui prolonge une fonction nulle au bord en une fonction définie partout. Plus précisément, on avait $N_1$ degrés de liberté et il y en a maintenant moins (les données du bord ne sont plus des inconnues) et le système linéaire sera plus petit. Numéroter les degrés de liberté intérieurs de 1 à $N_2$ avec $N_2<N_1$, et fabriquer la matrice creuse $P$ de taille $N_1\times N_2$ où
+$$
+P_{ij} = 1
+$$
+si et seulement si le degré de liberté $j$ de la nouvelle numérotation a un numéro $i$ dans l'ancienne.\\
+Vérifier que la nouvelle matrice du problème à résoudre est 
+$$
+A' = P^t\,A\,P
+$$
+et construire le second membre correspondant (toujours en fonction de $P$).
+Enfin, écrire un cas test permettant de tester la nouvelle fonctionnalité. On fera comme précédemment un calcul d'erreur lorsque $h$ tend vers 0. Généraliser également l'approche aux éléments finis $\mathbb{P}_2$.
+
+
+
+
+
+
+
+
+ 
+
+\end{document}

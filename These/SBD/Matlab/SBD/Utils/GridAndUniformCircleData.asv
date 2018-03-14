@@ -1,0 +1,29 @@
+function[X,Y,V,Xaxis,Yaxis] = GridAndUniformCircleData(M,N)
+
+
+Nx = round(sqrt(M));
+Ny = Nx;
+Xmin = -0.8;
+Xmax = 0.8;
+
+Xaxis = linspace(Xmin,Xmax,Nx);
+Yaxis = linspace(Xmin,Xmax,Ny)';
+gridX = repmat(Xaxis,Ny,1);
+gridY = repmat(Yaxis,1,Nx);
+gridX = gridX(:);
+gridY = gridY(:);
+
+X = [gridX,gridY];
+r = 0.5;
+perturbation = randn(N,1)*0.5;
+theta = (linspace(0,1,N)'+perturbation)*2*pi;
+Y(:,1) = r*cos(theta);
+Y(:,2) = r*sin(theta);
+
+
+phases = (linspace(0,1,N)'+perturbation)*2*pi;
+V = (0.2+rand(N,1)).*exp(1i*phases);
+V = V/norm(V,1);
+
+
+end

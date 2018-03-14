@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Comportement singulier des solutions d'équations aux dérivées partielles sur des domaines polygonaux}
+\begin{document}
+\maketitle	
+
+\section{Idée de la méthode}
+Dans les problèmes linéaires rencontrés, la technique basique utilisée pour connaître les termes singuliers des solutions près des coins est particulièrement simple et consiste séparer les variables en coordonnées polaires. Par exemple pour l'équation de la place avec une fonction $u$ vérifiant les conditions de Dirichlet ou Neumann sur deux arêtes d'un polygone faisant un angle $\omega$, on cherche $u$ sous la forme $u = r^\lambda\Phi(\theta)$. Cela conduit à un problème aux valeurs propres pour $\Phi$ de la forme
+\[ \dfrac{d^2 R}{d \theta^2}  + \lambda^2 \Phi = 0\]
+On munit cette équation de conditions aux limites sur le segment $(0,\alpha)$ en accord avec les conditions de Neumann ou Dirichlet du problème initial. 
+
+\section{Définitions}
+
+La référence que nous utilisons pour ce compte-rendu est la suivante : \cite{petersdorff1990decompositions}. \\
+On considère un polygone dont l'intérieur ouvert est noté $\Omega$, possédant $J$ côtés dont les sommets sont notés $t_1, t_2,..., t_J$. L'angle (intérieur) au sommet $j$ est noté $\omega_j$ et on pose $\nu_j = \dfrac{\pi}{\omega_j}$
+On définit les fonctions singulières attachées au côté $j$ suivantes
+\begin{align*}
+S_m^j(r,\theta) &= r^{m \nu_j} \sin\left(m \nu_j \theta\right) \quad & \text{lorsque } m\nu_j \notin \mathbb{N} \\
+ S_m^j(r,\theta) &= r^{m \nu_j} \left[\log(r)\sin\left(m\nu_j \theta\right) + \theta\cos\left(m\nu_j \theta\right)\right] \quad & \text{lorsque } m\nu_j \in \mathbb{N} \\
+\end{align*}
+Notons que $\nu_j = 1$ lorsque l'angle est plat, $\nu_j=2$ lorsque c'est un angle droit, $\nu_j$ tend vers $+\infty$ pour un angle très 'pointu' et vers $1/2$ pour une fissure. En particulier, si $\Omega$ est convexe, $\nu_j > 1$ pour tout $j$. 
+Les ensembles singuliers $E_j(s)$ attachés à chaque sommet sont donnés par
+\begin{itemize}
+\item[-] Si $\nu_j \neq \dfrac{1}{2}$, $E_j(s) = \enstq{S_m^j}{m \in \mathbb{N}, 0 < m\nu_j < s}$
+\item[-] Sinon, $E_j(s) = \enstq{S_m^j}{m \in 2\mathbb{N}+1, 0 < m\nu_j < s}$
+\end{itemize}
+\begin{Prop} Soit $1 \leq j \leq J$. Soit $m \in \mathbb{N}$ tel que $m\nu_j \notin \mathbb{N}$. Pour tout $s <  m\nu_j + 1$, la fonction $S_m^j$ est dans $H^s(\mathbb{R}^2)$. 
+\end{Prop}
+Ce résultat découle du fait suivant (voir démo dans \cite{mclean2000strongly} chapitre 5.) 
+\begin{Prop} Soit $f$ une distribution tempérée homogène de degré $\alpha$. Alors sa transformée de Fourier est une distribution homogène de degré $-\alpha-n$. 
+\end{Prop}
+
+\section{Équation de Laplace}
+
+On s'intéresse au comportement de la solution d'un problème de Dirichlet avec second membre $f$. Soit $s > 0$, $f \in H^{s-1}(\Omega)$ et soit $u$ la solution unique dans $H^{1}(\Omega)$ du problème de Dirichlet : 
+\[\left\{\begin{array}{rcl}
+\Delta u &= f & \text{ sur } \Omega \\
+u & = 0 & \text{ sur } \partial \Omega
+\end{array}\right.
+\]
+Au voisinage de chaque sommet $t_j$, on définit des coordonnées polaires locales $(r_j, \theta_j)$. Nous citons à présent le théorème $1$ de \cite{petersdorff1990decompositions}
+\begin{The} Il existe des fonctions $\chi_j \in C^{\infty}_c(\Omega)$, nulles en-dehors d'un voisinage de $t_j$ dans $\Omega$, des coefficients $c_m^j \in \mathbb{R}$ et une fonction $u_0 \in H^{s+1}(\Omega)$ tels que 
+\[ u(x) = \sum_{j=1}^J \chi_j(x) \left[\sum_{S_m^j \in E_j(s)} c_m^j S_m^j(r_j, \theta_j)\right]+ u_0(x)\] 
+\end{The}
+
+\begin{Cor} Supposons que $f \in C^{\infty}(\Omega)$. Au voisinage du sommet $t_j$, (on suppose $\nu_j \neq \dfrac{1}{2}$ et $\nu_j \notin \mathbb{Q}$ pour simplifier), la solution $u$ admet le développement suivant 
+\[ u = \sum_{m = 1}^{M} c_m r_j^{m \nu_j} \sin(m \nu_j \theta_j) + u_M(x)\]
+pour tout $M>0$, où pour tout $\varepsilon>0$ assez petit $u_M \in H^{(M+1)\nu_j + 1 - \varepsilon}(\Omega)$
+\end{Cor}
+Dans cette configuration, l'ajout d'un terme singulier dans le développement fait progresser la régularité du reste de $\nu_j$. Ainsi, plus l'angle est aigu, plus la régularité du reste s'accroît rapidement avec l'ajout de termes dans le développement singulier. Au contraire, si l'angle est très proche d'une fissure, il faut ajouter beaucoup de termes pour obtenir un reste d'une régularité donnée. 
+Dans le cas particulier où $f \in L^2(\Omega)$ si $\Omega$ est convexe,  l'ensemble $E_j(1)$ est vide car $\nu_j > 1$ pour tout $j$. On a donc un gain de régularité de deux dérivées : 
+\begin{Cor} Si $\Omega$ est convexe, pour tout $f \in L^2(\Omega)$, la solution du problème de Dirichlet est dans  $H^{2}(\Omega)$
+\end{Cor}
+Dans le cadre d'une approche par éléments finis enrichis avec des fonctions de base $\mathbbm{P}_1$, la convergence est optimale dès lors que la régularité du reste est au moins $2$. Dans ce cas, il est inutile d'enrichir l'espace des fonctions de manière trop précise. Nous proposons donc un corollaire qui est un cas particulier dans le cas simplifié où $s=1$. Dans ce cas, les seuls coins problématiques sont ceux associés à des angles intérieurs obtus (donc des coins rentrant dans le domaine $\Omega$). Dans ce cas, une seule solution singulière est nécessaire puisque $\nu_j > \dfrac{1}{2}$. 
+\begin{Cor} On suppose que $f \in L^2(\Omega)$. Soit $\mathcal{J}_{\text{obtus}}$ la liste des sommets pour lesquels $\nu_j < 1$. Alors $u$ admet le développement 
+\[ u(x) = \sum_{j\in \mathcal{J}_{\text{obtus}}} \chi_j(x) c_j r_j^{\nu_j} \sin(\nu_j \theta_j)+ u_0(x)\] 
+Où $u_0 \in H^2(\Omega)$.  
+\end{Cor}
+
+
+
+
+\section{Équation de Helmholtz}
+
+Ici je cite sans avoir pu vérifier un résultat cité de manière informelle dans la remarque $1$ de \cite{petersdorff1990decompositions}. La référence à trouver est la thèse de Monique Dauge \cite{dauge1986regularites} (Proposition 16.8). Notamment, le cas où $\mu$ est une valeur propre du Laplacien dans le résultat énoncé par la suite semble problématique. 
+
+Soit à présent $\mu \in \mathbb{R}$ et $u$ 'la' solution du problème de Dirichlet pour l'équation de Helmholtz : 
+\[\left\{\begin{array}{rcl}
+\Delta u + \mu u &= f & \text{ sur } \Omega \\
+u & = 0 & \text{ sur } \partial \Omega
+\end{array}\right.
+\]
+(si $\mu$ est une valeur propre du Laplacien, on demande peut-être que $f$ vérifie les conditions nécessaires de compatibilité, et $u$ n'est déterminé que modulo une combinaison linéaire des vecteurs propres associés. Que les vecteurs propres eux-mêmes entrent en compte ou non dans le développement asymptotique n'est pas a priori évident.)
+ \cite{petersdorff1990decompositions} :
+\begin{The} Au voisinnage d'un sommet $j$ du polygône, $u$ admet le développement asymptotique suivant : 
+\[ u = \sum_{0 < m\nu_j < s} c_m \sum_{0< m\nu_j + 2p < s} \alpha_{m,p} r_j^{m\nu_j + 2p} \sin(m\nu_j \theta_j)\]
+\end{The}
+La preuve se base probablement sur le développement en série entière des fonctions de Bessel et la méthode de séparation des variables. En effet, cherchons une solution $u(r,\theta) = R(r)\Phi(\theta)$ de l'équation homogène. On suppose que $\nu_j > \dfrac{1}{2}$. L'équation de Helmholtz étant vérifiée par $u$ (et dorénavant on suppose $\mu = k^2 >0$), on doit avoir 
+\[ \Phi(\theta)'' + \lambda\Phi(\theta) = 0\] 
+(On cherche à résoudre l'équation homogène pour des conditions de Dirichlet homogènes, c'est-à-dire à obtenir les solutions du problème adjoint. Ce qui est technique c'est de garder les bonnes et de savoir si on les a toutes). 
+Pour un certain $\lambda$. Le cas $\lambda \leq 0$ mène, à cause des conditions aux limites, à $\Phi = 0$ (quelle que soit la combinaison de conditions aux limites homogènes choisie : Dirichlet-Dirichlet, Neumann-Neumann, Dirichlet-Neumann etc.). On a donc $\lambda >0$ et
+\[\Phi(\theta) = A\cos(\sqrt{\lambda}\theta + \varphi)\] 
+Les valeurs possibles pour $\lambda$ sont ainsi quantifiées par les conditions aux limites. Pour des conditions de Dirichlet homogènes, on doit avoir 
+\[\sqrt{\lambda} = m\dfrac{\pi}{\omega_j}\]
+Pour un certain m entier non nul. On retrouve bien $\sqrt{\lambda} = m \nu_j$. On se reporte maintenant à l'équation que doit vérifier $R$, qui est l'équation de type Bessel suivante :
+\[r^2R'' + rR' + (k^2r^2 - m^2 \nu_j^2)R = 0\]
+En posant $U(r) = R(\dfrac{r}{k})$, on a
+\[r^2 U'' + r U' + \left(r^2 - m^2 \nu_j^2\right)U = 0\]
+D'où on déduit, puisque $U$ doit être bornée, $U = J_{m \nu_j}(r)$ (la fonction de Bessel de première espèce) soit 
+\[R(r) =  J_{m \nu_j}(kr)\]
+D'où le développement suivant :
+\[R(r) = \sum_{p = 0}^{\infty} \dfrac{(-1)^m}{m!\Gamma(m + m \nu_j +1)}\left(\dfrac{kr}{2}\right)^{2p + m \nu_j}\]
+On retrouve ainsi le comportement singulier décrit par la théorème indiqué en référence. 
+
+
+
+ 
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio}  
+\end{document}

@@ -1,0 +1,6 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Repr\IeC {\'e}sentation int\IeC {\'e}grale}{6}{0}{2}
+\beamer@sectionintoc {3}{Projecteurs de Calder\IeC {\`o}n}{12}{0}{3}
+\beamer@sectionintoc {4}{El\IeC {\'e}ments finis de fronti\IeC {\`e}re}{21}{0}{4}
+\beamer@sectionintoc {5}{R\IeC {\'e}solution num\IeC {\'e}rique}{28}{0}{5}

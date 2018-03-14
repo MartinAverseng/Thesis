@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper]{article}
+\input{C://Users/Martin/Documents/Scolaire/Divers/Definitions.tex}
+\title{Inversion de l'opérateur de simple couche sur un hyperplan}
+\author{Martin Averseng}
+\begin{document}
+\maketitle
+
+\section{Notations}
+
+On considère le noyau de Green $G$ de l'équation de Helmholtz dans $\mathbb{R}^3$,
+\[ -(\Delta+k^2)G = \delta_0 \text{ dans }\mathbb{R}^3,\]
+associée à la fréquence $k$, $k > 0$ et vérifiant la condition de radiation à l'infini.
+\[\lim_{r \to \infty} r\dfrac{\partial G}{\partial r} - ik G = 0,\]
+où $r$ désigne $|x|$, $\dfrac{\partial}{\partial r}$ désigne l'opérateur $x\cdot \nabla$, et $\delta_0$ représente la fonction dirac centrée à l'origine. On rappelle qu'alors l'expression de $G$ est donnée par 
+\[ G(x) = \dfrac{e^{ik|x|}}{4\pi|x|}\]
+On définit un opérateur \[\functionDef{K}{\mathcal{S}(\mathbb{R}^{2})}{\mathcal{S}(\mathbb{R}^{2})}{u}{ x \in \mathbb{R}^2 \mapsto\int_{\mathbb{R}^{2}}\tilde{G}(x-y)u(y)dy}\]
+Où $\tilde{G}$ est défini sur $\mathbb{R}^{2}$ par :
+\[ \tilde{G}(x_1,x_2) = G(x_1,x_2,0)\]
+On souhaite montrer le théorème suivant 
+\begin{The} L'opérateur $K$ est inversible, et son inverse est donné par l'opérateur $L$ défini par 
+\[ \functionDef{L}{\mathcal{S}(\mathbb{R}^{2})}{\mathcal{S}(\mathbb{R}^{2})}{u}{x \in \mathbb{R}^d \mapsto\int_{\mathbb{R}^{2}}(\Delta\tilde{G}+k^2\tilde{G})(x-y)u(y)dy}\]
+\end{The}
+
+\section{Démonstration}
+
+L'opérateur précédent étant exprimé comme une convolution par le noyau $\tilde{G}$, nous allons étudier la transformée de Fourier de ce dernier : 
+\begin{Lem} 
+\[\mathcal{F}(\tilde{G})(\xi) = \dfrac{1}{4\pi|\xi|} \mathcal{F}(HJ_0)\left(-\dfrac{k}{|\xi|}\right),\]
+Où $H$ est la fonction d'Heaviside. 
+\end{Lem}
+\begin{proof}
+Soit $\varphi$ une fonction test. Par définition :
+\begin{align*}
+\duality{\mathcal{F}(\tilde{G})}{\varphi} &= \duality{\tilde{G}}{\mathcal{F}(\varphi)}\\
+ &= \int_{\mathbb{R}^2} G(x) \int_{\mathbb{R}^2} e^{-i x \cdot \xi} \varphi(\xi) d\xi
+\end{align*}
+On effectue un changement de variable polaire dans la première intégrale : 
+\begin{align*}
+\duality{\mathcal{F}(\tilde{G})}{\varphi} &= \int_{0}^{+\infty} rG(r)dr \int_{\mathbbm{S}^2} d\sigma(u) \int_{\mathbb{R}^2} e^{-ir \xi \cdot u} \varphi(\xi)d \xi\\
+\end{align*}
+En utilisant le théorème de Fubini, on permute les deux dernières intégrales, puisque l'intégrande est majorée sur un domaine compact. 
+\begin{align*}
+\duality{\mathcal{F}(\tilde{G})}{\varphi} &= \int_{0}^{+\infty} e^{ikr}dr \int_{\mathbb{R}^2}\varphi(\xi) \left( \int_{\mathbbm{S}^2}e^{-ir \xi \cdot u} d\sigma(u) \right)d \xi\\
+&= \int_{0}^{+\infty}  e^{ikr}dr \int_{\mathbb{R}^2} J_0(r|\xi|) \varphi(\xi) d\xi
+\end{align*}
+On effectue enfin le changement de variable $r' = r|\xi|$ : 
+\begin{align*}
+\duality{\mathcal{F}(\tilde{G})}{\varphi} &= \int_{0}^{+\infty}\int_{\mathbb{R}^2} \dfrac{e^{i k \frac{r'}{|\xi|}}}{|\xi|} J_0(r')\varphi(\xi) d\xi dr'
+\end{align*}
+Ok je vois que le calcul n'aboutit pas comme ça... Il faut que j'approche $G$ par $G\phi_n$ pour tronquer $G$ et rendre tout intégrable. Ensuite j'utilise que si $G_n \to G$ alors $\mathcal{F}(G_n) \to \mathcal{F}(G)$
+
+\end{proof}
+\begin{Def} Soit $E$ un sous-espace vectoriel de dimension $p$ de $\mathbb{R}^{d-1}$. On définit la distribution de mesure uniforme sur $E$ $\mu_{E}$ par 
+\[\duality{\mu_{E}}{f} = \int_{\mathbb{R}^{p}} f\left(\sum_{i=1}^p \lambda_i e_i\right)d\lambda_1 ...d\lambda_p\]
+Où $(e_1,...,e_p)$ est une base orthonormée de $E$.
+\end{Def}
+Notons que cette définition est correcte, et notamment qu'elle ne dépend pas du choix de la base en vertu du théorème de changement de variables. 
+
+\begin{Lem} La distribution $\mu_E$ a pour transformée de Fourier la distribution $\mu_{E^{\perp}}$ 
+\begin{proof}
+Nous notons $(e_1,e_2,...,e_d)$ une base orthonormée adaptée à la décomposition $\mathbb{R}^d = E\bigoplus E^{\perp}$ et $f$ une fonction test. Par définition de la transformée de Fourier, on a 
+\[\duality{\hat{\mu}_E}{f} = \int_{\mathbb{R}^p} \hat{f}\left(\sum_{i=1}^p \lambda_i e_i\right)d\lambda_1...d\lambda_n\]
+Et l'on peut expliciter $\hat{f}$ dans l'égalité précédente, soit
+\[ \duality{\hat{\mu}_E}{f} = \int_{\mathbb{R}^p} \int_{\mathbb{R}^d}\exp\left(i\left(\sum_{i=1}^p\lambda_i e_i\right)\cdot \left(\sum_{i=1}^d\nu_i e_i\right)\right)f\left(\sum_{i=1}^d\nu_i e_i\right)d\nu_1...d\nu_d d\lambda_1 ...d\lambda_p\]
+\[\duality{\hat{\mu}_E}{f} = \int_{\mathbb{R}^p} \int_{\mathbb{R}^d}\exp\left(i\sum_{i=1}^p\lambda_i \nu_i\right)f\left(\sum_{i=1}^d\nu_i e_i\right)d\nu_1...d\nu_d d\lambda_1 ...d\lambda_p\]
+Décomposons la seconde intégrale en intégrant d'abord sur $E^{\perp}$ :
+
+\[\duality{\hat{\mu}_E}{f} = \int_{\mathbb{R}^p} \int_{\mathbb{R}^p}\exp\left(i\sum_{i=1}^p\lambda_i \nu_i \right)\left(\int_{\mathbb{R}^{d-p}}f\left(\sum_{i=1}^d\nu_i e_i\right)d\nu_{p+1}...d\nu_d \right)d\nu_1... d\nu_p d\lambda_1 ...d\lambda_p\]
+
+Pour éclaircir les notations et voir le résultat, il reste à poser 
+\[F(\nu_1,\nu_2,...,\nu_p) = \int_{\mathbb{R}^{d-p}}f\left(\sum_{i=1}^d\nu_i e_i\right)d\nu_{p+1}...d\nu_d \]
+Avec cette définition, on peut réécrire 
+\[\duality{\hat{\mu}_E}{f} = \int_{\mathbb{R}^p} \int_{\mathbb{R}^p}\exp\left(i\sum_{i=1}^p\lambda_i \nu_i \right)F(\nu_1,...,\nu_p)d\nu_1... d\nu_p d\lambda_1 ...d\lambda_p\]
+Le théorème d'inversion de la transformée de Fourier assure alors 
+\[\duality{\hat{\mu}_E}{f} = F(0,0,...,0)\]
+C'est-à-dire  
+\[\duality{\hat{\mu}_E}{f} = \duality{\mu_{E^\perp}}{f}\]
+\end{proof}
+\end{Lem}
+Nous n'aurons pas besoin de ce lemme. 
+À la place, nous sommes obligés de passer par un calcul assez technique. D'abord, il est classique que
+\begin{Lem} La transformée de Fourier de la fonction de Bessel $J_0$ est donnée par : 
+\[\mathcal{F}(J_0)(\omega) = \int_{-\infty}^{+\infty} e^{-i\omega r} J_0(r)dr = 2\dfrac{\mathbbm{1}_{]-1,1[}(\omega)}{\sqrt{1-w^2}}\]
+\end{Lem}
+Cela permet d'obtenir, si $H$ est la fonction d'Heaviside :  
+\begin{Lem} On a la formule suivante : 
+\[ \mathcal{F}(H  J_0) = \int_{0}^{+\infty} e^{i\omega r} J_0(r) = \mathbbm{1}_{-1<\omega<1}\dfrac{1}{\sqrt{1-\omega^2}} + i \mathbbm{1}_{\omega \notin ]-1,1[}\dfrac{1}{\sqrt{\omega^2-1}} \]
+\begin{proof}
+Notez que l'intégrale écrite ci-dessus est impropre puisque $J_0$ n'est pas intégrable en l'infini. On doit donc travailler avec les distributions. Étant donné que la transformée de Fourier de $J_0$ est à support compact, les transformes de Fourier des distributions $H$ et $J_0$ sont convolables et avec les conventions choisies pour la transformée de Fourier, on a :
+\begin{align*}
+\mathcal{F}(HJ_0) &= \dfrac{1}{2\pi}\mathcal{F}(H)*\mathcal{F}(J_0)\\
+& = \dfrac{1}{2\pi}\left(\pi \delta - i \text{v.p.}\left(\dfrac{1}{\omega}\right)\right)*\mathcal{F}(J_0)\\
+& = \dfrac{1}{2} \mathcal{F}(J_0) - \dfrac{i}{2\pi} \text{v.p.}\left(\dfrac{1}{\omega}\right)*\mathcal{F}(J_0)
+\end{align*}
+Seul le dernier terme reste à calculer, étant donné le résultat du lemme précédent. Soit $\varphi$ une fonction test, par définition du produit de convolution dans $\mathcal{D}(\mathbb{R})\times \mathcal{E}(\mathbb{R})$, on a 
+\begin{align*}
+\duality{\text{v.p.}\left(\dfrac{1}{\omega}\right)*\mathcal{F}(J_0)}{\varphi} &= \duality{\text{v.p.}\left(\dfrac{1}{\omega}\right)}{\mathcal{F}(J_0)*\varphi} \\
+& = \lim_{\varepsilon\to0} \int_{\abs{\omega}> \varepsilon} \dfrac{\varphi * \mathcal{F}(J_0)(\omega)}{\omega}
+\end{align*} 
+En tenant compte de la parité de la transformée de Fourier de $J_0$. Pour un $\varepsilon$ fixé, on peut réécrire l'intégrale précédente en permutant l'ordre d'intégration : 
+\begin{align*}
+\int_{\abs{\omega}> \varepsilon} \dfrac{\varphi * \mathcal{F}(J_0)(\omega)}{\omega} &= 2\int_{\abs{\omega}> \varepsilon} \dfrac{1}{\omega} \int_{-\infty}^{+\infty} \varphi(u)\dfrac{\mathbbm{1}_{]-1,1[}(\omega-u)}{\sqrt{1-(\omega-u)^2}}\\
+& = 2 \int_{-\infty}^{+\infty} \varphi(u) \int_{\abs{\omega}> \varepsilon} \dfrac{\mathbbm{1}_{]-1,1[}(\omega-u)}{\omega\sqrt{1-(\omega-u)^2}}
+\end{align*}
+Nous allons calculer la deuxième intégrale : 
+\begin{align*}
+I_\varepsilon(u) = \int_{u-1}^{u+1} \dfrac{\mathbbm{1}_{\abs{\omega}> \varepsilon}}{\omega\sqrt{1-(\omega-u)^2}}d\omega
+\end{align*}
+Il faut montrer qu'elle converge dans $L^1(\mathbb{R})$ vers la fonction 
+\[I(u) = \mathbbm{1}_{u \notin [-1,1]} \dfrac{\pi}{\sqrt{u^2-1}}\]
+Il est aisé de voir que $I_\varepsilon(u) = I_{\varepsilon}(-u)$. Nous ne le calculerons donc que pour $u$ positif. Soit $\varepsilon$ un réel positif suffisamment petit pour rendre possibles tous les prochains calculs, Lorsque $u>1+\varepsilon$, un calcul élémentaire permet de montrer que 
+\[I_\varepsilon(u) = \dfrac{\pi}{\sqrt{u^2-1}}.\]
+Lorsque $u \in ]1-\varepsilon,1+\varepsilon[$, on a alors l'expression
+\[I_\varepsilon(u) = \int_{\varepsilon}^{u+1} \dfrac{1}{\omega\sqrt{1-(\omega-u)^2}}d\omega,\]
+dont il est facile de montrer qu'elle vérifie 
+\[|I_\varepsilon(u)| \leq C + D\ln\left(\dfrac{1}{\varepsilon}\right),\]
+ce qui assure que l'intégrale de $I_\varepsilon$ sur $]1-\varepsilon,1+\varepsilon[$ tend vers 0 comme $\varepsilon\ln(\varepsilon)$. 
+
+Lorsque $\varepsilon < u < 1-\varepsilon$, le calcul est ramené à 
+\[I_\varepsilon(u) = \int_{]u-1,-\varepsilon[\cup]\varepsilon,u+1[} \dfrac{1}{\omega\sqrt{1-(\omega-u)^2}} = \int_{]-1,-u-\varepsilon[\cup]-u+\varepsilon,1[} \dfrac{1}{	(\omega+u)\sqrt{1-\omega^2}}.\]
+Les changements de variables $\omega = \sin(\theta)$ et $t = \tan(\theta/2)$ mènent à l'expression suivante : 
+\[ I_{\varepsilon}(u) = \int_{]-1,h(u-\varepsilon)[\cup]h(u+\varepsilon),1[} \dfrac{1}{u(t-u{-})(t-u^{+})}.\]
+Où $u^{-}$ et $u^{+}$ sont les deux racines distinctes du polynôme 
+\[P(u) = t^2 - \dfrac{2}{u}t + 1.\]
+de discriminant $\Delta = \dfrac{4}{u^2}(1-u^2) >0$, et où $h(x)$ est la fonction définie pour $x \in ]0,1[$ par 
+\[h(x) = \dfrac{1-\sqrt{1-x^2}}{x}\]  
+On note que $h(u) = u^{-}$, $h$ tend vers $0$ en $0$, vaut $1$ en $x=1$ et est strictement croissante. Ainsi, comme on pouvait s'y attendre, l'intégration "évite" le pôle non intégrable $u^{-}$. On peut noter que $u^+$ est en dehors du domaine d'intégration (en effet, $u^{+}>1$ puisque $u^+ u^- = 1$). En décomposant en éléments simples 
+\[ \dfrac{1}{u(t-u^-)(t-u^+)} = \dfrac{1}{2\sqrt{1-u^2}}\left(\dfrac{1}{t-u^+} - \dfrac{1}{t-u^-}\right)\] 
+et en intégrant cette expression, on trouve
+\[ I_\varepsilon(u) = \dfrac{1}{2\sqrt{1-u^2}} \left(\left[\ln\left(\dfrac{u^+-t}{u^--t}\right)\right]_{-1}^{h(u-\varepsilon)} + \left[\ln\left(\dfrac{u^+-t}{t-u^-}\right)\right]_{h(u+\varepsilon)}^{1}\right)\]
+Ce qui conduit à 
+\[I_{\varepsilon}(u) = \dfrac{1}{2\sqrt{1-u^2}}\ln\left(\dfrac{(u^+ - h(u-\varepsilon))(h(u+\varepsilon)-u^-)}{(u^+-h(u+\varepsilon))(u^--h(u-\varepsilon))}\right)\]
+Un développement limité en $\varepsilon$ permet de constater que la limite ponctuelle de $I_\varepsilon$ est bien nulle sur l'intervalle $]\varepsilon,1-\varepsilon[$. D'autre part des majorations grossières de $I_\varepsilon(u)$ montrent qu'elle est dominée indépendamment de $\varepsilon$ par une fonction intégrable sur $]-1,1[$. Le théorème de convergence dominée assure donc que 
+\[ \lim_{\varepsilon\to 0} \int_{\varepsilon}^{1-\varepsilon} |I_{\varepsilon}(u)|du = 0\]
+De même que précédemment, il est évident que 
+\[ \lim_{\varepsilon \to 0} \int_{0}^{\varepsilon}|I_{\varepsilon}(u)| = 0 \]
+en majorant encore grossièrement $I_\varepsilon$ sur l'intervalle d'intégration. 
+\end{proof}
+\end{Lem}
+
+On déduit des résultats précédents la formule suivante :
+\begin{Lem} Pour tout $\xi \in \mathbb{R}^{2}$
+\[ \mathcal{F}(\tilde{G})(\xi) = \dfrac{1}{4\pi}\left(\mathbbm{1}_{k < |\xi|}\dfrac{1}{\sqrt{|\xi|^2-k^2}} + i \mathbbm{1}_{k > |\xi|}\dfrac{1}{\sqrt{k^2-|\xi|^2}}\right) \]
+\end{Lem}
+En particulier, on peut constater que 
+\[(|\xi|^2-k^2) (\mathcal{F}(\tilde{G}))^2 = \dfrac{1}{16\pi^2}\]
+
+Prouvons maintenant le théorème. Soit $u\in \mathcal{S}(\mathbb{R}^2)$ et soit $v = Ku$. En changeant la convolution en produit dans le domaine de Fourier, cela s'écrit :
+\[v(x) = \dfrac{1}{4\pi^2}\int_{\mathbb{R}^2} e^{i x\cdot \xi}\mathcal{F}(\tilde{G})(\xi)\mathcal{F}(u)(\xi)\] 
+Appliquons l'opérateur $-\Delta - k^2Id$ à cette expression et nommons $w$ le résultat :
+\begin{align*}
+w(x) &= -\Delta(v)(x) - k^2 v(x) \\
+&= \dfrac{1}{4\pi^2}\int_{\mathbb{R}^2} (|\xi|^2-k^2)e^{i x\cdot \xi}\mathcal{F}(\tilde{G})(\xi)\mathcal{F}(u)(\xi)\\
+\end{align*}
+Appliquons l'opérateur $K$ à $w$ : 
+\[Kw(x) = \dfrac{1}{2\pi} \int_{\mathbb{R}^2}e^{i x\cdot \xi}\mathcal{F}(\tilde{G})(\xi)\dfrac{\mathcal{F}(u)(\xi)}{\mathcal{F}(\tilde{G})(\xi)} = u(x)\]
+Par transformée de Fourier inverse. En permuttant la convolution et les dérivations, on en déduit que 
+\[ u(x) = (-\Delta \tilde{G} - k^2 \tilde{G}) * Ku (x)\]
+Ce qui conclut la démonstration. 
+\end{document}
+
+% Christiansen en thèse avec Nédelec 
+% demander les références sur l'inversion exacte
+% Ramaciotti 
+% Oscar Bruno
+% Regarder l'hypersingulier comment le faire
+% Bendali (papier récent) 
+% Sophie Borel
+% Invesion analytique en Fourier pour vérifier
+% Bouquin de Nédélec
+% Relire aboud terasse sur page 189 (se focaliser sur l'hypersingulier). 
+% Bouquin de Dautray-JL-Lions : chapitre éq intégrales. (le truc en 9 vol.)
+
+%%Se concnentrer sur : 
+1°) Grisvard traces sur 1 coin (exprimer les conditions de raccord). 
+2°) Faire un point sur l'hypersingulier, comprendre bien Calderon. 
+
+
+

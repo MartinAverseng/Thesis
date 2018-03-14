@@ -1,0 +1,60 @@
+\documentclass[11pt,a4paper]{article}
+\input{C://Users/Martin/Documents/Scolaire/Divers/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Compacité dans $H^{1/2}(\Gamma)$ pour l'opérateur régulier dans la méthode SCSD.}
+\begin{document}
+\maketitle
+\section*{}
+Soit $\Omega$ un domaine (ouvert connexe) borné de $\mathbb{R}^n$ ($n=2$ ou $3$) lipschitzien, c'est à dire qui est localement situé sous le graphe d'une fonction lipschitzienne. On note $\Gamma$ sa frontière. On rappelle que 
+\begin{itemize}
+\item[-] L'injection canonique $H^2(\Omega) \subset H^1(\Omega)$ est compacte
+\item[-] L'espace $H^{1/2}(\Gamma)$ (une définition des espaces de Sobolev au bort d'un domaine borné est donnée dans \cite[Chapitre 1, p.~20]{grisvard2011elliptic}) a pour dual l'espace $H^{-1/2}(\Gamma)$. 
+\item[-] L'application trace, notée $\gamma$, est l'unique extension continue à $H^1(\Omega)$ de l'application de restriction des fonctions régulières au bord. C'est une surjection de $H^1(\Omega)$ dans $H^{1/2}(\Gamma)$.  
+\end{itemize}
+
+On introduit l'opérateur classique de simple couche $S$ (cf. \cite[Chapitre 3, page 113]{nedelec2001acoustic}) qui associe à toute fonction $q \in C^0(\Gamma)$ la fonction $Sq$ définie pour $x \notin \Gamma$ de la manière suivante 
+\[ Sq(x) = \int_{\Gamma} E(x-y)q(y) dy \]
+Et définie sur $\Gamma$ par continuité, où $E$ est la solution fondamentale de l'équation de Helmholtz qui satisfait la condition de radiation de Sommerfield choisie avec la convention $+i$, c'est-à-dire 
+\[ E(x) = \dfrac{e^{ik|x|}}{4\pi|x|}.\]
+D'après le théorème 3.4.1 de la même référence (p. 142), l'opérateur $\gamma \circ S$ s'étend par densité de manière unique en un isomorphisme de $H^{-1/2}(\Gamma)$ sur $H^{1/2}(\Gamma)$, dès lors que $-k^2$ n'est pas une valeur propre du Laplacien sur $\Omega$. 
+Dans \cite{alouges2015sparse} est introduite une méthode de décomposition de l'opérateur de simple couche précédent sous la forme 
+\[ S = S_0 + R\]
+Où $S_0$ sont deux opérateurs de convolution sur $\Gamma$, donc qui associent à une fonction $u$ de $H^{-1/2}(\Gamma)$ une fonction de la forme
+\[ u \mapsto \int_{\Gamma} K(x-y)u(y)dy,\]
+Où l'intégrale est définie par densité de même que $S$. Les propriétés du noyau $K$ dans chaque cas sont~: 
+\begin{itemize}
+\item[-] Support compact pour l'opérateur $S_0$. On l'appelle ainsi l'opérateur de champ proche. 
+\item[-] Régularité $C^{\infty}$ sur $\mathbb{R}^n$ pour l'opérateur $R$. On l'appelle ainsi l'opérateur régulier.  
+\end{itemize}
+Nous allons montrer que dans ces conditions, l'opérateur $R$ est une perturbation compacte de l'opérateur $S_0$. L'intérêt de ce résultat tient au fait que dans les méthodes numériques, on s'attend à ce que l'opérateur  $S_h S_{0,h}^{-1} = Id + R_h S_{0,h}^{-1}$ (où l'indice $h$ signifie formellement ici que l'on parle des version discrétisées) ait un conditionnement indépendant de la taille $h$ du maillage, puisqu'il sera une perturbation compacte de l'identité.  
+
+On considère une suite bornée $u_n$ sur $H^{-1/2}(\Gamma)$, dont on cherche à extraire une sous-suite telle que $\gamma \circ R u_n$ converge dans $H^{1/2}$. Le raisonnement est le suivant : 
+\begin{itemize}
+\item[-] $R$ est continue de $H^{-1/2}(\Gamma)$ dans $H^m(\Omega)$ pour tout $m\in \mathbb{N}$. Donc $Ru_n$ est bornée dans $H^m(\Omega)$.  
+\item[-] Les injections compactes de Sobolev permettent d'extraire de $Ru_n$ une sous-suite convergente dans $H^{1}(\Omega)$. 
+\item[-] La continuité de l'application trace implique le résultat. 
+\end{itemize} 
+La seule affirmation méritant démonstration est la première :
+
+\begin{Lem*} Pour tout $m \in \mathbb{N}$, $R$ est continue de $H^{-1/2}(\Gamma)$ dans $H^{m}(\Omega)$.
+\begin{proof}
+On note $K$ le noyau intégral de l'opérateur $R$. Par hypothèse, $K$ est de classe $C^{\infty}$ sur $\mathbb{R}^n$. 
+Soit $u \in H^{-1/2}(\Gamma)$, soit $v= Ru$. Observons que les dérivées de $v$ sont données par 
+\[\partial^{\alpha} v = \int_{\Gamma} \partial^\alpha K(x-y)u(y) d\sigma(y).\]
+Pour tout $x \in \Omega$, la fonction $G_x : y \in \Omega \mapsto \partial^\alpha K(x-y)$ est dans $H^1(\Omega)$. C'est évident car $\Omega$ est borné et $K$ est $C^{\infty}$. Sa restriction à $\Gamma$ est donc dans $H^{1/2}(\Gamma)$, par le théorème de trace. On en déduit, par définition de $H^{-1/2}(\Gamma)$ : 
+\[\abs{\partial^\alpha v} \leq \norm{G_x}_{H^{1/2}(\Gamma)}\norm{u}_{H^{-1/2}(\Gamma)}\] 
+Enfin, par application du théorème de trace, il existe une constante $C$ telle que
+\[\norm{G_x}_{H^{1/2}(\Gamma)} \leq C \norm{G_x}_{H^{1}(\Omega)} \leq C \sqrt{\abs{\Omega}}\sqrt{\norm{G}_{\infty}^2+\norm{\nabla G}_\infty^2}\]
+On en déduit que $\partial^\alpha v \in L^2(\Omega)$ et 
+\[ \norm{\partial^\alpha v}_{L^2(\Omega)} \leq C \abs{\Omega}\sqrt{\norm{G}_{\infty}^2+\norm{\nabla G}_\infty^2} \norm{u}_{H^{-1/2}(\Gamma)}\] 
+D'où la continuité annoncée. 
+\end{proof}
+\end{Lem*}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio} 
+
+\end{document}

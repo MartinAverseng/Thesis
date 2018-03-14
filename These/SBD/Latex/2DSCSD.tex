@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fourier}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Martin AVERSENG}
+\title{Adaptation de la SCSD en dimension 2}
+\begin{document}
+\maketitle
+
+
+\section{Résumé de la SCSD}
+
+La méthode SCSD permet de calculer rapidement et précisément des quantités de la forme : 
+
+\begin{equation}
+V_k = \sum_{l=1}^L G(|x_k - x_l|) q_l
+\label{convol}
+\end{equation}
+
+Pour tout $k \in 1..K$. A priori, il est nécessaire d'effectuer $L$ calculs pour chacune des $K$ composantes ce qui entraîne une complexité en $O(LK)$. La somme \ref{convol} peut se voir comme une sorte de convolution, et l'on pourrait être tenté de réaliser un calcul rapide en utilisant une transformée de Fourier rapide. Ce serait évident si le problème n'avait qu'une seule dimension et si les points $x_k$ étaient régulièrement espacés sur un segment. Le vecteur $V_k$ s'obtiendrait alors de manière exacte comme la transformée de fourier inverse du produit des spectres de $G$ et de $f$, obtenue en $M log(M)$ opérations. Plusieurs obstacles empêchent l'application directe de cette intuition : 
+\begin{itemize}
+\item[-] A priori, les points $x_k$ ne sont pas uniformément répartis, 
+\item[-] Le problème n'est pas unidimensionel, les points $x_k$ sont répartis dans l'espace. Ainsi, le nombre de fréquences 
+\end{itemize}
+
+On peut calculer le  et donc calculée en passant par le domaine de Fourier. Cette idée à elle seule n'est en fait pas suffisante : le nombre de composantes de Fourier à calculer pour obtenir une approximation satisfaisante peut être très élevé si le noyau n'est pas régulier. En particulier, le nombre de termes  La première idée fondamentale de la SCSD est de séparer $G$ en une composante locale et une composante régulière. La composante locale, $G_{loc}(r)$ est identiquement nulle pour des valeurs de $r$ supérieures à une valeur critique $R_{min}$ ce qui permet de la représenter efficacement par une matrice creuse. 
+
+
+
+
+
+\end{document}

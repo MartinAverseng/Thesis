@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Delete packs
+rm -r "packs" 
+mkdir "packs"

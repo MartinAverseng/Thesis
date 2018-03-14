@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Inversion formelle du simple couche}
+\begin{document}
+	\begin{The*}
+		Pour tout $x,y \in [-1,1]$, on a
+		\begin{equation}
+			\ln |x-y| =  -\ln(2)  - 2\sum_{n=1}^{+\infty} \frac{T_n(x)T_n(y)}{n}
+			\label{DeveloppementDuLn}
+		\end{equation}
+		\begin{proof}
+			On sait que, pour tout $x \in (-1,1)$.
+			\begin{equation}
+				\int_{-1}^{1} -\frac{1}{2\pi}\ln|x-y| \frac{T_n(y)}{\omega(y)}dy = \lambda_n T_n(x),
+			\end{equation}
+			avec
+			\begin{equation}
+			\lambda_n = \Bigg|\begin{array}{lr}
+			\frac{\ln(2)}{2} & \text{ si } n = 0\\
+			\frac{1}{2n} & \text{ si } n \neq 0
+			\end{array}
+			\end{equation}
+			Soit $f \in L^2(-1,1)$, on écrit $f(y) = \frac{\alpha(y)}{\omega(y)}$
+			Et, comme $\alpha(y)$ est dans $L^2(-1,1,\omega(x)^2dx) \subset L^2(-1,1,\omega(x)dx)$, on peut écrire 
+			\[\alpha(y) = \sum_{n=0}^{+\infty} \alpha_n T_n(y)\]
+			avec 
+			\[\alpha_n = \mu_n\int_{-1}^{1} \alpha(y) \frac{T_n(y)}{\omega(y)}dy = \mu_n\int_{-1}^1{f(y) T_n(y)dy}\]
+			où \begin{equation}
+			\mu_n = \Bigg|\begin{array}{lr}
+			1/\pi& \text{ si } n = 0\\
+			2/\pi & \text{ si } n \neq 0
+			\end{array}
+			\end{equation}
+			Ainsi, on obtient 
+			\[ \frac{-1}{2\pi}\int_{-1}^{1} \ln(|x-y|) f(y) = \sum_{n = 0}^{+ \infty} \lambda_n \alpha_n T_n(x)\]
+			En échangeant l'ordre de sommation, on obtient
+			\[ \frac{-1}{2\pi}\int_{-1}^{1} \ln(|x-y|) f(y) = \int_{-1}^{1} \left[\sum_{n = 0}^{+ \infty} \lambda_n \mu_n T_n(x)T_n(y)\right] f(y) dy.\]
+			D'où le résultat en identifiant le noyau des opérateurs de gauche et de droite, puisque leur action coïncide point par point sur les fonctions de $L^2(-1,1)$. 
+		\end{proof}
+	\end{The*}
+	Par la suite, on pose 
+	\[\ln |x-y| = \sum_{n=0}^{+\infty}s_n T_n(x)T_n(y)\]
+	Où, d'après le théorème précédent, 
+	$$s_n = \Bigg|\begin{array}{lr}
+	- \ln(2) & \text{ si } n = 0\\
+	- \frac{2}{n} & \text{ si } n \neq 0
+	\end{array}.$$ 
+	D'autre part, remarquons que les polynômes de Tchebitchev vérifient 
+	\[\left[-\omega(x)D_x\right]^2 T_n = n^2 T_n.\]
+	Ainsi, en appliquant l'opérateur $-\left[\omega(x)D_x\right]^2$ dans la formule (\ref{DeveloppementDuLn}), on obtient	
+	\begin{Cor*}
+		\[-\frac{1-xy}{2|x-y|^2} = \sum_{n=1}^{+\infty} n T_n(x)T_n(y)\]
+	\end{Cor*}
+	
+	Pour $x,y \in (1,1)$, on pose $L(x,y) = \sum_{n=0}^{+\infty} h_n \frac{Tn(x) T_n(y)}{\omega(x)\omega(y)}$, avec 
+	\[h_n = \frac{1}{s_n \mu_n^2} = \Bigg|\begin{array}{lr}
+	-\frac{\pi^2}{\ln(2)} & \text{ si } n = 0\\
+	-\frac{n\pi^2}{8} & \text{ si } n \neq 0
+	\end{array}\]
+	Ainsi, 
+	\begin{align}
+		L(x,y) &= \frac{1}{\sqrt{(1-x^2)(1-y^2)}} \left(-\frac{\pi^2}{\ln(2)} - \frac{\pi^2}{8} \sum_{n=1}^{+\infty} n T_n(x)T_n(y)\right) \\
+		&= \frac{\pi^2}{\sqrt{(1-x^2)(1-y^2)}} \left(-\frac{1}{\ln(2)} + \frac{1-xy}{16|x-y|^2}\right)
+	\end{align}
+	
+	\begin{Cor*} 
+		Les opérateurs $S$ et $H$ de noyaux respectifs $K(x,y) = \ln(|x-y|)$ et $L(x,y)$ sont inverses l'un de l'autre. 
+		\begin{proof}
+			Pour que les deux opérateurs soient mutuellement inverses, il suffit de vérifier que pour tout $n$, on a
+			\begin{equation}
+				HS \frac{T_n}{\omega} = \frac{T_n}{\omega}
+			\end{equation}
+			Or, 
+			\[S\frac{T_n}{\omega} = s_n \mu_n T_n,\]			
+			et 
+			\[HT_n = \frac{1}{s_n \mu_n^2} \mu_n \frac{T_n}{\omega} \]
+			ce qui conclut la démonstration.
+		\end{proof}
+	\end{Cor*}
+\end{document}

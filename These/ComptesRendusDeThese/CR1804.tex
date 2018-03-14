@@ -1,0 +1,171 @@
+\documentclass[11pt,a4paper]{article}
+\input{C://Users/Martin/Documents/Scolaire/Divers/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Compte rendu du mardi 18 Avril}
+\begin{document}
+\maketitle
+
+\section{À aborder}
+
+Retour sur le workshop. \\
+Travail effectué ces deux semaines
+\begin{itemize}
+\item[-] Une semaine et demi biblio, 
+\item[-] Quelques jours de réflexion sur une idée perso. 
+\end{itemize}
+Bilan de mi-année
+
+
+\section{Retour sur le workshop à Londres}
+
+\subsection{David Hewett, scattering by fractal screens}
+
+Talk le plus particulièrement lié à la théorie des BEM sur des domaines non réguliers. 
+La théorie de la diffraction par des écrans ouverts lipschitziens (sous-variétés à bords de l'espace ambiant) est bien comprise, ainsi que sa résolution numérique et le comportement singulier au bord de l'écran cf. \cite{hsiao1985integral,stephan1987boundary}. 
+Ce talk aborde la diffraction par des écrans plats non-lipschitziens, notamment fractals . Les questions abordées ici sont 
+\begin{itemize}
+\item[-] Choix des espaces pour la formulation variationnelle, 
+\item[-] Existence / unicité des solutions,
+\item[-] Convergence des solutions pré-fractales
+\item[-] Dans quels cas le champ diffracté est-il nul ?
+\end{itemize}
+
+Hewett montre que la question de l'unicité des solutions de la formulation variationnelle habituelle se ramène à la caractérisation d'espaces de Sobolev spéciaux définis sur le bord de l'écran. Dans le cas d'un écran lipschitzien, ces espaces sont triviaux, mais sous moins d'hypothèses de régularité, ils contiennent des fonctions qui, une fois injectées dans les potentiels de couche, donnent des solutions du pb homogène. Les deux question essentielles sont 
+\begin{itemize}
+\item[-] A-t-on $H_{\partial \Gamma}^{1/2} = \{0\}$ ? 
+\item[-] A-t-on $\tilde{H}^{-1/2}(\Gamma) = H^{-1/2}_{\overline{\Gamma}}$ ? 
+\end{itemize}
+Basé sur ces observations, on peut ajouter deux conditions directement dans la formulation qui assurent automatiquement l'unicité (on exclue les solutions polluantes décrites ci-dessus). 
+On se demande ensuite si les solutions au problème des pré-fractales convergent vers la solution de la formulation modifiée. La réponse dépend de la façon dont convergent les préfractales ($\Gamma = \cup_{j\in \mathbb{N}} \Gamma_j$ ou $\Gamma = \cap_{j\in \mathbb{N}} \Gamma_j$). Dans ces deux cas, Hewett propose une formulation variationnelle bien posée (mais ces deux formulations sont posées dans des espaces différents). 
+
+La question de savoir quand le champ diffracté est non nul est quasiment résolue, et dépend de la dimension fractale du bord. Un exemple d'écran de Cantor est donné dans lequel on a un champ diffracté si le paramètre $\alpha$ (proportion de l'écran enlevé à chaque étape de la construction de la fractale), passe en deçà d'un certain seuil. 
+
+\subsection{Andrea Moiola, Sobolev spaces on non-Lispchitz domains}
+
+Le talk d'Andrea portait sur le comportement des espaces de Sobolev sur des ouverts non Lipschitziens, ce qui nous intéresse relativement peu. 
+
+\subsection{Ralph Hiptmair, Boundary Integral Equations on Complex Screens} 
+
+Assez difficile de reprendre les slides sans la présentation orale. Un take-home message : formaliser les équations intégrales en faisant disparaître le bord $\Gamma$. Voir $H^{1/2}(\Gamma)$ comme l'espace quotient $H^{1}(\Omega)\setminus H^{1}_0(\Omega)$, la trace comme la projection canonique. 
+
+\subsection{Annalisa Buffa, Boundary Integral Equations on Complex Screens} 
+
+Discrétisation avec des splines, qui permettent de résoudre efficacement les pb de préconditionnement. Voir \cite{da2014mathematical}. Un des talks les plus marquants. 
+
+\section{Éléments théoriques sur les équations intégrales}
+
+Lecture des 6 premiers chapitres de \cite{mclean2000strongly}, et appendice sur interpolation. Points importants : définitions précises des espaces de Sobolev et de leurs duaux sur des ouverts peu réguliers et sur des frontières d'ouverts. Définition et propriétés de paramétrix, définition des potentiels de couche. Propriétés de continuité et leurs démonstrations. 
+Survol de \cite{sauter2011boundary}. Peu de choses sur le préconditionnement, mais notamment un chapitre sur les méthodes de quadrature par changements  de variable pour rendre l'intégrande analytique. 
+
+\section{Une méthode récente de calcul symbolique sur les opérateurs de type layer potentials.}
+
+La référence suivante semble intéressante pour appliquer des résultats de calcul symbolique à des ouverts peu réguliers~\cite{hofmann2015symbol}. Mais le problème c'est que j'ai l'impression qu'ils demandent tout de même une certaine régularité (continuité du vecteur normal, donc polyèdres exclus). Je suis intéressé par les résultats du type inversion d'un opérateur à noyau modulo opérateur compact. 
+
+\section{Méthodes de préconditionnement explorées}
+
+Littérature abondante, divisée en plusieurs domaines assez disjoints. Une revue intéressante \cite{benzi2002preconditioning}. Un papier très pertinent \cite{mardal2011preconditioning}  de 2011 sur une approche du préconditionnement par l'analyse du pb continu + condition de stabilité sur la discrétisation.
+
+\subsection{Méthodes purement algébrique}
+
+En plus des méthodes ILU, une méthode intéressante : inversion approchée de la matrice par une matrice creuse (minimisation de la norme de Froebenius de $I-MA$) méthode sparse approximate inverse, SPAI. Un papier combinant FMM et SPAI avec beaucoup de résultats numériques :  \cite{carpentieri2005combining}. 
+
+\subsection{Méthodes basées sur les relations de Calderon}
+
+J'ai commencé à décortiquer la littérature de ce côté. 
+
+\subsubsection{1996, McLean and Tran, A preconditioning strategy for BEM Galerkin, \cite{mclean1997preconditioning}}
+
+Historiquement, ce sont les premiers à avoir l'idée d'utiliser des opérateurs intégraux directement comme préconditionneurs. 
+Montrent que le simple couche et l'hypersingulier sont des préconditionneurs l'un pour l'autre dans les conditions suivantes : 
+\begin{itemize}
+\item[-] Résultat uniquement valable en 2D
+\item[-] L'équation étudiée est celle du Laplacien avec conditions de Dirichlet / Neumann
+\item[-] Frontière régulière 
+\item[-] Le pas de discrétisation doit être uniforme
+\item[-] Montrent par quelques expériences numériques que ça a l'air de marcher un peu plus que dans ces conditions restrictives. 
+\end{itemize}
+
+\textbf{Partie préliminaire} Rappels de faits standards
+Définition des opérateurs de couche, rappel des formules de saut, et relations de Calderòn. La section se conclue sur l'observation que 
+\[R_1S = \left(\dfrac{I}{2}-T^*\right)\left(\dfrac{I}{2}+T^*\right)\]
+\[SR_1 = \left(\dfrac{I}{2}+T\right)\left(\dfrac{I}{2}-T\right)\]
+et la remarque suivante~: Sans hypothèses sur $\Gamma$, les opérateurs $\dfrac{I}{2}\pm T$ sont Fredholm d'index zéro, ce qui assure déjà l'inversibilité du produit $SR$ et $RS$ (à noter que $R$ est définit à partir de $R_1$ avec ajout d'une constante positive pour le rendre inversible. Lorsque $\Gamma$ est régulier, l'opérateur $T$ est en plus régularisant, ce qui assure que $4R$ et $S$ sont approximativement inverses l'un de l'autre. Ces résultats théoriques se trouvent dans \cite{verchota1984layer}. \\
+\textbf{Partie parmaétrisation} Il explique comment on se ramène au segment $[-1,1)$ avec conditions aux limites périodiques. \\
+\textbf{Partie Galerkin} Il discrétise avec un pas uniforme et repose le problème sous forme matricielle. 
+\textbf{Partie cercle} Il montre, en utilisant les séries de Fourier, que le conditionnement des matrices multipliées $S_hR_h$ est borné indépendamment de $h$. \\
+\textbf{Partie perturbation} Avec un changement de variable, \textbf{il décompose les opérateurs de simple couche et hypersinguliers en une partie singulière égale à celle du cercle et une perturbation compacte}. Il démontre ensuite que le conditionnement des matrices discrétisées est essentiellement le même que celui dans le cas du cercle. Son résultat principal est donc que \textbf{Pour toute courbe fermée régulière discrétisée uniformément, le conditionnement de $R_hS_h$ est uniformément borné}. 
+
+\subsubsection{1998, Steinbach, Wendland, The construction of some efficient preconditioners in BEM \cite{steinbach1998construction,steinbach1995efficient}}
+
+Ce sont eux qui ont systématisé l'idée de Mclean et Tran décrite ci-dessus. Il adoptent un point de vue "pseudodifférentiel", et montrent grossièrement que lorsque deux opérateurs sont d'ordre opposé, alors le pseudo-inverse de Moore-Penrose de l'un fournit un bon préconditionneur de l'autre. L'analyse identifie une condition de stabilité pour le choix de l'espace de discrétisation pour assurer que le conditionnement de la matrice préconditionnée est uniformément borné. La condition est exprimée pour des discrétisations avec "smoothest B-splines". \\
+\textbf{Intoduction} Une matrice symétrique de préconditionnement $C_h$ est dite efficace si 
+\[\forall u \in \mathbb{R}^N, \quad \exists \gamma_1, \gamma_2 >0 : \quad \gamma_1 (C_h u, u) \leq (A_h u, u) \leq \gamma_2 (C_h u, u) \]
+Dans ce cas, à condition d'être capable d'inverser facilement $C_h$, on a un bon préconditionneur $\kappa(C_h^{-1}A_h) \leq \frac{\gamma_1}{\gamma_2}$. On peut passer la recherche d'un tel préconditionneur dans le domaine continu, c'est-à-dire chercher un opérateur $C$ tel que $\forall v \in V$ (où $V$ est l'espace de Hilbert dans lequel est posée la formulation variationnelle), 
+\[\gamma_1 (C u, u) \leq (A u, u) \leq \gamma_2 (C u, u)\]
+Si tel est le cas, la matrice $C_h$ obtenue à partir de $C$ via la méthode de Galerkin sera automatiquement un bon préconditionneur, indépendamment du maillage et du choix des espaces de discrétisation. \\
+\textbf{Formes "préconditionnantes"} Dans ce paragraphe, sont démontrés deux théorèmes qui, grosso modo, indiquent qu'à partir du moment où on a un opérateur continu et coercif (éventuellement en-dehors de son noyau) du bon ordre (c'est-à-dire l'ordre opposé de ce qu'on cherche à préconditionner), i.e. si l'opérateur qu'on a va de $H^{s}(\Gamma)$ dans $H^{s-2\alpha}(\Gamma)$ alors il nous faut un opérateur continu et coercif (sur le supplémentaire de son noyau) de $H^{s-2\alpha}(\Gamma)$ dans $H^{s}(\Gamma)$, on a automatiquement un bon préconditionneur. Les deux théorèmes correspondent à deux approches pour gérer le fait que l'opérateur utilisé pour préconditionner n'est peut-être pas inversible (il faut avoir une base orthonormée de son noyau sous la main).\\   
+\textbf{Inégalités d'équivalence spectrale} Dans ce paragraphe, on établit les conditions sous lesquelles l'encadrement spectral est préservé lorsqu'on multiplie les opérateurs discrétisés plutôt que de discrétiser les opérateurs multipliés : condition inf-sup.\\
+\textbf{Discrétisation des préconditionneurs} Cette partie est assez complexe et intéresse surtout ceux qui veulent généraliser l'exemple du paragraphe suivant. Une affirmation est avancée sans références : le fait que la matrice de masse vérifie la condition inf-sup pour un choix adapté de fonctions de bases (relation $\mu = \nu + 2k$ pour l'ordre polynomial des splines. \\
+\textbf{Application aux opérateurs intégraux} L'utilisation des préconditioneurs est démontrée pour le problème de Laplace. 
+
+À lire aussi sur ce thème : \cite{christiansen2002preconditioner} le papier de Nédélec et Christiansen (ouverts réguliers en revanche).  
+
+\subsection{Méthodes nativement bien conditionnées}
+
+Bien lire les articles suivants : \cite{antoine2007generalized}, \cite{antoine2005alternative}, 
+
+\subsubsection{2005, Buffa, Hiptmair, Regularized CFIE \cite{buffa2005regularized} }
+
+Le papier dont on a parlé la dernière fois et qu'il fallait que je précise. 
+À lire sur le même sujet~: \cite{buffa2006acoustic}, idées appliquées numériquement ici~: \cite{buffa2004coercive}. 
+Ce papier porte principalement sur la question de la géométrie non-régulière, pour le problème de l'acoustique traité par les équations intégrales. Pile poil notre sujet donc. Ils séparent la question du défaut de conditionnement dû aux résonances du pb intérieur, et celle des problèmes de géométrie. Pour des géométries régulières, le double-couche est une perturbation compacte de l'identité, et donc les équations intégrales de deuxième type sont nativement bien conditionnées, mais ce n'est pas le cas lorsque la géométrie est singulière. La solution est de se débrouiller pour poser l'équation dans d'autres espaces, en forçant le terme dû au double couche à être une perturbation compacte du simple couche. (D'ailleurs, cela permettra de n'avoir à trouver un préconditionneur que pour le simple couche). 
+\paragraph{Formulation équations intégrales "indirectes" :} On cherche la solution du problème sous la forme 
+\[ U = \text{DL}(M\varphi) + i\eta \text{SL}(\varphi)\]
+Ce qui conduit à l'équation suivante pour $\varphi$ : 
+\[ g = \left[\left(I/2 + D\right)M + i\eta S\right](\varphi)\]
+Lorsque $M$ est bien choisi : régularisant ($H^{-1/2}\to H^{1/2}$), injectif, on démontre facilement que l'opérateur entre crochets est de Fredholm et injectif, et continu de $H^{-1/2}(\Gamma)$ dans $H^{1/2}(\Gamma)$.  
+Pour donner une formulation variationnelle de cette équation, on utilise une formulation mixte qui évite d'avoir à discrétiser une composition d'opérateurs. On démontre là-encore que la formulation mixte donne lieu à un opérateur de Fredholm et injectif (c'est là que l'injectivité de $M$ est nécessaire).  
+Le choix concret de $M$ dans le cas de la formulation indirecte proposé par l'article est le Laplace Beltrami sur chaque face indépendamment, qui va de $H^{-1}(\Gamma)\to H^1_{pw,0}(\Gamma)$. Il est démontré qu'avec ce choix, $M$ définit un opérateur injectif et compact de $H^{-1/2}\to H^{1/2}$. Pour des raisons de convergence numérique de la méthode, il est intéressant d'avoir des propriétés de lifting de $M$ d'ordre $+2$ en partant d'un espace $H^s$ pour $s > -1$. Si on ne restreint pas face par face, on n'a pas un gain de régularité d'ordre $2$ mais seulement un peu plus que $1$ ($1+\varepsilon$ pour un certain $\varepsilon$ qui peut être aussi petit qu'on veut, voir \cite{buffa2002boundary} théorème $8$ et la remarque qui suit, dans le paragraphe $5.2.1$, et ce papier est d'ailleurs à lire). Cela restreint la vitesse de convergence et est dû à la présence de singularités aux bords des faces pour la solution du pb de Laplace Beltrami total.
+\paragraph{Formulation équations intégrales "directes" :} 
+On écrit pour la solution recherchée $U$ la formule de représentation, et on en déduit deux relations liant la trace de Dirichlet (connue) à celle de Neumann (inconnue). Les deux choix d'opérateurs à inverser pour obtenir l'inconnue ne peuvent pas être simultanément non-injectifs pour une même fréquence, donc on obtient un opérateur injectif en les combinant (c'est l'idée classique de la CFIE directe). En revanche, les deux équations ne sont pas posées dans les mêmes espaces, donc il convient d'appliquer un opérateur $M$ (vérifiant les mêmes hypothèses que dans le paragraphe précédent) à la moins régulière des deux. On obtient l'équation 
+\[ \left[M(D^* + I/2) + i\eta S\right]\varphi = \left[i\eta(D-I/2)-MH\right]g\]
+qui fait intervenir tous les opérateurs intégraux. Il est démontré que l'opérateur à inverser est de Fredholm, et injectif donc inversible. La composition des opérateurs est ensuite gérée par une formulation mixte qui est là encore montrée Fredholm et inversible. On y introduit une inconnue $u$, qui est nulle dans le problème continue, mais pas nécessairement dans les problèmes discrets ($u$ est une sorte d'erreur, on peut voir cette méthode comme une sorte de pénalisation). En revanche, la solution continue du problème en $u$ étant $0$, il n'y a pas de questions de singularités aux bords des faces donc le choix plus simple de $M = (I + \Delta_{\Gamma})^{-1}$ suffit. 
+
+\subsection{Méthodes multigrilles, multiéchelle, décomposition de domaine}
+
+Tout un autre pan des approches du preéconditionnement : ASM (additive schwarz methods) \cite{zhang1991multilevel}, \cite{nabors1994preconditioned}, \cite{tran1996additive}. Plus généralement, méthodes multiniveau. 
+
+\subsection{h, p, et hp versions BEM pour les polygônes}
+
+Un pan de la littérature découvert tout récemment et à explorer d'urgence, \cite{stephan1996hp}, \cite{maischak1997hp}, \cite{guo1994hp}. 
+
+\section{Diverses questions en suspens}
+
+Retrouver les résultats sur les théorèmes de traces sur les polygones, les compiler et les rendre intelligibles. 
+Injectivité de $S_0$ toujours à résoudre (erreur dans la méthode proposée la dernière fois). 
+Calcul explicite de l'opérateur $Y$ introduit pour régulariser Brackage Werner sur un plan : pas retouché, pas d'idée depuis la dernière fois sur la condition de Sommerfeld à donner. 
+Calcul du double couche sur un angle droit, pas encore fait.
+Retrouver et compiler aussi les résultats de régularité elliptique pour les ouverts Lipschitziens. 
+Lire les thèses de Sophie et Séverine. 
+À faire aussi la réécriture de l'article 2D. Je commence à voir comment je dois écrire. 
+
+\section{Retour sur les opérateurs pseudo-différentiels}
+
+Détermination du symbole et peut-être du noyau d'un préconditionneur possible pour un cas particulier dans les polygones. 
+
+\section{Bilan de mi année}
+
+Bilan de ce que j'ai fait depuis un an (en comptant le stage). 
+Travailler sur un code numérique. 
+
+Plus de travail à fournir de ma part ! Trouver toute cette biblio m'enthousiasme beaucoup. 
+
+Proposition de contrat : au moins 3 articles par semaine à aborder les lundi ensemble. 
+
+
+\nocite{sauter2011boundary}
+\nocite{mclean2000strongly}
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio} 
+
+\end{document}

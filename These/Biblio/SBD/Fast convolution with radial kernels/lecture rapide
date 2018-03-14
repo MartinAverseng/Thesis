@@ -1,0 +1,8 @@
+
+Globalement, la méthode est la même que la SCSD avec un choix différent de fonctions de base. Eux décomposent le noyau en G = S + R ou S est a support compact très localisé et R est une fonction 1-périodique dans toutes les directions (il faut rescaler les données les faire rentrer dans le cube unité), et ils tronquent le spectre de R à une certaine fréquence, plus ou moins grande (et ils estiment l'erreur en fonction de la troncature). En passant, du coup, eux ont une grille régulière en fréquence, la non-uniformité est seulement en espace.
+
+Deux avantages de notre méthode 
+- Elle décompose des fonctions radiales sur une base de fonction radiale, ce qui est plus logique et susceptible de produire un spectre plus réduit
+- Elle ne fait pas un choix explicite de prolongement, mais le spectre obtenu pour R décroit plus vite que n'importe quel choix de prolongement (ce qui est la base de l'estimation de complexité). Elle est donc automatiquement plus efficace.
+
+

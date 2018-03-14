@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Martin}
+\title{Quadrature for Bessel functions}
+\begin{document}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Lem}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Definition}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\N}[0]{\mathbb{N}}
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\Z}[0]{\mathbb{Z}}
+
+In all this document, $r$ is a positive real number $N \geq 1$ is an integer, $\varphi$ a real number and $J_0$ denotes the Bessel function of first kind. We assume in addition that $r < N$. Under this condition, we shall prove the following estimation :
+\begin{Prop}
+\[\left|J_0(r) -  \dfrac{1}{N}\sum_{j=0}^{N-1}e^{ir\sin\left(\frac{2j\pi}{N}-\varphi\right)} \right| \leq C_N \left(\dfrac{er}{N}\right)^N\]
+Where $C_N \leq 3$ and $C_N \underset{N\to+\infty}{\longrightarrow} 2$
+\end{Prop}
+
+In order to prove this proposition, we first prove a result on Fourier series
+\begin{Lem} For any $\mathcal{C}^2$ function $f$ defined on $\mathbb{R}$ and complex-valued, that is $2\pi-$periodic, one has \[\dfrac{1}{2\pi}\int_{0}^{2\pi}f - \dfrac{1}{N}\sum_{j=0}^{N-1}f\left(\frac{2j\pi}{N} \right) = - \sum\limits_{k \in \Z^*}c_{kN}(f)\]
+Where $c_n(f)$ denotes the Fourier coefficient of $f$ defined as \[c_n(f) = \dfrac{1}{2\pi}\int_{0}^{2\pi}f(x)e^{-inx}dx\]
+\begin{proof}
+Since $f$ is $\mathcal{C}^2$, it is equal to its Fourier Series, which converges normally : \[\forall x \in \mathbb{R}, f(x) = \sum_{k\in\Z} c_k(f)e^{ikx}\] Using this expression, we obtain \[\dfrac{1}{N}\sum_{j=0}^{N-1}f\left(\frac{2j\pi}{N}\right) = \sum\limits_{k\in \Z^*}c_k(f)\left(\frac{1}{N}\sum_{j=0}^{N-1}e^{ik\frac{2j\pi}{N}}\right)\] Now observe that if $k\notin N\Z$, \[\dfrac{1}{N}\sum_{j=0}^{N-1}e^{ik\frac{2j\pi}{N}} = 0\] and if $k\in N\Z$ then \[\dfrac{1}{N}\sum_{j=0}^{N-1}e^{ik\frac{2j\pi}{N}} = 1\] Therefore \[\int_{0}^{2\pi}f(x)dx - \dfrac{1}{N}\sum_{j=0}^{N-1}f\left(\frac{2j\pi}{N} \right) = c_0(f) - \sum\limits_{k \in N\Z}c_{k}(f) = - \sum\limits_{k \in \Z^*}c_{kN}(f)\]
+\end{proof}
+\end{Lem}
+
+Let us now prove the proposition : 
+\begin{proof}
+The result is based on the fact that \[J_0(r) =  \int_0^{2\pi} e^{ir\sin(x)}dx = \int_0^{2\pi} e^{ir\sin(x - \varphi)}dx\] Let $f : x \mapsto e^{ir\sin(x - \varphi)}$. Let us recall the integral representation of the Bessel function of the first kind and of order $k$ where $k$ is a relative integer : \[J_k(r) =  \int_{0}^{2\pi}e^{ir\sin(x)}e^{-ikx}dx =  e^{-ik\varphi}\int_{0}^{2\pi}e^{ir\sin(x - \varphi)}e^{-ikx}dx\] Thus, one has $c_k(f) = e^{ik\varphi}J_k(r)$. The former Lemma therefore writes \[J_0(r) -  \dfrac{1}{N}\sum_{j=0}^{N-1}e^{ir\sin\left(\frac{2j\pi}{N}-\varphi\right)} = -\sum_{k\in \Z^*}e^{iNk\varphi}J_{Nk}(r)\] We shall now use the following estimation for $J_k$ : $\forall R>1$ \[|J_k(r)| \leq R^{-|k|}e^{rR}\] Since $N > r$, we have $N|k|>r$ for all $k \in Z^*$. We can choose $R = \frac{N|k|}{r} >1$, implying that \[|J_{Nk}(r)|\leq \left(\dfrac{er}{N|k|}\right)^{N|k|} \] Applying this estimate we obtain : \[\left|J_0(r) -  \dfrac{1}{N}\sum_{j=0}^{N-1}e^{ir\sin\left(\frac{2j\pi}{N}-\varphi\right)}\right| \leq \sum_{k\in \Z^*} \left(\dfrac{er}{N|k|}\right)^{N|k|}\] Therefore, \[\left|J_0(r) -  \dfrac{1}{N}\sum_{j=0}^{N-1}e^{ir\sin\left(\frac{2j\pi}{N}-\varphi\right)}\right| \leq 2\left(\dfrac{er}{N}\right)^{N}\sum_{k\in \N^*} \left(\dfrac{1}{k}\right)^{Nk}\]
+Let $\gamma_N$ be defined as \[\gamma_N = \sum_{k\in \N^*} \left(\dfrac{1}{k}\right)^{Nk}\] Observe that \[0 \leq \gamma_N -1 \leq \sum_{k\geq 2} \dfrac{1}{2^{kN}} = \dfrac{1}{2^{2N} - 2^N}\] showing that $\gamma_N \leq \frac{3}{2}$ and $\gamma_N \underset{N\to +\infty}{\longrightarrow} 1$. The result is finally proved by setting $C_N = 2\gamma_N$ 
+
+\end{proof}
+
+
+\end{document}
+

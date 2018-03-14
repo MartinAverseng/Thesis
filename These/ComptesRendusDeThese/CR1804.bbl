@@ -1,0 +1,158 @@
+\begin{thebibliography}{10}
+
+\bibitem{antoine2005alternative}
+Xavier Antoine and Marion Darbas.
+\newblock Alternative integral equations for the iterative solution of acoustic
+  scattering problems.
+\newblock {\em Quarterly Journal of Mechanics and Applied Mathematics},
+  58(1):107--128, 2005.
+
+\bibitem{antoine2007generalized}
+Xavier Antoine and Marion Darbas.
+\newblock Generalized combined field integral equations for the iterative
+  solution of the three-dimensional helmholtz equation.
+\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
+  41(1):147--167, 2007.
+
+\bibitem{benzi2002preconditioning}
+Michele Benzi.
+\newblock Preconditioning techniques for large linear systems: a survey.
+\newblock {\em Journal of computational Physics}, 182(2):418--477, 2002.
+
+\bibitem{buffa2002boundary}
+A~Buffa, Martin Costabel, and Ch~Schwab.
+\newblock Boundary element methods for maxwell's equations on non-smooth
+  domains.
+\newblock {\em Numerische Mathematik}, 92(4):679--710, 2002.
+
+\bibitem{buffa2005regularized}
+A~Buffa and R~Hiptmair.
+\newblock Regularized combined field integral equations.
+\newblock {\em Numerische Mathematik}, 100(1):1--19, 2005.
+
+\bibitem{buffa2004coercive}
+Annalisa Buffa and Ralf Hiptmair.
+\newblock A coercive combined field integral equation for electromagnetic
+  scattering.
+\newblock {\em SIAM Journal on Numerical Analysis}, 42(2):621--640, 2004.
+
+\bibitem{buffa2006acoustic}
+Annalisa Buffa and Stefan Sauter.
+\newblock On the acoustic single layer potential: stabilization and fourier
+  analysis.
+\newblock {\em SIAM Journal on Scientific Computing}, 28(5):1974--1999, 2006.
+
+\bibitem{carpentieri2005combining}
+Bruno Carpentieri, Iain~S Duff, Luc Giraud, and Guillaume Sylvand.
+\newblock Combining fast multipole techniques and an approximate inverse
+  preconditioner for large electromagnetism calculations.
+\newblock {\em SIAM Journal on Scientific Computing}, 27(3):774--792, 2005.
+
+\bibitem{christiansen2002preconditioner}
+Snorre~H Christiansen and Jean-Claude N{\'e}d{\'e}lec.
+\newblock A preconditioner for the electric field integral equation based on
+  calderon formulas.
+\newblock {\em SIAM Journal on Numerical Analysis}, 40(3):1100--1135, 2002.
+
+\bibitem{da2014mathematical}
+L~Beirao Da~Veiga, Annalisa Buffa, Giancarlo Sangalli, and Rafael V{\'a}zquez.
+\newblock Mathematical analysis of variational isogeometric methods.
+\newblock {\em Acta Numerica}, 23:157, 2014.
+
+\bibitem{guo1994hp}
+BQ~Guo.
+\newblock The hp version of the finite element method for solving boundary
+  value problems in polyhedral domains.
+\newblock {\em Boundary value problems and integral equations in nonsmooth
+  domains (Luminy, 1993)}, 167:101--120, 1994.
+
+\bibitem{hofmann2015symbol}
+Steve Hofmann, Marius Mitrea, and Michael Taylor.
+\newblock Symbol calculus for operators of layer potential type on lipschitz
+  surfaces with vmo normals, and related pseudodifferential operator calculus.
+\newblock {\em Analysis \& PDE}, 8(1):115--181, 2015.
+
+\bibitem{hsiao1985integral}
+George~C Hsiao, Ernst~P Stephan, and Wolfgang~L Wendland.
+\newblock An integral equation formulation for a boundary value problem of
+  elasticity in the domain exterior to an arc.
+\newblock In {\em Singularities and constructive methods for their treatment},
+  pages 153--165. Springer, 1985.
+
+\bibitem{maischak1997hp}
+M~Maischak and EP~Stephan.
+\newblock The hp-version of the boundary element method in r\^{} 3: The basic
+  approximation results.
+\newblock {\em Mathematical methods in the applied sciences}, 20(5):461, 1997.
+
+\bibitem{mardal2011preconditioning}
+Kent-Andre Mardal and Ragnar Winther.
+\newblock Preconditioning discretizations of systems of partial differential
+  equations.
+\newblock {\em Numerical Linear Algebra with Applications}, 18(1):1--40, 2011.
+
+\bibitem{mclean1997preconditioning}
+W~McLean and Thanh Tran.
+\newblock A preconditioning strategy for boundary element galerkin methods.
+\newblock {\em Numerical Methods for Partial Differential Equations},
+  13(3):283--301, 1997.
+
+\bibitem{mclean2000strongly}
+William Charles~Hector McLean.
+\newblock {\em Strongly elliptic systems and boundary integral equations}.
+\newblock Cambridge university press, 2000.
+
+\bibitem{nabors1994preconditioned}
+Keith Nabors, FT~Korsmeyer, FT~Leighton, and Jacob White.
+\newblock Preconditioned, adaptive, multipole-accelerated iterative methods for
+  three-dimensional first-kind integral equations of potential theory.
+\newblock {\em SIAM Journal on Scientific Computing}, 15(3):713--735, 1994.
+
+\bibitem{sauter2011boundary}
+Stefan~A Sauter and Christoph Schwab.
+\newblock Boundary element methods.
+\newblock {\em Boundary Element Methods}, pages 183--287, 2011.
+
+\bibitem{steinbach1995efficient}
+O~Steinbach and WL~Wendland.
+\newblock Efficient preconditioners for boundary element methods and their use
+  in domain decomposition methods.
+\newblock In {\em Domain Decomposition Methods in Sciences and Engineering: 8th
+  International Conference}, pages 3--18, 1995.
+
+\bibitem{steinbach1998construction}
+Olaf Steinbach and Wolfgang~L Wendland.
+\newblock The construction of some efficient preconditioners in the boundary
+  element method.
+\newblock {\em Advances in Computational Mathematics}, 9(1-2):191--216, 1998.
+
+\bibitem{stephan1996hp}
+EP~Stephan.
+\newblock The hp boundary element method for solving 2-and 3-dimensional
+  problems.
+\newblock {\em Computer methods in applied mechanics and engineering},
+  133(3-4):183--208, 1996.
+
+\bibitem{stephan1987boundary}
+Ernst~P Stephan.
+\newblock Boundary integral equations for screen problems in ir 3.
+\newblock {\em Integral Equations and Operator Theory}, 10(2):236--257, 1987.
+
+\bibitem{tran1996additive}
+Thanh Tran and Ernst~P Stephan.
+\newblock Additive schwarz methods for the h-version boundary element method.
+\newblock {\em Applicable Analysis}, 60(1-2):63--84, 1996.
+
+\bibitem{verchota1984layer}
+Gregory Verchota.
+\newblock Layer potentials and regularity for the dirichlet problem for
+  laplace's equation in lipschitz domains.
+\newblock {\em Journal of Functional Analysis}, 59(3):572--611, 1984.
+
+\bibitem{zhang1991multilevel}
+Xuejun Zhang.
+\newblock {\em Multilevel additive Schwarz methods}.
+\newblock New York University. Courant Institute of Mathematical Sciences.
+  Computer Science Department, 1991.
+
+\end{thebibliography}

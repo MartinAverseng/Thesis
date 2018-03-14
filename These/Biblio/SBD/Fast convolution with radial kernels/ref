@@ -1,0 +1,18 @@
+@Article{Potts2004,
+author="Potts, Daniel
+and Steidl, Gabriele
+and Nieslony, Arthur",
+title="Fast convolution with radial kernels at nonequispaced knots",
+journal="Numerische Mathematik",
+year="2004",
+month="Aug",
+day="01",
+volume="98",
+number="2",
+pages="329--351",
+abstract="We develop a new algorithm for the fast evaluation of linear combinations of radial functions                                    based on the recently developed fast Fourier transform at nonequispaced knots. For smooth kernels, e.g. the Gaussian, our algorithm requires                                    arithmetic operations. In case of singular kernels an additional regularization procedure must be incorporated and the algorithm has the arithmetic complexity                                    if either the points y                  j                 or the points x                  k                 are ``reasonably uniformly distributed''. We prove error estimates to obtain clues about the choice of the involved parameters and present numerical examples for various singular and smooth kernels in two dimensions.",
+issn="0945-3245",
+doi="10.1007/s00211-004-0538-5",
+url="https://doi.org/10.1007/s00211-004-0538-5"
+}
+

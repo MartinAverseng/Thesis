@@ -1,0 +1,25 @@
+-- FreeFem++ v  3.380001 (date Mon Jun 29 13:19:02 GMT 2015)
+ Load: lg_fem lg_mesh lg_mesh3 eigenvalue
+    1 :
+    2 : bool debug = true;
+    3 :
+    4 : int C1 = 99;
+    5 : int C2 = 98;
+    6 : border C0(t =0,2*pi){x = 5*cos(t); y = 5*sin(t);}
+    7 : border C11(t = 0,1){x = 1+t; y = 3; label = C1;}
+    8 : border C12(t = 0,1){x = 2; y = 3-6*t; label = C1;}
+    9 : border C13(t = 0,1){x = 2-t; y = -3; label = C1;}
+   10 : border C11(t = 0,1){x = 1; y = -3+ 6*t; label = C1;} The identifier C11
+exists
+          the existing type is <8E_Border>
+          the new  type is <8E_Border>
+ 
+ Error line number 10, in file C:\Users\Martin\Documents\Scolaire\These\MonitoratMap431\HeatExchanger.edp, before  token }
+ 
+  current line = 10
+Compile error :
+        line number :10, }
+error Compile error :
+        line number :10, }
+ code = 1 mpirank: 0
+ try getConsole C:\Users\Martin\Documents\Scolaire\These\MonitoratMap431\HeatExchanger.edp

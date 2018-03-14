@@ -1,0 +1,15 @@
+real theta = pi;
+real a = 2., b = 1.;
+func z = 1;
+border Gamma1(t=0,theta) {x = a*cos(t); y = b*sin(t);}
+plot(Gamma1(100),wait = true);
+border Gamma2(t=theta,2*pi) {x = a*cos(t); y = b*sin(t);}
+mesh Th = buildmesh(Gamma1(100) + Gamma2(50) );
+fespace Vh(Th,P2);
+Vh phi, w, f = -1;
+
+solve Laplace(phi,w) = 
+int2d(Th)(dx(phi)*dx(w) + dy(phi)*dy(w)) - int2d(Th)(w*f) + on(Gamma1,phi=z);
+plot(phi,wait = true,fill = true);
+plot(Th,wait = true);
+

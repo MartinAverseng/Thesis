@@ -1,0 +1,155 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Approximation des fonctions radiales par des vecteurs propres du laplacien radial}
+\begin{document}
+\renewcommand{\proofname}{Preuve}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Théorème}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Cor}{Corollaire}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Définition}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+
+\section{Vecteurs propres du laplacien radial}
+
+On se place en dimension $N\geq 2$. 
+On considère une fonction radiale $u \in H^2(\mathbb{R}^N)$. On pose $f(r)$ = $U(re_1)$ où $e_1$ est un vecteur quelconque de norme $1$. Le Laplacien de $u$ en un point $x\in \mathbb{R}^N$ de module $r$ s'écrit alors \[\Delta u(x) = \frac{1}{r^{N-1}}\frac{d}{dr}\left(r^{N-1}f'(r)\right)\]. Cette expression justifie les définitions et résultats que nous montrons ici. 
+
+\begin{Prop}
+Soit $ N \in \mathbb{N}$. 
+L'espace $V_N =  \enstq{u\in L^2(-1,1)}{\displaystyle\int_{0}^1 r^{N-1} u^2(r) < +\infty}$ muni du produit scalaire \[\langle u | v\rangle_{V_N} = \int_0^1 r^{N-1} u(r) v(r) dr \] est un espace de Hilbert. 
+\begin{proof}
+On a $V_N = L^2([0,1],x^{N-1}dx)$. Or $L^2_\mu(\Omega)$ est un espace de Hilbert pour toute mesure $\mu$. 
+\end{proof}
+\end{Prop}
+
+\begin{Prop}
+Soit $ N \in \mathbb{N}$. 
+L'espace $H_N =  \enstq{u\in V_N}{u' \in V_N}$ est un sous-espace dense de $V_N$. Muni du produit scalaire \[\langle u | v\rangle_{H_N} = \langle u | v\rangle_{V_N} + \int_0^1 r^{N-1} u'(r) v'(r) dr \] il a aussi une structure d'espace de Hilbert.
+\begin{proof}
+$H_N$ contient l'ensemble des fonctions $C^\infty$  qui est dense dans $V_N$. 
+\end{proof}
+\end{Prop}
+
+\begin{Prop}
+L'injection canonique de $H_N$ dans $V_N$ est compacte. 
+\begin{proof}
+On applique le fait que l'injection $H^1(B(0,1)) \hookrightarrow L^2(B(0,1))$ est compacte 
+Si $f_n$ est une suite bornée de $H_N$, on définit la fonction $G_n$ de $\mathbb{R^N}$ qui est radiale et vérifie $G(x) = f_n(|x|)$. $G \in H^1(B_{\mathbb{R^N}}(0,1))$ et est bornée dans cet espace. On peut en extraire une suite convergente. La suite $f_n$ une fois qu'on a extrait la même sous-suite, est de Cauchy donc converge dans $V_N$ puisque $V_N$ est complet. 
+\end{proof}
+\end{Prop}
+
+\begin{Def} On note $H_{0,N}$ l'adhérence de l'espace $C_c^\infty([0,1[)$ dans $H_N$ pour la norme $\norm{ \cdot }_{H_N}$
+\end{Def}
+
+\begin{Prop}
+Sur $H_{0,N}$, la norme $\norm{ \cdot }_{H_N}$ est équivalente à la norme homogène \[ \norm{u}_{H_{0,N}} = \int_{0}^1{r^{N-1}|u'(r)|^2 dr}\]
+\begin{proof}
+Application de l'inégalité de Poincaré à une fonction radiale dans $\mathbb{R^N}$.
+\end{proof}
+\end{Prop}
+
+\begin{Def}
+On note $H^2_N = \enstq{u\in H_{0,N}}{\displaystyle\frac{d}{dr}\left(r^{N-1}u'(r)\right)\in V_N}$. C'est un sous-espace dense de $V_N$. 
+\end{Def}
+\begin{Prop} 
+Soit \[\functionDef{P}{H^2_N\cap H_{0,N}}{V_N}{u}{-\displaystyle\frac{1}{r^{N-1}}\frac{d}{dr}\left(r^{N-1}u'(r)\right)}\] P est auto-adjoint positif sur $V_N$, et il existe une suite croissante tendant vers l'infini de réels $(\lambda_n)_{n\in\mathbb{N}}$ et base hilbertienne $(e_n)_{n\in \mathbb{N}}$ de $V_N$ formée de vecteurs propres de P c'est-à-dire \[Pe_n = \lambda_n e_n\]. Les vecteurs propres sont des fonctions infiniment dérivables. 
+\begin{proof}
+Pour le montrer on se place dans $\mathbb{R}^N$ et on travaille avec les fonctions radiales correspondantes comme dans les preuves précédentes. $P$ coïncide avec le Laplacien. On montre qu'il est auto-adjoint à l'aide du principe de régularité elliptique.
+\end{proof}
+\end{Prop}
+
+\begin{Prop}
+Pour tout $n \in \mathbb{N}$ La fonction \[\functionDef{f_n}{B_{\mathbb{R}^N}(0,1)}{\mathbb{R}}{x}{e_n(|x|)}\]
+est un élément de $H^2(B_{\mathbb{R}^N}(0,1))\cap H^1_0(B_{\mathbb{R}^N}(0,1))$ et vérifie $- \Delta f_n = \lambda_n f_n$. Réciproquement, à toute valeur propre radiale du Laplacien avec conditions de Dirichlet, correspond un vecteur propre de $P$. 
+\end{Prop}
+
+\begin{Prop} Pour tout $n\in\mathbb{N}$, le vecteur propre $e_n$ associé à la valeur propre $\lambda_n$ vérifie : \[e_n(|x|) = C\int_{\mathbbm{S}^{N-1}}e^{i x \cdot \sqrt{\lambda_n}\xi }d\xi\] où $C\in \mathbb{R}$ est une constante. 
+\begin{proof}
+Expression du laplacien en Fourier. 
+\end{proof}
+
+\end{Prop}
+
+\begin{Cor} Pour tout $N \geq 2$
+La fonction \[\functionDef{e}{\mathbb{R}_+}{\mathbb{R}}{r}{\int_{\mathbbm{S}^{N-1}}e^{i r \xi \cdot u_1}d\xi}\] admet une infinité de zéros, notés $(\rho_n)_{n\in\mathbb{N}}$ rangés dans l'ordre croissant. Toutes les valeurs propres de P sont isolées, et les vecteurs propres de $P$ sont donnés par \[\functionDef{e_n}{[0,1]}{\mathbb{R}}{r}{C_ne(\rho_n r)}\] où $C_n$ sont des constantes de normalisation. Les constantes $C_n$ sont de plus uniformément bornées. 
+\end{Cor}
+
+\begin{Prop} \text{ }
+
+\begin{itemize}
+\item[-]Lorsque $N=2$, la fonction $e$ est proportionnelle à \[\functionDef{e}{[0,1]}{\mathbb{R}}{r}{J_0(r)}\] où $J_0$ est la fonction de Bessel de première espèce. 
+\item[-] Lorsque $N=3$, la fonction $e$ est proportionnelle à \[\functionDef{e}{[0,1]}{\mathbb{R}}{r}{\sinc(r)}\] où $\sinc$ est la fonction sinus cardinal. Dans ce cas, les zéros de $e$ sont $\rho_n = n\pi$. 
+\end{itemize}
+
+\end{Prop}
+
+\begin{Prop}
+On a l'équivalent suivant pour les valeurs propres de $P$ : \[\rho_n = \sqrt{\lambda_n} \underset{n\to \infty}{\sim} n\pi \]
+\begin{proof}
+Par récurrence sur la dimension $N$. Entre deux zéros de $e$ en dimension $N$, se trouve un zéro de $e$ en dimension $N+1$ (théorème de Rolle, dérivation sous l'intégrale). Or pour la dimension $3$, on connaît les zéros de $e$ qui sont donnés par $\rho_n = n\pi$.
+\end{proof}
+\end{Prop}
+
+
+
+
+\section{Décomposition en série de Fourier généralisée}
+
+Puisque les vecteurs propres du laplacien radial forment une base de $V_N$, Tout élément $f\in V_N$ peut s'écrire sous la forme \[f = \sum_{n\in \mathbb{N}} \langle f| e_n\rangle_{V_N}e_n\]  
+
+\begin{Prop}
+Pour toute fonction $f$ de $H_N$, on a 
+\begin{itemize}
+\item[-] f est continue
+\item[-] 
+
+
+\end{itemize}
+
+\begin{proof}
+Il faut remarquer que $\langle f| e_n\rangle = -\frac{1}{\lambda_N} \langle f| e_n\rangle$. Prouver la majoration des $C_N$. Utiliser que l'inverse de la racine est dans L1. 
+\end{proof}
+
+\end{Prop}
+
+\begin{Prop} (Décroissance des coefficients pour les fonctions régulières)
+Soit $f$ une fonction dans $H^2_N$. Alors on a 
+
+\end{Prop}
+
+
+\pagebreak
+
+Pour calculer rapidement des sommes de la forme \begin{equation}
+p(x) = \sum_{y \in Y}G(|x-y|)q(y)
+\end{equation}
+Il est utile de trouver une décomposition du noyau $G$ sous la forme 
+\begin{equation}
+G(r) = \sum_{p \in \mathbb{N}}\alpha_p H_p(r)
+\end{equation}
+où les fonctions $H_p$ sont des vecteurs propres radiaux de l'opérateur Laplacien avec conditions de Dirichlet sur une boule centrée en 0. 
+
+
+\end{document}

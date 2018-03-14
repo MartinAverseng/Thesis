@@ -1,0 +1,95 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{1.00000,1.00000,0.00000}%
+\definecolor{mycolor4}{rgb}{0.92900,0.69400,0.12500}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.162in,
+height=2.579in,
+at={(1.118in,1.467in)},
+scale only axis,
+xmin=0,
+xmax=60000,
+xlabel={Number of charges},
+ymin=0,
+ymax=150,
+ylabel={Computational time (s)},
+axis background/.style={fill=white},
+legend style={legend cell align=left,align=left,fill=none,draw=none}
+]
+\addplot [color=blue,line width=2.0pt,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+1000	0.305570494320304\\
+5000	1.47242709996839\\
+10000	2.97897219473946\\
+20000	6.21374662851466\\
+30000	9.16623095649604\\
+40000	12.5695386042769\\
+50000	15.717194267346\\
+};
+\addplot [color=mycolor1,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+1000	0.305570494320304\\
+5000	1.47242709996839\\
+10000	2.97897219473946\\
+20000	6.21374662851466\\
+30000	9.16623095649604\\
+40000	12.5695386042769\\
+50000	15.717194267346\\
+};
+\addlegendentry{Far-field};
+
+\addplot [color=red,line width=2.0pt,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+1000	0.232273068759827\\
+5000	1.84296575761432\\
+10000	5.03760504460419\\
+20000	14.7489751095091\\
+30000	27.9000160107066\\
+40000	42.3953876848929\\
+50000	91.9921247849844\\
+};
+\addplot [color=mycolor2,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+1000	0.232273068759827\\
+5000	1.84296575761432\\
+10000	5.03760504460419\\
+20000	14.7489751095091\\
+30000	27.9000160107066\\
+40000	42.3953876848929\\
+50000	91.9921247849844\\
+};
+\addlegendentry{Close-field};
+
+\addplot [color=mycolor3,line width=2.0pt,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+1000	2.83523874426796\\
+5000	13.2894218492777\\
+10000	25.1053738500002\\
+20000	47.9341779323199\\
+30000	70.8491307007353\\
+40000	90.9308813688744\\
+50000	117.888789631631\\
+};
+\addplot [color=mycolor4,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+1000	2.83523874426796\\
+5000	13.2894218492777\\
+10000	25.1053738500002\\
+20000	47.9341779323199\\
+30000	70.8491307007353\\
+40000	90.9308813688744\\
+50000	117.888789631631\\
+};
+\addlegendentry{Assembling};
+
+\end{axis}
+\end{tikzpicture}%

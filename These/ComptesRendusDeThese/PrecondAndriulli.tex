@@ -1,0 +1,39 @@
+
+\documentclass[]{article}
+\input{/home/martin/Thesis/These/DefLatex/Definitions.tex}
+
+
+
+
+
+\begin{document}
+	Le théorème de Steinbach et Wendland :
+	\begin{The}
+		Soient $\mathcal{V}$ et $\mathcal{W}$ deux espaces de Hilbert, et soient $\mathcal{V}_h$, $\mathcal{W}_h$, deux sous-espaces de dimension finie $M$ et $N$ de $\mathcal{V}$ et $\mathcal{W}_h$ respectivement. Soit $\opFromTo{A}{\mathcal{V}}{\mathcal{V^*}}$ et $\opFromTo{B}{\mathcal{W}}{\mathcal{V^*}}$ deux opérateurs satisfaisant les conditions suivantes :
+		\begin{itemize}
+			\item $A$ est auto-adjoint sur $\mathcal{V}$, tel que 
+			\[\duality{Au}{u} \geq c_A\norm{u}_\mathcal{V}^2\]
+			\[\duality{Au}{v} \leq C_A \norm{u}_{\mathcal{V}}\norm{v}_{\mathcal{V}}\]
+			\item $B$ est continu
+			\[\duality{Au}{v} \leq C_B \norm{u}_{\mathcal{V}} \norm{v}_{\mathcal{V}}\]
+			\item $B$ satisfait à la condition de stabilité 
+			\[c_B\norm{w_h}_{\mathcal{W}} \leq \sup_{v_h \neq 0, v_h \in \mathcal{V}} \dfrac{\abs{\duality{B w_h}{v_h}}}{\norm{v_h}_{V}},\]
+			où la constante $c_B$ ne dépend pas du choix de $\mathcal{W}_h$. 
+		\end{itemize}
+		On pose $\mathcal{T} =\isdef  \opFromTo{\mathcal{B}'\mathcal{A}^{-1}\mathcal{B}}{\mathcal{W}}{\mathcal{W}^*} $. Pour tous ces opérateurs, on note $[\cdot]$ leur matrice de Galerkine. Alors pour tout vecteur $w_h \in \mathbb{R}^N$, 
+		\[\gamma_1  w_h^T \left[\mathcal{T} \right]w_h \leq [B]^T[A]^{-1}[B] w_h \leq w_h^T \left[ \mathcal{T}\right] w_h \]
+		
+	\end{The}
+	Soit $\Gamma$ un arc ouvert $C^{\infty}$ ($C^1$ suffirait ?), on note $S_\omega$ le simple couche défini sur $H_\omega^{-1/2}(\Gamma)$ (on définit $H_\omega^{s}([-1,1])$ en transportant l'espace de Sobolev $H^s$ sur le cercle, puis $H_\omega^{s}(\Gamma)$ en utilisant un $C^{\infty}$ difféomorphisme. Il faudrait prouver ce qui suit :
+	\begin{Conj}
+		$H_{\omega}^s(\Gamma)$ est un espace de Hilbert pour le produit scalaire
+		\[(u,v) \mapsto \int_{\Gamma} \frac{1}{\sqrt{d(x,\partial \Gamma)}}u(x)v(x)dx,\]
+		et pour tout $s$ et pour $s < t$, l'injection $H^s_{\omega}(\Gamma) \subset H^{t}_{\omega}(\Gamma)$ est compacte. 
+		$H^{1/2}_{\omega}(\Gamma)$ est le dual de $H^{-1/2}_\omega(\Gamma)$.
+		L'opérateur $A : u \mapsto (\omega(x)\partial_x)^2 u + \scalProd{u}{1}_\omega$ est auto-adjoint continu et elliptique de $H_{\omega}^{1/2} \longrightarrow H_{\omega}^{-3/2}(\Gamma)$. 
+	\end{Conj}
+	On pose $\Delta_\omega$ l'opérateur défini 
+	\begin{The}
+		contenu...
+	\end{The}
+\end{document}

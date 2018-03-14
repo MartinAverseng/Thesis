@@ -1,0 +1,68 @@
+\documentclass[11pt,a4paper]{article}
+\input{C://Users/Martin/Documents/Scolaire/Divers/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Exercices opérateurs pseudo-différentiels}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\paragraph{Exercice 1.1}
+
+a) La fonction $p_m$ est continue (c'est un polynôme) et non nulle (on la suppose elliptique) sur la sphère unité. Sa valeur absolue est donc également continue et atteint par conséquent un minimum $\nu >0$ sur la sphère. En appliquant le fait que $p_m$ est homogène de degré $m$, on en déduit que pour tout $\xi \in \mathbb{R}^n$
+\[p_m(\xi) > \nu \abs{\xi}^m \]
+Comme le polynôme $p - p_m$ est de degré au plus $m-1$, il existe $R > 0$ pour lequel 
+\[ \forall \abs{\xi} > R, \quad \abs{(p - p_m)(\xi)} < \dfrac{\abs{p_m(\xi)}}{2}\]
+D'où l'on tire que 
+\[\forall \abs{\xi} > R,\quad \abs{p(\xi)} > \abs{ \abs{p_m(\xi)} - \abs{ (p-p_m)(\xi)}} = \abs{p_m(\xi)} - \abs{(p - p_m)(\xi)} > \dfrac{\abs{p_m(\xi)}}{2} > \dfrac{\nu}{2^m}\abs{\xi}^m\]
+On considère donc une fonction $\chi \in C^{\infty}_0(\mathbb{R}^n)$ qui est identiquement égale à $1$ dans un voisinnage de $B(0,R)$, et dans ce cas, la fonction 
+\[ \hat{E}(\xi) = \dfrac{1 - \chi(\xi)}{p(\xi)},\]
+est bien définie. Comme c'est une fonction de classe $C^\infty$ et bornée, c'est une distribution tempérée. 
+On a alors 
+\[ \widehat{p(D) E} = 1 - \chi(\xi),\]
+ce qui implique que $p(D)E = \delta + w$ où $w$ est la transformée de Fourier de $-\chi$. Comme $\chi$ est dans l'espace de Schwartz (puisqu'elle est $C^{\infty}_0$), $w$ l'est aussi. \newline 
+\\
+b) Nous allons montrer le résultat suivant 
+\begin{Prop} Pour tout $\alpha$, il existe une constante $C_\alpha > 0$ telle que  
+\[ |\partial^\alpha_\xi \hat{E}| \leq C_\alpha \left(1 + |\xi|\right)^{-m-|\alpha|}\]
+\begin{proof}
+Etant donné que $\hat{E}$ est nulle dans un voisinnage de $0$, il suffit de montrer que pour de grands $|\xi|$, 
+\begin{equation}
+|\partial^\alpha_\xi \hat{E}| \leq C_\alpha |\xi|^{-m-|\alpha|}
+\label{estimHomogene}
+\end{equation}
+D'après la formule de Leibniz, la fonction $\partial_{\xi}^\alpha \hat{E}$ s'exprime comme une combinaison linaire de termes de la forme 
+\[\partial^{\beta_1}{\xi} (1 - \chi) \partial_{\xi}^{\beta_2} \left(\dfrac{1}{p}\right)\]
+Où $\beta_1 + \beta_2 = \alpha$, ce que nous notons par la suite 
+\[ \partial^\alpha_\xi \hat{E} = \CL{\partial^{\beta_1}{\xi} (1 - \chi) \partial_{\xi}^{\beta_2}\left(\dfrac{1}{p}\right)}{\beta_1 + \beta_2 = \alpha}\]
+Lorsque $\beta_1 \neq 0$, le terme correspondant est dans $C^{\infty}_c(\Rn)$ et vérifie donc évidemment l'estimation (\ref{estimHomogene}). Le seul terme qui n'obéit pas à cette condition est de la forme 
+\[ (1 - \chi) \partial_{\xi}^{\alpha} \left( \dfrac{1}{p}\right)\]
+Exprimons $\partial_{\xi}^{\alpha} \left( \dfrac{1}{p}\right)$ à l'aide de la formule de Fàa di Bruno : 
+\[ \dfrac{1}{p} = \CL{\dfrac{1}{p^{K+1}}\prod_{i=1}^K \partial^{\alpha_i}_{\xi}p}{\alpha_1 + \alpha_2 + ... + \alpha_K = \alpha}\]
+Or puisque $p$ est un polynôme de degré $m$, pour tout $\beta$, il existe une constante $C_\beta$ vérifiant 
+\[ \partial^{\beta} p \leq C_\beta |\xi|^{m-|\beta|} \]
+D'autre part, on a montré en a) que \[\frac{1}{p} > \nu \dfrac{1}{|\xi|^m}\]
+On en déduit que tous les termes dans la formule de Fàa di Bruno sont majorés par une quantité de la forme $\dfrac{C}{|\xi|^{m + |\alpha|}}$
+\end{proof}
+\end{Prop} 
+\begin{Cor} Pour tout $\alpha$ tel que $|\alpha|\geq n - m + 1$ et pour tout $\beta$, on a 
+\[ D^{\beta}(x^{\alpha+\beta} E) \in L^{\infty}\]
+\begin{proof}
+La transformée de Fourier de $D^{\beta}(x^{\alpha+\beta} E)$ est proportionnelle à $\xi^{\beta} \partial^{\alpha+\beta}_\xi\hat{E}$ qui est intégrable sous les conditions de l'énoncé, grâce au résultat de la proposition précédente. 
+\end{proof}
+\end{Cor}
+\begin{Cor} $E$ est $C^\infty$ sur $\Rn \setminus\{0\}$. 
+\begin{proof}
+Soit $k \in \mathbb{N}^*$, montrons que $E$ est de  classe $C^k$ en dehors de $0$. Soit $\alpha_k$ tel que
+\[|\beta| \leq k  \implies \beta \leq \alpha_k \textup{ et } |\alpha_k - \beta| \geq n + 1 - m\]
+Nous allons montrer que $x^{\alpha_k} E$ est de classe $C^{k-1}$. Pour cela, il suffit de montrer que pour tout multi-indice $\beta$ de longueur inférieure à $k$, $\partial^{\beta} (x^{\alpha_k} E)$ est bornée. Soit $\beta$ un tel multi-indice, on peut vérifier que le couple $(\alpha_k - \beta,\beta)$ vérifie les hypothèses du corollaire précédent ce qui fournit le résultat. 
+\end{proof}
+\end{Cor} 
+\text{ }\\
+c) La transformée de Fourier de $D^{\beta} E$ s'écrit $\xi^{\beta}  \hat{E}$. Les réponses aux questions précédentes nous ont permis de voir que $\hat{E} \in S^{-m}$ et $\xi^{\beta} \in S^{|\beta|}$ donc $\xi^{\beta}  \hat{E} \in S^{|\beta| - m}$. Sous l'hypothèse $|\beta| \leq m - n - 1$,  $\xi^{\beta}  \hat{E} \in S^{-n-1}$. C'est donc une fonction intégrable, ce qui prouve que $D^{\beta} E$ est bornée, donc en particulier intégrable en $0$. D'autre part, on a 
+\[ x^{\alpha} D^{\beta} E \propto \int e^{i x\xi} \partial^\alpha_\xi(\xi^{\beta}  \hat{E}) d\xi\]
+Le second membre est toujours intégrable (la dérivation a même accéléré la décroissance à l'infini du spectre). On en déduit que $D^\beta E$ est intégrable.  
+Soit $\alpha$ tel que $|\alpha| \leq m - n - 1$. On sait que, étant donné que $p(D)$ et $D^\alpha$ commutent, 
+\[ D^\alpha u = \left( D^\alpha E * p(D) u\right) + S^{-\infty}\]
+Or la quantité du membre de droite est bornée à cause de l'inégalité de Young et du fait que $D^\alpha E \in L^1$ et $p(D)u \in L^{\infty}$
+\text{ }\\
+\end{document}

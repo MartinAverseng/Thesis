@@ -1,0 +1,36 @@
+clear all
+close all;
+
+x1 = linspace(0,30,100);
+%estimate = 1 - (1/64)*x2.*(-x2.^3.*hypergeom([3/2, 2, 2], [1, 3, 3, 3], -x2.^2)+16*besselj(0, x2).^2.*x2+16*besselj(1, x2).^2.*x2-32*besselj(0, x2).*besselj(1, x2));
+estimate = 1 - ((1/2*(x2.^2+1)).*besselj(0, x2).^2-1/2*besselj(0, x2).*besselj(1, x2).*x2 + 1/2*besselj(1, x2).^2.*x2.^2-1/2);
+Pvals = [50; 150; 500; 1500];
+h1 = figure;
+plot(x2,estimate,'--');
+h2 = figure;
+for i = 1:length(Pvals)
+    P = Pvals(i);
+    rho = besselJroots(0,P);
+    for j = 1:length(x2)
+        a1 = x1(j)/(pi*(P+1));
+        a2 = x2(j)/(pi*(P+1));
+        A1 = gramMatrix(a1,1,rho);
+        A2 = gramMatrix(a2,1,rho);
+        minEigA1(i,j) = min(eig(A1));
+        minEigA2(i,j) = min(eig(A2));
+    end
+    
+    figure(h1);
+    hold on
+    plot(x2,minEigA2);
+    ylim([0,1]);
+    
+    figure(h2);
+    hold on
+    semilogy(x1,(abs(1./minEigA1)));
+    
+   
+
+end
+
+plot(x2,estimate,'--');

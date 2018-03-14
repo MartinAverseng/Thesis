@@ -1,0 +1,58 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.436in,
+height=3.245in,
+at={(0.843in,0.802in)},
+scale only axis,
+xmode=log,
+xmin=500,
+xmax=10000,
+xminorticks=true,
+xlabel={$\log\left(\frac{1}{a}\right)$},
+xmajorgrids,
+xminorgrids,
+ymode=log,
+ymin=1,
+ymax=100,
+yminorticks=true,
+ylabel={$\log(t)$},
+ymajorgrids,
+yminorgrids,
+axis background/.style={fill=white},
+legend style={at={(0.7,0.2)},anchor=south west,legend cell align=left,align=left,fill=none,draw=none}
+]
+\addplot [color=mycolor1,only marks,mark=o,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+500	1.32595380235988\\
+800	2.06807759981805\\
+1000	2.64183527773513\\
+1500	3.95811003981309\\
+2000	5.6241221865427\\
+5000	20.6525525456488\\
+8000	43.2678089496946\\
+10000	91.8858179501306\\
+};
+\addplot [color=black,dashed]
+  table[row sep=crcr]{%
+500	2.06996885939258\\
+800	3.31195017502813\\
+1000	4.13993771878517\\
+1500	6.20990657817775\\
+2000	8.27987543757033\\
+5000	20.6996885939258\\
+8000	33.1195017502813\\
+10000	41.3993771878517\\
+};
+\addlegendentry{$y = 3x + C$};
+
+\end{axis}
+\end{tikzpicture}%

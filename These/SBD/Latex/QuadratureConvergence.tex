@@ -1,0 +1,129 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Martin}
+\title{Quadrature pour les fonctions de Bessel}
+\begin{document}
+\renewcommand{\proofname}{Preuve}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Théorème}[section]
+\newtheorem{Prop}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Définition}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+
+\section{Introduction}
+
+Soit $x \in \mathbb{R}^3$. On souhaite donner une approximation de $J_0(|x|)$ sous la forme 
+\[J_0(|x|) \approx \sum_{k=0}^{N_\xi} w_k \exp(i\xi_k\cdot x)\]Une telle expression se prête au calcul rapide d'une somme de la forme \[\sum_{l=0}^N J_0(|x-y|)f(y)\] à l'aide de transformées de Fourier rapides non-uniformes (les variables x et y sont séparées dans la forme approchée). Or une telle expression existe sous une forme continue car on a pour tout $x$ \[J_0(|x|) = \frac{1}{2\pi}\int_{\mathcal{C}} e^{i\xi \cdot x} d\xi\] où $\mathcal{C}$ est le cercle unité. Le but de ce petit document est de majorer la différence entre cette intégrale et son approximation par une somme de Riemann. 
+
+\begin{Prop} Soit $N\in \mathbb{N}$ et $X\in \mathbb{R}^3$. On suppose que $\frac{|X|}{N}  < 1$. On a alors la majoration suivante : 
+
+\begin{equation}
+\left| J_0(|x|) - \frac{1}{N}\sum_{j} e^{ix\sin\left(\frac{2j\pi}{N}\right)}\right|\leq C_N \left(e\frac{|X|}{N} \right)^N
+\label{Erreur}
+\end{equation}
+Où $C_N \leq 3$ et $C_N \underset{N\to+\infty} {\to}2$
+\end{Prop}
+
+\section{Quadrature pour les fonctions périodiques}
+
+\begin{Prop} \label{erreurRect}
+Soit f une fonction de classe $C^2$ $2\pi$ périodique. On a alors \[\frac{1}{2\pi}\int_0^{2\pi}f - \frac{1}{N}\sum_{j = 0}^{N-1}f \left(2\frac{j\pi}{N}\right) = - \sum_{k\in \mathbb{Z}^*} c_{kN}(f)\] où $c_k(f)$ représentent les coefficients de Fourier de f
+
+\begin{proof}
+Comme $f$ est $C^2$, elle est égale à sa série de Fourier (qui converge normalement).En injectant l'expression \[f(x) = \sum_{k\in \mathbb{Z}} c_{k}(f)e^{ikx}\] dans le membre de gauche, et en remarquant que \[\frac{1}{N}\sum_{j=0}^{N-1}e^{ik\frac{2j \pi }{N}} = \int_0^{2\pi} e^{ikx} + \delta(k\in N\mathbb{Z}^*)\]
+\end{proof}
+\end{Prop}
+
+Le résultat suivant montre que la méthode des rectangles pour une fonction périodique est précise à n'importe quel ordre. 
+
+\begin{Prop} 
+Dans le cas où f est de classe $C^m$, on a la majoration \[\left| \int_0^{2\pi}f - \frac{1}{N}\sum_{j = 0}^{N-1}f \left(2\frac{j\pi}{N}\right)\right| \leq \frac{1}{N^m} \zeta(m) \norm{f^{(p)}}_{\infty}\]
+Où $\zeta$ est la fonction zêta de Riemann. 
+ 
+
+\begin{proof}
+On effectue une majoration par inégalité triangulaire dans la proposition précédente et on applique l'identité \[c_k\left(f^{(p)}\right) = (ik)^p c_k(f)\]
+\end{proof}
+\end{Prop}
+
+Sur des cas particuliers, il peut être difficile d'estimer le terme $\norm{f^{(p)}}_{\infty}$. Et même si celle-ci est estimée précisément, il se peut que l'inégalité donnée par la proposition précédente soit sous-optimale. Nous utilisons uniquement la forme exacte donnée par la proposition \ref{erreurRect} dans la suite. 
+
+\section{Résultats sur les fonctions de Bessel}
+
+On note $J_n$ la fonction de Bessel d'ordre $n$. 
+On a la définition suivante, qui permet d'identifier les coefficients de Fourier de $u \mapsto e^{iz\sin u}$
+
+\begin{Def}
+Par définition, la fonction de Bessel d'ordre $n$ est donnée par 
+\[J_n(z) = \frac{1}{2\pi}\int_{0}^{2\pi} e^{iz\sin(u)}e^{-inu}du\]
+\end{Def}
+
+J'ai ensuite trouvé ce résultat, dont la preuve que je n'ai pas encore bien décortiquée, utilise la théorie des séries de Laurent.  
+
+\begin{Prop}
+Pour tout $R>1$, pour tout $t\in\mathbb{C}$, pour tout $n\in \mathbb{Z}$ on a la majoration suivante : \[|J_n(t)| \leq R^{-|n|}e^{R|t|} \]
+
+\end{Prop}
+
+\section{Majoration de l'erreur}
+
+On peut maintenant prouver la majoration annoncée, que je rappelle ici :
+
+\begin{Prop} Soit $N\in \mathbb{N}$ et $X\in \mathbb{R}^3$. On suppose que $\frac{|X|}{N} \leq  < 1$. On a alors la majoration suivante : \[\left| J_0(|x|) - \frac{1}{N}\sum_{j} e^{ix\sin\left(\frac{2j\pi}{N}\right)}\right|\leq C_N \left(e\frac{|X|}{N} \right)^N\] 
+Où $C_N \leq 3$ et $C_N \underset{N\to+\infty} {\to}2$
+
+ 
+\begin{proof}
+D'après le résultat sur les quadratures périodiques, et l'identification des coefficients de Fourier de la fonction dont on approche l'intégrale, en notant $\varepsilon(X,N)$ le terme d'erreur à l'intérieur de la valeur absolue, on a \[\varepsilon(X,N) = -\sum_{k\in N\mathbb{Z}^*} J_k(X)\]
+On utilise alors la majoration des fonctions $J_k$ : pour toute famille $R_k>1$ on a 
+
+\[|\varepsilon(X,N)| \leq 2\sum_{k\in \mathbb{N}^*} R_k^{-Nk}e^{R_k|X|}\]
+
+On peut alors optimiser chaque terme en $R_k$, soit $R_k = \frac{Nk}{|X|}> 1$ et on trouve 
+
+\[|\varepsilon(X,N)| \leq 2\sum_{k\in \mathbb{N}^*} \left(\frac{e|X|}{N}\right)^{kN} \times \frac{1}{k^{kN}}\]
+
+On applique l'inégalité de Hölder pour trouver : 
+
+\[|\varepsilon(X,N)| \leq 2\left(\frac{e|X|}{N}\right)^{N} \sum_{k\in \mathbb{N}^*}  \frac{1}{k^{kN}} \]
+On pose $\gamma_N = \frac{1}{k^{kN}}$. On a alors \[0 \leq \gamma_N - 1 = \sum_{k\geq 2} \frac{1}{k^{kN}}\leq \sum_{k\geq 2} \frac{1}{2^{kN}}\] Donc \[0 \leq \gamma_N - 1 \leq \frac{1}{2^{2N} - 2^N}\]. On en déduit que $C_N = 2\gamma_N \leq 3$ et $C_N$ tend vers $2$ quand $N$ tend vers l'infini. 
+
+\end{proof}
+\end{Prop}
+
+\section{Développement asymptotique en fonction de $\varepsilon$ et de $|X|$ }
+
+\subsection{En fonction de $\varepsilon$}
+
+Dans cette section, on suppose que $\varepsilon$ tend vers 0 et $|X|$ est fixé. On cherche à donner un équivalent de $N$ tel que 
+\begin{equation}
+C_N \left(e\frac{|X|}{N} \right)^N = \varepsilon
+\label{eqN}
+\end{equation}
+Pour commencer, il est clair que $\underset{\varepsilon\to 0}{\lim} N(\varepsilon) = +\infty$. En prenant le logarithme, on a \[N\log N - N\log(e|X|) = \log\left(\frac{1}{\varepsilon}\right) + \log(C_N)\] 
+On a donc l'équivalent suivant : 
+$N \log(N) \underset{\varepsilon\to 0}{\sim} \log\left(\frac{1}{\varepsilon}\right) $. On en déduit également en passant au logarithme que $\log(N)  \underset{\varepsilon\to 0}{\sim} \log\left(\log\left(\frac{1}{\varepsilon}\right)\right)$. Il s'ensuit que \[ N(\varepsilon)\underset{\varepsilon\to 0}{\sim}\frac{\log\left(\frac{1}{\varepsilon}\right) }{\log\left(\log\left(\frac{1}{\varepsilon}\right)\right)}\]. 
+
+\subsection{En fonction de $|X|$}
+
+On suppose à présent que $\varepsilon$ est fixé et $|X|$ tend vers l'infini. On cherche un équivalent des $N$ positifs vérifiant (\ref{eqN}). On suppose que $\varepsilon < 1$. En passant (\ref{eqN}) au logarithme, on peut écrire \[\log(N) - \log(e|X|) = \frac{1}{N}\log\left(\frac{C_N}{\varepsilon}\right)\]. On en déduit d'abord que $N>e|X|$, donc $N\underset{|X| \to +\infty}{\longrightarrow} +\infty$. Ceci entraîne, en le réinjectant dans l'équation précédente, que $N \underset{|X| \to +\infty}{\sim} e|X|$. En écrivant ensuite \[\log(N) - \log(e|X|) = \log\left(1 + \frac{N-e|X|}{e|X|}\right)\underset{|X| \to +\infty}{\sim} \frac{N-e|X|}{e|X|}\], on a finalement le développement asymptotique suivant pour $N$ \[N = e|X| + \log\left(\frac{C_N}{\varepsilon}\right) + o(1)\]
+
+
+\end{document}
+

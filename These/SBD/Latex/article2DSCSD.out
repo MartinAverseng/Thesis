@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Overview of the method}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Purpose of the algorithm}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Principle}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Computation of the quadrature}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Assembling of the local operator}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.5}{Global operator and non-uniform Fourier transform}{section.1}% 6
+\BOOKMARK [2][-]{subsection.1.6}{Matrix-vector product}{section.1}% 7
+\BOOKMARK [2][-]{subsection.1.7}{Overall complexity}{section.1}% 8
+\BOOKMARK [1][-]{section.2}{Radial quadrature}{}% 9
+\BOOKMARK [2][-]{subsection.2.1}{Computation of the coefficients p}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.1.1}{The continuous embedding H10,rad\(A\(a\)\) L\(A\(a\)\)}{subsection.2.1}% 11
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Computing the coefficients p using a Cholesky factorization}{subsection.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.2}{Space of radial L2 and H1 functions}{section.2}% 13
+\BOOKMARK [2][-]{subsection.2.3}{Eigenvalues of the Laplacian operator}{section.2}% 14
+\BOOKMARK [2][-]{subsection.2.4}{Conditions for the fast convergence of Fourier-Bessel series}{section.2}% 15
+\BOOKMARK [2][-]{subsection.2.5}{A bound on the number of components for the Laplace kernel}{section.2}% 16

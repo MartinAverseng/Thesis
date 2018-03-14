@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{Martin}
+\title{Young Généralisé}
+\begin{document}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Lem}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Definition}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\N}[0]{\mathbb{N}}
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\Z}[0]{\mathbb{Z}}
+
+Soient $\Sigma_x$ et $\Sigma_y$ deux ensembles finis de points inclus dans $\RN$. On se donne deux fonctions $f$ et $g$ qui sont définies sur $\RN$
+On note \[\norm{f}_p^{\Sigma_x} =\left( \sum_{x \in \Sigma_x} f(x)^p\right)^{1/p}\]
+\[f \ast^{\Sigma_y} g (x) = \sum_{y\in\Sigma_y} f(x-y) g(y)\]
+
+\end{document}
+

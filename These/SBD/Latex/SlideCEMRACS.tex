@@ -1,0 +1,51 @@
+\documentclass[11pt]{beamer}
+\usetheme{Warsaw}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{frame}{2D extension of SCSD}
+
+\begin{block}{Objective}
+\textbf{SCSD:} New method for fast 3D convolutions \\
+\textbf{Internship + CEMRACS: } Extend to 2D
+\end{block}
+\begin{center}
+$q_k = \displaystyle\sum_{l=1}^N G(x_k-x_l)f_l \quad G(x): \textup{ PDE radial kernel }$
+\end{center}
+\begin{tabular}{l | l | l}
+ & SCSD (3D $\rightarrow x_k \in \mathbb{R}^3$) & SBD (2D $\rightarrow x_k \in \mathbb{R}^2$) \\
+\hline \hline
+Expansion: & $G \approx \displaystyle\sum_{p=1}^P \alpha_p \textup{sinc}(\lambda_p|x|)$ & $G \approx \displaystyle\sum_{p=1}^P \alpha_p J_0(\rho_p |x|)$ \\ 
+Offline: & $O(N\log(N))$ & $O(N^{3/2})$ \\ 
+Online: & $O(N\log(N))$ &$O(N\log(N))$ \\ 
+\end{tabular}
+
+\begin{block}{Achieved}
+\begin{itemize}
+\item[-] Error + complexity analysis
+\item[-] Test case 5e7, off: 21 min, on: 6 min
+\end{itemize}
+\end{block}
+
+
+\end{frame}
+\newcommand {\framedgraphic}[2] {
+    \begin{frame}{#1}
+        \begin{center}
+            \includegraphics[width=\textwidth,height=0.8\textheight,keepaspectratio]{#2}
+        \end{center}
+    \end{frame}
+}
+
+\framedgraphic{Approximation of $Y_0$ in Bessel series}{CEMRACSSlide3.png}
+\framedgraphic{Numerical results}{NumericalResultsslideCEMRACS.png}
+
+
+\end{document}

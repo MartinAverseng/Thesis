@@ -1,0 +1,65 @@
+\documentclass[11pt,a4paper]{article}
+\IfFileExists{Definitions.tex}{\input{Definitions.tex}}{\input{/home/martin/Documents/These/DefLatex/Definitions.tex}}
+\author{Martin Averseng}
+\title{Sparse Bessel Decomposition for fast 2D non-uniform convolution}
+\begin{document}
+\maketitle
+	
+	
+\abstract{We describe an efficient algorithm for computing matrix vector products involved in the numerical resolution of boundary integral equations in 2 dimensions of space. This work is an extension of the so-called Sparse Cardinal Sine Decomposition algorithm decribed in \cite{Alouges2015}, which is the three-dimensional analogous.}
+
+\section{Introduction}
+In most modern codes, the numerical resolution of boundary integral equations is performed by piecewise polynomial approximation and requires the resolution of a dense linear system $Au = b$. When the number of unknowns is large, it becomes prohibitively costly to invert the matrix $A$, and instead, the solution is found using Krylov subspace based methods. The latter requires very fast evaluations of matrix vector products, which, in the context of boundary integral formulations, take the form of discrete convolutions:
+\begin{equation}
+	q_k = \sum_{l=1}^{N_x} G(\abs{\boldsymbol{x}_k - \boldsymbol{x}_l}) \phi(\boldsymbol{x}_l), \quad k \in [1,N_x].
+	\label{discreteConv}					
+\end{equation}
+Here, $G$ is the Green's kernel of the partial derivative equation being solved, $\phi$ is some basis function of the discrete functional scheme, and $\boldsymbol{x} = (\boldsymbol{x}_k)_{k\in[1,N_x]}$  is any set of points in $\mathbb{R}^2$. For example, the resolution of the Laplace equation with Dirichlet boundary conditions leads to \eqref{discreteConv} with $G(\boldsymbol{x}) = \log\abs{\boldsymbol{x}}$ (the kernel of the single layer potential).
+
+Several efficient algorithms have emerged to compute a fast approximation of \eqref{discreteConv}, among which the celebrated Fast Multipole Method \cite{} \toDo{(Lequel Citer ? Greengard 1997 ? Coifman ?)}, and the Hierarchical Matrix \toDo{idem, à citer}. Many of them are based on local variable separation
+\[G(|\boldsymbol{u} - \boldsymbol{v}|) \approx \sum_k \lambda_k G^k_1(\boldsymbol{u})G^k_2(\boldsymbol{v}),\] 
+valid for $\boldsymbol{u}$ and $\boldsymbol{v}$ distant from each other. A geometrical splitting (octree) of the mesh is performed to define regions in which the coefficients $\lambda_k$ are constants. This eventually results in compressed matrix representations and matrix-vector products with quasi-linear complexity. 
+
+Here we present an alternative compression and acceleration method, which we call the Sparse Bessel Decomposition (SBD), an extension of the Sparse Cardinal Sine Decomposition (SCSD) decribed in \cite{Alouges2015} adapted to 2-dimensional problems. SBD and SCSD achieve performances almost comparable to the aforementioned algorithms, they are quite general with respect to the kernel $G$, and do not rely on the construction of octrees, which makes them easier to implement. In addition, they materialise in an elegant way the intuition according to which a discrete convolution should translate into a product of Fourier spectra. 
+
+The method mainly relies heavily on the Non-uniform Fast Fourier Transforms \cite{NuFFT} (of type III), which is a fast procedure:
+\[\operatorname{NuFFT}_\pm[\boldsymbol{x},\boldsymbol{\xi}](\alpha)\]
+that returns the vector $q$ defined by:
+\[ q_k = \sum_{\nu = 1}^{N_{\xi}} e^{\pm i \boldsymbol{\xi}_\nu \cdot \boldsymbol{x}_k} \alpha_\nu ,\]
+with an quasi-linear cost in both $N_x$ and $N_\xi$ for any (non equispaced) set of points $\boldsymbol{x},\boldsymbol{\xi}$ in $\mathbb{R}^2$ and complex vector $\alpha$.
+The SBD method first seeks a discrete and sparse approximation of the spectrum of $G$,
+\begin{equation}
+	\label{Gapprox}
+	G(x) \approx \sum_{\nu=1}^{N_\xi} e^{i  \boldsymbol{x}_k\cdot \boldsymbol{\xi}_\nu} \hat{\omega}_\nu ,
+\end{equation}
+Such a representation is computed "offline" and can be recycled for any choice of function $\phi$ in \eqref{discreteConv}. The expansion \eqref{Gapprox} is then injected in  \eqref{discreteConv} to yield 
+\begin{equation}
+	\begin{split}	q_{\text{far}} &\approx \left(\sum_{\nu = 1}^{N_\xi} e^{+i  \boldsymbol{x}_k  \cdot\boldsymbol{\xi}_\nu } \left[\hat{\omega}_\nu \sum_{l=1}^{N_x} e^{- i \boldsymbol{x}_l \cdot \boldsymbol{\xi}_\nu} \phi(\boldsymbol{x}_l) \right]\right)_{k \in [1,N_x]}\\
+		&= \operatorname{NuFFT}_+[\boldsymbol{x},\boldsymbol{\xi}]\left(\hat{\omega} \odot \operatorname{NuFFT}_-[\boldsymbol{x},\boldsymbol{\xi}]\big(\phi(\boldsymbol{x})\big)\right).
+	\end{split}
+	\label{far convolution}					
+\end{equation}
+Here, $\odot$ denotes elementwise product between vectors. This approximation reduces the complexity from $O(N_x^2)$ to $O(M \log^a (M))$ for some integer $a$ and where $M$ is the greatest value among $N_x$ and $N_\xi$. 
+
+In most cases, the kernel $G$ is singular near the origin, so \eqref{Gapprox} will be only valid for $|x|$ above some threshold $\rmin$. Part of the SBD algorithm is thus dedicated to computing a local correction using a sparse matrix product to account for the exact close interactions. The threshold must be chosen so that the far and close contributions of the product (that is the time spent computing the NuFFT and the sparse matrix product respectively) be balanced. We denote by $a \in (0,1)$ the quotient ${\rmin}/{\rmax}$, where $\rmax$ is the diameter of the cloud of points $\boldsymbol{x}$.
+
+The object of this work is to describe precisely the algorithm, provide a \toDo{Matlab (à Mettre en forme)} code and estimate the complexity in the special case where the singular behavior of $G$ is $O(\log(|\boldsymbol{x}|))$, which will be achieved by giving an asymptotic bound on $N_\xi$ in \eqref{Gapprox}. The complexity is summarized in the next theorem:
+
+\begin{The} Let $\varepsilon > 0$ the desired accuracy of the method. For any constant $\lambda \geq 1$, if the parameter $a$ is chosen as $a = \lambda\frac{\log(\varepsilon)^{2/3}}{N_x^{2/3}}$, then
+	\label{GlobalComplexity}
+	\begin{itemize}
+		\item[(i)]  The off-line complexity (for the computation of representation \eqref{Gapprox}) scales as
+		      \[ C_{\textup{off}}(N_x,\varepsilon,\lambda) = O\left(\abs{\log \varepsilon}^{3/4} \lambda^{-3} N_x^2\right)\]
+		\item[(ii)] Once the off-line computations have been done, \eqref{discreteConv} is evaluated for any choice of $\phi$ at a precision at least $\varepsilon \displaystyle\sum_l {\abs{\phi(x_l)}}$ with a complexity scaling as
+		      \[C_{\textup{on}}(N_x,\varepsilon,\lambda) = O\left( \abs{\log\varepsilon}^{3/4} C_{\textup{NuFFT}}(\varepsilon) \lambda N_x ^{4/3} \log(N_x)\right)\] 
+		      where $C_{\textup{NuFFT}}(\varepsilon)$ represents the complexity factor of the Type III \textup{NuFFT} related to the target tolerance. 
+	\end{itemize} 
+\end{The}
+
+The choice $\lambda = 1$ in the previous theorem yields the minimal complexity for on-line computations. This is the appropriate choice when \eqref{discreteConv} needs to be evaluated a lot of times for different $\phi$. In the case where \eqref{discreteConv} only has to be computed a few times, $\lambda$ can be chosen so as to minimize the total computation time (off-line $+$ on-line), that is $\lambda = \frac{N_x^{1/6}}{C_{\textup{NuFFT}(\varepsilon)}^{1/4}}$, yielding a complexity of $O\left( \abs{\log(\varepsilon)}^{3/4}C_{\textup{NuFFT}}(\varepsilon)^{3/4}N_x^{3/2}\log(N_x)\right)$. 
+
+\IfFileExists{biblio.bib}{\bibliography{biblio}}{\bibliography{/home/martin/Documents/These/Biblio/biblio}}
+\bibliographystyle{plain}
+		
+\end{document}
+	

@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{Alouges2015}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{NuFFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\end{thebibliography}

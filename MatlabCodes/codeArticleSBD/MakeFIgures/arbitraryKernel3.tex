@@ -1,0 +1,95 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+%
+\begin{tikzpicture}[%
+trim axis left, trim axis right
+]
+
+\begin{axis}[%
+width=0.761\plotwidth,
+height=0.6\plotwidth,
+at={(0\plotwidth,0\plotwidth)},
+scale only axis,
+xmin=0,
+xmax=8,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\gamma$},
+ymode=log,
+ymin=1e-07,
+ymax=1,
+yminorticks=true,
+ylabel style={font=\color{white!15!black}},
+ylabel={$L^{\infty} error$},
+axis background/.style={fill=white},
+legend style={legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=mycolor1, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+0.5	0.469917265327096\\
+1.33333333333333	0.0812794029045145\\
+2.16666666666667	0.032616261385658\\
+3	0.022954774961033\\
+3.83333333333333	0.0193037354068332\\
+4.66666666666667	0.017198994532261\\
+5.5	0.0157083221068697\\
+6.33333333333333	0.0145022566384032\\
+7.16666666666667	0.0125205094369132\\
+8	0.0149464763152141\\
+};
+\addlegendentry{$n=0$}
+
+\addplot [color=mycolor2, mark=x, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+0.5	0.402124680965392\\
+1.33333333333333	0.0451790602938171\\
+2.16666666666667	0.00585944066442678\\
+3	0.000620486763480699\\
+3.83333333333333	0.000359105474041055\\
+4.66666666666667	0.000408203218129621\\
+5.5	0.000391652496346762\\
+6.33333333333333	0.000363506327544449\\
+7.16666666666667	0.000312365262518099\\
+8	0.000374712234014307\\
+};
+\addlegendentry{$n=1$}
+
+\addplot [color=mycolor3, mark=square, mark options={solid, mycolor3}]
+  table[row sep=crcr]{%
+0.5	0.403799919922653\\
+1.33333333333333	0.0460370368957062\\
+2.16666666666667	0.00645940356519015\\
+3	0.00110508608051996\\
+3.83333333333333	0.000189008891083198\\
+4.66666666666667	2.92541451032413e-05\\
+5.5	4.01476072675599e-06\\
+6.33333333333333	4.79187624380373e-06\\
+7.16666666666667	4.73184979510322e-06\\
+8	4.41032943809816e-06\\
+};
+\addlegendentry{$n=2$}
+
+\addplot [color=mycolor4, mark=diamond, mark options={solid, mycolor4}]
+  table[row sep=crcr]{%
+0.5	0.403829120940977\\
+1.33333333333333	0.0460519848691643\\
+2.16666666666667	0.00647018983680092\\
+3	0.00111411396053995\\
+3.83333333333333	0.000196690579866932\\
+4.66666666666667	3.58097761687937e-05\\
+5.5	6.94311951932036e-06\\
+6.33333333333333	1.57146804147246e-06\\
+7.16666666666667	5.00060375108191e-07\\
+8	2.64263110416607e-06\\
+};
+\addlegendentry{$n=3$}
+
+\end{axis}
+\end{tikzpicture}%

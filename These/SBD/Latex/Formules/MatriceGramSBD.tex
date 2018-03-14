@@ -1,0 +1,68 @@
+\documentclass[11pt,a4paper]{article}
+\IfFileExists{Definitions.tex}{\input{Definitions.tex}}{\input{/home/martin/Documents/These/DefLatex/Definitions.tex}}
+\author{Martin Averseng}
+\title{Gram Matrix in the SBD method}
+\begin{document}
+\maketitle
+\noindent In this document we give explicit formulas for the matrix $A$ of size $P \times P$ defined as 
+\[A_{i,j} = \int_{\mathcal{A}(a,b)} \nabla e_i \cdot \nabla e_j, \quad i,j \in \{1,\cdots,P\}\]
+where $e_i(r) = C_i J_0(\rho_i r)$ with $C_i$ the normalization constant $C_i = \dfrac{\sqrt{2}}{\rho_i \abs{J_1(\rho_i)}}$, $J_\alpha$ is the Bessel function of first kind and order $\alpha$, $\rho_i$ is the i-th root of $J_0$, $\mathcal{A}(a,b)$ is the ring $\{a < r < b\}$. We next study its conditioning. 
+This is the Gram matrix that must be inverted to find the SBD coefficients. 
+Recall that, if $B$ is the unit ball in $\R^2$,
+\begin{The}
+	For all $(i,j)$, one has
+	\[ \int_B \nabla e_i \cdot \nabla e_j = \delta_{i,j}\] 
+\end{The}
+\section{Explicit coefficients}
+\begin{center}
+	
+\end{center} The three identities are easy to obtain one from the previous. 	
+\begin{Prop}
+	For any $x<y$, we have the following identities
+	\begin{itemize}
+		\item[(i)] $\displaystyle \int_{x}^y u J_0(u) J_0'(u) du = -\frac{1}{2} \bigg[ u^2 J_0'(u)^2\bigg]_x^y$
+		\item[(ii)] $\displaystyle \int_{x}^y u J_0(u)^2 du = \frac{1}{2}\bigg[{u^2}\big(J_0(u)^2 + J_0'(u) ^2\big) \bigg]_x^y$
+		\item[(iii)] $\displaystyle \int_x^y u J_0'(u)^2 du = \bigg[\frac{u^2}{2} \big\{J_0(u)^2 + J_0'(u)^2\big\} + u J_0(u) J_0'(u)\bigg]_x^y$
+	\end{itemize}
+\end{Prop}	
+\begin{The}
+	The extra-diagonal elements of $A$ are given by 
+	\begin{equation*}
+		A_{i,j} = 2 \pi  C_i C_j \dfrac{\rho_i \rho_j}{\rho_j^2 - \rho_i^2} \bigg[r \big\{\rho_i J_0(\rho_i r) J_0'(\rho_jr) - \rho_j J_0(\rho_j r) J_0'(\rho_i r)\big\}\bigg]_a^b
+	\end{equation*}
+	while the diagonal elements are
+	\begin{equation*}
+		A_{i,i} = 2\pi C_i C_j \bigg[\frac{(\rho_i r)^2}{2}\big\{J_0(\rho_i r)^2 + J_0'(\rho_i r)^2\big\} + (\rho_i r) J_0(\rho_i r)J_0'(\rho_i r)\bigg]_a^b
+	\end{equation*}
+\end{The}
+
+\section{Condition number}
+Here we provide a bound on the condition number of this matrix and perform some numerical tests. 
+\begin{Prop}
+	Assume that $0 < a < b < 1$. The eigenvalues of $A$ lie in $(0,1)$. 
+	\begin{proof}
+		$A$ is the matrix of a scalar product, thus positive definite, so its eigenvalues are above $0$. Let $v = \{v_1,\cdots,v_P\}$ and 
+		\[V = \sum_{p=1}^P v_p e_p.\]
+		Then, one has
+		\begin{eqnarray*}
+			v^T Av &=& \int_{\mathcal{A}(a,b)}\abs{\nabla V}^2\\
+			& < &\int_{B}\abs{\nabla V}^2\\
+			& = & \sum_{p = 1}^P{v_p^2}\\
+			& = & \norm{v}^2_2.
+		\end{eqnarray*}
+		proving that all eigenvalues of $A$ are strictly less than $1$. \qedhere
+	\end{proof}	
+\end{Prop}
+We are now interested finding a lower bound for the smallest eigenvalue $\lambda_{\min}$ of $A$. For this, we introduce the matrix $B$ that is equal to $I - A$. When $a=0, b=1$, $B = 0$. We call $c$ the largest eigenvalue of $B$. Obviously, 
+\[ \lambda_{\min} \geq 1 - c,\]
+thus the condition number of $A$ is bounded by $\dfrac{1}{1-c}$. 
+\begin{Prop}
+	For all $x \in \R^+$, 
+	\[J_1(x) \leq \frac{1}{2}x\]
+\end{Prop}
+\begin{Prop}
+	We have the following estimate: 
+	\[c \leq tatata\]
+\end{Prop}
+\end{document}
+

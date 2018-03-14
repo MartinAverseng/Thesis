@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: article2DSCSD.aux
+The style file: plain.bst
+Database file #1: biblio.bib
+I was expecting a `,' or a `}'---line 71 of file biblio.bib
+ :   
+ :   note = {Accessed: 2016-05-13}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You've used 13 entries,
+            2118 wiz_defined-function locations,
+            586 strings with 6168 characters,
+and the built_in function-call counts, 4234 in all, are:
+= -- 439
+> -- 153
+< -- 1
++ -- 66
+- -- 48
+* -- 302
+:= -- 705
+add.period$ -- 40
+call.type$ -- 13
+change.case$ -- 62
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 156
+empty$ -- 350
+format.name$ -- 48
+if$ -- 872
+int.to.chr$ -- 0
+int.to.str$ -- 13
+missing$ -- 14
+newline$ -- 68
+num.names$ -- 26
+pop$ -- 50
+preamble$ -- 1
+purify$ -- 50
+quote$ -- 0
+skip$ -- 105
+stack$ -- 0
+substring$ -- 358
+swap$ -- 22
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 50
+warning$ -- 0
+while$ -- 49
+width$ -- 15
+write$ -- 144
+(There was 1 error message)

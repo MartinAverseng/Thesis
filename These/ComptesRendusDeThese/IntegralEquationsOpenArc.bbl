@@ -1,0 +1,44 @@
+\begin{thebibliography}{1}
+
+\bibitem{bruno2012second}
+Oscar~P Bruno and St{\'e}phane~K Lintner.
+\newblock Second-kind integral solvers for te and tm problems of diffraction by
+  open arcs.
+\newblock {\em Radio Science}, 47(6), 2012.
+
+\bibitem{jerez2010boundary}
+C~Jerez-Hanckes and J-C N{\'e}d{\'e}lec.
+\newblock Boundary hybrid galerkin method for elliptic and wave propagation
+  problems in r3 over planar structures.
+\newblock {\em Integral Methods in Science and Engineering, Volume 2}, pages
+  203--212, 2010.
+
+\bibitem{mclean2000strongly}
+William Charles~Hector McLean.
+\newblock {\em Strongly elliptic systems and boundary integral equations}.
+\newblock Cambridge university press, 2000.
+
+\bibitem{stephan1984augmented}
+Ernst~P Stephan and Wolfgang~L Wendland.
+\newblock An augmented galerkin procedure for the boundary integral method
+  applied to two-dimensional screen and crack problems.
+\newblock {\em Applicable Analysis}, 18(3):183--219, 1984.
+
+\bibitem{wilcox1975scattering}
+C.~H. Wilcox.
+\newblock {\em Scattering theory for the d'Alembert equation in exterior
+  domains}, volume~4.
+\newblock Springer Berlin, 1975.
+
+\bibitem{yan1988integral}
+Yeli Yan, Ian~H Sloan, et~al.
+\newblock {\em On integral equations of the first kind with logarithmic
+  kernels}.
+\newblock University of NSW, 1988.
+
+\bibitem{yan1990cosine}
+Yi~Yan.
+\newblock Cosine change of variable for symm's integral equation on open arcs.
+\newblock {\em IMA Journal of Numerical Analysis}, 10(4):521--535, 1990.
+
+\end{thebibliography}

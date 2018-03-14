@@ -1,0 +1,712 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{bbm}
+\usepackage[]{algorithm2e}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{pgfplots} 
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{float}
+\usepackage{url}
+\usepackage{bigints}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepgfplotslibrary{external} 
+\tikzexternalize
+\pgfplotsset{compat=1.13}
+\title{Internship report : Fast convolution using sparse Fourier-Bessel decomposition}
+\author{Martin}
+\begin{document}
+\renewcommand{\proofname}{Proof}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{monTheoNumrote}{Théorème}[section] % Environnement numéroté en fonction de la section
+\newtheorem*{monTheoNonNumerote}{Théorème}  % Environnement non numéroté
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem*{Prop*}{Proposition} 
+\newtheorem{Cor}{Corollary}[section]
+\newtheorem{Conj}{Conjecture}[section]
+\newtheorem{Lem}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Definition}[section]
+\newtheorem{Rem}{Remark}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}_{a,b}}
+\newcommand{\Crad}{C^\infty_{c,rad}(B)}
+\newcommand{\Lrad}{L^2_{rad}(B)}
+\newcommand{\Lradab}{L^2_{rad}(\mathcal{A}_{a,b})}
+\newcommand{\duality}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\Hrad}{H^1_{rad}(B)}
+\newcommand{\Hzrad}{H^1_{0,rad}(B)}
+
+\section*{Introduction}
+
+
+Our purpose in this internship was to apply the ideas of the Sparse Cardinal Sine Decomposition (SCSD) method developped by Alouges et al. in \cite{Alouges2015} to 2-dimension problems. As in the original paper, our aim was to investigate the computational efficient approximations of vectors $(q_k)_{1\leq k \leq N}$ when the quantities $q_k$ are the resulting 2 dimensional Coulombian potential created by $N$ punctual masses :
+\begin{equation}
+ q_k = \sum_{\underset{l\neq k}{l=1}}^N \log(|x_k - x_l|)f_l 
+\label{LaSommeACalculerDansLArticle}
+\end{equation}
+(the $\dfrac{1}{2\pi}$ constant is dropped for the sake of simplicity). 
+We have also tackled the problem of computing the amplitude of the acoustic field radiated in 2 dimensions by $N$ punctual sources for a wavenumber $\mu$: 
+\begin{equation}
+ q_k = \sum_{\underset{l\neq k}{l=1}}^N \left(Y_0(\mu|x_k - x_l|) + iJ_0(\mu|x_k - x_l|)\right)f_l 
+\label{LaDeuxiemeSommeACalculerDansLArticle}
+\end{equation}
+Where $J_0$ and $Y_0$ are the Bessel function of first and second kinds. The fundamental idea underlying the method is to discretize the Fourier space by concentric spheres and to expand the convolution kernels on a basis of functions which spectrum is supported on each of those spheres. This choice is very natural and is closely linked to the Fourier transform for periodic functions. Indeed, a radial function in dimension $N=1$ is simply an even function, and when it is defined on a segment $[-a;a]$, it can be represented as a sum of cosines with frequencies multiple of $\frac{\pi}{a}$. This corresponds to discretizing the Fourier space as $\enstq{k\frac{\pi}{a}}{k \in \mathbb{Z}}$. Here, we try to extend this idea to higher dimensions : we choose to expand the kernels on a basis of functions which Fourier spectrum vanish outside a sphere centered on the origin and is constantly equal to $1$ on this sphere. Therefore, the functions considered are of the following form : 
+\begin{equation}
+e_\lambda(x) = \int_{\mathbbm{S}^{N-1}} e^{i\lambda x \cdot  \xi} d\sigma(u)
+\label{FormeSphere}
+\end{equation}
+Where $\mathbbm{S}^{N-1}$ denotes the border of the unit ball of $\RN$. 
+We will show at the end of the first section in any dimension of space $N$, there exists a discrete set of functions of the form \ref{FormeSphere} that forms a Hilbert basis of the space of radial functions in $L^2(B)$. 
+
+There are two main advantages in using those functions as a basis to expand radial kernel. First, because of the form of their spectrum, they take maximal advantage of the symmetry of the problem. This means that only a few terms in the decomposition will be required to obtain a good approximation of the kernel. Second, they are adapted to convolutions. Indeed, suppose one wants to compute 
+\[ q_k = \sum_{\underset{l\neq k}{l=1}}^N e_\lambda(x_k - x_l)f_l \]
+Then one has 
+\[ q_k = \int_{\mathbb{S}^{N-1}} e^{i\lambda x_k \cdot  \xi} \left(\sum_{\underset{l\neq k}{l=1}}^N  f_l e^{-i\lambda x_l \cdot \xi}\right)d\sigma(u)\]
+Which can be computed efficiently in dimensions $2$ and $3$ using a quadrature rule for the integral on the sphere, and by applying the non-uniform fast Fourier transform technique, as we will explain in more details subsequently.
+
+In dimension $N=3$, the functions $e_\lambda$ are proportional todilated cardinal sine which is why the method in \cite{Alouges2015} was called the Sparse Cardinal Sine Decomposition method. In the present article, we focus on the dimension $N=2$, and the functions $e_\lambda$ are dilated Bessel functions of first kind $J_0$. 
+
+\section*{Overview of the method}
+
+In order to compute the sum (\ref{LaSommeACalculerDansLArticle}), we divide the summation in two parts : the far-field and the close field. For the far-field interactions, an approximation of the form 
+\begin{equation}
+G \approx \sum_{p=1}^P \alpha_p J_0(\rho_p |x|)
+\label{GasASumOfJ0}
+\end{equation}
+valid for $|x|>a$ is computed, where $\rho_p$ denotes the $p-th$ root of the function $J_0$ and the coefficients $\alpha_p$ are obtained by a least-square method. The function $J_0$ is in turn approximated as a finite sum of the form \[J_0(|x|) \approx \frac{1}{M}\sum_{m=1}^M e^{i x \cdot \xi_m}\] 
+where $\xi_m$ are a set of points regularly spaced on the unit circle. 
+With these approximations, the sum (\ref{LaSommeACalculerDansLArticle}) takes the following form : 
+\[ q_k \approx \sum_{l}\sum_{p}\sum_{m} w_{l,p,n} e^{i (x_k - x_l) \cdot \xi_{m,p}}\]
+for some weights $w_{l,p,n}$ and some quadrature points $\xi_{m,p}$. This sum can be computed efficiently using the Non-Uniform Type-III Fast Fourier Transform \cite{NuFFT}. 
+When the distance $|x_k-x_l|$ is small, the previous approximation is not efficient, therefore the quantities $\log(|x_k-x_l|)f_l$ must be computed exactly, leading to a sparse matrix vector product. The complexity of the overall method will be a trade-off between the cost of the close and far field contributions. Indeed, if the constant $a$ for which the approximation of $G$ is valid becomes small, the close-range matrix will be sparser, while the radial approximation of $\log$ as a sum of $J_0(\rho_p|x|)$ will contain more terms. Each step will be explained in more details in the body of the article. We start by stating the complexity of the algorithm in the cases of source points uniformly distributed on the unit disk  and on the unit circle of $\mathbb{R}^2$. 
+
+\begin{Prop*} Let $(x_k)_{k\in \llbracket 1,N\rrbracket}$ a cloud of points distributed uniformly in the unit disk of $\mathbb{R}^2$. Once the radial approximation of $G$ as a sum of the form (\ref{GasASumOfJ0}) the complexity of the algorithm scales as $O\left(\log\left(\frac{\norm{f}_1}{\varepsilon}\right) N \log(N)\right)$, where $\varepsilon$ is the desired accuracy of the result and $\norm{f}_1 = \displaystyle\sum_{k=1}^N |f_l|$. The pre-computation of the radial approximation of $G$ takes $O(N^{3/2}\log(\varepsilon)^{1/2})$ operations.  
+\end{Prop*}
+
+If the points are uniformly distributed in a ball of radius $R$, one may apply the present method to the points $(x_k')_{k\in\llbracket1,N\rrbracket}$ defined by $x_k' = \frac{x_k}{R}$ since 
+\[\sum_{\underset{l\neq k}{l=1}}^N \dfrac{1}{2\pi}\log(|x_k - x_l|)f_l = \sum_{\underset{l\neq k}{l=1}}^N \dfrac{1}{2\pi}\log(|x_k' - x_l'|)f_l + \log(R)\sum_{l=1}^N f_l \] 
+
+\begin{Prop*} Let $(x_k)_{k\in \llbracket 1,N\rrbracket}$ a cloud of points distributed uniformly in the open unit circle. Then the complexity of the algorithm scales as $O\left(\log\left(\frac{\norm{f}_1}{\varepsilon}\right)^{2/3} N^{4/3} \log(N)\right)$. The pre-computation of the radial approximation of $G$ takes $O(N^{2}\log(\varepsilon)^{1/3})$ operations.  
+\end{Prop*}
+
+\section{Radial quadrature}
+
+In this section, we are going to investigate the approximation of the Laplace kernel in two dimensions $G(x) = \log(|x|)$ as a finite sum of functions of the type $x \mapsto J_0(\rho_k x)$.  We will show the following result: 
+\begin{Prop}  There exists two constants $C$ and $D$ such that for any $P \in \mathbb{N}^*$, and $a\in (0,1)$, there exist coefficients $\alpha_1, ..., \alpha_P$ such that for any $x \in \mathcal{A}(a,1) := \enstq{x\in \RN}{|x|\in(a,1)}$
+\[ \norm{G(x) - \sum_{p=1}^P \alpha_p J_0(\rho_p x)}_{L^2(\mathcal{A}(a,1))} \leq Ce^{-DaP}\]
+\label{Prop:radial}
+
+\end{Prop}
+
+\subsection{Computation of the coefficients $\alpha_p$}
+\label{GramShmidtDescription}
+The coefficients $\alpha_p$ in proposition \ref{Prop:radial} are chosen as the minimizers of the $L^2$ norm of the error on $\mathcal{A}(a,1)$, as in \cite{Alouges2015}. 
+It is possible to find an orthonormal basis of the space of radial functions in $L^2(\mathcal{A}(a,1))$ from the family $\left(x \mapsto J_0(\rho_k |x|)\right)_{k \in \mathbb{N^*}}$ by an Gram-Schmidt process. Indeed, the next section proves that this family is total on $L^2(B)$. For any radial function $f$ in $L^2(\mathcal{A}(a,1))$ let $\tilde{f}$ the radial function of $L^2(B)$, equal to $f$ on $\mathcal{A}(a,1)$ and extended by $0$ otherwise. Then, there exist coefficients $\tilde{\alpha}_p$ such that 
+\[\lim_{P\to+\infty} \norm{x\mapsto \left(\tilde{f}(x) - \sum_{p=1}^P\tilde{\alpha}_p J_0(\rho_p|x|)\right)}_{L^2(B)} = 0 \]
+Therefore, 
+\[\lim_{P\to+\infty} \norm{x\mapsto \left(f(x) - \sum_{p=1}^P\tilde{\alpha}_p J_0(\rho_p|x|)\right)}_{L^2(\mathcal{A}(0,1))} = 0 \]
+The Schmidt process is facilitated by the fact that the scalar product between two functions of the form $x \mapsto J_0(\rho_kx)$ is known explicitly, and is given by 
+\[ \int_{\mathcal{A}(a,1)}J_0(\rho_k|x|)J_0(\rho_l|x|)dx = \dfrac{a}{k^2-l^2}\left( k J_1(ak) J_0(al) - l J_1(al) J_0(ak)\right)\] 
+Therefore, for any error threshold $\varepsilon$, one can apply iteratively the Schmidt process to compute coefficients $\beta_p$ for the orthonormalized family, until the residual $L^2$ norm passes below the threshold after $P$ steps. The coefficients $(\alpha_p)_{1\leq p\leq P}$ are then obtained from the $(\beta_p)_{1\leq p\leq P}$ since the vectors $u_p$ in the orthonormal basis are all in $\textup{Vect}\left(\lbrace(x\mapsto J_0(\rho_1|x|)),...,(x\mapsto J_0(\rho_P|x|))\rbrace \right)$. 
+Let us now prove that this method leads to the estimation stated in \ref{Prop:radial}.  
+
+\subsection{Space of radial $L^2$ functions}
+In the following, $B$ denotes the open unit ball of $\mathbb{R}^2$. 
+
+\begin{Def} A real valued function $f \in L^1_{loc}(\RN)$ is said to be radial if there exists a real-valued function $g \in L^1_{loc}(\R)$ such that for almost every $x\in \RN$, $f(x) = g(|x|)$.  
+\end{Def}
+
+\begin{Def} We define the space $\Lrad = \enstq{f \in L^2(B)}{ f \text{ is radial}}$. It is a Hilbert space with associated scalar product \[\duality{f}{g}_{\Lrad} = \int_{B}f(x)g(x)dx\]
+as a closed subspace of $L^2(B)$.
+\end{Def}
+
+Before stating the next result we define the radial averaging operator as \[\text{Rad} : \varphi\in \mathcal{C}^{\infty} \mapsto \left(x\mapsto\displaystyle \frac{1}{\text{vol}\left(\partial B\right)}\int_{\partial B}\varphi(|x|u)d\sigma(u) \right)\]
+Where $\sigma$ is a Borel measure on $\partial B$. 
+
+For any $\varphi \in \mathcal{C}_c^{\infty}$, $\text{Rad}\varphi \in \Crad$. A proof of this statement can be found in \cite{SphericalAverage}, and relies on the properties of Fourier transform and Haar measure.
+This enables us to prove the following density result
+\begin{Prop} The space $\Crad = \enstq{f \in \mathcal{C}_c^\infty(B)}{\text{f is radial}}$ is a dense subspace of $\Lrad$
+
+\end{Prop}
+\begin{proof}
+Let $f \in \Lrad$ and $\varepsilon >0$, we know that $\mathcal{C}_c^\infty(B)$ is dense in $L^2(B)$ thus there exists a function $\chi \in \mathcal{C}_c^\infty(B)$ such that $\norm{f - \chi}_{L^2(B)} \leq \varepsilon$. For such a function, one can write for any $r \in (0,1)$ and $w \in \partial B : $\[\left|f(rw) - \text{Rad}\varphi(rw)\right|^2 = \left|\text{Rad} f(rw) - \text{Rad}\varphi(rw)\right|^2 = \left|\frac{1}{\text{vol}\left(\partial B\right)} \int_{\partial B}f(ru) - \varphi(ru)d\sigma(u) \right|^2 \]
+Applying Jensen inequality, we get \[\left|f(rw) - \text{Rad}\varphi(rw)\right|^2 \leq \frac{1}{\text{vol}\left(\partial B\right)} \int_{\partial B}\left|f(ru) - \varphi(ru) \right|^2 d\sigma(u)\]
+Thus, \[ \int_{0}^1 \int_{\partial B} r^{N-1}\left| f(rw) - \text{Rad}\varphi(rw)\right|^2 dr d\sigma(w) \leq \int_{0}^1 \int_{\partial B} r^{N-1}\left| f(ru) - \varphi(ru)\right|^2 dr d\sigma(u)\]
+Which proves that $\norm{f - \text{Rad}\varphi}_{\Lrad} \leq \varepsilon$ and thus the density of $\Crad$ in $\Lrad$.  
+\end{proof}
+\begin{Def} We define the space $\Hrad = \enstq{f \in \Lrad}{\forall i\in \llbracket 1,N \rrbracket, \dfrac{\partial f}{\partial x_i}\in L^2(B)}$. It is also a Hilbert space with associated scalar product \[\duality{f}{g}_{\Hrad} = \int_{B} \nabla f(x) \cdot \nabla g(x) + f(x)g(x)dx\]. 
+\end{Def}
+
+\begin{Prop} The canonical injection from $\Hrad$ to $\Lrad$ is compact. 
+\begin{proof}
+This comes naturally from the fact that the inclusion of $H^1(B)$ in $L^2(B)$ is compact. 
+\end{proof}
+\end{Prop}
+
+\begin{Def} Let $\Hzrad$ the space defined as the closure of $\Crad$ in $\Hrad$
+\end{Def}
+
+Of course, the Poincaré inequality is true in the context we have defined : 
+\begin{Prop} There exists a constant $C>0$ such that for any $u \in \Hzrad$
+\[  \int_{\Omega} u^2 \leq C\int_{B} |\nabla u|^2 \]
+\end{Prop}
+
+\subsection{Eigenvalues of the Laplacian operator}
+
+We have the following classical result :  
+\begin{The} There exists an Hilbert basis of $\Lrad$ constituted of $(u_n)_{n\in \mathbb{N}}$ and an increasing sequence of positive numbers $(\lambda_n)_{n\in \mathbb{N}}$  such that $\lambda_n \underset{n \to +\infty}{\longrightarrow} +\infty$ and such that for all $n$, \[- \Delta u_n = \lambda_n u_n\] such that the functions $u_n$ are of class $\mathcal{C}^{\infty}$ and satisfy the Dirichlet boundary condition 
+\label{TheoAllaire}
+\begin{equation}
+u = 0 \quad \textup{on } \partial B
+\label{boundaryCondition}
+\end{equation}
+\begin{proof}
+We have shown in the previous paragraph all the hypothesis necessary to apply the Theorem $7.3.2$ of \cite{allaire2005analyse} (p. 219). We conclude that there exist functions $u_n \in \Hzrad$ such that for all $v \in \Hzrad$, 
+\begin{equation}
+\int_{B} \nabla u_n  \nabla v = \lambda_n \int_{B} u_n v
+\label{formVarLocal}
+\end{equation}
+Applying this to functions $v\in \Crad$, we conclude that $-\Delta u_n = \lambda_n u_n$. Because of the theorem of elliptic regularity, and because the unit ball $B$ is a $\mathcal{C}^\infty$ domain, the functions $u_n$ are almost everywhere equal to a $\mathcal{C}^\infty$ function. We can thus choose $u_n \in \mathcal{C}^\infty$. Finally, $u_n$ must respect the boundary condition (\ref{boundaryCondition}) because it is in $\Hzrad$ which implies that its trace on $\partial B$ must vanish. 
+\end{proof}
+\end{The}
+
+\begin{Def} We denote by $e_{k}$ the functions on defined on $B$ by \[e_{k}(x) = C_{k} J_0(\rho_kx)\] where $C_{k}$ is a normalization constant chosen such that $e_{k}$ has unit norm in $\Lrad$. It is well-known that \[\rho_{k} \sim k\pi \] for large $k$ (see for example the asymptotic expansion in \cite{watson1995treatise} p. 506) Finally, we have the following bound for the $L^\infty$ norm of $e_{k}$:  \[ \norm{e_{k}}_{\infty} = O\left(k^{1/2}\right)\] 
+
+%Pour le dernier point, utiliser : http://dlmf.nist.gov/10.14
+%Développement asymptotique 
+%https://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&ved=0ahUKEwjU3Lu_u6rNAhUDXBoKHa1ADM4QFgguMAM&url=http%3A%2F%2Fwww.ams.org%2Fmcom	%2F1958-12-061%2FS0025-5718-1958-0102906-3%2FS0025-5718-1958-0102906-3.pdf&usg=AFQjCNHJAduxgNyuy28p-kOG3fNQnJbyvw&sig2=DQgtWRa3lPx-Lieu67zUuw&cad=rja
+
+\begin{proof}
+Let us give an equivalent of the constant $C_{k}$, which is given by 
+\[C_{k} = \left(\int_{B} J_0(\rho_k |x|)^2\right)^{-1/2} \]
+For this, we use the classical asymptotic expansion of the bessel functions  (see for example \cite{watson1995treatise} p. 199) under the form 
+\[ J_0(x) = \sqrt{\dfrac{2}{\pi x}} \cos(x + \varphi) + o\left(\dfrac{1}{x^{3/2}}\right)\]
+From which we conclude that for large $\rho$, 
+\begin{equation}
+\int_{0}^\rho t J_0(x)^2 \sim \dfrac{\rho}{\pi}
+\label{equivalentAux}
+\end{equation}
+Since, by a change of variables \[ \int_{B} \left(J_0(\rho_k|x|\right)^2dx =   \rho^{-2}\int_{\rho_{k}B} \left(J_0(x)\right)^2dx\]
+which can be further reduced to 
+\[ 2\pi \rho_{k}^{-2} \int_{0}^{\rho_{k}} x \left(J_0(x)\right)^2dx\]
+Using (\ref{equivalentAux}) and $\rho_{k} \underset{k\to +\infty}{\sim }k\pi$ we deduce that for large $k$, \[C_{k} \sim \sqrt{\dfrac{k\pi}{2}} \]
+Because $J_0$ is bounded, we conclude that $\norm{e_{k}}_{\infty} = O\left(k^{1/2}\right)$
+\end{proof}
+\end{Def}
+
+\begin{Prop} The eigenvalues of $-\Delta$ with Dirichlet boundary conditions are given by $\enstq{\rho_{k}^2}{k\in \mathbb{N}^*}$, and the eigenfunctions associated with $\rho_{k}$ are proportional to $e_{k}$. 
+\begin{proof}
+Let $f$ be an eigenfunction of the Laplacian associated to eigenvalue $\lambda$, and Let $\tilde{f}$ the function defined by $\tilde{f}(r) = f(rw)$ for any unit vector $w$. Then $\tilde{f}$ is a solution of the equation $- f'' - \dfrac{1}{r}f' = \lambda f$. Since $\lambda$ must be positive according to Theorem \ref{TheoAllaire}, we can define the a function J as  $J(r) = \tilde{f}\left(\frac{r}{\sqrt{\lambda}}\right)$. Straightforward calculations show that it is a solution of the Bessel equation $J'' + xJ' + x^2J = 0$. The general solution of this equation is of the form $A J_0(x) + B Y_0(x)$ where $Y_0$ is the Bessel function of second kind, and $A$, $B$ are two constants. $J$ must be $\mathcal{C^\infty}$ since $f$ is. $Y_{0}$ being singular at the origin, the constant $B$ must be $0$. Finally, the fact that $f$ must verify vanish on $\partial B$ implies that $J_0(\sqrt{\lambda}) =0$  thus $\lambda$ is the square of a root of $J_0$. 
+\end{proof}
+\end{Prop}
+
+\subsection{Generalization to higher dimensions}
+In this paragraph, we show that for any $N \geq 2$, there exists a discrete family of functions of the form 
+\begin{equation*}
+e_\lambda(x) = \int_{\mathbbm{S}^{N-1}} e^{i\lambda x \cdot  \xi} d\sigma(u)
+\end{equation*}
+that forms a Hilbert basis of the space $L^2_{rad}(B)$ where $B$ denotes only in this paragraph the unit ball of $\RN$. This section is presented here only for the sake of curiosity. The key result is Theorem \ref{TheoStyle}. Before proving it, we must start by giving some definitions and properties of the radially symmetric distributions : 
+
+\begin{Def} For any $\varphi\in \mathcal{D}(\mathbb{R}^N)$ and matrix $A \in \mathcal{M}_N(\mathbb{R})$ we denote by $\sigma_A\varphi$ the function of $\mathcal{D}(\mathbb{R}^N)$ defined as \[\sigma_A\varphi(x) = \varphi(Ax)\]
+\end{Def}
+\begin{Def} A distribution $T$ is said to be radially symmetric if for all test function $\varphi$ and all rotation $R \in O_N(\mathbb{R})$ one has \[\langle
+T,\sigma_R\varphi\rangle\ = \langle T, \varphi\rangle\]  
+\end{Def}
+\begin{Prop} For any function of the Schwartz class $\varphi \in \mathcal{S}(\mathbb{R^N})$, and any invertible matrix A, one has \[\mathcal{F}(\sigma_A\varphi) = \left|\dfrac{1}{\det(A)}\right|\left(A^{-1}\right)^T\mathcal{F}(\varphi)\] where $\mathcal{F} $ denotes the Fourier transform operator.
+\end{Prop}
+\begin{Cor} The Fourier transform commutes with rotations. 
+\end{Cor}
+
+
+\begin{Prop} The Fourier transform of a radially symmetric tempered distribution is a radially symmetric tempered distribution. 
+\end{Prop}
+\begin{proof} Let $T$ a radially symmetric tempered distribution, $R$ a rotation and $\varphi \in \mathcal{S}(\mathbb{R}^N)$, then
+\[\begin{array}{ll}
+\duality{\hat{T}}{\sigma_R\varphi} &= \quad\duality{T}{\widehat{\sigma_R\varphi}}\\
+ &= \quad\duality{T}{\sigma_R\hat{\varphi}}\\
+ &= \quad\duality{T}{\hat{\varphi}}\\
+ &= \quad\duality{\hat{T}}{\varphi}
+\end{array}\]
+\end{proof}
+We will need the following definition of the integral on the surface of a hypersphere taken from \cite[p.78]{MR1681462} : 
+\begin{Prop} There exists a (unique) Borel measure $\sigma$ on $\mathbbm{S}^{N-1}$  such that for any integrable function $f$ on $\mathbb{R^N}$ \[\int_{\mathbb{R^N}}f(x)dx = \int_{0}^{+\infty} \int_{\mathbbm{S}^{N-1}}r^{N-1}f(ru)d\sigma(u)\]
+Moreover, one has \[\sigma(\mathbbm{S}^{N-1}) = \frac{2\pi^{N/2}}{\Gamma(N/2)}\]
+We note $c_N = \sigma(\mathbbm{S}^{N-1})$
+\end{Prop}
+We generalize the definition of the function $\textup{Rad}$ introduced earlier :
+
+\begin{Def} Let $\textup{Rad}$ the application defined by \[\functionDef{\textup{Rad}}{\mathcal{C}^\infty(\mathbb{R}^N)}{\mathcal{C}^\infty(\mathbb{R}^N)}{\varphi}{x\longmapsto\frac{1}{c_N}\int_{S^{n-1}}\varphi(|x|u)d\sigma(u)}\]
+\end{Def}
+
+\begin{Prop} The function Rad stabilises $\mathcal{D}(\mathbb{R}^N)$ and $\mathcal{S}(\mathbb{R}^N)$
+\begin{proof}
+It is obvious that if $\varphi$ is compactly supported, $\textup{Rad}\varphi$ also is. The second statement is shown in \cite{SphericalAverage}. 
+\end{proof} 
+\end{Prop}
+
+\begin{Prop} For any radially symmetric distribution $T$ and any test function $\varphi$, one has \[\duality{T}{\varphi} = \duality{T}{\textup{Rad}\varphi}\]
+\begin{proof}
+The integral and the duality product commute. 
+\end{proof}
+\end{Prop}
+
+We can now prove the following result : 
+\begin{The}\label{TheoStyle} The tempered radially symetric distributions satisfying  \begin{equation}
+- \Delta f = f
+\label{defJf}
+\end{equation}
+are proportional to the function \begin{equation}
+J(x) = \frac{1}{c_N}\int_{\mathbbm{S}^{N-1}} e^{ix \cdot u}d\sigma(u)
+\label{defJFourier}
+\end{equation} 
+\begin{proof}
+We first give an intuitive justification of this result. One can write the equation in the Fourier domain : 
+\begin{equation}
+\left(|\xi|^2-1\right)\hat{f}(\xi) = 0
+\end{equation}
+This implies that the distribution $\hat{f}$ is supported on the unit sphere. since we are looking for a radially symmetric solution of (\ref{defJf}), the distribution $\hat{f}$ must be radially symmetric. Intuitively, this implies that $\hat{f}$ is constantly equal to one on the unit sphere, and vanishes everywhere else. If we manage to show that $f$ is the inverse Fourier transform of $\hat{f}$, we obtain the expression (\ref{defJFourier}). Let us formalize this proof. Consider $\eta \in \mathcal{D}(\mathbb{R}^N)$ that is null in a neighborhood ofthe origin and equal to $1$ in a neighborhood of the unit sphere. We will express $\duality{\hat{f}}{\varphi} = \duality{\hat{f}}{\textup{Rad}\varphi}$ using the following decomposition $\textup{Rad}\varphi$. We fix $w$ that can be any unit vector. Let $x$ which modulus is not $1$, we have : 
+\[\textup{Rad}\varphi(x) = \left(|x|^2 - 1\right)\eta(x)\left(\frac{\textup{Rad}\varphi(x) - \textup{Rad}\varphi(w)}{|x|^2 - 1}\right) + \left(|x|^2 - 1\right)\frac{1-\eta(x)}{|x|^2 - 1}\left(\textup{Rad}\varphi(x)\right) + \textup{Rad}\varphi(w)\eta(x)\]
+We now notice that the function defined on $\mathbb{R}^N \setminus \mathbbm{S}^{N-1}$ as \[x\longmapsto \frac{\eta(x)}{|x|+1}\frac{\textup{Rad}\varphi(x) - \textup{Rad}\varphi(w)}{|x| - 1}\] can be extended on $\mathbb{R}^N$ into a  function $\psi_1$ of class $C^\infty$. Indeed, $\psi_1$ vanishes (thus is indefinitely differentiable) in a neighborhood of $0$. Outside this neighborhood, the fonction $\frac{\eta}{|\cdot|+1}$ is of class $C^\infty$. Finally, if $g$ is defined as $g(r) =\frac{\textup{Rad}\varphi(rw) - \textup{Rad}\varphi(w)}{r - 1}$, lemma  \ref{lemmefrsurr} shows that $g$ is of class $C^\infty$. By composition with the function $x \mapsto |x|$ which is regular outside the origin, the function $x\mapsto\frac{\textup{Rad}\varphi(x) - \textup{Rad}\varphi(w)}{|x| - 1}$ is regular outside the origin. Moreover, $\psi_1$ is compactly supported since $\eta$ is. It is easy to see in the same way that the function \[\ x \mapsto \frac{1-\eta(x)}{|x|^2 - 1}\textup{Rad}\varphi(x)\] can be extended on $\mathbb{R}^N$ into a function $\psi_2 \in \mathcal{D}(\mathbb{R}^N)$. Therefore, one has for all $x$ the following decomposition \[\textup{Rad}\varphi(x) = \left(|x|^2 - 1\right)(\psi_1 + \psi_2) + \textup{Rad}\varphi(w)\eta(x)\] Evaluating the distribution $\hat{f}$ yields $0$ on the first term. Indeed : \[\duality{\hat{f}}{\left(|\cdot|^2-1\right)\left(\psi_1 + \psi_2\right)} = \duality{\left(|\cdot|^2-1\right)\hat{f}}{\left(\psi_1 + \psi_2\right)} = 0 \] We therefore deduce that \[\duality{\hat{f}}{\varphi} = \duality{\hat{f}}{\eta}\textup{Rad}\varphi(w)\] By noting $C = \frac{1}{c_N}\duality{\hat{f}}{\eta}$, this can be rewritten as \[\duality{\hat{f}}{\varphi} = C \int_{\mathbbm{S}^{N-1}}{\varphi(u)d\sigma(u)}\] 
+We in turn express $f$ : 
+\[\arraycolsep=1.4pt\def\arraystretch{2.2}
+\begin{array}{ll}
+\duality{f}{\varphi} &= \duality{f}{\mathcal{F}\left(\mathcal{F}^{-1}\varphi\right)}\\
+&= \duality{\hat{f}}{\left(\mathcal{F}^{-1}\varphi\right)}\\
+&= \displaystyle C\int_{\mathbbm{S}^{N-1}}\int_{\mathbb{R}^N}e^{ix \cdot u}\varphi(x)dxd\sigma(u)
+\end{array}
+\]
+$C$ being a new constant. Inversion of the integrals is possible since $\varphi$ in continuous and compactly supported. We deduce:  \[\duality{f}{\varphi} = C\int_{\mathbb{R}^N}\varphi(x) \left( \int_{\mathbbm{S}^{N-1}}e^{ix\cdot u}d\sigma(u)\right) dx\]
+Thus $f$ is proportional to $J$. 
+\end{proof}
+\end{The}
+Here is the lemma used in the previous proof :
+\begin{Lem} Let $f$ a function of class $\mathcal{C}^{m+1}$ defined on an open interval $I$ containing $0$ and such that $f(0) = 0$. Then the function $g$ defined for  $r\in I\setminus{\{0\}}$ as $g(r) = \dfrac{f(r)}{r}$ and $g(0) = f'(0)$ is of class $\mathcal{C}^m$ on $I$. 
+\begin{proof} The function $g$ est obviously continuous, since $f$ is differentiable at $0$. It is sufficient to show that the derivatives until the order $n$ have a limit at $0$. Let $n\leq m$
+For any $r \neq 0$ in the domain of definition of $f$, one has, using Leibniz formula :
+\[ g^{(n)}(r) = \dfrac{(-1)^n n!}{r^{n+1}}\sum_{k=0}^{n}\dfrac{f^{(k)}(r)}{k!}(-1)^k r^k\]
+Since $f$ is at least of class $C^{n+1}$ at $0$, we can write that for any $k \in  \llbracket0,n \rrbracket$: \[f^{(k)}(r) = \sum_{j=0}^{n+1-k} \dfrac{f^{(k+j)}(0)}{j!}r^j + o_{r\to0}(r^{n+1-k})\] We plug this expression in the formula obtained previously for $r\neq 0$ 
+\[ g^{(n)}(r) = \dfrac{(-1)^n n!}{r^{n+1}}\sum_{k=0}^{n}\sum_{j=0}^{n+1-k} (-1)^k \dfrac{f^{(k+j)}(0)}{k!j!}r^{j+k} + o_{r\to0}(1)\]
+After modifying the order of summation we get :
+\[ g^{(n)}(r) = \dfrac{(-1)^n n!}{r^{n+1}}\sum_{l=0}^{n+1}\left(\sum_{k=0}^{\min(l,n)} \dbinom{l}{k} (-1)^k\right)\dfrac{f^{(l)}(0)}{l!}r^{l}   + o_{r\to0}(1)\]
+It remains to note that one the one hand $l\neq 0$, $\displaystyle\sum_{k=0}^l \dbinom{l}{k} (-1)^k$ is zero because it is the expansion by Newton's formula of  $(1-1)^l$ and on the other hand that for $l=0$, $f^{(l)}(0) = f(0) = 0$. The double summation thus reduces to
+\[\sum_{l=0}^{n+1}\left(\sum_{k=0}^{\min(l,n)} \dbinom{l}{k} (-1)^k\right)\dfrac{f^{(l)}(0)}{l!}r^{l} = (-1)^{n} \dfrac{f^{n+1}(0)}{(n+1)!}r^{n+1}\]
+thus the $n$-th derivative of $f$ at $0$ exists and is equal to  $\frac{1}{n+1}f^{(n+1)}(0)$. 
+\end{proof}
+\label{lemmefrsurr}
+\end{Lem}
+
+We now prove the following 
+\begin{Prop} Let $f$ a radially symmetric function that belongs to $H^1_0(B)$ and such that for some positive $\lambda$ 
+\[-\Delta f = \lambda^2 f\]
+Then $f$ is proportional to the function $x \mapsto J\left(\lambda x\right)$
+
+\begin{proof}
+Because of the theorem of elliptic regularity, and since the unit ball is a $\mathcal{C}^{\infty}$ domain, $f$ is of class $\mathcal{C}^{\infty}$. 
+Let $w$ any unit vector in $\mathbb{R}^N$ and $F$ the radial part of $f$ defined on $\mathbb{R}_+$ as
+\[F(r) = f(rw)\]
+$F$ is of class $\mathcal{C}^{\infty}$ and is the unique solution of the following equation : \[ x'' + \dfrac{N-1}{r}x' + \lambda^2 x = 0\]
+with initial condition $x(0) =  F(0)$ and $x'(0) = 0$ (since $F$ is a regular even function). Let $U$ the maximal solution of this equation and $T$ the right extremity of its interval of definition. By multiplying the differential equation by $u'$ and integrating for any $t < T$ over $[1,t]$, we find that 
+\[ U^2(t) + U'(t)^2 = U^2(1) + U'^2(1) - \int_{1}^t \dfrac{N-1}{s}U'^2(s)ds \] which ensures that $U$ and $U'$ are bounded and thus $T = +\infty$. The function $u$ defined on $\mathbb{R}^N$ by 
+\[u(x) = U(|x|)\] is by construction a solution of the equation $-\Delta u = \lambda^2 u$ that is at least of class $C^2$. Because of its boundedness, $u$ is a tempered distribution and $v : x \mapsto u\left(\dfrac{x}{\lambda}\right)$ is a solution of $- \Delta v $
+\end{proof}
+\end{Prop}
+
+We can finally prove the claim of this paragraph : 
+
+\begin{Prop} There exists an unbounded countable set of positive reals $(\lambda_k)_{k\in\mathbb{N^*}}$ such that the family of functions $(e_{\lambda_k})_{k\in\mathbb{N^*}}$ is a complete orthonormal set of $L^2_{rad}(B)$
+\begin{proof}
+As in the previous paragraph, it is easily shown that the Laplace operator on $L^2_{rad}(B)$ associated to Dirichlet conditions is self-adjoint with compact resolvent. Thus, its eigenfunctions are a complete orthonormal set in $L^2_{rad}(B)$. The previous result yields the conclusion. 
+\end{proof}
+\end{Prop}
+
+\subsection{Expansions in series of eigenfunctions}
+
+In this paragraph, $e_{k}$ denotes the family of the orthonormal eigenfunctions of the Laplacian associated with Dirichlet boundary condition $f = 0$ on $\partial B$  on the space $\Lrad$. 
+We can express any function $f$ of $\Lrad$ in the following way : 
+\[f = \sum_{k\in \mathbb{N}^*}c_k(f)e_{k}\]
+Which is called classically the Fourier-Bessel expansion of $f$. The generalized Fourier coefficients $c_k(f)$ are defined by $c_k(f) = \displaystyle \int_B f(x)e_{k}(x) dx$.
+
+The following result will play an essential role in the proof of \ref{Prop:radial}:
+\begin{Prop} Let $n\in \mathbb{N}^*$ and $f \in H^{2n}(B)$. Assume that for any integer $s\leq n-1$, the s-th iterate of the Laplace operator $-\Delta$ on $f$ denoted by $(-\Delta)^s f$ satisfies the Dirichlet boundary condition on $\partial B$. Then one has 
+
+\[ c_k(f) = \dfrac{c_k\left(\left(-\Delta\right)^n f\right)}{\rho_{k}^{2n}}\] for any $k \in \mathbb{N}^*$
+\begin{proof}
+This can be easily proved by recurrence by observing that for any function $f$ in $\Hzrad$, using the fact that $e_{k}$ is an eigenfunction of the Laplacian, \[c_k(f) = \frac{1}{\rho_{k}^2}\int_B f (-\Delta e_{k})\] and using integration by part \[c_k(f) = \frac{1}{\rho_{k}^2} \left(c_k(-\Delta f) + \int_{\partial B} e_k \dfrac{\partial f}{\partial r} - f \dfrac{\partial e_k}{\partial r}\right) \]
+The integral on $\partial B$ vanishes as $f$ and $e_{k}$ both verify the Dirichlet condition.
+\end{proof}
+\label{PropDecrCond}
+\end{Prop}
+
+\begin{Cor} If $f$ follows the same assumptions as in the previous proposition, there exists a constant $C$ independent of the function $f$ such that for all $k \in \mathbb{N^*}$, 
+\[ |c_k(f)| \leq  C \dfrac{\norm{(-\Delta)^n f}_{\Lrad}}{(\pi k)^{2n}}\] 
+\end{Cor}
+\begin{proof}
+This is a direct consequence of the previous proposition and the equivalent $\rho_{c,k} \sim k\pi$ for large $k$. 
+\end{proof}
+
+\begin{Cor} If $f$ follows the same assumptions as in the previous proposition for an integer $n>1$, then the Fourier-Bessel expansion of $f$ converges normally to $f$ almost everywhere. Moreover, let the remainder be defined as $R_P(f) = \displaystyle\sum_{k = P+1}^{+\infty} c_{k}(f) e_{k}$, then there exists a constant $C$ independent of $n$ and $P$ such that : 
+\[\norm{R_P(f)}_{\Lrad} \leq C\dfrac{\norm{(-\Delta)^n f}_{\Lrad}}{\pi^{2n}}\dfrac{1}{n^{\frac{1}{2}}P^{2n-\frac{1}{2}}}\]
+\label{EstimationRest}
+
+\begin{proof}
+One has 
+\[R_P(f) = \sum_{p=P+1}^{+\infty}c_p(f) e_p\]
+while Parseval's identity implies
+\[\norm{R_P(f)}_{\Lrad} = \sum_{p=P+1}^{+\infty}|c_p(f)|^2\]
+
+According to the previous results, we find that there exists a constant $C$ (in this paragraph we keep from line to line the notation $C$ for any constant that does not depend on $n$ and $P$) such that :
+\[\norm{R_P}_{\Lrad} \leq C \norm{(-\Delta)^n f}_{\Lrad}\sqrt{\sum_{p= P+1}^{+\infty} \dfrac{1}{(\pi p)^{4n}}} \]
+Classical estimations of the remainders of the sums of the form $\sum \frac{1}{p^{\alpha}}$ using $\dfrac{1}{p^{\alpha}} \leq \displaystyle\int_{p-1}^{p} \frac{1}{t^\alpha}$ for $\alpha >1$  yield the result announced. 
+
+\end{proof}
+
+\end{Cor}
+
+Before continuing, let us discuss these results in the context of our application. Since the Laplace kernel $G$ satisfies the equation $-\Delta G = \delta_0$, we have for all $s\geq 1$, outside a  neighborhood  of the origin, $(-\Delta)^s G =0$. Moreover, $G$ vanishes on $\partial B$ since it is proportional to $x \mapsto \log(|x|)$. Thus, the boundary conditions necessary for the application of the previous result $G$ is satisfied. However, the assumption of $\mathcal{C}^{2n}$ regularity cannot be fulfilled since $G$ is singular at the origin. The Fourier-Bessel series of the logarithm is given by 
+\[ \log(x) = \sum_{p=1}^{+\infty} - \dfrac{C_k^2}{\rho_k^2} J_0(\rho_kx) \]
+The coefficients in this series have a slow decay since $\dfrac{C_k^2}{\rho_k^2} = O\left(\dfrac{1}{k}\right)$. This is why we are only able to provide a sparse approximation of $G$ on a ring $\mathcal{A}(a,1)$.  
+\begin{Prop} Let $f$ a $C^{\infty}$ radial function on the ring $\mathcal{A}(a,b)$ where $0<a<b<1$. Then for any $n \in \mathbb{N}$ there exists a constant $C_n$ such that for any $P$, there exist coefficients $\alpha_p$ that satisfy : 
+\[ \norm{f - \sum_{p=1}^P \alpha_p e_p}_{L^2(\mathcal{A}(a,b))} \leq \dfrac{C_n}{P^{2n - \frac{1}{2}}}\]
+\begin{proof}
+Let $f \in \mathcal{C}^{\infty}\left(\mathcal{A}(a,b)\right)$ a radial function and let $n \in \mathbb{N}$. Let $\tilde{f}$ a radial function that is an extension of $f$ on $B$. We choose $\tilde{f}$ such that $\tilde{f}$ is of class $\mathcal{C}^{2n}$ and for any $s \leq n-1$, $\Delta^s \tilde{f}$ vanish on $\partial B$. This is alway possible since for example on can extend $f$ by a function that is identical to 0 in a neighborhood of $\partial B$. Then we have the result announced with the constant $C_n$ given by \[C_n = \dfrac{C\norm{(-\Delta)^n \tilde{f}}_{\Lrad}}{n^{\frac{1}{2}}\pi^{2n}}\]  
+Where the constant $C$ is independent of $n$. 
+\end{proof}
+\end{Prop}
+
+For the Laplace kernel $G$, it is not necessary to assume $b<1$ because the Dirichlet condition is satisfied by $G$ and by $(-\Delta)^s G$ for any integer $s$. Indeed, one has $-\Delta G = 0$ in a neighborhood of $\partial B$. The previous result holds when the coefficients are computed as described in paragraph \ref{GramShmidtDescription} since this choice ensures that 
+\[ \norm{f - \sum_{p=1}^P{\alpha_p} e_p}_{L^2(\mathcal{A}(a,1))} = \min_{(a_1,...a_P)\in\mathbb{R}^P}  \norm{f - \sum_{p=1}^P{a_p} e_p}_{L^2(\mathcal{A}(a,1))}\]
+
+In order to use this result and prove \ref{Prop:radial}, we need to find a bound for the constant $C_n$. This is done in the next paragraph with the use of extensions of the form $x \mapsto P(|x|)$ where $P$ is a polynomial function.
+
+\subsection{A bound on the number of components for the Laplace kernel}
+
+\label{sec:poly}
+ 
+\begin{Def} Let $f$ a locally integrable function on $B$. Assume $f$ is $C^{2n}$ on the ring $\mathcal{A}(a,1)$. We define $\tilde{f}$ as the extension of $f$ outside $\mathcal{A}(a,1)$ by 
+\[\tilde{f}(x) = \displaystyle\sum_{k=0}^{2n} \frac{a_k}{k!}(|x|-a)^{k}|x|^{2n}\]
+Where the coefficients $a_k$ are chosen such that the derivatives of $\tilde{f}$ and $f$ agree up to the $2n-th$ order, namely 
+\[a_k  = \dfrac{d^k }{dx^k}\left(t\mapsto \dfrac{f(t)}{t^{2n}}\right)\Bigr|_{t=a}\] 
+\label{ProlongementDef}
+\end{Def}
+
+In view of Proposition \ref{EstimationRest}, we need to derive a bound for $||\Delta^n \tilde{f}||_{2}$.
+
+\begin{Lem} 
+There exist a constant $C$ such that for $|x|<a$
+\begin{equation}
+|\Delta^n \tilde{f}(x)| \leq  C\left( \frac{16n}{e}\right)^{2n}\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)
+\label{bigBadEq1Reduced}
+\end{equation}
+\label{LemAkDeltanf}
+\end{Lem}
+
+\begin{proof} For $|x| \leq a$, we have
+\[\Delta^n \tilde{f}(x) = \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{a_k}{k!}(-a)^{k-l}(2n+l)^2 (2(n-1)+l)^2\times ... \times (2+l)^2|x|^l\]
+This result is obtained by expanding the sum in the definition of $\tilde{f}$ and using the fact that $\Delta |x|^k = k^2|x|^{k-2}$. Then, using triangular inequality
+\[|\Delta^n \tilde{f}(x)| \leq \sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}\dfrac{|a_k|}{k!}a^{k-l}(2n+l)^2(2(n-1)+l)^2\times ... \times (2+l)^2|x|^l\]
+Now we have for any $l\in\llbracket 0,2n\rrbracket$ : \[(2n+l)^2(2(n-1)+l)^2\times ... \times (2+l)^2 \leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2\]
+Therefore : 
+\[|\Delta^n \tilde{f}(x)| \leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)\sum_{k=0}^{2n}\sum_{l=0}^k \dbinom{k}{l}a^{-l}|x|^l\]
+Which yields
+\[|\Delta^n \tilde{f}(x)| \leq (4n)^2(4n-2)^2 \times ... \times (2n+2)^2\max_{k\in\llbracket 0,2n\rrbracket}\left(\dfrac{|a_k|}{k!}a^k\right)\sum_{k=0}^{2n}\left(1+\frac{|x|}{a}\right)^k\]
+Finally, since $|x|<a$, the last sum is bounded by $\displaystyle\sum_{k=0}^{2n}2^k = 2^{2n+1}-1 < 2^{2n+1}$
+We will now look for an equivalent of the term $(4n)^2 \times ... \times (2n+2)^2$ for large $n$ 
+We will now show that for large $n$, the we have the following equivalent : \[(4n)^2(4n-2)^2\times...\times (2n+2)^2 \sim 2\left(\dfrac{8n}{e}\right)^{2n}\]
+We first notice that $(4n)^2\times...\times (2n)^2$ can be written as \[(4n)^2\times...\times (2n)^2 = \left(\dfrac{4n!!}{2n!!}\right)^2 = \left(\dfrac{2^{2n}2n!}{2^n n!}\right)^2\]
+Using Stiling formula for large $n$, we get
+\[\dfrac{(2n)!}{(n)!} \sim \dfrac{\sqrt{2\pi\times 2n}}{\sqrt{2\pi n}} \dfrac{\left(\dfrac{2n}{e}\right)^{2n}}{\left(\dfrac{n}{e}\right)^{n}}\]
+This leads to 
+\[\dfrac{(4n)!!}{(2n)!!} \sim \sqrt{2} \left(\dfrac{8n}{e}\right)^n \]
+which concludes the proof. 
+\end{proof}
+
+We are now able to prove the following : 
+
+\begin{The} Let $G$ be equal to the fundamental solution of the Laplace equation on $\mathbb{R}^N$. There exist a constant $C$ such that for any $P \in \mathbb{N}$, and for any $a \in (0,1)$ there exist coefficients $\alpha_1,...,\alpha_{P}$ such that
+\[ \norm{\tilde{f} - \sum_{p=1}^{P}\alpha_p e_p}_{\Lrad} \leq \frac{C}{P} e^{-\frac{aP\pi}{32}}\]
+
+\begin{proof}
+Let $\tilde{G}$ be the extension of $G$ on $\mathcal{A}(a,1)$ as defined in Definition \ref{ProlongementDef}, applied to the Laplace Green's kernel. We may compute the coefficients $a_k$ using Leibniz formula : 
+\[\begin{array}{rl}
+
+\dfrac{d^k }{dr^k}\left(r^{-2n}\log(r)\right) &= \displaystyle\sum_{j=0}^k\dbinom{k}{j}\dfrac{d^j}{dx^j}\left(r^{-2n}\right)\dfrac{d^{k-j}}{dx^{k-j}}\left(\log(r)\right)\\
+&= \displaystyle\sum_{j=0}^{k-1} \dbinom{k}{j}(-1)^j \dfrac{(2n+j-1)!}{(2n-1)!}r^{-2n-j}(-1)^{k-j-1}\left(k-j-1\right)!r^{-k+j}\\ & + (-1)^k \dfrac{(2n+k-1)!}{(2n-1)!}r^{-2n-k}\log(r)\\
+& = \dfrac{(-1)^k k!}{r^{2n+k}} \left(-\displaystyle\sum_{j=0}^{k-1}\dbinom{2n+j-1}{j}\dfrac{1}{k-j}+\dbinom{2n+k-1}{k}\log(r)\right)
+\end{array}\]
+Which leads to \[\dfrac{|a_k|}{k!}a^k \leq a^{-2n} \dbinom{2n + k -1}{k}\left(\frac{k}{2n}-\log(a)\right)\]
+Where we used the identity 
+\begin{equation}
+\sum_{j=0}^{k-1}\dbinom{j+2n-1}{j} = \dfrac{k}{2n}\dbinom{k+2n-1}{k}
+\label{sommekparmminplusk}
+\end{equation}
+We conclude that \begin{equation}
+\max_{0\leq k \leq 2n}\left(\dfrac{|a_k|}{k!}a^k\right) \leq \left(\frac{4}{a}\right)^{2n}\dfrac{1}{2\sqrt{2\pi n}}\left(\log\left(\frac{e}{a}\right)\right)
+\label{majorAkLog} 
+\end{equation}
+Because for any $k \in \llbracket 0,2n\rrbracket$, one has 
+\begin{equation}
+\dbinom{2n+k-1}{k}\leq \dbinom{4n-1}{2n} = \frac{1}{2}\dbinom{4n}{2n} \leq \dfrac{4^{2n}}{2\sqrt{2\pi n}}
+\label{nparmi2n}
+\end{equation}
+Combining (\ref{majorAkLog}) with estimation (\ref{bigBadEq1Reduced}), we find that there exist a new constant $C$ (for commodity, we keep from line to line the notation $C$ for any constant that does not depend on $P$, $n$ and $a$) such that, for $|x|<a$
+\[|\Delta^n \tilde{f} (x)|\leq \dfrac{C}{\sqrt{n}}\left( \frac{16n}{e}\right)^{2n}\left(\frac{4}{a}\right)^{2n}\log\left(\dfrac{e}{a}\right)  \]
+Therefore, integrating on $B(0,a)$, we get
+\[ \norm{\Delta^n \tilde{G}(x)}_{L^2(B(0,a))} \leq \dfrac{C a^2}{\sqrt{n}}\log\left(\frac{e}{a}\right)\left( \frac{64n}{ae}\right)^{2n}\]
+And since $\Delta^n \tilde{G}(x) = \Delta^n G(x) = 0$ for $|x|>a$, $\norm{\Delta^n \tilde{f}(x)}_{\Lrad}$ is bounded by the same quantity. 
+We now plug this estimate into the inequality of corollary \ref{EstimationRest}, to get
+\[ \norm{\tilde{f} - \sum_{k=1}^{P}c_k(\tilde{G})e_{c,k}}_{\Lrad} \leq C \dfrac{P^\frac{1}{2}}{n^{\frac{3}{2}}} a^2 \log\left(\dfrac{e}{a}\right)\left( \frac{64 n}{ae P \pi}\right)^{2n}\] 
+The previous inequality holds true for any integer $n$ such that $n>1$ and any $P \in \mathbb{N}$. We assume that $\frac{aP\pi}{64} >1$, then choosing $n = \lfloor \frac{aP\pi}{64}\rfloor $ we obtain, using the fact that $x\mapsto \sqrt{x} \log\left(\dfrac{e}{x}\right)$ is bounded on $(0,1]$:
+\[ \norm{\tilde{f} - \sum_{p=1}^{P}c_p(\tilde{G})e_p}_{\Lrad} \leq \frac{C}{P} e^{-\frac{aP\pi}{32}}\]
+\end{proof}
+\label{TheLaplace}
+\end{The}
+
+From this result we are also able to deduce an estimate in $L^\infty$ norm : 
+\begin{Cor} There exists a constant $C$ such that for any $P\in \mathbb{N}$ and any $a\in(0,1]$, and for the same coefficients $(\alpha_p)_{1\leq p\leq P}$ as in the previous Proposition, 
+\[ \norm{\tilde{f} - \sum_{p=1}^{P}\alpha_p e_p}_{\infty} \leq \frac{C}{a\sqrt{P}} e^{-\frac{aP\pi}{32}}\]
+\begin{proof} For any $p \in \mathbb{N}$, the coefficient $\alpha_p = c_p(\tilde{G})$ is bounded by 
+\[ |\alpha_p| \leq \sqrt{\sum_{q \geq p} \alpha_q^2} \]  
+According to the previous result, there exists $C$ such that 
+\[ \alpha_p \leq \dfrac{C}{p-1}e^{-\frac{a(p-1)\pi}{32}} \]
+Thus, using triangular inequality, one has 
+\[ \norm{\tilde{G} - \sum_{p=1}^P c_p(\tilde{G})e_p}_{\infty} \leq \sum_{p\geq P+1} \dfrac{C}{p-1}e^{-\frac{a(p-1)\pi}{32}} \norm{e_p}_{\infty}\]
+We have shown previously that $\norm{e_p}_{\infty} = O(\sqrt{p})$ thus 
+\[\norm{\tilde{G} - \sum_{p=1}^P c_p(\tilde{G})e_p}_{\infty} \leq  \dfrac{C}{\sqrt{P}}e^{-\frac{aP\pi}{32}} \sum_{p\geq 0}e^{-\frac{ap\pi}{32}} \]
+The latter sum reduces to $\dfrac{1}{1-e^{-\frac{a\pi}{32}}} = O\left(\dfrac{1}{a}\right)$ 
+\end{proof}
+\end{Cor}
+
+This results shows that it is possible to find some coefficients for which the $L^\infty$ norm of the error converges exponentially fast towars zero. However, we haven't found any proof showing that this is the case for the coefficients that minimize the $L^2$ norm. For this choice, a very fast convergence in $L^\infty$ norm is observed as we will show in the next section. Thus, we will base the estimation of complexity of the method based on the following conjecture : 
+
+\begin{Conj} There exist two constants $C$ and $D$ such that for any $P$ and any $a \in (0,1)$, the best approximation $h_P$ in $L^2$ norm of $G$ in $\textup{Vect}(e_1,...,e_P)$ on the ring $\mathcal{A}(a,1)$ satisfies the following estimation
+\[ \norm{G - h_P}_{\infty} \leq C e^{-DaP}\]
+\label{Conj}
+\end{Conj}
+
+\subsection{Numerical results for the radial quadrature}
+
+In this paragraph, we show the numerical results for the quadrature $\log(x) \approx \displaystyle \sum \alpha_p e_p$ 
+In figure \ref{fig:compareApprox1a} we compare the truncation at the $100$-th component of the Fourier-Bessel series of $G$ as obtained in the three following ways : 
+\begin{itemize}
+\item[-] Using the exact Fourier-Bessel series of $G$
+\item[-] Using the Fourier-Bessel series of a polynomial extension of $G$ as defined in \ref{ProlongementDef}
+\item[-] Using the Gram-Schmidt procedure
+\end{itemize}
+It can be seen that the accuracy of the approximation of $G$ as a finite sum of Fourier-Bessel type is improved uniformly by several orders on $\mathcal{A}(a,1)$ using polynomial extensions or coefficients form the Gram-Schmidt procedure. In Figure \ref{fig:compareApprox1b}, we show the values $\log(\alpha_p)$ in the three cases. The Gram-Schmidt process yields coefficients with the fastest decay. 
+In figure \ref{compareApprox2}, we plot the logarithm of the $L^{\infty}$ error between $G$ and its approximation in the three cases as a function of the number of components $P$ in the approximation. As can be seen on this graph, the coefficients obtained by the Gram-Schmidt method yield drastically better approximations of the kernel $G$. The last figure of this section 
+
+\begin{figure}[H]
+\centering 
+\input{evolutionError3method.tex}
+\caption{Evolution of the quadrature error in function of the number of components. The dashed violet line indicates the limiting precision in the Gram-Schmidt algorithm. }
+\label{compareApprox2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfigure[Logarithmic error $e = \log\left(\left|G(x) - \displaystyle\sum_{p=1}^P \alpha_p e_p(x)\right|\right)$]{\label{fig:compareApprox1a}\input{error3method.tex}}
+\subfigure[Logarithmic spectrum : $\log(|\alpha_p|)$]{\label{fig:compareApprox1b}\input{spectrum3method.tex}}
+\caption{Comparison of the approximations $G \approx \displaystyle\sum_{p=1}^P \alpha_p e_p(x)$ when $\alpha_p$ are the first coefficients of the Fourier-Bessel series of $G$ (blue), of the polynomial extension of $G$  outside $\mathcal{A}(a,1)$ with $a = 0.07$ (red) and the coefficients obtained using the Gram-Schmidt method to orthonormalize the family $(e_p)_{p\in\llbracket 1,P\rrbracket}$ on $L^2\left(\mathcal{A}(a,1)\right)$ with the same parameter $a$ as in the polynomial extension. The number $P$ of components is the same in the three cases and is set to $100$. }
+\label{compareApprox1}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\input{evolutionErrorInFunctionOfALaplace.tex}
+\caption{Evolution of the error of the best approximation of $G$ as a finite series of the functions $(e_p)_{1\leq p \leq P}$ in $L^2(\mathcal{A}(a,1))$ as a function of $P$ for several values of the parameter $a$.}
+\end{figure}
+
+\section{Circular quadrature}
+\label{Sec:circularQuad}
+In this section, we are going to show that the Bessel functions can be accurately computed using a uniform quadrature on a circle centered on the origin. 
+
+\begin{Prop} Let $r>0$, $M\in \N^*$, $\varphi \in \R$ 
+\[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)} \right| \leq C_M \left(\dfrac{er}{M}\right)^M\]
+Where $C_M \leq 3$ and $C_M \underset{M\to+\infty}{\longrightarrow} 2$
+\label{QuadratureCirc}
+\end{Prop}
+
+In order to prove this proposition, we first prove a result on Fourier series
+\begin{Lem} For any $\mathcal{C}^2$ function $f$ defined on $\mathbb{R}$ and complex-valued, that is $2\pi-$periodic, one has \[\dfrac{1}{2\pi}\int_{0}^{2\pi}f - \dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M} \right) = - \sum\limits_{k \in \Z^*}c_{kN}(f)\]
+Where $c_n(f)$ denotes the Fourier coefficient of $f$ defined as \[c_n(f) = \dfrac{1}{2\pi}\int_{0}^{2\pi}f(x)e^{-inx}dx\]
+\begin{proof}
+Since $f$ is $\mathcal{C}^2$, it is equal to its Fourier Series, which converges normally : \[\forall x \in \mathbb{R}, f(x) = \sum_{k\in\Z} c_k(f)e^{ikx}\] Using this expression, we obtain \[\dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M}\right) = \sum\limits_{k\in \Z^*}c_k(f)\left(\frac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}}\right)\] Now observe that if $k\notin M\Z$, \[\dfrac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}} = 0\] and if $k\in M\Z$ then \[\dfrac{1}{M}\sum_{m=0}^{M-1}e^{ik\frac{2m\pi}{M}} = 1\] Therefore \[\int_{0}^{2\pi}f(x)dx - \dfrac{1}{M}\sum_{m=0}^{M-1}f\left(\frac{2m\pi}{M} \right) = c_0(f) - \sum\limits_{k \in M\Z}c_{k}(f) = - \sum\limits_{k \in \Z^*}c_{kN}(f)\]
+\end{proof}
+\end{Lem}
+
+Let us now prove the proposition : 
+\begin{proof}
+The result is based on the fact that \[J_0(r) =  \int_0^{2\pi} e^{ir\sin(x)}dx = \int_0^{2\pi} e^{ir\sin(x - \varphi)}dx\] Let $f : x \mapsto e^{ir\sin(x - \varphi)}$. Let us recall the integral representation of the Bessel function of the first kind and of order $k$ where $k$ is a relative integer : \[J_k(r) =  \int_{0}^{2\pi}e^{ir\sin(x)}e^{-ikx}dx =  e^{-ik\varphi}\int_{0}^{2\pi}e^{ir\sin(x - \varphi)}e^{-ikx}dx\] Thus, one has $c_k(f) = e^{ik\varphi}J_k(r)$. The former Lemma therefore writes \[J_0(r) -  \dfrac{1}{M}\sum_{j=0}^{M-1}e^{ir\sin\left(\frac{2j\pi}{M}-\varphi\right)} = -\sum_{k\in \Z^*}e^{iNk\varphi}J_{Nk}(r)\] We shall now use the following estimation for $J_k$ : $\forall R>1$ \[|J_k(r)| \leq R^{-|k|}e^{rR}\] Since $M > r$, we have $M|k|>r$ for all $k \in Z^*$. We can choose $R = \frac{M|k|}{r} >1$, implying that \[|J_{Mk}(r)|\leq \left(\dfrac{er}{M|k|}\right)^{M|k|} \] Applying this estimate we obtain : \[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)}\right| \leq \sum_{k\in \Z^*} \left(\dfrac{er}{M|k|}\right)^{M|k|}\] Therefore, \[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)}\right| \leq 2\left(\dfrac{er}{M}\right)^{M}\sum_{k\in \N^*} \left(\dfrac{1}{k}\right)^{Mk}\]
+Let $\gamma_M$ be defined as \[\gamma_M = \sum_{k\in \N^*} \left(\dfrac{1}{k}\right)^{Mk}\] Observe that \[0 \leq \gamma_M -1 \leq \sum_{k\geq 2} \dfrac{1}{2^{kM}} = \dfrac{1}{2^{2M} - 2^M}\] showing that $\gamma_M \leq \frac{3}{2}$ and $\gamma_M \underset{M\to +\infty}{\longrightarrow} 1$. The result is finally proved by setting $C_M = 2\gamma_M$ 
+
+\end{proof}
+\afterpage{\clearpage}
+
+We conclude with the following result
+\begin{Prop} Let $\varepsilon >0$, $r>0$, and assume $M > er + \log\left(\dfrac{3}{\varepsilon}\right)$. Then 
+\[\left|J_0(r) -  \dfrac{1}{M}\sum_{m=0}^{M-1}e^{ir\sin\left(\frac{2m\pi}{M}-\varphi\right)} \right| \leq \varepsilon \]
+\begin{proof}
+This result is a direct consequence of the following inequality : for any $(A,B) \in \left(\mathbb{R}_+^*\right)^2$ one has
+\[ \left( \dfrac{A}{A+B}\right)^{A+B} \leq e^{-B}\]
+To prove it, we take the logarithm of this quantity, $f(A,B) = -B\left(1+\dfrac{A}{B}\right)\log\left(1+\dfrac{B}{A}\right)$ and observe that for any positive $x$, \[\left(1+\dfrac{1}{x}\right)\log(1+x) \geq 1\]
+Therefore, $f(A,B) \leq -B$ implying the result.  
+\end{proof}
+\end{Prop}
+
+Hence, we can approximate very efficiently the functions $e_p$ of the previous paragraph as a finite sum as follows. Let $\xi_0, \xi_1, ..., \xi_{M-1}$ defined by $\xi_m = e^{\frac{2\pi m}{M}}$. Then for any $x \in \mathbb{R}^2$
+\[ e_p(|x|) = C_p J_0(\rho_p |x|)\approx \dfrac{C_p}{M}\sum_{m=1}^M{e^{i \rho_px \cdot \xi_m}}\]
+Where the approximation is valid at a precision $\varepsilon$ as soon as $M > e\rho_p|x| + \log\left(\dfrac{3}{\varepsilon}\right)$. One particular property of this approximation is that it "removes" the modulus of the point at which the function is evaluated. We will see in the next section that this allows separation of variables.   
+\section{Complexity of the method}
+Let us now consider the problem of computing the sum
+\begin{equation}
+ q_k = \sum_{\underset{l\neq k}{l=1}}^N \log(|x_k - x_l|)f_l 
+\end{equation}
+for several values of $k$, given a set of points $(x_l)_{1\leq k \leq N}$ uniformly distributed on the unit disk or the unit circle of $\mathbb{R}^2$. Let $\varepsilon$ the desired accuracy of the computation. 
+As explained in the introduction, this sum is computed by separating the close-field and far-field contributions. 
+
+\subsection{Far-field interactions}
+Let $P$ the number of coefficients required in the radial decomposition of $\log$ to reach the accuracy $\dfrac{\varepsilon}{\norm{f}_1}$ where we noted $\norm{f}_1 = \sum_{l=1}^{N}{|f_l|}$. We write this approximation
+\[ \log(x) \approx \sum_{p=1}^P \alpha_p e_p\]
+The value of $a$ defining the ring $\mathcal{A}(a,1)$ on which the approximation takes place will be fixed later. Because of conjecture \ref{Conj}, the constant $P$ is $O\left(-\dfrac{\log(\varepsilon)}{a}\right)$
+We replace the sum to be evaluated by the approximation 
+\[ \hat{q}_k =  \sum_{\underset{l\neq k}{l=1}}^N\sum_{p=1}^P \alpha_p e_p(|x_k - x_l|)f_l\]  
+Let $M_p$ the number of terms in the circular quadrature approximation of the functions $e_p$ to reach the accuracy $\varepsilon_p = \dfrac{\varepsilon}{P |\alpha_p|\norm{f}_1}$. We write the circular quadrature as 
+\[ e_p(|x|) \approx \dfrac{C_p}{M_p}\sum_{m=1}^{M_p} {e^{i \rho_px \cdot \xi_{m,p}}}\]
+Because the maximal value of the quantities $|x_k - x_l|$ is bounded by $2$ (since they belong to $B$), it is sufficient to take $M_p > 2e \rho_p + \log\left(\dfrac{3P |\alpha_p|\norm{f}_1}{\varepsilon}\right)$ to reach the desired accuracy. The coefficients $\alpha_p$ are bounded because of Bessel inequality $\sum_{|\alpha_p|^2} \leq \int_{B} \log(|x|)^2$. Hence, $M_p$ scales as $O(P) = O\left(\dfrac{1}{a}\log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)\right)$
+
+Finally, the approximation of $q_k$ takes the form 
+\[\hat{\hat{q}}_k \approx \sum_{\underset{l\neq k}{l=1}}^N\sum_{p=1}^P\sum_{m=1}^{M_p}{ \alpha_p \dfrac{C_p}{2\pi {M_p}}e^{i \rho_p (x_k - x_l) \cdot \xi_{m,p}}}f_l \]
+The definition of the accuracies of the radial and circular quadrature ensures $|q_k - \hat{\hat{q}}_k| \leq \varepsilon$ for any $k \in \llbracket 1,N\rrbracket$. 
+The computation of $\hat{\hat{q}}_k$ can be performed using the type-3 Non-Uniform Fast Fourier Transform (NuFFT III) \cite{NuFFT}. Given two set of points $(X_l)$ and $(\Xi_m)$, a vector $(F_l)_{1 \leq l \leq L}$, this algorithm allows to compute the vector $\left(D_k\right)_{1\leq k \leq K}$ which entries are given by
+\[ D_k = \sum_{l=1}^L F_l e^{-i X_l \cdot \Xi_k}\]
+in $O(Q \log Q)$ operations, where $Q = \max(K,L)$. In order to use this idea, we rewrite $\hat{\hat{q}}_k$ as 
+\[\hat{\hat{q}}_k \approx \sum_{p=1}^P\sum_{m=1}^{M_p}{ \alpha_p \dfrac{C_p}{ M_p} \left(\sum_{\underset{l\neq k}{l=1}}^N f_le^{-i \rho_p x_l \cdot \xi_{m,p}} \right) e^{i \rho_p x_k \cdot \xi_{m,p}}} \]
+Therefore, this quantity can be evaluated in two steps using the NuFFT algorithm. The complexity scales as the biggest number among $N$ and $\displaystyle \sum_{p=1}^P M_p = O(P^2) = O\left(\left(\dfrac{1}{a}\log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)\right)^2\right)$.  
+
+\subsection{Close-field interactions}
+
+The approximation of $e_p(|x_k - x_l|)$ using the circular quadrature is efficient only when $|x_k - x_l| > a$. In order to provide an accurate approximation of $q_k$, one must include a corrective term to account form the short-range interactions. For each $k$, let $V_k$ the set $\enstq{1 \leq l \leq N}{ l \neq k \textup{ and } |x_k - x_l| \leq a}$. We define the close-field correction $(q_k^{c})$ as 
+\[ q_k^c = \sum_{l \in V_k} \log(|x_k - x_l|)f_l - \sum_{l \in V_k}\sum_{p=1}^P\sum_{m=1}^{M_p}{ \alpha_p \dfrac{C_p}{2\pi {M_p}}e^{i \rho_p (x_k - x_l) \cdot \xi_{m,p}}}f_l \]
+This vector is obtained by a sparse matrix-vector product. The number $nnz$ of non-zeros entries in the sparse matrix is given by the number of short-range interactions, i.e. 
+\[ nnz = \sum_{1 \leq k \leq N } \#V_k\]
+When the points $(x_k)_{1\leq k \leq N}$ are uniformly distributed on the unit disk, the average number of neighbors at a distance less than $a$ is given by $N a^2$. In this case, the number of short-range interaction scales as $N^2a^2$. When the points are instead distributed uniformly on the unit circle, each point has in average $\frac{Na}{\pi}$ neighbors at a distance $a$, thus the number of short-range interaction scales as $N^2 \dfrac{a}{\pi} $
+
+\subsection{Fixing the constant $a$}
+\label{fixa}
+To divide equally the number of operations between the far-field and the close-field interactions, we choose the value of $a$ in order to satisfy
+\begin{itemize}
+\item[-] $\dfrac{1}{a^2} \log\left( \dfrac{\varepsilon}{\norm{f}_1}\right)^2 = N^2 a^2$ when the points are uniformly distributed in the unit ball, 
+\item[-] $\dfrac{1}{a^2} \log\left( \dfrac{\varepsilon}{\norm{f}_1}\right)^2 = N^2 \dfrac{a}{\pi}$ when the points are uniformly distributed in the unit ball. 
+\end{itemize}
+
+With this choice, in the case of data distributed uniformly on the disk, the far-field contribution is computed in $O\left(N \log(N) \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)\right)$ and the close-range interactions are computed in $O\left(N \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)\right)$ operations, thus the overall method has $O\left(N \log(N) \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)\right)$ complexity. In the case of data distributed uniformly on the circle, the far-field contribution is computed in $O\left(N^{4/3} \log(N) \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)^{2/3}\right)$ and the close-range interactions are computed in $O\left(N^{4/3} \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)^{2/3}\right)$ operations, thus the overall method has $O\left(N^{4/3} \log(N) \log\left(\dfrac{\norm{f}_1}{\varepsilon}\right)^{2/3}\right)$ complexity. 
+
+\section{Numerical experiments}
+
+We successfully applied the previous method for the computation of quantities of the form (\ref{LaSommeACalculerDansLArticle}) when the number of punctual masses ranged up to $5.10^3$. In Figure \ref{computationalTimeLaplace}, we show the computational time for different number of charges uniformly distributed on the unit disk. It can be seen that all computational times appear to grow quasi linearly in function of $N$. The computational time has been split in the three following categories : assembling (computation of the radial quadrature), far-field (time spent in the NU-FFT algorithm) and close-field.
+
+\begin{figure}[H]
+\label{computationalTimeLaplace}
+\centering
+\input{computationalTimeLaplace.tex}
+\end{figure}
+
+In the next figure (Figure \ref{LaplaceCircle}) we plot the resulting field created by $N = 1000$ punctual masses uniformly distributed on a circle with random masses $(f_l)_{1 \leq l \leq N} $over a $500\times500$ grid i.e. we plot the graph over this grid of the function 
+\[ f(x) = \sum_{k=1}^N \log\left(|x_k - x|\right)f_k\]
+This figure has been computed in about 1 minute on a personal computer running Matlab. The naive method would have required $2.5\times 10^8$ evaluations of the function $\log$, a prohibitive cost. 
+
+\begin{figure}[H]
+\centering
+\label{LaplaceCircle}
+\input{CircleLaplace.tex}
+\caption{Field resulting from a distribution of random masses regularly spaced on a circle}
+\end{figure}
+
+
+\section{Extension to the Helmholtz equation}
+\afterpage{\clearpage}
+\subsection{Radial approximation }
+
+It is also possible to apply the same method to compute efficiently quantities of the form 
+\[ q_k = \sum_{\underset{l\neq k}{l=1}}^N \left(Y_0(\mu_0|x_k - x_l|) + iJ_0(\mu_0|x_k - x_l|)\right)f_l\]
+which represent the acoustic field radiated by punctual sources in 2 dimensions of space. 
+Obviously, the imaginary part can be treated directly with a spherical quadrature as presented in the section \ref{Sec:circularQuad}. For simplicity, we forget this term in the following. The real part again necessitates to expand the function $Y_0$ on the basis of the eigenfunctions of the Laplace operator. The scale invariance argument that applied for the $\log$ functions is not reproducible for the $Y_0$ function. The method we used was to expand the function $ x \mapsto Y_0(\mu |x|)$ on a ring $\mathcal{A}(a,1)$ where $\mu$ is the first root of $Y_0$ (to enforce a Dirichlet condition) that is greater than the maximal distance between two points $x_k$ and $x_l$ multiplied by $\mu_0$ (to ensure the validity of the expansion in the far range). Again, the fast decay of the coefficients in the decomposition is ensured by Proposition \ref{PropDecrCond} because $-\Delta Y_0 = Y_0$ implying that $(-\Delta)^s Y_0$ satisfies a Dirichlet boundary condition on the unit sphere for any integer $s$. 
+
+Once again, we notice that the function $Y_0^\mu : x \mapsto Y_0(\mu|x|)$ can be expanded on $B$ as follows
+\[ Y_0(\mu|x|) = \sum_{k=1}^{+\infty} c_k(Y_0^\mu)e_k(x) \] 
+where the rate of convergence of this sum cannot be fast because of the singularity of $Y_0$ at the origin. The explicit computation of the coefficients $c_k(Y_0^\mu)$ allows to give the following expression of the expansion
+\[Y_0(\mu|x|) = \frac{4}{\pi}\sum_{k\in \mathbb{N}^*}\dfrac{J_0(\rho_k x)}{J_1(\rho_k)^2(\mu^2 - \rho_k^2)}\]
+In figure \ref{fig:compareY01}, we compare the previous expansion of $Y_0^\mu$ truncated at the order $P=150$ with the expansion obtained by minimizing the $L^2$ error on $\mathcal{A}(a,1)$ with the same number of terms. One can see that again, for a given number of components, the quality of the approximation is increased by several orders. Figure \ref{fig:compareY03} displays the logarithm of the coefficients with the two previous methods. The coefficients exhibit a peak amplitude around the frequency $\mu$, and those obtained with the least square method have a much faster decay. We also show in figure \ref{cool} that the least-square approximation of $Y_0^\mu$ is significantly improved when $\mu$ is chosen as a root of $Y_0$ (otherwise the boundary conditions necessary to apply Proposition \ref{PropDecrCond} are not respected). We also show in the next figure (\ref{FigureCompareAHelmholtz}) the dependence in the parameter $a$ of the rate of convergence of the least square approximation. 
+In the last figure, we plot the function 
+\[ f(x) = \sum_{k=1}^N{Y_0(\mu|x_k - x|)f_k}\]
+for a distribution of $N = 1000$ points $x_k$ and a random vector $(f_k)_{1\leq k\leq N}$, where the function $f$ is evaluated on a $500\times 500$ grid. The parameter $\mu$ has been set to $25$ and the radius of the circle over which the punctual sources lay is $0.8$. The figure was created in a few minutes on a personal computer. 
+
+
+\begin{figure}[H]
+\centering
+\input{CircleHelmholtz4.tex}
+\caption{2d graph of the function $x \mapsto \sum_{k=1}^N Y_0(\mu|x - x_k|)f_k$ where $N = 1000$, the points $x_k$ are regularly spaced on a $0.8$ radius circle, $\mu$ is set to $25$ and the values $(f_k)_{1\leq k \leq N}$ were chosen randomly. This represents the real part of the acoustic field radiated by punctual acoustic sources located at $x_k$ and radiating at the spatial frequency $\mu$ and amplitude $f_k$.}
+\label{CircleHelmholtz4}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfigure[Logarithmic error $e = \log\left(\left|Y_0^\mu(x) - \displaystyle\sum_{p=1}^P \alpha_p e_p(x)\right|\right)$]{\label{fig:compareY01}\input{compareY01.tex}}
+\subfigure[Logarithmic spectrum : $\log(|\alpha_p|)$]{\label{fig:compareY03}\input{compareY03.tex}}
+\caption{Comparison of the approximations $Y_0^\mu(x) \approx \displaystyle\sum_{p=1}^P \alpha_p e_p(x)$ when $\alpha_p$ are the first coefficients of the Fourier-Bessel series of $Y_0^\mu$ (blue), and the coefficients that minimize the $L^2$ norm of the error on the ring $\mathcal{A}(a,1)$ with the parameter $a = 0.01$. The number $P$ of components is the same in the two cases and is set to $150$. }
+\label{compareY0}
+\end{figure}
+
+\begin{figure}
+
+\centering
+\input{compareY02.tex}
+\caption{Comparison of the approximations $Y_0^\mu(x) \approx \displaystyle\sum_{p=1}^P \alpha_p e_p(x)$ for to values of $\mu$, one of them being a root of $Y_0$ (blue) and the other one being not (red), and where $\alpha_p$ are the coefficients that minimize the $L^2$ norm of the error on the ring $\mathcal{A}(a,1)$ with the parameter $a = 0.01$. The number $P$ of components is the same in the two cases and is set to $150$. }
+\label{cool}
+\end{figure}
+
+\begin{figure}
+\centering
+\input{evolutionErrorInFunctionOfAHelmholtz.tex}
+\caption{Evolution of the error of the best approximation of $Y_0^\mu$ as a finite series of the functions $(e_p)_{1\leq p \leq P}$ in $L^2(\mathcal{A}(a,1))$ as a function of $P$ for several values of the parameter $a$.}
+\label{FigureCompareAHelmholtz}
+\end{figure}
+
+\section{Conclusion}
+We have shown a method that allows, after a pre-computation time scaling as $O(N^{3/2}$, to evaluate vectors of the type (\ref{LaSommeACalculerDansLArticle})
+ or (\ref{LaDeuxiemeSommeACalculerDansLArticle}). The method is based on approximating radial kernels in a spherically discretized Fourier space. We have shown that the approximations in this space have an exponentially fast rate of convergence on rings of the form $\mathcal{A}(a,1)$. The results were successfully tested numerically. Moreover, we argue that the method can be generalized to the computation of quantities of the form (\ref{LaSommeACalculerDansLArticle}) where the $\log$ function could be replaced by any function $K$ defined on $\mathbb{R}$. If the Dirichlet boundary conditions are not satisfied by the iterates of the Laplace operator on $K$, the idea is to find an approximation on a ring $\mathcal{A}(a,b)$ for some $b < 1$. The argument of the polynomial extension can also be applied in this case because one can derive such a polynomial for which the boundary conditions are satisfied and for which the iterates of the Laplace operator can be controlled, exactly as in section \ref{sec:poly} 
+\pagebreak
+
+\bibliographystyle{plain}
+\bibliography{biblio} 
+
+
+
+
+\end{document}

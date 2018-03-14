@@ -1,0 +1,36 @@
+
+\documentclass[]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions}
+\title{Préconditionnement et méthode de Galerkine}
+\author{Martin Averseng}
+\begin{document}
+	\maketitle
+	Soit $s \in \R$ et soit $\opFromTo{A}{H^{-s}(\Gamma)}{H^{s}(\Gamma)}$ un opérateur linéaire continu, où $\Gamma$ est une courbe ou une surface. On note la dualité entre un espace $H^{-s}(\Gamma)$ et son dual $H^{s}(\Gamma)$ par $\duality{u}{v}$. On note
+	\[\int_{\Gamma}\conj{u}v = \scalProd{u}{v}\]
+	Soit $b \in H^s(\Gamma)$, on considère l'équation 
+	\labeleq{Au = b}{\label{firstEq}}
+	d'inconnue $u \in W$. On suppose que $A$ est de Fredholm d'index $0$, et que $A$ est injectif, ce qui implique que l'équation \eqref{firstEq} possède une unique solution, en vertu de l'alternative de Fredholm. 
+	Soit $V_h$ un sous-espace de dimension finie $N$ de $H^{-s}(\Gamma)$, et $(\phi_i)$ une base associée. Pour n'importe quel opérateur $\opFromTo{A}{H^{-s}(\Gamma)}{H^s(\Gamma)}$, on note $\left[A\right]$ la matrice Galerkine $N\times N$ de $A$, c'est-à-dire 
+	\[[A]_{ij} = \duality{\conj{A\phi_i}}{\phi_j}.\]
+	En supposant que la famille $V_h$ converge de manière suffisamment uniforme vers $H^{-s}(\Gamma)$ (je ne redéfinis pas ce que ça veut dire ici), on sait que (cf. articles utilisant la condition inf-sup que je dois retrouver) lorsque la dimension $N$ est suffisamment grande, la matrice $[A]$ est inversible, et la solution de 
+	\[[A]u_h = b_h,\]
+	où $b_{h,i} = \duality{\conj{b}}{\phi_i}$, converge vers $u$. En fait, les hypothèses sur $A$ assurent que $\norm{u_h - u}_{V} \leq C \norm{u^* - u}_V$ où $u^*$ est la meilleure approximation de $u$ dans $V_h$.  
+	Si $A$ est un opérateur pseudo-différentiel d'ordre $s$ (la notion d'opérateur pseudo-différentiel étant utilisée ici d'une manière floue), le conditionnement de $[A]$ évolue en $h^{-|s|}$, où $h$ est la taille de la maille. Pour le simple couche et le double couche, cela signifie un conditionnement qui augmente linéairement (en 2D) ou quadratiquement (en 3D) avec le nombre d'inconnues. 
+	
+	Soit $\opFromTo{B}{H^s(\Gamma)}{H^{-s}(\Gamma)}$ un opérateur tel que $\opFromTo{BA}{H^{-s}(\Gamma)}{H^{-s}(\Gamma)}$ soit bien conditionné, c'est-à-dire une perturbation compacte de l'identité. 
+	On souhaite former un système linéaire mieux conditionné que \eqref{firstEq}, pour obtenir une approximation de $u$ convergent à la même vitesse, c'est-à-dire en gardant le lemme de Céa. 
+	
+	\section{Préconditionnement à partir de [B]}
+	Supposons dans un premier temps que l'on ait accès à la matrice $[B]_{ij} = \duality{\conj{B \phi_i}}{\phi_j}$. Il y a un problème car $B$ n'est pas défini sur $H^{-s}(\Gamma)$ mais sur $H^{s}(\Gamma)$. On le définit donc au sens faible. On suppose que, pour tout $u,v$ dans $H^s(\Gamma)$, on ait $\duality{\conj{Bu}}{v} = q(u,v)$ avec q une forme bilinéaire continue sur $H^{-s}(\Gamma)$. On suppose en fait que l'on cannaît la matrice $[B]_{i,j} = q(\phi_i,\phi_j)$. Dans ce cas, on étend $B$ à $H^{-s}(\Gamma)$ si nécessaire à l'aide de cette définition. De même, on peut étendre la définition de $B^*$ à $H^s(\Gamma)$ si nécessaire en posant, pour tout $u \in H^{s}(\Gamma)$, $v \in H^{-s}(\Gamma)$
+	\[\duality{\conj{B^* u}}{v} = q(u,v)\]
+	$BAu = Bb$
+		\[\scalProd{\lambda_h}{\mu_h} = \duality{\conj{Au}}{\mu_h}\]
+	\[\scalProd{\pi_h b}{\mu_h} = \duality{\conj{b}}{\mu_h}\]
+	et 
+	\[\duality{\conj{B\lambda_h}}{\mu_h} = \duality{\conj{Bb}}{\mu_h}\]
+	Soit 
+	\[[I]\lambda_h = [A]u_h\]
+	\[[B]\lambda = \]
+	
+	
+\end{document}

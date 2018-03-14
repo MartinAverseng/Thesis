@@ -1,0 +1,519 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Preconditioning tests</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-03-09"><meta name="DC.source" content="demoSuite.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Preconditioning tests</h1><!--introduction--><p><h3>Using the square root of the weighted Laplace operator</h3></p><p>Let <img src="demoSuite_eq04582590264646198481.png" alt="$\Delta_{\omega} = (\omega(x) \partial x)^2$"> where <img src="demoSuite_eq03231744945125048667.png" alt="$\omega(x) = \sqrt{1 - x^2}$">, that is, for any twice differentiable function <img src="demoSuite_eq11776305044305525613.png" alt="$u$">, <img src="demoSuite_eq02134591012618725894.png" alt="$\Delta_\omega u = (\omega(x) u'(x))'$">. Note that for <img src="demoSuite_eq04343480373643938809.png" alt="$\omega(x) = 1$">, <img src="demoSuite_eq07251447165737582085.png" alt="$\Delta_\omega$"> is the usual Laplace-Beltrami operator on the segment. When <img src="demoSuite_eq08796078824778739634.png" alt="$\Gamma$"> is an infinite straight line, using a Fourier decomposition, one can show that the trace of the single-layer potential is the square-root of <img src="demoSuite_eq08681265181355790312.png" alt="$-\Delta$">. In fact, for the open segment, a similar result holds. One can check that <img src="demoSuite_eq07251447165737582085.png" alt="$\Delta_\omega$"> and <img src="demoSuite_eq02972096982942142732.png" alt="$S_\omega$"> commute, and that the Chebyshev polynomials <img src="demoSuite_eq05420245935082994202.png" alt="$T_n$"> are a common basis of eigenvectors for those two operators. To approximate the eigenvectors of an operator <img src="demoSuite_eq05147331747641807187.png" alt="$A$"> with respect to the scalar product</p><p><img src="demoSuite_eq03734173116722018874.png" alt="$$(u,v) \to \int_{\Gamma} \frac{uv}{\omega}$$"></p><p>we write that for any <img src="demoSuite_eq03158747792916826732.png" alt="$v$">, the n-th eigenvector <img src="demoSuite_eq04254029814648711276.png" alt="$\phi^n$">, associated to the eigenvalue <img src="demoSuite_eq18301366304567263223.png" alt="$\lambda_n$"> satisfies</p><p><img src="demoSuite_eq13017814647980154538.png" alt="$$\int_{\Gamma} \frac{(A \phi^n) v}{\omega} = \lambda_n&#xA;\int_{\Gamma}\frac{\phi^n v}{\omega}$$"></p><p>In the discrete setting, we find <img src="demoSuite_eq11105866995366781857.png" alt="$\phi^n_h$"> such that for all <img src="demoSuite_eq05987108734468011389.png" alt="$v_h$">,</p><p><img src="demoSuite_eq08990488144979441609.png" alt="$$\int_{\Gamma} \frac{(A \phi^n_h) v_h}{\omega}  = \lambda_n&#xA;\int_{\Gamma}\frac{\phi^n_h v_h}{\omega}$$"></p><p>That is, if we denote by <img src="demoSuite_eq00776027872675408716.png" alt="$[A]_{\omega}$"> the Galerkine matrix of <img src="demoSuite_eq05147331747641807187.png" alt="$A$"> for the scalar product defined previously,</p><p><img src="demoSuite_eq05123685504131453794.png" alt="$$ [A]_\omega \Phi_n = \lambda_n [I]_\omega \Phi_n $$"></p><p>This is a generalized eigenvalue / eigen vectors problem. Here <img src="demoSuite_eq02972096982942142732.png" alt="$S_\omega$"> and <img src="demoSuite_eq04678643265822896229.png" alt="$-\Delta_\omega$"> are self adjoint positive, <img src="demoSuite_eq17685640540584379246.png" alt="$[I_\omega]$"> is positive definite. Therefore, the exact and approximate eigenvalues are necessarily real and positive.</p><p><h4>Eigenvalues of the weighted Laplace operator</h4></p><p>For <img src="demoSuite_eq04678643265822896229.png" alt="$-\Delta_\omega$">, one has for all <img src="demoSuite_eq08984225997457563733.png" alt="$n$">.</p><p><img src="demoSuite_eq17751226391986430834.png" alt="$$ -\Delta_\omega T_n = n^2 T_n $$"></p><!--/introduction--><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+clc;
+segment = unitSegment;
+N = 100;
+repartition = @cos;
+bounds = [-pi,0];
+mesh = MeshCurve(segment,N,repartition,bounds);
+Vh = weightedFEspace(mesh,<span class="string">'P1'</span>,<span class="string">'1/sqrt(1-t^2)'</span>,5);
+M = full(Vh.Mass);
+Wh =  weightedFEspace(mesh,<span class="string">'P1'</span>,<span class="string">'sqrt(1-t^2)'</span>,5);
+dM = full(Wh.dMass);
+
+[P1,D1] = eig(dM,M);
+[eigenVals_dM,I] = sort(diag(D1));
+figure;
+loglog(1:Vh.ndof-1,sort(eigenVals_dM(2:end)),<span class="string">'*'</span>);
+hold <span class="string">on</span>
+loglog(1:Vh.ndof-1,(1:Vh.ndof-1).^2,<span class="string">'*'</span>)
+title(<span class="string">'Non-negative eigenvalues of \Delta_{\omega}'</span>)
+xlabel(<span class="string">'Eigenvalue number'</span>)
+legend({<span class="string">'Approximate'</span>,<span class="string">'Exact'</span>});
+</pre><img vspace="5" hspace="5" src="demoSuite_01.png" alt=""> <p>We can also check that the first eigenvectors are close to the Chebyshev polynomials. For <img src="demoSuite_eq06713379182124035157.png" alt="$n=10$">, for example :</p><pre class="codeinput">X = Vh.dofCoords;
+s = Vh.mesh.sVertices;
+n = 10;
+Tn = R2toRfunc.Tn(n);
+figure;
+plot(s,Tn(X));
+hold <span class="string">on</span>;
+plot(s,P1(:,I(n+1))/P1(end,I(n+1)))
+title(<span class="string">'An eigenvector of \Delta_\omega'</span>)
+legend({<span class="string">'exact'</span>,<span class="string">'approx'</span>});
+xlabel(<span class="string">'curvilinear abscissa'</span>)
+</pre><img vspace="5" hspace="5" src="demoSuite_02.png" alt=""> <p><h4>Eigenvalues of the weighted Laplace operator</h4></p><p>For <img src="demoSuite_eq06736329751225590692.png" alt="$S_{\omega}$">. One has</p><p><img src="demoSuite_eq04938602298932854572.png" alt="$$ S_\omega T_n = s_n T_n$$"></p><p>where <img src="demoSuite_eq01572300922444074191.png" alt="$s_n = \frac{1}{2n}$"> if <img src="demoSuite_eq02999074514760466485.png" alt="$n&gt;1$">, and <img src="demoSuite_eq15059602045018423988.png" alt="$s_0 = \frac{\ln(2)}{2}$">.</p><pre class="codeinput">Somega = singleLayer(0,Vh,[],{<span class="string">'full'</span>,true});
+Sgalerk = Somega.galerkine(Vh,<span class="string">'U'</span>);
+<span class="comment">% The full option computes the matrix without SBD compression.</span>
+[P2,D2] = eig(full(Sgalerk),M);
+[eigenVals_S,I] = sort(diag(D2),<span class="string">'descend'</span>);
+eigenVals_S(1:2) = eigenVals_S(2:-1:1);
+I(1:2) = I(2:-1:1);
+figure;
+loglog(0:Vh.ndof-1,eigenVals_S,<span class="string">'*'</span>);
+hold <span class="string">on</span>
+s_n = 1./(2*(1:(Vh.ndof-1))); s_0 = log(2)/2;
+s_n = [s_0, s_n];
+loglog(0:Vh.ndof-1,s_n,<span class="string">'*'</span>)
+title(<span class="string">'Eigenvalues of S_{\omega}'</span>)
+xlabel(<span class="string">'Eigenvalue number'</span>)
+legend({<span class="string">'Approximate'</span>,<span class="string">'Exact'</span>});
+</pre><img vspace="5" hspace="5" src="demoSuite_03.png" alt=""> <p><h4>Application to preconditionning</h4></p><p>Based on the values of the eigenvalues of the two operator, it follows that</p><p><img src="demoSuite_eq13783514099492501292.png" alt="$$ (S_\omega)^{-1} = 2\sqrt{-\Delta_\omega} + \frac{1}{s_0}T_0^*$$"></p><p>where <img src="demoSuite_eq07419479891549316070.png" alt="$(T_n^*)_n$"> is the orthogonal family of projector defined by</p><p><img src="demoSuite_eq16182926716854506677.png" alt="$$ T_n^* u = \frac{\langle u,T_n\rangle}{\langle T_n,T_n\rangle}T_n $$"></p><p>Moreover, here the square root is taken in the following sense : for any operator <img src="demoSuite_eq05147331747641807187.png" alt="$A$"> of the form</p><p><img src="demoSuite_eq09195452510640278554.png" alt="$$A = \sum_{n=0}^{+\infty} a_n T_n^* $$"></p><p><img src="demoSuite_eq11683773568728227126.png" alt="$$\sqrt{A}u = \sum_{n=0}^{+\infty} \sqrt{a_n} T_n^*$$"></p><p>We exploit this fact to build a preconditionner for <img src="demoSuite_eq02972096982942142732.png" alt="$S_\omega$">. One method is to compute the squre root of the operator <img src="demoSuite_eq04678643265822896229.png" alt="$-\Delta_\omega$">. This can be done exactly with the following code.</p><pre class="codeinput">sqrtdM = M*P1*sqrt(D1)*P1^(-1); <span class="comment">% sqrtdM is as M*sqrtm(M^(-1)*dM);</span>
+T0_scal_phi = Vh.phi'*Vh.W;
+T0_star_galerk = T0_scal_phi*T0_scal_phi'/sum(Vh.W);
+Prec_galerk = M^(-1)*(2*sqrtdM + 1/s_0*T0_star_galerk)*M^(-1);
+figure
+plot(sort(eig(Prec_galerk*full(Sgalerk))),<span class="string">'+'</span>);
+title(<span class="string">'Eigenvalues of the preconditionned matrix'</span>)
+</pre><img vspace="5" hspace="5" src="demoSuite_04.png" alt=""> <p>However, if the number of unknowns gets large, it is not tractable to perform an eigenvalue/ eigenvector decomposition of the matrix <i>dM</i>. Instead, one can use a method to get a fast approximation of the matrix-vector product</p><pre class="codeinput">N = 100;
+mesh = mesh.remesh(N);
+Wh = weightedFEspace(mesh,<span class="string">'P1'</span>,<span class="string">'sqrt(1-t^2)'</span>,5);
+dM = Wh.dMass.concretePart;
+Vh = weightedFEspace(mesh,<span class="string">'P1'</span>,<span class="string">'1/sqrt(1-t^2)'</span>,5);
+M = Vh.Mass.concretePart;
+a_factor = 15; <span class="comment">% This has been balanced to get at the same time fast MV product</span>
+<span class="comment">% and not too long an assembling. A big a_factor is in favor of the $S_0$</span>
+<span class="comment">% preconditioner since more local interactions are stored.</span>
+Somega = singleLayer(0,Vh,[],{<span class="string">'a_factor'</span>,a_factor});
+Sgalerk = Somega.galerkine(Vh,<span class="string">'U'</span>);
+T0_scal_phi = Vh.phi'*Vh.W;
+T0_star_galerk = T0_scal_phi*T0_scal_phi'*(1/sum(Vh.W));
+
+
+
+u0 = R2toRfunc(@(Z)(sin(5*Z(:,1))));
+l = Somega.Vh.secondMember(u0);
+t0 = tic;
+disp(<span class="string">'No preconditioner'</span>)
+[~,~,~,~,resvec0]  = variationalSol(Sgalerk,l,20,1e-8,N);
+fprintf(<span class="string">'\nGmres returned a solution in %s iteration\n'</span>,num2str(length(resvec0)));
+t0 = toc(t0);
+fprintf(<span class="string">'t = %s s\n\n'</span>,num2str(t0))
+t1 = tic;
+
+disp(<span class="string">'preconditionned by SBD local matrix'</span>)
+Prec1 = Sgalerk.concretePart;
+[~,~,~,~,resvec1]  = variationalSol(Sgalerk,l,20,1e-8,N,Prec1);
+fprintf(<span class="string">'Gmres returned a solution in %s iteration\n'</span>,num2str(length(resvec1)));
+t1 = toc(t1);
+fprintf(<span class="string">'t = %s s \n\n'</span>,num2str(t1))
+disp(<span class="string">'preconditionned by Square root of weighted Laplace operator, &agrave; la vol&eacute;e'</span>)
+t2 = tic;
+Prec2 = @(u)(M\TrefethenSqrt(4*dM,3,M\u,M,4,4.5*Vh.ndof^2));
+[~,~,~,~,resvec2]  = variationalSol(Sgalerk,l,[],1e-8,N,Prec2);
+fprintf(<span class="string">'\nGmres returned a solution in %s iteration\n'</span>,num2str(length(resvec2)));
+t2 = toc(t2);
+fprintf(<span class="string">'t = %s s \n\n'</span>,num2str(t2))
+
+disp(<span class="string">'preconditionned by Square root of weighted Laplace operator, fully assembled'</span>)
+t3 = tic;
+Minv = M^(-1);
+Prec3 = Minv*TrefethenSqrt(4*dM,3,[],M,4,4.5*Vh.ndof^2)*Minv;
+t3bis = tic;
+[~,~,~,~,resvec3]  = variationalSol(Sgalerk,l,[],1e-8,N,@(u)(Prec3*u));
+fprintf(<span class="string">'\nGmres returned a solution in %s iteration\n'</span>,num2str(length(resvec3)));
+t3bis = toc(t3bis);
+t3 = toc(t3);
+fprintf(<span class="string">'t = %s s assemble, %s krylov \n\n'</span>,num2str(t3),num2str(t3bis))
+
+figure;
+semilogy(0:length(resvec0)-1,resvec0/norm(full(l)));
+hold <span class="string">on</span>
+semilogy(0:length(resvec1)-1,resvec1/norm(Prec1\full(l)));
+hold <span class="string">on</span>
+semilogy(0:length(resvec2)-1,resvec2/norm(Prec2(full(l))));
+legend({[<span class="string">'No precond : '</span> num2str(t0) <span class="string">'s'</span>],<span class="keyword">...</span>
+    [<span class="string">'$S_0$ : '</span> num2str(t1) <span class="string">'s'</span>],<span class="keyword">...</span>
+    [<span class="string">'$\sqrt{-\Delta_{\omega}}$ : '</span> num2str(t2) <span class="string">'s'</span>]},<span class="keyword">...</span>
+    <span class="string">'interpreter'</span>,<span class="string">'latex'</span>);
+xlabel(<span class="string">'Iteration count'</span>);
+ylabel(<span class="string">'relative residual'</span>);
+title(<span class="string">'Gmres history, comparing preconditionners'</span>)
+</pre><pre class="codeoutput">********************************************* 
+SBD package : launching the radial decomposition
+Warning: Condition number too high, restarting with a =
+1.677051e-01 
+Bessel decomposition successfully computed. Number of terms : 35 
+Radial quadrature of 35 components computed in 0.057588 seconds 
+Done 
+
+NUFFT for local correction : *
+No preconditioner
+*******************************************
+Gmres returned a solution in 41 iteration
+t = 0.76546 s
+
+preconditionned by SBD local matrix
+************Gmres returned a solution in 11 iteration
+t = 0.30566 s 
+
+preconditionned by Square root of weighted Laplace operator, &agrave; la vol&eacute;e
+*******
+Gmres returned a solution in 6 iteration
+t = 0.19478 s 
+
+preconditionned by Square root of weighted Laplace operator, fully assembled
+*******
+Gmres returned a solution in 6 iteration
+t = 0.13292 s assemble, 0.12337 krylov 
+
+</pre><img vspace="5" hspace="5" src="demoSuite_05.png" alt=""> <p><h4>Alternative preconditionner</h3></p><p>The relation between the eigenvalues of <img src="demoSuite_eq06736329751225590692.png" alt="$S_{\omega}$"> and <img src="demoSuite_eq07251447165737582085.png" alt="$\Delta_\omega$"> also implies that</p><p><img src="demoSuite_eq07888259657157253087.png" alt="$$S_{\omega}^{-1} = -4 S_{\omega} \Delta_{\omega} + \frac{1}{s_0}T_0^*$$"></p><p>so that the matrix</p><p><img src="demoSuite_eq01962890818796346833.png" alt="$$ [I]_{\omega}^{-1} [S_{\omega}]^{-1}]_{\omega} [I]_{\omega}^{-1}&#xA;[\Delta_{\omega}]_{\omega} [I]_{\omega}^{-1} $$"></p><p>should provide an efficient preconditioner for <img src="demoSuite_eq06736329751225590692.png" alt="$S_{\omega}$">. We perform once again the comparison between those methods</p><p><h4>Asymptotic behavior</h4></p><p>We now run the previous test for several values of <img src="demoSuite_eq03672095713503266041.png" alt="$N$"> and show the evolution of iteration number, time and preconditioner assembling for the full square root method.</p><pre class="codeinput">run(<span class="string">'asymptoticPrecondSqrtSegment.m'</span>);
+figure;
+plot(ns,nit0,<span class="string">'DisplayName'</span>,<span class="string">'No Precond'</span>)
+hold <span class="string">on</span>
+plot(ns,nit1,<span class="string">'DisplayName'</span>,<span class="string">'S_0'</span>)
+plot(ns,nit2,<span class="string">'DisplayName'</span>,<span class="string">'\surd{-\Delta_{\omega}}'</span>)
+plot(ns,nit4,<span class="string">'DisplayName'</span>,<span class="string">'-S_{\omega}\Delta_{\omega}'</span>)
+legend <span class="string">show</span>
+axis <span class="string">tight</span>
+title(<span class="string">'Number of gmres iterations vs Ndof'</span>);
+ylabel(<span class="string">'Nit'</span>)
+xlabel(<span class="string">'Ndof'</span>)
+figure;
+loglog(ns,t0_save,<span class="string">'DisplayName'</span>,<span class="string">'No Precond'</span>)
+hold <span class="string">on</span>
+loglog(ns,t1_save,<span class="string">'DisplayName'</span>,<span class="string">'S_0'</span>)
+loglog(ns,t2_save,<span class="string">'DisplayName'</span>,<span class="string">'\surd{-\Delta_{\omega}}'</span>)
+loglog(ns,t3_save,<span class="string">'--'</span>,<span class="string">'DisplayName'</span>,<span class="string">'\surd{-\Delta_{\omega}} (assembling phase)'</span>)
+loglog(ns,t3bis_save,<span class="string">'DisplayName'</span>,<span class="string">'\surd{-\Delta_{\omega}} (once assembled)'</span>)
+loglog(ns,t4_save,<span class="string">'DisplayName'</span>,<span class="string">'S_{\omega}\Delta_{\omega}'</span>)
+grid <span class="string">on</span>;
+legend <span class="string">show</span>;
+set(legend,<span class="string">'location'</span>,<span class="string">'eastoutside'</span>)
+axis <span class="string">tight</span>
+title(<span class="string">'time vs Ndof'</span>)
+xlabel(<span class="string">'Ndof'</span>);
+ylabel(<span class="string">'t(s)'</span>);
+</pre><pre class="codeoutput">Warning: Condition number too high, restarting with a =
+2.371708e-01 
+Warning: Condition number too high, restarting with a =
+1.677051e-01 
+</pre><img vspace="5" hspace="5" src="demoSuite_06.png" alt=""> <img vspace="5" hspace="5" src="demoSuite_07.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Preconditioning tests
+%
+% <html><h3>Using the square root of the weighted Laplace operator</h3></html>
+%
+% Let $\Delta_{\omega} = (\omega(x) \partial x)^2$ where $\omega(x) =
+% \sqrt{1 - x^2}$, that is, for any twice differentiable function $u$,
+% $\Delta_\omega u = (\omega(x) u'(x))'$. Note that for $\omega(x) = 1$,
+% $\Delta_\omega$ is the usual Laplace-Beltrami operator on the segment.
+% When $\Gamma$ is an infinite straight line, using a Fourier
+% decomposition, one can show that the trace of the single-layer potential
+% is the square-root of $-\Delta$. In fact, for the open segment, a similar
+% result holds. One can check that $\Delta_\omega$ and $S_\omega$ commute,
+% and that the Chebyshev polynomials $T_n$ are a common basis of
+% eigenvectors for those two operators. To approximate the eigenvectors of
+% an operator $A$ with respect to the scalar product
+%
+% $$(u,v) \to \int_{\Gamma} \frac{uv}{\omega}$$
+%
+% we write that for any $v$, the n-th eigenvector $\phi^n$, associated to
+% the eigenvalue $\lambda_n$ satisfies
+%
+% $$\int_{\Gamma} \frac{(A \phi^n) v}{\omega} = \lambda_n
+% \int_{\Gamma}\frac{\phi^n v}{\omega}$$
+%
+% In the discrete setting, we find $\phi^n_h$ such that for all $v_h$,
+%
+% $$\int_{\Gamma} \frac{(A \phi^n_h) v_h}{\omega}  = \lambda_n
+% \int_{\Gamma}\frac{\phi^n_h v_h}{\omega}$$
+%
+% That is, if we denote by $[A]_{\omega}$ the Galerkine matrix of $A$ for the
+% scalar product defined previously,
+%
+% $$ [A]_\omega \Phi_n = \lambda_n [I]_\omega \Phi_n $$
+%
+% This is a generalized eigenvalue / eigen vectors problem. Here $S_\omega$
+% and $-\Delta_\omega$ are self adjoint positive, $[I_\omega]$ is positive
+% definite. Therefore, the exact and approximate eigenvalues are
+% necessarily real and positive.
+%
+% <html><h4>Eigenvalues of the weighted Laplace operator</h4></html>
+%
+% For $-\Delta_\omega$, one has for all $n$.
+%
+% $$ -\Delta_\omega T_n = n^2 T_n $$
+%
+%%
+clear all
+close all
+clc;
+segment = unitSegment;
+N = 100;
+repartition = @cos;
+bounds = [-pi,0];
+mesh = MeshCurve(segment,N,repartition,bounds);
+Vh = weightedFEspace(mesh,'P1','1/sqrt(1-t^2)',5);
+M = full(Vh.Mass);
+Wh =  weightedFEspace(mesh,'P1','sqrt(1-t^2)',5);
+dM = full(Wh.dMass);
+
+[P1,D1] = eig(dM,M);
+[eigenVals_dM,I] = sort(diag(D1));
+figure;
+loglog(1:Vh.ndof-1,sort(eigenVals_dM(2:end)),'*');
+hold on
+loglog(1:Vh.ndof-1,(1:Vh.ndof-1).^2,'*')
+title('Non-negative eigenvalues of \Delta_{\omega}')
+xlabel('Eigenvalue number')
+legend({'Approximate','Exact'});
+
+%%
+% We can also check that the first eigenvectors are close to the Chebyshev
+% polynomials. For $n=10$, for example :
+
+X = Vh.dofCoords;
+s = Vh.mesh.sVertices;
+n = 10;
+Tn = R2toRfunc.Tn(n);
+figure;
+plot(s,Tn(X));
+hold on;
+plot(s,P1(:,I(n+1))/P1(end,I(n+1)))
+title('An eigenvector of \Delta_\omega')
+legend({'exact','approx'});
+xlabel('curvilinear abscissa')
+
+%%
+%
+% <html><h4>Eigenvalues of the weighted Laplace operator</h4></html>
+%
+% For $S_{\omega}$. One has
+%
+% $$ S_\omega T_n = s_n T_n$$
+%
+% where $s_n = \frac{1}{2n}$ if $n>1$, and $s_0 = \frac{\ln(2)}{2}$.
+
+Somega = singleLayer(0,Vh,[],{'full',true});
+Sgalerk = Somega.galerkine(Vh,'U');
+% The full option computes the matrix without SBD compression.
+[P2,D2] = eig(full(Sgalerk),M);
+[eigenVals_S,I] = sort(diag(D2),'descend');
+eigenVals_S(1:2) = eigenVals_S(2:-1:1);
+I(1:2) = I(2:-1:1);
+figure;
+loglog(0:Vh.ndof-1,eigenVals_S,'*');
+hold on
+s_n = 1./(2*(1:(Vh.ndof-1))); s_0 = log(2)/2;
+s_n = [s_0, s_n];
+loglog(0:Vh.ndof-1,s_n,'*')
+title('Eigenvalues of S_{\omega}')
+xlabel('Eigenvalue number')
+legend({'Approximate','Exact'});
+%%
+%
+% <html><h4>Application to preconditionning</h4></html>
+%
+% Based on the values of the eigenvalues of the two operator, it follows
+% that
+%
+% $$ (S_\omega)^{-1} = 2\sqrt{-\Delta_\omega} + \frac{1}{s_0}T_0^*$$
+%
+% where $(T_n^*)_n$ is the orthogonal family of projector defined by
+%
+% $$ T_n^* u = \frac{\langle u,T_n\rangle}{\langle T_n,T_n\rangle}T_n $$
+%
+% Moreover, here the square root is taken in the following sense : for any
+% operator $A$ of the form
+%
+% $$A = \sum_{n=0}^{+\infty} a_n T_n^* $$
+%
+% $$\sqrt{A}u = \sum_{n=0}^{+\infty} \sqrt{a_n} T_n^*$$
+%
+% We exploit this fact to build a preconditionner for $S_\omega$. One
+% method is to compute the squre root of the operator $-\Delta_\omega$.
+% This can be done exactly with the following code.
+%%
+
+sqrtdM = M*P1*sqrt(D1)*P1^(-1); % sqrtdM is as M*sqrtm(M^(-1)*dM);
+T0_scal_phi = Vh.phi'*Vh.W;
+T0_star_galerk = T0_scal_phi*T0_scal_phi'/sum(Vh.W);
+Prec_galerk = M^(-1)*(2*sqrtdM + 1/s_0*T0_star_galerk)*M^(-1);
+figure
+plot(sort(eig(Prec_galerk*full(Sgalerk))),'+');
+title('Eigenvalues of the preconditionned matrix')
+
+%%
+% However, if the number of unknowns gets large, it is not tractable to
+% perform an eigenvalue/ eigenvector decomposition of the matrix _dM_.
+% Instead, one can use a method to get a fast approximation of the
+% matrix-vector product
+
+N = 100;
+mesh = mesh.remesh(N);
+Wh = weightedFEspace(mesh,'P1','sqrt(1-t^2)',5);
+dM = Wh.dMass.concretePart;
+Vh = weightedFEspace(mesh,'P1','1/sqrt(1-t^2)',5);
+M = Vh.Mass.concretePart;
+a_factor = 15; % This has been balanced to get at the same time fast MV product
+% and not too long an assembling. A big a_factor is in favor of the $S_0$
+% preconditioner since more local interactions are stored.
+Somega = singleLayer(0,Vh,[],{'a_factor',a_factor});
+Sgalerk = Somega.galerkine(Vh,'U');
+T0_scal_phi = Vh.phi'*Vh.W;
+T0_star_galerk = T0_scal_phi*T0_scal_phi'*(1/sum(Vh.W));
+
+
+
+u0 = R2toRfunc(@(Z)(sin(5*Z(:,1))));
+l = Somega.Vh.secondMember(u0);
+t0 = tic;
+disp('No preconditioner')
+[~,~,~,~,resvec0]  = variationalSol(Sgalerk,l,20,1e-8,N);
+fprintf('\nGmres returned a solution in %s iteration\n',num2str(length(resvec0)));
+t0 = toc(t0);
+fprintf('t = %s s\n\n',num2str(t0))
+t1 = tic;
+
+disp('preconditionned by SBD local matrix')
+Prec1 = Sgalerk.concretePart;
+[~,~,~,~,resvec1]  = variationalSol(Sgalerk,l,20,1e-8,N,Prec1);
+fprintf('Gmres returned a solution in %s iteration\n',num2str(length(resvec1)));
+t1 = toc(t1);
+fprintf('t = %s s \n\n',num2str(t1))
+disp('preconditionned by Square root of weighted Laplace operator, à la volée')
+t2 = tic;
+Prec2 = @(u)(M\TrefethenSqrt(4*dM,3,M\u,M,4,4.5*Vh.ndof^2));
+[~,~,~,~,resvec2]  = variationalSol(Sgalerk,l,[],1e-8,N,Prec2);
+fprintf('\nGmres returned a solution in %s iteration\n',num2str(length(resvec2)));
+t2 = toc(t2);
+fprintf('t = %s s \n\n',num2str(t2))
+
+disp('preconditionned by Square root of weighted Laplace operator, fully assembled')
+t3 = tic;
+Minv = M^(-1);
+Prec3 = Minv*TrefethenSqrt(4*dM,3,[],M,4,4.5*Vh.ndof^2)*Minv;
+t3bis = tic;
+[~,~,~,~,resvec3]  = variationalSol(Sgalerk,l,[],1e-8,N,@(u)(Prec3*u));
+fprintf('\nGmres returned a solution in %s iteration\n',num2str(length(resvec3)));
+t3bis = toc(t3bis);
+t3 = toc(t3);
+fprintf('t = %s s assemble, %s krylov \n\n',num2str(t3),num2str(t3bis))
+
+figure;
+semilogy(0:length(resvec0)-1,resvec0/norm(full(l)));
+hold on
+semilogy(0:length(resvec1)-1,resvec1/norm(Prec1\full(l)));
+hold on
+semilogy(0:length(resvec2)-1,resvec2/norm(Prec2(full(l))));
+legend({['No precond : ' num2str(t0) 's'],...
+    ['$S_0$ : ' num2str(t1) 's'],...
+    ['$\sqrt{-\Delta_{\omega}}$ : ' num2str(t2) 's']},...
+    'interpreter','latex');
+xlabel('Iteration count');
+ylabel('relative residual');
+title('Gmres history, comparing preconditionners')
+
+%%
+%
+% <html><h4>Alternative preconditionner</h3></html>
+%
+% The relation between the eigenvalues of $S_{\omega}$ and $\Delta_\omega$
+% also implies that 
+%
+% $$S_{\omega}^{-1} = -4 S_{\omega} \Delta_{\omega} + \frac{1}{s_0}T_0^*$$ 
+%
+% so that the matrix
+% 
+% $$ [I]_{\omega}^{-1} [S_{\omega}]^{-1}]_{\omega} [I]_{\omega}^{-1}
+% [\Delta_{\omega}]_{\omega} [I]_{\omega}^{-1} $$ 
+% 
+% should provide an efficient preconditioner for $S_{\omega}$. We perform
+% once again the comparison between those methods
+
+
+%%
+%
+% <html><h4>Asymptotic behavior</h4></html>
+%
+% We now run the previous test for several values of $N$ and show the
+% evolution of iteration number, time and preconditioner assembling for the
+% full square root method.
+
+run('asymptoticPrecondSqrtSegment.m');
+figure;
+plot(ns,nit0,'DisplayName','No Precond')
+hold on
+plot(ns,nit1,'DisplayName','S_0')
+plot(ns,nit2,'DisplayName','\surd{-\Delta_{\omega}}')
+plot(ns,nit4,'DisplayName','-S_{\omega}\Delta_{\omega}')
+legend show
+axis tight
+title('Number of gmres iterations vs Ndof');
+ylabel('Nit')
+xlabel('Ndof')
+figure; 
+loglog(ns,t0_save,'DisplayName','No Precond')
+hold on
+loglog(ns,t1_save,'DisplayName','S_0')
+loglog(ns,t2_save,'DisplayName','\surd{-\Delta_{\omega}}')
+loglog(ns,t3_save,'REPLACE_WITH_DASH_DASH','DisplayName','\surd{-\Delta_{\omega}} (assembling phase)')
+loglog(ns,t3bis_save,'DisplayName','\surd{-\Delta_{\omega}} (once assembled)')
+loglog(ns,t4_save,'DisplayName','S_{\omega}\Delta_{\omega}')
+grid on;
+legend show;
+set(legend,'location','eastoutside')
+axis tight
+title('time vs Ndof')
+xlabel('Ndof');
+ylabel('t(s)');
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,9 @@
+rho = besselJroots(0,10);
+a = 0.1;
+A = d_gramMatrix(a,rho);
+D = sqrt(diag(1./(diag(A))));
+b = D\laplaceD2coeffs(a,rho);
+M = D*A*D;
+beta = M\b;
+alpha = D\beta;
+

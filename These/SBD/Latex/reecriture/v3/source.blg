@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: source.aux
+The style file: plain.bst
+Database file #1: /home/martin/Documents/These/Biblio/biblio.bib
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 1 in "Balodis, P., and C{\'o}rdoba, A." has a comma at the end for entry Balodis1999
+while executing---line 1049 of file plain.bst
+Name 1 in "Balodis, P., and C{\'o}rdoba, A." has a comma at the end for entry Balodis1999
+while executing---line 1090 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+You've used 27 entries,
+            2118 wiz_defined-function locations,
+            676 strings with 8333 characters,
+and the built_in function-call counts, 8839 in all, are:
+= -- 888
+> -- 381
+< -- 4
++ -- 160
+- -- 124
+* -- 658
+:= -- 1482
+add.period$ -- 82
+call.type$ -- 27
+change.case$ -- 138
+chr.to.int$ -- 0
+cite$ -- 27
+duplicate$ -- 311
+empty$ -- 707
+format.name$ -- 124
+if$ -- 1803
+int.to.chr$ -- 0
+int.to.str$ -- 27
+missing$ -- 31
+newline$ -- 138
+num.names$ -- 54
+pop$ -- 126
+preamble$ -- 1
+purify$ -- 116
+quote$ -- 0
+skip$ -- 206
+stack$ -- 0
+substring$ -- 661
+swap$ -- 39
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 98
+warning$ -- 0
+while$ -- 97
+width$ -- 29
+write$ -- 296
+(There were 4 error messages)

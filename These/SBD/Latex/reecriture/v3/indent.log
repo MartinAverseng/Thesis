@@ -1,0 +1,19 @@
+Tue Nov 14 15:57:38 2017
+latexindent version 2.1R, a script to indent .tex files
+latexindent lives here: /usr/share/texlive/texmf-dist/scripts/latexindent/
+
+Directory for backup files and indent.log: .
+Reading defaultSettings.yaml from /usr/share/texlive/texmf-dist/scripts/latexindent/defaultSettings.yaml
+
+Home directory is /home/martin
+To specify user settings you would put indentconfig.yaml here: 
+	/home/martin/indentconfig.yaml
+
+Alternatively, you can use the hidden file .indentconfig.yaml as: 
+	/home/martin/.indentconfig.yaml
+
+Line 480	 WARNING: \end{cases} found on its own line, not matched to \begin{equation}
+Line Count of source.tex: 962
+Line Count of indented source.tex: 962
+
+Line counts of original file and indented file match

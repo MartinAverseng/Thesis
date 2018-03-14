@@ -1,0 +1,12 @@
+\beamer@endinputifotherversion {3.36pt}
+\select@language {french}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Pr\IeC {\'e}sentation de la m\IeC {\'e}thode}{4}{0}{2}
+\beamer@sectionintoc {3}{Approximation radiale}{5}{0}{3}
+\beamer@subsectionintoc {3}{1}{L'op\IeC {\'e}rateur Laplacien radial}{5}{0}{3}
+\beamer@subsectionintoc {3}{2}{D\IeC {\'e}croissance rapide des coefficients}{6}{0}{3}
+\beamer@subsectionintoc {3}{3}{Extensions}{9}{0}{3}
+\beamer@subsectionintoc {3}{4}{R\IeC {\'e}sultats num\IeC {\'e}riques}{11}{0}{3}
+\beamer@sectionintoc {4}{Complexit\IeC {\'e} de la m\IeC {\'e}thode}{15}{0}{4}
+\beamer@subsectionintoc {4}{1}{Premiers r\IeC {\'e}sultats num\IeC {\'e}riques}{16}{0}{4}
+\beamer@subsectionintoc {4}{2}{Quelques mandalas}{17}{0}{4}

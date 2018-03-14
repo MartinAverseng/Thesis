@@ -1,0 +1,63 @@
+#!/bin/bash
+
+ind=1
+while [ -d "v$ind" ]
+do
+   echo "Found v$ind" 
+   ind=$(($ind + 1))
+done
+
+ind=$(($ind-1))
+echo "v$ind is the current version"
+vind="v$ind"
+
+prevFoldPath="$vind"
+DefFilePath="/home/martin/Documents/These/DefLatex/Definitions.tex"
+BibFilePath="/home/martin/Documents/These/Biblio/biblio.bib"
+sourceFilePath="$prevFoldPath/source.tex"
+
+vindfiles="${vind}Files"
+packFoldPath="packs/$vindfiles"
+
+echo "Creating or updatig $packFoldPath..."
+
+if [ -d "$packFoldPath" ]; then
+   rm -r "$packFoldPath"
+fi
+
+mkdir "$packFoldPath"
+
+cp "$sourceFilePath" "$packFoldPath/source.tex"
+cp "$DefFilePath" "$packFoldPath/Definitions.tex"
+cp "$BibFilePath" "$packFoldPath/biblio.bib"
+
+cd "$packFoldPath/"
+latex "source.tex" ... > /dev/null
+bibtex -terse "source.aux"
+latex "source.tex" ... > /dev/null
+pdflatex "source.tex" ... > /dev/null
+
+rm "source.dvi"
+rm "source.log"
+rm "source.auxlock"
+rm "source.aux"
+rm "source.bbl"
+rm "source.blg"
+
+echo "compressing"
+cd ".."
+echo "$vind.tar.gz"
+
+if [ -f "$vind.tar.gz" ]; then
+   rm -r "$vind.tar.gz"
+   echo "deleting older version of archive"
+fi
+
+
+tar -zcvf $vind.tar.gz "$vindfiles"
+rm -r "$vindfiles"
+echo "...Done"
+
+cd ".."
+
+

@@ -1,0 +1,184 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.236in,
+height=3.093in,
+at={(1.043in,0.954in)},
+scale only axis,
+unbounded coords=jump,
+xmin=0,
+xmax=100,
+xlabel={Number of components P},
+xmajorgrids,
+ymin=-20,
+ymax=10,
+ylabel={Logarithmic error of approximation},
+ymajorgrids,
+axis background/.style={fill=white},
+legend style={legend cell align=left,align=left,fill=none,draw=none}
+]
+\addplot [color=mycolor1,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	0.961440878714007\\
+10	0.673360866045236\\
+15	0.458284921521856\\
+20	0.276771407284532\\
+25	0.114971366976436\\
+30	-0.0337241578470986\\
+35	-0.173025581920097\\
+40	-0.305234259750934\\
+45	-0.431886825962707\\
+50	-0.554058294239057\\
+55	-0.672537409047838\\
+60	-0.787914903630546\\
+65	-0.900651763684522\\
+70	-1.01110796366996\\
+75	-1.11957766093215\\
+80	-1.22629642616378\\
+85	-1.33146436768367\\
+90	-1.43524381619336\\
+95	-1.53777778467737\\
+100	-1.63918251816429\\
+};
+\addlegendentry{a = 0.005};
+
+\addplot [color=mycolor2,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	0.0823903458467554\\
+10	-0.579183389490567\\
+15	-1.14207118309321\\
+20	-1.6603464150768\\
+25	-2.15284911879246\\
+30	-2.62847159422771\\
+35	-3.09215967152659\\
+40	-3.54693833243047\\
+45	-3.99482282262146\\
+50	-4.43718723844779\\
+55	-4.87506402863437\\
+60	-5.30917165264094\\
+65	-5.74013827103851\\
+70	-6.16834527588657\\
+75	-6.59426054286486\\
+80	-7.01802343205212\\
+85	-7.44010487519762\\
+90	-7.86036716481114\\
+95	-8.27948413010206\\
+100	-8.69684745120324\\
+};
+\addlegendentry{a = 0.025};
+
+\addplot [color=mycolor3,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	-0.485253533759817\\
+10	-1.47974575847842\\
+15	-2.36635615189124\\
+20	-3.20482884063567\\
+25	-4.01575921132754\\
+30	-4.80877808413405\\
+35	-5.58921641578002\\
+40	-6.36028652619429\\
+45	-7.12418303714923\\
+50	-7.882249939797\\
+55	-8.63582230312543\\
+60	-9.38511573218826\\
+65	-10.1319463371574\\
+70	-10.8741417712837\\
+75	-11.617378689794\\
+80	-12.349286437168\\
+85	-13.0905654973904\\
+90	-13.7723847791087\\
+95	-14.4290600843698\\
+100	-14.7060355047458\\
+};
+\addlegendentry{a = 0.045};
+
+\addplot [color=mycolor4,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	-1.64420614723545\\
+10	-3.446838042014\\
+15	-5.1319296947879\\
+20	-6.76552188437996\\
+25	-8.36979784182386\\
+30	-9.95588776785829\\
+35	-11.5266676503659\\
+40	-13.1001891566826\\
+45	nan\\
+50	nan\\
+55	nan\\
+60	nan\\
+65	nan\\
+70	nan\\
+75	nan\\
+80	nan\\
+85	nan\\
+90	nan\\
+95	nan\\
+100	nan\\
+};
+\addlegendentry{a = 0.095};
+
+\addplot [color=mycolor5,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	-2.06800841111862\\
+10	-4.19258088715578\\
+15	-6.19763046385295\\
+20	-8.15067431377338\\
+25	-10.0732586228132\\
+30	-11.9829416100451\\
+35	-13.8664060738234\\
+40	nan\\
+45	nan\\
+50	nan\\
+55	nan\\
+60	nan\\
+65	nan\\
+70	nan\\
+75	nan\\
+80	nan\\
+85	nan\\
+90	nan\\
+95	nan\\
+100	nan\\
+};
+\addlegendentry{a = 0.115};
+
+\addplot [color=mycolor6,solid,line width=2.0pt]
+  table[row sep=crcr]{%
+5	-6.74285882982651\\
+10	-12.7859772294086\\
+15	-15.1806747936138\\
+20	nan\\
+25	nan\\
+30	nan\\
+35	nan\\
+40	nan\\
+45	nan\\
+50	nan\\
+55	nan\\
+60	nan\\
+65	nan\\
+70	nan\\
+75	nan\\
+80	nan\\
+85	nan\\
+90	nan\\
+95	nan\\
+100	nan\\
+};
+\addlegendentry{a = 0.345};
+
+\end{axis}
+\end{tikzpicture}%

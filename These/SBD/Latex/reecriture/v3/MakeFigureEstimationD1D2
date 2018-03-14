@@ -1,0 +1,16 @@
+%% Estimation de D1 et D2
+
+Pvals = [50; 150; 500; 1500];
+gamma = [linspace(0,1.470,10) linspace(1.6,10,25)];
+
+for i = 1:length(Pvals)
+    P = Pvals(i);
+    for j = 1:length(gamma)
+        a = gamma(j)/P;
+        A = gramMatrix(a,1,rho);
+        b = laplaceCoeffs(a,1,rho);
+        alpha = A\b;
+    end
+end
+
+

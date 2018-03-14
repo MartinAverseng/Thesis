@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{alouges2015sparse}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{grisvard2011elliptic}
+Pierre Grisvard.
+\newblock {\em Elliptic problems in nonsmooth domains}.
+\newblock SIAM, 2011.
+
+\bibitem{nedelec2001acoustic}
+Jean-Claude N{\'e}d{\'e}lec.
+\newblock {\em Acoustic and electromagnetic equations: integral representations
+  for harmonic problems}, volume 144.
+\newblock Springer Science \& Business Media, 2001.
+
+\end{thebibliography}

@@ -1,0 +1,52 @@
+\begin{thebibliography}{1}
+
+\bibitem{WinNT}
+Fonctions de bessel.
+\newblock
+  \url{https://webusers.imj-prg.fr/~bernard.maurey/agreg/Textes/ag034_a2.pdf}.
+
+\bibitem{abramowitz1964handbook}
+Milton Abramowitz and Irene~A Stegun.
+\newblock {\em Handbook of mathematical functions: with formulas, graphs, and
+  mathematical tables}, volume~55.
+\newblock Courier Corporation, 1964.
+
+\bibitem{allaire2005analyse}
+G~Allaire.
+\newblock Analyse num{\'e}rique et optimisation: Une introduction à la
+  mod{\'e}lisation math{\'e}matique eta la simulation num{\'e}rique.
+\newblock {\em Math{\'e}matiques appliqu{\'e}es. Ecole polytechnique,
+  Palaiseau}, 2005.
+
+\bibitem{de2014elementary}
+Pablo~L De~Napoli and Irene Drelichman.
+\newblock Elementary proofs of embedding theorems for potential spaces of
+  radial functions.
+\newblock {\em Preprint}, 2014.
+
+\bibitem{MR1681462}
+Gerald~B. Folland.
+\newblock {\em Real analysis}.
+\newblock Pure and Applied Mathematics (New York). John Wiley \& Sons, Inc.,
+  New York, second edition, 1999.
+\newblock Modern techniques and their applications, A Wiley-Interscience
+  Publication.
+
+\bibitem{gray1992computer}
+Alfred Gray and Mark~A Pinsky.
+\newblock Computer graphics and a new gibbs phenomenon for fourier—bessel
+  series.
+\newblock {\em Experimental Mathematics}, 1(4):313--316, 1992.
+
+\bibitem{milman2009asymptotic}
+Vitali~D Milman and Gideon Schechtman.
+\newblock {\em Asymptotic Theory of Finite Dimensional Normed Spaces:
+  Isoperimetric Inequalities in Riemannian Manifolds}, volume 1200.
+\newblock Springer, 2009.
+
+\bibitem{olver2010nist}
+Frank~WJ Olver.
+\newblock {\em NIST handbook of mathematical functions}.
+\newblock Cambridge University Press, 2010.
+
+\end{thebibliography}

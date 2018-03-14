@@ -1,0 +1,45 @@
+\begin{thebibliography}{1}
+
+\bibitem{allaire2005analyse}
+G~Allaire.
+\newblock Analyse num{\'e}rique et optimisation: Une introduction à la
+  mod{\'e}lisation math{\'e}matique eta la simulation num{\'e}rique.
+\newblock {\em Math{\'e}matiques appliqu{\'e}es. Ecole polytechnique,
+  Palaiseau}, 2005.
+
+\bibitem{Alouges2015}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{SphericalAverage}
+B.~J.~C. Baxter.
+\newblock On spherical averages of radial basis functions.
+\newblock {\em Foundations of Computational Mathematics}, 8(3):395--407, 2008.
+
+\bibitem{NuFFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\bibitem{MR1681462}
+Gerald~B. Folland.
+\newblock {\em Real analysis}.
+\newblock Pure and Applied Mathematics (New York). John Wiley \& Sons, Inc.,
+  New York, second edition, 1999.
+\newblock Modern techniques and their applications, A Wiley-Interscience
+  Publication.
+
+\bibitem{milman2009asymptotic}
+Vitali~D Milman and Gideon Schechtman.
+\newblock {\em Asymptotic Theory of Finite Dimensional Normed Spaces:
+  Isoperimetric Inequalities in Riemannian Manifolds}, volume 1200.
+\newblock Springer, 2009.
+
+\bibitem{watson1995treatise}
+George~Neville Watson.
+\newblock {\em A treatise on the theory of Bessel functions}.
+\newblock Cambridge university press, 1995.
+
+\end{thebibliography}

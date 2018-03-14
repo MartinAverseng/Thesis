@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+\input{C://Users/Martin/Documents/Scolaire/Divers/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Préconditionnement du problème de Helmholtz avec conditions de Dirichlet}
+\begin{document}
+\maketitle
+\section*{}
+
+On s'intéresse ici à la résolution du problème de Helmholtz extérieur avec conditions de Dirichlet. Précisément, soit $\Omega$ un domaine borné suffisamment régulier de $\mathbb{R}^n$ ($n=2$ ou $3$), et soit $\Gamma$ sa frontière, et $\Omega_e = \mathbb{R}^n \setminus \overline{\Omega}$, "l'extérieur" de $\Omega$. On désigne par $\gamma$ l'opérateur de trace sur $\Gamma$. On se réfère à \cite{aboudTerrasse} pour les définitions et les propriétés des opérateurs de Calderòn. 
+
+\section{Approximations de l'opérateur de "Dirichlet-to-Neumann" utilisant la première équation intégrale et la décomposition SCSD}
+
+Soit un "champ incident" $u_{inc} \in H^{1/2}(\Gamma)$. On cherche le champ $u^+$ solution de 
+\begin{equation}
+\left\{
+\begin{array}{rll}
+-(\Delta+k^2)u^+ &= 0 &\text{hors de $\Omega$}\\
+\gamma(u^+) &= u_{inc}\\
+\displaystyle\int_{\Omega_e}\abs{\dfrac{\partial u}{\partial r} - iku}^2 &< +\infty \\
+\end{array}
+\right.
+\end{equation}
+Comme cela est prouvé dans \cite[Chap. 2, p.105, Theorem 2.6.6]{nedelec2001acoustic}. Ce problème a toujours une unique solution dans l'espace de Hilbert $H$ définit par 
+\[ H = \enstq{u \in L^1_{loc}(\Omega_e)}{\dfrac{u}{(1+r^2)^{1/2}} \in L^2(\Omega_e), \dfrac{\nabla u}{(1+r^2)^{1/2}}\in L^2(\Omega_e), \dfrac{\partial u}{\partial r} - iku \in L^2(\Omega_e)}\]
+De plus, en considérant un prolongement par la fonction nulle dans $\Omega$, le théorème de représentation intégrale assure que l'unique solution vérifie 
+
+\begin{equation}
+0 + \dfrac{1}{2}u^{inc} = S(0-\partial u^+)  - D (0-u_{inc}) \quad \text{ dans $\Omega_e$}
+\label{RepresentationIntegrale1}
+\end{equation}
+où $\partial u^+ = \gamma\left( \dfrac{\partial u^+}{\partial n}\right)$ est la trace de la dérivée normale (sortante de $\Omega$) de $u^+$ sur $\Gamma$, et où les opérateurs de Calderòn $S$ et $D$ sont définis par 
+\[S\lambda = \int_{\Gamma} G(x,y)\lambda(y)d\sigma(y),\]
+\[D\mu = \int_{\Gamma} \dfrac{\partial G}{\partial n_x}(x,y)\mu(y)d\sigma(y)\]
+Cette relation permet de déduire une première relation vérifiée par l'opérateur $Y^+$ dit de "Dirichlet-to-Neumann" qui associe à la trace de Dirichlet imposée la dérivée normale correspondante (c'est-à-dire tel que $\partial u^+ = Y^+ u_{inc}$) :
+\[-SY^+ = \left(\dfrac{I}{2}-D\right)\]
+On introduit une décomposition SCSD de l'opérateur $S$ sous la forme $S = S_0 + T$ où $T$ est infiniment régulier (et où $S_0$ est local, donc approximé numériquement par une matrice creuse) voir \cite{alouges2015sparse}. Si on accepte l'hypothèse que $S_0$ est inversible (ce qui est équivalent à son injectivité par l'alternative de Fredholm... j'y travaille !), on peut écrire 
+\[(I+R)Y^{+} = -S_0^{-1}\left(\dfrac{I}{2}-D\right)\]
+où l'opérateur $R$ est infiniment régulier (et vaut $-S_0^{-1}T$). 
+
+\section{Approximations de l'opérateur de "Dirichlet-to-Neumann" utilisant la deuxième équation intégrale}
+
+Les projecteurs de Calderòn contiennent aussi la relation suivante : (toujours en considérant un prolongement par $0$ à l'intérieur). 
+\begin{equation}
+0 + \dfrac{1}{2}\partial u^+ = D^*\left(0-\partial u^+\right) - N (0-u_{inc}) \quad \text{ dans $\Omega_e$}
+\label{RepresentationIntegrale2}
+\end{equation}
+où les opérateurs $D^*$ et $N$ sont les opérateurs de Calderòn suivants :
+\[D^*\lambda = \int_{\Gamma} \dfrac{\partial G}{\partial n_x}(x,y)\lambda(y)d\sigma(y),\]
+\[N\mu = -\text{rot}_{\Gamma}\int_{\Gamma} G(x,y)\overrightarrow{\text{rot}}_{\Gamma}\mu(y)d\sigma(y) + k^2 \int_{\Gamma}G(x,y)\overrightarrow{n}(x)\cdot \overrightarrow{n}(y)\mu(y)d\sigma(y),\]
+définis pour $x \in \Gamma$ et où $G(x,y) = \dfrac{e^{ik|x-y|}}{4\pi |x-y|}$. 
+On en déduit une nouvelle relation vérifiée par l'opérateur $Y^+$ : 
+\[\left(I+2D^*\right)Y = 2N\]
+En multipliant de chaque côté par $I-2D^*+4D^{*2} + ... + (-2)^nD^{*n}$, on obtient
+\[\left(I+(-2)^{n+1}D^{*n+1}\right)Y = 2\left(I-2D^*+4D^{*2} + ... + (-2)^nD^{*n}\right)N\]
+Notons 
+\[\tilde{Y} = 2\left(I-2D^*+4D^{*2} + ... + (-2)^nD^{*n}\right)N\]
+On a alors $\tilde{Y} = (I - R)Y$ où $R$ est continu de $H^{-1/2}(\Gamma)$ dans $H^{n-1/2}(\Gamma)$. 
+Cette approximation de l'opérateur "Dirichlet-to-Neumann" n'en diffère donc que par un opérateur plus régulier (aussi régulier qu'on veut). 
+
+\begin{Rem}Il n'est peut-être pas utile de prendre $n$ grand, $1$ peut peut-être suffire puisque déjà dans ce cas, $R$ est une perturbation compacte de l'identité. En revanche, si l'on a besoin pour une raison ou pour une autre d'une erreur plus régulière, on peut se réserver la possibilité de le faire à coût raisonnable. Dans le cas du paragraphe précédent, en revanche, l'erreur d'approximation obtenue est infiniment régulière, et ici il faudrait une série infinie pour s'y ramener. 
+\end{Rem}
+\begin{Rem}Si l'entier $n$ est plus grand que $1$, l'évaluation de $\tilde{Y}$ peut tout de même se faire de manière économique en utilisant la méthode de Horner, ou le schéma de Estrin lorsqu'on veut la paralléliser. Pour ce qui est de la méthode de Hörner, il faut calculer 
+\[2\left(I-2D^*(I-2D^*(I-2D^*)(I-... )...\right)N\]
+\end{Rem}
+
+\section{Application à la résolution du problème de Dirichlet}
+
+On peut se servir de ces approximations de l'opérateur $Y^+$ pour résoudre exactement des équations intégrales pour lesquelles on s'attend à un très bon conditionnement. Nous réutilisons la relation (\ref{RepresentationIntegrale1}), dans laquelle on ajoute $1/2u^{inc}$ des deux côtés pour obtenir : 
+\[u^{inc} = \left(\dfrac{I}{2} - SY^+ + D\right)u^{inc}\]
+Notons que cette relation est une tautologie car l'opérateur entre parenthèses est égal à l'identité, par définition de $Y^+$. Nous ne l'utilisons que pour donner la justification de la démarche suivante. On introduit l'opérateur 
+\[ A := \dfrac{I}{2} - S\tilde{Y}^+ + D\]
+Par construction de $\tilde{Y}^+$ dans les deux paragraphes précédents, et par continuité de l'opérateur $S$, l'opérateur $A$ diffère de l'identité par un opérateur aussi régulier qu'on veut. Ainsi, $A$ est une perturbation compacte de l'identité. Numériquement, on s'attend donc à ce qu'il soit "facile" à inverser par des méthodes itératives, en particulier à l'aide de la méthode SCSD pour le produit matrice vecteur par exemple. On résout le problème intermédiaire 
+\[u^{inc} = A\alpha,\]
+et on pose 
+\[v^+ = -\mathcal{S}\tilde{Y}^+\alpha + \mathcal{D}\alpha\]
+Où $\mathcal{S}$ et $\mathcal{D}$ sont les opérateurs intégraux ayant les mêmes définitions que $S$ et $D$ mais sans les restreindre à $x\in \Gamma$.
+Alors en réalité, $u^+ = v^+$ car :
+\begin{itemize}
+\item[-] $v^{+}$ vérifie l'équation de Helmholtz, puisqu'il est l'image d'opérateurs de représentation intégrale,
+\item[-] La trace extérieure de $v^+$ sur $\Gamma$ vaut $u^{inc}$ comme on peut facilement le vérifier en utilisant le projecteur de Calderòn extérieur.   
+\end{itemize}
+
+\section{Extension à une résolution type Brackage-Werner}
+
+Les idées précédentes peuvent être étendues pour résoudre une équation intégrale calquée sur l'astuce de Brackage-Werner. L'intuition  (l'idée n'a pour le moment aucun autre fondement) est que les équations intégrales du type Brackage-Werner conduisent (modulo le bon choix d'un certain paramètre) à des équations intégrales mieux conditionnées, du fait qu'elles mettent en jeu des opérateurs inversibles indépendamment de la fréquence. Cela se traduit numériquement par un meilleur conditionnement de l'opérateur à inverser. 
+Peut-être que ce n'est pas vrai, mais on peut espérer ici gagner en conditionnement en calquant les raisonnements précédents sur la même astuce que Brackage-Werner, c'est-à-dire en raisonnant sur un prolongement intérieur de Robin bien choisi. 
+
+\subsection{Prolongement intérieur par le problème de Robin}
+
+On considère dans $\Omega$ le problème suivant 
+\begin{equation}
+\left\{
+\begin{array}{rll}
+-(\Delta+k^2)u &= 0 &\text{dans $\Omega$}\\
+\gamma(\partial_n u -ik\beta u) &= g\\
+\end{array}
+\right.
+\end{equation}
+Ce problème est inversible pour toute donnée $g$. On peut donc en particulier considérer sa solution $u^-$ correspondant à $g = \gamma(\partial_n u^+ - ik\beta u^+) = \gamma(\partial_n u^+) - ik u_{inc}$. Notons que ce problème n'est posé que "mentalement" puisque  $\partial_n u^+$ n'est pas connue au bord à moins d'être déjà capable de résoudre le problème de Dirichlet extérieur. On introduit l'opérateur $Y$ suivant, qui n'est plus un opérateur de Dirichlet-to-Neumann mais qui va jouer un rôle analogue à celui-ci en faisant correspondre à $u_{inc}$ d'autres traces de fonctions. 
+\[ Y u_{inc} = \gamma(u^--u^+) \] 
+En d'autres termes, c'est l'opérateur qui relie la trace de Dirichlet du problème extérieur au saut de trace correspondant à la solution prolongée à l'intérieur par $u^-$. 
+Il est à noter que d'autre part, le saut de trace des dérivées normales s'exprime encore en fonction de $Y$ et $u_{inc}$, ce qui n'a rien d'étonnant car avec le prolongement choisi, ces sauts sont proportionnels. On a ainsi
+\[ \gamma(\partial_nu^--\partial_n u^+) = ik\beta \gamma(u^--u^+) = ik\beta Y u_{inc}\] 
+
+\subsection{Inversibilité de l'opérateur $Y$ et pseudo-inversion}
+
+On a le résultat suivant : 
+\begin{Prop} L'opérateur $Y$ est de Fredholm, d'ordre $0$ et est inversible. Il vérifie : 
+\[\left(ik\beta S - D - \dfrac{I}{2}\right)Y = I_{H^{1/2}(\Gamma)}\]
+\begin{proof}
+Soit un champ incident quelconque $u_{inc}$. On considère le prolongement décrit précédemment encore noté $u^-$. D'après la formule de reprsentation intégrale, on a 
+\[\dfrac{1}{2}\left(\gamma(u^-)+u_{inc}\right) = ik\beta SY u_{inc} -  DY u_{inc}\]
+Par définition de $Y$, $\gamma(u^-) = (I + Y)u_{inc}$ et donc 
+\[u_{inc} = \left(ik\beta S  - D - \dfrac{I}{2}\right)Y u_{inc}\]
+Comme $u_{inc}$ est quelconque dans $H^{1/2}(\Gamma)$, on a la formule annoncée. L'opérateur $ik\beta S  - D - \dfrac{I}{2}$ est une perturbation compacte de l'identité car $S$ et $D$ sont tous deux régularisants. D'autre part, l'équation précédente montre qu'il est surjectif, donc inversible, et son inverse est $Y$, qui est donc lui aussi Fredholm d'ordre $0$ et inversible. 
+\end{proof}
+\end{Prop}
+
+De la même manière que précédemment, puisque $Y$ s'écrit comme $\left(-\dfrac{I}{2}+R\right)^{-1}$ où $R$ est un opérateur $H^{1/2}(\Gamma) \to H^{3/2}(\Gamma)$, on peut donner une approximation de $Y$ qui ne diffère de $Y$ que par un opérateur beaucoup plus régulier. On note encore $\tilde{Y}$ cette approximation. 
+
+\subsection{Une autre équation intégrale bien conditionnée}
+
+On note $\alpha$ la solution de l'équation intégrale suivante
+\[u_{inc}=\left(ik\beta S  - D - \dfrac{I}{2}\right)\tilde{Y}\alpha\]
+Où l'on espère aboutir là encore à un système linéaire "bien conditionné", en vertu de la proximité de l'opérateur à inverser avec l'identité (modulo un opérateur régulier). 
+
+\begin{Rem}
+Dans ce cas particulier, l'équation à résoudre prend la forme : 
+\[ u_{inc} = \left(-I + 2^n \left(ik\beta S  - D\right)^n\right) \alpha\]
+\end{Rem} 
+(L'expression est à revérifier, je n'ai pas fait très attention aux signes, le plus important étant la forme générale de l'opérateur qui elle est correcte). 
+
+Le champ $u^+$ recherché s'exprime alors, pour les mêmes raisons que dans la section précédente, comme 
+
+\[ u^+ = \mathcal{S}\left[ik\beta \tilde{Y} \alpha\right] - \mathcal{D} \left[\tilde{Y} \alpha\right]\]
+
+
+\nocite{aboudTerrasse}
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio} 
+
+\end{document}

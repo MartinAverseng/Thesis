@@ -1,0 +1,43 @@
+\documentclass[11pt,a4paper]{article}
+\input{/home/martin/Documents/These/DefLatex/Definitions.tex}
+\author{Martin AVERSENG}
+\title{Formulaire d'intégrales singulières}
+\begin{document}
+\maketitle	
+
+\section{$I_0(M) = \displaystyle\int_{[AB]} {\ln|M - Y|d\Gamma(Y)}$}
+
+$A$ and $B$ are two points in the plane. We parametrize the integral according to the figure. A coordinate system is chosen so that $M$ lies on the $y-axis$, with coordinate $M : (0,d)$, and $A$ and $B$ both lie on the $x-axis$, with respective coordinates $A : (a,0)$ and $B : (b,0)$. We let $\overrightarrow{u} = \dfrac{\overrightarrow{AB}}{\abs{AB}}$ and $\overrightarrow{n}$ a couple of unit tangent and normal vector of the segment $[AB]$. This way, we have $a = \overrightarrow{MA}\cdot \overrightarrow{u}$, $b =  \overrightarrow{MB}\cdot \overrightarrow{u}$, and $d = \abs{\overrightarrow{AM} \cdot \overrightarrow{n}}$ (the integral is unchanged by changing the orientation of $\overrightarrow{n}$).
+\begin{figure}[H]
+\includegraphics[width=0.9\textwidth]{figureIntegraleSinguliere}
+\caption{Parametrization for the computation of $I_0(M)$}
+\label{fig:figureIntegraleSinguliere}
+\end{figure}
+
+According to this choice of parametrization,
+\begin{align*}
+	I_0(M) &= \int_{a}^b \ln \sqrt{y^2 + d^2} dy\\
+	& = \left[y \ln \sqrt{d^2 + y^2}-y +d \arctan{\frac{y}{d}}\right]_a^b\\
+	&= b \ln r_2 - a \ln{r_1} - |AB| + d (\theta_2 - \theta_1)
+\end{align*}
+
+By continuity of the single layer potential, the value of $I_0(M)$ for $M$ aligned with $A$ and $B$ is obtained by sending $d$ to $0$. If $M$ is in the segment, $\theta_2 - \theta_1 = \pi$, while it is $0$ otherwise. 
+
+\section{$I_1(M) = \displaystyle\int_{[AB]} {\ln|M - Y|\phi_1(Y)d\Gamma(Y)}$}
+
+The function $\phi_1$ is an affine function of $Y$. Using the same parametrization as previously, and taking $\phi_1(y) =  \alpha y + \beta$, we need only compute the integral $I_{1} = \displaystyle \int_{a}^b y \ln \sqrt{d^2+ y^2}y$. 
+We have
+\begin{align*}
+	I_1 &= \left[\frac{1}{2} \ln \sqrt{d^2 + y^2} (d^2 + y^2) - \frac{1}{4}(d^2 + y^2)\right]_a^b\\
+	&=  \frac{1}{2} \left( r_2^2 \ln r_2  - r_1^2 \ln r_1\right)  + \frac{1}{4}\left(r_2^2 - r_1^2\right)
+\end{align*}
+	
+Accordingly, 
+\begin{align*}
+	I_1(M) &= \alpha I_1 + \beta I_0(M)\\
+	&=  \frac{\alpha}{2} \left( r_2^2 \ln r_2  - r_1^2 \ln r_1\right)  + \frac{\alpha}{4}\left(r_2^2 - r_1^2\right) + \beta\left[b \ln r_2 - a \ln{r_1} - |AB| + d (\theta_2 - \theta_1)\right]\\
+\end{align*}
+
+
+
+\end{document}

@@ -1,0 +1,303 @@
+\documentclass[11pt]{beamer}
+\usetheme{Warsaw}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{afterpage}
+\usepackage{bbm}
+\usepackage[]{algorithm2e}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{pgfplots} 
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{float}
+\usepackage{url}
+\usepackage{bigints}
+\pgfplotsset{compat=1.13}
+\author{Martin Averseng}
+\title{Convolution rapide par des noyaux radiaux en deux dimensions}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+\logo{logo-cmap.jpg} 
+\institute{Ecole Polytechnique, Centre de Mathématiques Appliquées} 
+\date{15-07-2016} 
+\subject{Soutenance de stage de fin de Master} 
+\theoremstyle{plain}
+\newtheorem{monTheoNumrote}{Théorème}[section] % Environnement numéroté en fonction de la section
+\newtheorem*{monTheoNonNumerote}{Théorème}  % Environnement non numéroté
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem*{Prop*}{Proposition} 
+\newtheorem{Cor}{Corollary}[section]
+\newtheorem{Conj}{Conjecture}[section]
+\newtheorem{Lem}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Definition}[section]
+\newtheorem{Rem}{Remark}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}_{a,b}}
+\newcommand{\Crad}{C^\infty_{c,rad}(B)}
+\newcommand{\Lrad}{L^2_{rad}(B)}
+\newcommand{\Lradab}{L^2_{rad}(\mathcal{A}_{a,b})}
+\newcommand{\duality}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\Hrad}{H^1_{rad}(B)}
+\newcommand{\Hzrad}{H^1_{0,rad}(B)}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Introduction}
+Le problème : calculer 
+\begin{equation*}
+ q_k = \sum_{\underset{l\neq k}{l=1}}^N G(|x_k - x_l|)f_l 
+\label{LaSommeACalculerDansLArticle}
+\end{equation*}
+
+\begin{itemize}
+
+\item[-] Discretisation dans le domaine de Fourier $\iff$ périodisation de l'espace. 
+\item[-] Convolution en espace $\iff$ multiplication en Fourier. 
+\item[-] Fonctions de base 
+\[e_\lambda(x) = \int_{\mathbbm{S}^{N-1}} e^{i\lambda x \cdot  \xi} d\sigma(u)\]
+\item[-] On obtient une base avec un ensemble discret de valeurs de $\lambda$. 
+\item[-] En dimension $3$ : sinc. En dimension $2$ : fonctions de Bessel. 
+\end{itemize}
+\end{frame}
+
+\section{Présentation de la méthode}
+\begin{frame}{Présentation de la méthode}
+\begin{itemize}
+\item[-] Champ lointain : \begin{itemize}
+\item[-] Partie radiale
+\item[-] Partie circulaire
+\end{itemize}
+\item[-] Champ proche 
+\end{itemize}
+
+Partie radiale : 
+\begin{equation*}
+G \approx \sum_{p=1}^P \alpha_p J_0(\rho_p |x|)
+\label{GasASumOfJ0}
+\end{equation*}
+
+Partie circulaire : 
+\[J_0(|x|) \approx \frac{1}{M}\sum_{m=1}^M e^{i x \cdot \xi_m}\] 
+
+
+\end{frame}
+
+\section{Approximation radiale}
+\subsection{L'opérateur Laplacien radial}
+\begin{frame}{Opérateur Laplacien radial}
+\begin{itemize}
+\item[-] Espace de Hilbert des fonctions radiales $L^2$ sur la boule unité : $L^2_{rad}(B)$, $\Hrad$ et $\Hzrad$ 
+\item[-] Densité de $\mathcal{C}^{\infty}_{c,rad}(B)$ dans $L^2$, inégalité de Poincaré. 
+\item[-] Le Laplacien est auto-adjoint positif à résolvente compacte - diagonalisable en base orthonormée de vecteurs propres. 
+\end{itemize} 
+\end{frame}
+
+\subsection{Décroissance rapide des coefficients}
+
+
+\begin{frame}{Décroissance rapide des coefficients}
+Proposition fondamentale
+\begin{Prop} Soit $n\in \mathbb{N}^*$ et $f \in H^{2n}(B)$. On suppose que pour tout entier $s\leq n-1$, l'itéré numéro $s$ de l'opérateur $-\Delta$ sur $f$ noté $(-\Delta)^s f$ vérifie la condition de Dirichlet sur $\partial B$. Alors :
+
+\[ c_k(f) = \dfrac{c_k\left(\left(-\Delta\right)^n f\right)}{\rho_{k}^{2n}}\] for any $k \in \mathbb{N}^*$
+\label{PropDecrCond}
+\end{Prop}
+\begin{center}
+$\rho_k \sim k\pi$ 
+\end{center}
+\end{frame}
+
+\begin{frame}
+Exploitation du résultat 
+\begin{itemize}
+\item[-] Restriction à un anneau et majoration du reste à l'aide d'un prolongement (polynomial, interpolation par fonctions de Bessel ?)
+\item[-] Condition de Dirichlet à tout ordre $s$ : les noyaux de Laplace et Helmholtz sont des cas favorables... (mais bien choisir l'anneau pour $Y_0$).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Importance de la fréquence ajustée}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{compareY02.tex}%
+\endgroup
+\end{frame}
+
+\subsection{Extensions}
+
+\begin{frame}{Conditions de Robin}
+Cas des conditions de Robin pour $c \geq 0$
+\begin{itemize}
+\item[-] Opérateur $\Delta_c$ sur $\Hrad$ toujours auto-adjoint 
+\item[-] Valeurs propres positives ou nulles (pas le cas pour $c <0$)
+\item[-] Condition de Robin à ajuster sur la fonction à approximer. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Preuve d'un contrôle $L^{\infty}$}
+Au tableau
+\end{frame}
+
+\subsection{Résultats numériques}
+
+\begin{frame}{Quadrature radiale pour le $\log$}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{evolutionError3method.tex}%
+\endgroup
+\end{frame}
+\begin{frame}{Quadrature radiale pour le $\log$}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{spectrum3method.tex}%
+\endgroup
+\end{frame}
+
+\begin{frame}{Importance du paramètre $a$ pour la fonction $\log$}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{evolutionErrorInFunctionOfALaplace.tex}%
+\endgroup
+\end{frame}
+\begin{frame}{Importance du paramètre $a$ pour la fonction $Y_0$}
+\begin{center}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{evolutionErrorInFunctionOfAHelmholtz.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+
+\section{Complexité de la méthode}
+
+\begin{frame}{Complexité de la méthode}
+\begin{itemize}
+\item[-] Champ lointain  $O(P^2)$ ($O(P^3)$ en dimensions $3$).
+\item[-] Champ proche $O(a^2N^2)$
+\item[-] Calcul de la quadrature $O(P^3)$ (mais précalcul uniquement)
+\item[-] Choix de la constante $a$ détermine la complexité globale. 
+\end{itemize}
+\[ P = O\left( -\dfrac{\log(\varepsilon)}{a}\right) \quad a =  O\left(\dfrac{-\log(\varepsilon)}{\sqrt{N}}\right)\]
+
+Complexité globale : 
+\begin{itemize}
+\item[-] Pré-calcul : $O(N^{3/2})$
+\item[-] Calcul : $O(N \log(N) )$
+\end{itemize}
+\end{frame}
+
+\subsection{Premiers résultats numériques}
+\begin{frame}{Tests numériques du temps de calcul}
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.88}}%
+\input{computationalTimeLaplace.tex}%
+\endgroup
+\end{frame}
+
+\subsection{Quelques mandalas}
+\begin{frame}{Quelques jolies figures}
+\begin{center}
+Champ Coulombien rayonné par des charges aléatoires disposées sur un cercle (grille 500x500, 1000 charges). 
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.75}}%
+\input{CircleLaplace.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+\begin{frame}{Quelques jolies figures}
+\begin{center}
+Champ Helmholtzien rayonné par des sources aléatoires disposées sur un cercle (grille 500x500, 1000 charges) 
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.75}}%
+\input{CircleHelmholtz.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+\begin{frame}{Quelques jolies figures}
+\begin{center}
+Champ Helmholtzien rayonné par des sources aléatoires disposées sur un cercle (grille 500x500, 1000 charges)
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.75}}%
+\input{CircleHelmholtz2.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+\begin{frame}{Quelques jolies figures}
+\begin{center}
+Champ Helmholtzien rayonné par des sources aléatoires disposées sur un cercle (grille 500x500, 1000 charges)
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.75}}%
+\input{CircleHelmholtz4.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Quelques jolies figures}
+\begin{center}
+Champ Helmholtzien rayonné par des sources constantes disposées sur un cercle (grille 500x500, 10 charges)
+\begingroup
+\centering
+\tikzset{every picture/.style={scale=0.75}}%
+\input{CircleHelmholtz5.tex}%
+\endgroup
+\end{center}
+
+\end{frame}
+
+
+
+\end{document}

@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{bbm}
+\usepackage[]{algorithm2e}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{pgfplots} 
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{stmaryrd}
+\usepackage{float}
+\usepackage{url}
+\usepackage{bigints}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{SCSD : from $L^2$ to $L^\infty$}
+\author{Martin}
+\begin{document}
+\renewcommand{\proofname}{Proof}
+\maketitle
+\theoremstyle{plain}
+\newtheorem{The}{Theorem}[section]
+\newtheorem{Conj}{Conjecture}[section]
+\newtheorem{Prop}{Proposition}[section]
+\newtheorem{Cor}{Corollary}[section]
+\newtheorem{Lem}{Lemme}[section]
+\theoremstyle{definition}
+\newtheorem{Def}{Definition}[section]
+\newtheorem{Rem}{Remark}[section]
+\newcommand{\enstq}[2]{\left\{#1\mathrel{}\middle|\mathrel{}#2\right\}}
+\newcommand{\Lp}[2]{L^#1(#2)}
+\newcommand{\Sob}[3]{W^{#1,#2}(#3)}
+\newcommand{\RN}[0]{\mathbb{R}^N}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\sinc}[0]{\textup{sinc}}
+\newcommand{\functionDef}[5]{\begin{array}{lllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+ & & #4 & \longmapsto &\displaystyle #5 \\
+\end{array}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}_{a,b}}
+\newcommand{\Crad}{C^\infty_{c,rad}(B)}
+\newcommand{\Lrad}{L^2_{rad}(B)}
+\newcommand{\Lradab}{L^2_{rad}(\mathcal{A}_{a,b})}
+\newcommand{\duality}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\Hrad}{H^1_{rad}(B)}
+\newcommand{\Hzrad}{H^1_{0,rad}(B)}
+
+
+\section{Introduction}
+
+Let $B$ the unit ball of $\mathbb{R}^2$. Let $(e_k)_{k \in \mathbb{N}^*}$ be an orthonormal basis of $L^2(B)$ formed with the eigenvectors of the Laplacian, let $G$ the fundamental kernel of the Laplace equation, which we take equal to $G(x) = \log(x)$ (dropping the constant). We have shown that there exists two constants $C$ and $D$ such that for any fixed $P$,there exists a set of coefficients $\left(\alpha_p\right)_{1\leq p \leq P}$ satisfying
+\begin{equation}
+\norm{G- \sum_{p=1}^P \alpha_p e_p}_{L^2(\mathcal{A})} \leq \frac{C}{P} e^{-DaP}
+\label{estimation}
+\end{equation}
+
+Where $a$ is a postive constant less than $1$ and $\mathcal{A} = \enstq{x \in \mathbb{R}^2}{a<|x|<1}$. Let $(t_p^P)_{1\leq p \leq P}$ the coefficients for which \[\norm{G- \sum_{p=1}^P t_p^P e_p}_{L^2(\mathcal{A})}\] (obtained numerically by least square methods). For this choice, the rate of convergence in $L^2$ norm is ensured to be at least as fast as in the previous inequality. Here we try to investigate whether the convergence also occurs in the $L^\infty$ norm. In this document, we show an idea in this direction, associated with a conjecture yet to be demonstrated (however there might be a simpler way !)
+
+\section{Gram-Schmidt}
+
+We apply a Gram-schmidt process to the basis $(e_k)_{k \in \mathbb{N}^*}$ in order to derive an orthonormal basis of $L^2(\mathcal{A})$ which we denote $(\tilde{e_k})_{k \in \mathbb{N}^*}$. Because of the form of the Gram-Schmidt process, for all $k \in \mathbb{N}^*$, there exists $b_1^k, ..., b_k^k$ such that 
+\[ \tilde{e}_{k} = \sum_{j=1}^k b_j^k e_j\]
+Because the vector $\tilde{e_k}$ is normalized in $L^2(\mathcal{A})$, on has 
+\[ \sum_{i=1}^k \sum_{j=1}^k b_i^k \duality{e_i}{e_j}_{L^2(\mathcal{A})}b_j^k = 1\]
+We introduce $A^k = \left(\duality{e_i}{e_j}_{L^2(\mathcal{A})}\right)_{1\leq i,j\leq k}$ the matrix of the scalar product in $L^2(\mathcal{A})$ of the original basis, and $b^k = \left(b_i^k\right)_{1\leq i \leq k}$. Let $\lambda^k_{m}$ the minimal eigenvalue of $A_k$. We have the following inequality 
+\[ 1 = b^T A b \geq \lambda_m^k \norm{b^k}_{2}^2\]
+From which we deduce \[\norm{b^k}_{2} \leq \dfrac{1}{\sqrt{\lambda_m^k}}\]
+
+\section{Conjecture}
+
+We now introduce the following conjecture : 
+\begin{Conj} For any $a \in (a,1)$, there exists a polynomial function $\mathbb{P}$ such that the value $\lambda_m^k$ defined in the previous paragraph satisfies 
+\[\dfrac{1}{\sqrt{\lambda^k_m}} \leq \mathbb{P}(k)\]
+The following form for $\lambda_m^k$ displays a good fit with the numerical values : 
+\[ \dfrac{1}{\sqrt{\lambda_m^k}} = \dfrac{2\pi}{2-a}\sqrt{k}\]
+\label{conj}
+\end{Conj}
+We can provide a polynomial bound in the variable $p$ for the $L^{\infty}$ norm of the functions $\tilde{e}_p$. Indeed, we know that $\norm{e_p}_{\infty} = O(p^{1/2})$ and using the definition of the coefficients $b_i^p$ and the previous conjecture, we deduce that 
+\[\norm{\tilde{e}_p}_{\infty} \leq C \mathbb{P}(p)\sqrt{p} \]
+As we will see, this is sufficient to prove an estimate for the error in $L^\infty$ norm for the least square approximation with coefficients $t^P_p$. 
+The following graph displays the behavior of $\lambda_m^k$ in function of $k$ and for different values of $a$. 
+
+\begin{figure}[h]
+\centering
+
+\subfigure[]{\label{fig:conj1}\scalebox{.5}{\input{ConjnectureLambdaMin1.tex}}}
+\subfigure[]{\label{fig:conj1}\scalebox{.5}{\input{ConjnectureLambdaMin2.tex}}}
+\subfigure[]{\label{fig:conj1}\scalebox{.5}{\input{ConjnectureLambdaMin3.tex}}}
+\subfigure[]{\label{fig:conj1}\scalebox{.5}{\input{ConjnectureLambdaMin4.tex}}}
+\caption{Comparison of the value $\frac{1}{\sqrt{\lambda_m^k}}$ and the conjectured equivalent : $\frac{2\pi}{2-a}\sqrt{k}$, for several values of $a$}
+\label{compareApprox1}
+\end{figure}
+
+We suggest that conjecture \ref{conj} may be demonstrated using asymptotic expansions of the functions $e_k$. Indeed, we know that 
+\[e_k = C_k J_0(\rho_k x)\] 
+where $J_0$ is the Bessel function of first kind, $\rho_k$ is its k-th root, and $C_k$ is the constant for which $\norm{e_k}_{L^2(B)} = 1$. sing the following asymptotic expansion : 
+\[J_0(x) = \sqrt{\dfrac{2}{\pi x}} \cos\left(x - \frac{\pi}{4}\right) + o\left( \dfrac{1}{x^{3/2}}\right)\]
+the quantities $\duality{e_i}{e_j}_{L^2(\mathcal{A})}$ may be estimated. One has (\textbf{But the computations should be double-checked})
+$\duality{e_i}{e_i}_{L^2(\mathcal{A})} \sim 1-a$ for large $i$, and for $i > j$, \[\duality{e_i}{e_j}_{L^2(\mathcal{A})} \sim \dfrac{1}{\pi^3\sqrt{ij}} \left( \dfrac{\cos((i+j)a)}{i+j}- \dfrac{\cos((i-j)a)}{i-j} + \dfrac{(-1)^{i+j}}{i+j}\right)\] for large $i$. One could try to apply perturbation methods to prove that the spectrum of the exact matrix is close to this of the approximate matrix, which can in turned be studied more thoroughly. 
+
+\section{$L^\infty$ estimate using the conjecture and the $L^2$ estimate}
+
+Now, because $(\tilde{e}_k)_{k \in \mathbb{N}^*}$ is an orthonormal basis of $L^2(\mathcal{A})$, we know that there exists a family $(\beta_k)_{k \in \mathbb{N}}^*$ for which 
+\[G = \sum_{k=1}^{+\infty} \beta_k \tilde{e_k}\] 
+and the coefficients $\beta_k$ are obtained according to $\beta_k = \duality{G}{\tilde{e}_k}_{L^2(\mathcal{A})}$. Because each $\tilde{e_k}$ belongs to $\textup{Vect}
+(e_1,e_2,...,e_k)$, one has 
+\[ \norm{G - \sum_{p=1}^P \beta_p \tilde{e}_p}_{L^2(\mathcal{A})} = \norm{G - \sum_{p=1}^P t^P_p e_p}_{L^2(\mathcal{A})}\]
+This is because the orthonormal projection on the convex $\textup{Vect}(\tilde{e}_1,...,\tilde{e}_P)$ realizes the minimal error on this space for the norm induced by $L^2(\mathcal{A})$. Since the space $L^2(\mathcal{A})$ is strictly convex, the projection is unique, therefore : 
+\[ \sum_{p=1}^P \beta_p \tilde{e}_p = \sum_{p=1}^{P}t_p^P e_p\]
+Thus, the error in the approximation $e(P) = G - \displaystyle\sum_{p=1}^P t_p^P e_p$ is given for any $P$ by 
+\[e(P) = \sum_{p > P} \beta_p \tilde{e}_p\]
+Using Parseval identity, we know that 
+\[\norm{e(P)}_{L^2(\mathcal{A})} = \sqrt{\sum_{p>P} |\beta_p|^2}\]
+Because of estimation (\ref{estimation}), and since $|\beta_p| \leq e(P-1)$, we have 
+\[ |\beta_p| \leq \dfrac{C}{P-1}e^{-Da(P-1)}\]
+Thus we conclude that 
+\[ \norm{e(P)}_{\infty} \leq \sum_{p\geq P}\dfrac{C}{p}e^{-Dap} \mathbb{P}(p+1) \leq C\dfrac{e^{-DaP}}{P}\sum_{p\geq 0}e^{-Dap} \mathbb{P}(p+1)\]
+The last sum converges thus giving the following result 
+
+\begin{Prop}  If at least the first part of the conjecture \ref{conj} is true, there exists two constants $C$ and $D$ such that for any $P$, 
+\[ \norm{G - \sum_{p=1}^P t_p^P e_p}_{L^{\infty}(\mathcal{A})} \leq \dfrac{C}{P}e^{-DaP}\]
+Where the coefficients $t_1^P,...,t_P^P$ are the minimizers of the quantity 
+\[ \norm{G - \sum_{p=1}^P t_p^P e_p}_{L^{2}(\mathcal{A})} \]
+
+\end{Prop}
+
+
+\bibliographystyle{plain}
+\bibliography{biblio} 
+
+
+
+\end{document}
