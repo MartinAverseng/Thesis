@@ -1,1 +1,1 @@
-addpath(genpath('/home/martin/MatlabCodes/ToolboxDev/AbstractMatrix'));
+addpath(genpath('MatlabCodes/ToolboxDev/AbstractMatrix'));

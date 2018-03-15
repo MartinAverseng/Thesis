@@ -1,0 +1,99 @@
+
+\documentclass[]{article}
+\input{/home/martin/Thesis/Thesis/These/DefLatex/Definitions.tex}
+
+\begin{document}
+	
+\begin{Def}
+	Let the M-transform be defined by
+	\[\mathcal{M}\phi(\xi) \isdef \int_{0}^{+\infty} \cos(2\pi\sqrt{\xi u})\dfrac{\phi(u)}{\sqrt{u}}du\]
+\end{Def}
+\begin{Def}
+	For any function $\phi$ defined on $\R^+$, let $C$ the operator defined by 
+	\[C\phi(t) = \phi(t^2), \quad t \in  \R\]
+	For any function even function $\phi$ defined on $\mathbb{R}$, $C^{-1}\phi$ is a function defined on $\R^+$ by 
+	\[C^{-1}\phi(u) = \phi(\sqrt{u})\] 
+\end{Def}
+\begin{Def}
+	We note $\mathcal{S}\left(\sqrt{\R^+}\right)$ the space of $\phi$ such that $C\phi \in \mathcal{S}(\mathbb{R})$. Let $S_p(\R)$ the subspace of real even functions that belong to the Schwartz class. 
+\end{Def}
+\begin{Prop}
+	$C\mathcal{S}\left(\sqrt{\R^+}\right) = \mathcal{S}_p(\R)$
+\end{Prop}
+\begin{Prop}
+	If $\phi \in \mathcal{S}\left(\sqrt{\R^+}\right)$, then 
+	\[\sqrt{x}\phi \in \mathcal{S}\left(\sqrt{\R^+}\right)\]
+	For all polynomial $P$, 
+	\[C^{-1}P(dx^2)C \phi \in \mathcal{S}\left(\sqrt{\R^+}\right)\]
+	Where $dx$ is the differentiation operator. 
+\end{Prop}
+\begin{Prop}
+	The operator $\opFromTo{\mathcal{M}}{\mathcal{S}\left(\sqrt{\R^+}\right)}{\mathcal{S}\left(\sqrt{\R^+}\right)}$ is an involution, and can be rewritten as 
+	\[\mathcal{M} = C^{-1}\mathcal{F}C\]
+	where $\mathcal{F}$ is the Fourier transform defined on $\mathcal{S}_p(\R)$
+	\[\mathcal{F}u(\xi) = \int_{-\infty}^{+\infty}e^{-i2\pi x \xi}u(x)dx\]
+	or equivalently
+	\[\mathcal{F}u(\xi) = \int_{0}^{+\infty}2\cos(2\pi\xi x)u(x)dx\]
+	$\mathcal{F}$ is self-adjoint on $S_p(\R)$. 
+\end{Prop}
+\begin{Def}For $\psi$ and $\phi$ in $\mathcal{S}\left(\sqrt{\R^+}\right)$, we define the duality product 
+	\[\duality{\phi}{\psi}_{\omega}= \int_{0}^{+\infty}\dfrac{\phi(x) \psi(x)}{\sqrt{x}}\]
+\end{Def}
+\begin{Prop}
+	\[\duality{\phi}{\psi}_{\omega} = \duality{C\phi}{C\psi}\]
+\end{Prop}
+\begin{Prop}
+	For any $\phi$, $\psi \in \mathcal{S}\left(\sqrt{\R^+}\right)$, one has
+	\[\duality{\mathcal{M}\phi}{\psi}_{\omega} = \duality{\phi}{\mathcal{M}\psi}_{\omega}\]
+\end{Prop}
+
+\begin{Def}
+	Let $\Delta_\omega$ the operator defined on $\mathcal{S}\left(\sqrt{\R^+}\right)$ by 
+	\[\Delta_\omega \phi(x) = 2\sqrt{x}\left(2\sqrt{x} \phi'(x)\right)'\]
+\end{Def}
+If we call $\Delta$ the usual Laplace operator defined on $S_p(\R)$, we have  
+\begin{Prop}
+	\[\Delta_{\omega}\phi = C^{-1} \Delta C \phi\]
+\end{Prop}
+\begin{Cor}
+	$\Delta_\omega$ maps $\mathcal{S}\left(\sqrt{\R^+}\right)$ on itself. 
+\end{Cor}
+\begin{Cor}
+	$\duality{\Delta_{\omega}\phi}{\psi}_{\omega} = \duality{\phi}{\Delta_{\omega}\psi}_{\omega}$ 
+\end{Cor}
+\begin{Prop}
+	One has, for all $\xi \in \R^+$
+	\[\mathcal{M}(\Delta_\omega \phi) = -\xi\mathcal{M}\phi\]
+\end{Prop}
+\begin{Def}
+	For $s \in \R$, we define $\mathcal{M}^s(\R)$ as 
+	\[f\in \mathcal{M}^s(\R) \iff \int_{0}^{+\infty}\frac{\left(1 + \xi\right)^{s}}{\sqrt{\xi}}\abs{\mathcal{M}f}^2(\xi) < + \infty\]
+\end{Def}
+\begin{Prop}
+	\[f\in \mathcal{M}^s(\R^+) \iff Cf \in H^{s}(\R)\]
+	and we have
+	\[\norm{f}_{\mathcal{M}^s} = \norm{Cf}_{H^s}\]
+\end{Prop}
+\begin{Def}
+	For $s = 0$, we note $L^2_{\omega} = \mathcal{M}^0(\R^+)$. It is a Hilbert space with the scalar product corresponding to $\duality{\cdot}{\cdot}_{\omega}$ defined earlier.
+	\begin{proof}
+		To prove that $L^2_{\omega}$ is complete, it suffices to show that any Cauchy sequence $f_n$ has a limit in $L^2_{\omega}$. Obviously, $g_n \isdef \dfrac{f_n}{x^{1/4}}$ is a Cauchy sequence in $L^2(\R^+)$, so it admits a limit $g_\infty \in L^2(\R^+)$. Then $f_{\infty} \isdef x^{1/4}g_{\infty}$ belongs to $L^2_\omega$ and we have 
+		\[ \norm{f_n - f_\infty}_{L^2_\omega} = \norm{g_n - g_{\infty}}_{L^2}\]
+		which ensures $f_n \to f_{\infty}$ in $L^2_{\omega}$.  
+	\end{proof} 
+\end{Def}
+\begin{Prop}
+	$\mathcal{M}^s(\R^+)$ is a closed subspace of $L^2_\omega$. It is also a Hilbert space for the scalar product defined by 
+	\[\duality{u}{v}_{\omega,s} \isdef \int_{0}^{+\infty} \dfrac{(1+ \xi)^s}{\sqrt{\xi}}\mathcal{M}u(\xi) \mathcal{M}v(\xi)\]
+	\begin{proof}
+		Let $u_n$ a Cauchy sequence in $\mathcal{M}^s(\R^+)$. Then, by the same arguments as above, 
+		\[v_n \isdef \dfrac{(1 + \xi)^{s/2}\mathcal{M}u_n(\xi)}{\xi^{1/4}}\]
+		has a limit $v_\infty$ in $L^2$, and
+		\[u_{\infty} = \mathcal{M}\left(\dfrac{\xi^{1/4}}{(1+\xi)^{s/2}}v_\infty\right)\]
+		is the limit of $u_n$ in $\mathcal{M}^s(\R^+)$. 
+	\end{proof}
+\end{Prop}
+\begin{Prop}
+	The injection 
+\end{Prop}
+\end{document}

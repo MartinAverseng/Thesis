@@ -1,7 +1,7 @@
-homePath = '/home/martin/MatlabCodes';
-
+codePath = '/home/martin/Thesis/Thesis/MatlabCodes';
+addpath(genpath('usefulMatlabFunctions'));
 addBEM2D;
 addSBD;
 addAbstractMatrix;
 
-cd '/home/martin/MatlabCodes/ToolboxDev'
+cd 'Toolboxes_dev'
