@@ -1,7 +1,10 @@
-codePath = '/home/martin/Thesis/Thesis/MatlabCodes';
-addpath(genpath('usefulMatlabFunctions'));
-addBEM2D;
-addSBD;
-addAbstractMatrix;
+!git add -A 
+!git commit -m "Daily Matlab commit"
+!git push
 
-cd 'Toolboxes_dev'
+codePath = '/home/martin/Thesis/MatlabCodes';
+addpath(genpath('usefulMatlabFunctions'));
+addDevPack('AbstractMatrix')
+addDevPack('SBD')
+addDevPack('BEM2D')
+cd 'OpenArc'
