@@ -1,5 +1,3 @@
-!git add -A 
-!git commit -m "Daily Matlab commit"
 !git status
 
 codePath = '/home/martin/Thesis/MatlabCodes';
