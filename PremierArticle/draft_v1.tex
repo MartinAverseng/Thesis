@@ -1,0 +1,180 @@
+
+\documentclass[]{article}
+\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+
+\author{François Alouges, Martin Averseng}
+\title{Integral equations on open-curves : a new preconditioner}
+\begin{document}
+\maketitle
+
+\abstract{In this paper, we analyze preconditioners for the integral equations arising in the resolution of acoustic scattering by an open arc in 2D in the Galerkin setting.}
+
+
+\section{Preliminaries}
+\toDo{Globalement, il faut recopier les définitions de Bruno.} 
+Let $\Gamma$ a smooth open simple curve in $\R^2$, and $u_D$ and $u_N$ two smooth functions on $\Gamma$. We consider the following boundary value problems, namely the Dirichlet problem (D):  
+\begin{equation*}
+\left \{
+\begin{aligned}
+-\Delta u - k^2 u &= 0, && \text{ in } \R^2 \setminus \Gamma \\
+u &= u_D, && \text{ on } \Gamma
+\end{aligned} \right.
+\end{equation*}
+and the Neumann problem (N): 
+\begin{equation*}
+\left \{
+\begin{aligned}
+-\Delta u - k^2 u &= 0, && \text{ in } \R^2 \setminus \Gamma \\
+\dfrac{\partial u}{\partial n} &= u_N. && \text{ on } \Gamma
+\end{aligned} \right.
+\end{equation*} 
+These problems can be solved using integral equations. Let $G$ the Green's function defined by 
+\begin{equation}
+\left \{
+\begin{aligned}
+G(z) &= -\dfrac{1}{2\pi} \ln \abs{z}, && \text{ if } k= 0,\\
+G(z) &= \frac{i}{4}H_0(k|z|), && \text{ if } k > 0.
+\end{aligned} \right.
+\end{equation} 
+We consider the single-layer potential defined for $x \notin \Gamma$ by 
+\begin{equation}
+	\text{SL}\lambda(x) = \int_{\Gamma}G(x-y)\lambda(y)d\sigma(y)
+\end{equation}
+where $\sigma$ is the arc measure on $\Gamma$.. Denoting by $\gamma$ the trace operator on $\Gamma$ and $S = \gamma \text{SL}$, it is well-known that the solution $u$ of (D) is given by 
+\[ u = \text{SL} \lambda \]
+if $\lambda$ is a solution of the integral equation 
+\begin{equation}
+	S \lambda = u_D.
+	\label{Slambda}
+\end{equation} 
+The solution $\lambda$ to the former problem is unique and well-defined. However, because of the edges of $\Gamma$, it is not smooth, leading in poor performance of numerical methods based on the discretization of $\lambda$ itself. It is known that there exists a smooth function $\varphi$ such that $ \lambda = \frac{\varphi}{\omega(x)}$ whith 
+\[\omega(x) = \dfrac{1}{\sqrt{d(x,\partial \Gamma)}}\]
+This is why, in \cite{bruno2012second}, a weighted operator $S_{\omega}$ is introduced, defined by 
+\[S_{\omega} \varphi \isdef S \left(\dfrac{\varphi}{\omega}\right).\]
+This time, $S_\omega$ sends smooth functions on smooth functions, leading to improved convergence in numerical methods. 
+Symmetrically, if we let 
+\begin{equation}
+\text{DL}\nu(x) = \int_{\Gamma}\dfrac{\partial}{\partial n_y} G(x-y)\nu(y)d\sigma(y)
+\end{equation}
+the solution to problem (N) is obtained as 
+\[u = \text{DL}\nu\] where $\nu$ is the solution of the integral equation
+\begin{equation}
+N \nu = u_N,
+	\label{Nmu}
+\end{equation}
+and $N$ is the so-called hypersingular operator defined by 
+\[N\nu = \lim_{z \to 0^+}\dfrac{\partial}{\partial z}\text{DL}\nu(x + z n_x).\]
+Similarly, if $u_N$ is smooth, there exists a smooth function $\psi$ such that 
+\[\nu = \psi\omega,\]
+thus the corresponding weighted hyersingular operator is defined by 
+\[N_{\omega}\psi \isdef N\left(\psi \omega\right)\]
+In \cite{bruno2012second}, it is shown that the operators $S_{\omega}$ and $N_{\omega}$ are inverse modulo a compact operator, justifying that they are good mutual preconditioners in the process of solving \eqref{Slambda} and \eqref{Nmu} numerically. 
+Here study a new preconditioning technique based on a weighted version of the Laplace operator: for any function $u$ defined on $\Gamma$
+\[\Delta_{\omega}u \isdef \omega\left(\omega u'\right)'\]
+where the derivative is taken along the curvilinear abscissa. We analyze preconditioners given by that $S_\omega (\Delta_\omega - k^2 \omega^2)$ for equation \eqref{Slambda} and $N_{\omega}$.
+\section{Analysis }
+
+\begin{Def}
+	Definition of the modified Sobolev spaces $H^s_{\omega}$.
+\end{Def}
+\begin{The}
+	For the bilinear form $(u,v)\mapsto\int_{-1}^{1}\frac{uv}{\omega}$, $H^s_{\omega}$ is the dual of $H^{-s}_{\omega}$. We have compact injections from $H^s_{\omega} \to H^t_{\omega}$ when $s < t$. 
+\end{The}
+
+\subsection{Study on the segment with $k \neq 0$.}
+
+We write $H_0(z) = \frac{-1}{2\pi} \ln|z| J_0(z) + R(z)$ where $R$ is an even entire function. 
+
+\begin{Prop}
+	The functions $r \mapsto \frac{J_0(r) - 1}{r^2}$ and $r \mapsto \frac{J_0'(r)}{r}$ are bounded on $\mathbb{R}$. 
+	\begin{proof}
+		We have for all $r \in \mathbb{R}$
+		\[\frac{J_0(r)-1}{r^2} = -\sum_{n=0}^{+\infty} \frac{(-1)^n}{(n-1)!^2}\left(\frac{r}{2}\right)^{2n}\]
+		which is easily shown to be absolutely convergent series for all $r >0$. 
+		A similar argument gives the other result. 
+	\end{proof}	
+\end{Prop}
+\begin{Prop}
+	For any $k$, we define $ k_1 : r \mapsto \left(J_0(kr) - 1 \right) \ln(|r|)$ defined on $\mathbb{R}$. Then the function $-\Delta_{\omega} k_1$ is bounded on $\mathbb{R}$. 
+	\begin{proof}
+		We can write $-\Delta_{\omega}K_1 = (r^2-1) \partial_{rr}K_1 + r \partial_r K_1(r)$, yielding 
+		\[-\Delta_{\omega}K_1 = \ln(|r|) \left(kJ_0'(kr) + k^2(r^2 - 1)J_0''(kr)\right) + (r^2-1) \left(2\frac{kJ_0'(kr)}{|r|} - \frac{J_0(kr) - 1}{r^2}\right) + J_0(kr) - 1.\]
+	\end{proof}
+\end{Prop}
+\begin{Cor} The function 
+	\[k_1 : f \mapsto \int_{-1}^{1}\frac{k_1(k|x-y|)}{\omega(y)}f(y)dy\]
+	Is continuous from $H^s_{\omega} \to H^{s+2}_{\omega}$  
+\end{Cor}
+
+\begin{The}
+	An operator of the form 
+	\begin{equation}
+		Kf = \int_{-1}^{1} \frac{k(x,y)f(y)}{\omega(y)}
+	\end{equation}
+	with $k \in C^{\infty}(-1,1)$ maps $H^s_{\omega}$ to $H^{+\infty}_{\omega}$ for all $s$. 
+\end{The}
+
+\subsection{Non-flat arc, non-zero frequency}
+
+
+We consider a smooth non-intersecting curve $\Gamma$ in $\mathbb{R}^2$ and a smooth parametrization $\textbf{r}: [-1,1] \to \Gamma$. We choose $\textbf{r}$ such that $\norm{\frac{dr}{dt}} = 1$. Indeed we can assume the curve has unit length by proper rescaling. Indeed, if $u$ is solution of the Helmholtz equation outside $\Omega$ with some boundary conditions on $\Gamma$ (Dirichlet or Neuman) and if we define $u^\lambda = u(\lambda r, \theta)$, we find $\Delta u^{\lambda} + k^2 \lambda^2 u^{\lambda} = 0$ outside $\Omega_{\lambda} = \frac{\Omega}{\lambda}$. By choosing $\lambda$ = $\abs{\Gamma}$, the border of the new domain is of length $1$. 
+
+Without the rescaling (but still assuming constant speed parametrization), we can write 
+
+\[\abs{r(t) - r(t')}^2 = L^2\abs{t-t'}^2 + \frac{C(t')^2}{2}\abs{t-t'}^4\]
+
+
+We note $G_k(t,t')$ the kernel of the non-zero non-flat arc operator. 
+
+\begin{Lem}
+	We have the following expansion
+	\[J_0(k\abs{r(t) - r(t')}) = 1 - \frac{k^2}{4}L^2\abs{t-t'}^2 + \left(\frac{k^4L^4}{64} -\frac{C(t')^2k^2}{8}\right)\abs{t-t'}^4 + (t-t')^5 F(t,t')\]
+	where $F$ is a smooth bounded function. 
+\end{Lem}
+
+\begin{Lem} If $L$ is the length of the curve and $C(t')$ the curvature at a point $t'$, one has
+	\begin{align*}G_k(t,t') &= -\frac{1}{2\pi} \ln|t-t'|\left(1 - \frac{k^2}{4}L^2\abs{t-t'}^2 + \left(\frac{k^4L^4}{64} -\frac{C(t')^2k^2}{8}\right)\abs{t-t'}^4 + (t-t')^5 F(t,t')\right)\\
+	 &+ R(t,t')
+	 \end{align*}
+	 where $R$ is in $C^{\infty}([-1,1]^2)$.
+\end{Lem}
+
+\begin{Lem}
+	\begin{eqnarray*}
+		\Delta_{\omega}^{t'} \left((t-t')^2\ln\abs{t-t'}\right) &=& \omega^2(t')\frac{d^2}{dt'^2}\left((t-t')^2\ln\abs{t-t'}\right) - t' \frac{d}{dt'} \left((t-t')^2\ln\abs{t-t'}\right)\\
+		&=&\omega^2(t')\left(2\ln\abs{t-t'} + 4 - 1\right) - t'\left(2(t'-t)\ln\abs{t-t'} + 2(t'-t)\right)\\
+		&=&2\omega^2(t)\ln\abs{t-t'} + 2(t-t')\ln\abs{t-t'}(t + 2t') + P(t,t')
+	\end{eqnarray*}
+	where $P$ is a polynmial in $t$ and $t'$. 
+\end{Lem}
+\begin{Lem}
+	The application $f \mapsto \omega^2 f$ is continuous in $H^s_{\omega}$ for any $s$. 
+	\begin{proof}
+		This is obvious as $\abs{\duality{\omega^2f}{T_n}_{\omega}} \leq  \abs{\duality{f}{T_n}_{\omega}}$.
+	\end{proof}
+\end{Lem}
+\begin{Lem}
+	The application $f \mapsto \omega^2 f'$ is continuous from $H^s_\omega$ to $H^{s-1}_\omega$.
+	The proof involves the Cesaro thm. 
+\end{Lem}
+\begin{Lem}
+	The operator $\Delta_{\omega}\omega^2 - \omega^2 \Delta_{\omega}$ is continuous from $H_{\omega}^s$ to $H_{\omega}^{s-1}$. 
+	\begin{proof}
+		We use the formula : $\Delta_{\omega}\omega^2 - \omega^2 \Delta_{\omega} = 4x\omega^2f' + (4x^2 - 2)f$
+	\end{proof}
+\end{Lem}
+\begin{Lem}
+	The operator $S_0\omega^2 - \omega^2S_0$ is continuous from $H^s_{\omega}$ to $H^{s+2}_\omega$.
+	\begin{proof}
+		Use $\omega^2 T_n = \frac{2T_n + T_{n+2} + T_{\abs{n-2}}}{4}$.
+	\end{proof} 
+\end{Lem}
+Be careful, the map $f\mapsto f'$ is not continuous from $H^1_{\omega}$ to $L^2_{\omega}$, as can be checked with the example $f = \omega$. 
+\begin{Lem}
+	$S_k - S_0 = \omega(t)^2\frac{k^2}{2}L^2 S_0 \Delta_{\omega}^{-1}$ 
+\end{Lem}
+
+\bibliographystyle{plain}
+\IfFileExists{biblio.bib}{\bibliography{biblio}}{\bibliography{/home/martin/Thesis/Biblio/biblio}}
+
+\end{document}
