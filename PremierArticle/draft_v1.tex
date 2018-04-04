@@ -1,6 +1,6 @@
 
 \documentclass[]{article}
-\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+\input{../Presentations/DefLatex/Definitions.tex}
 
 \author{François Alouges, Martin Averseng}
 \title{Integral equations on open-curves : a new preconditioner}
@@ -72,14 +72,36 @@ In \cite{bruno2012second}, it is shown that the operators $S_{\omega}$ and $N_{\
 Here study a new preconditioning technique based on a weighted version of the Laplace operator: for any function $u$ defined on $\Gamma$
 \[\Delta_{\omega}u \isdef \omega\left(\omega u'\right)'\]
 where the derivative is taken along the curvilinear abscissa. We analyze preconditioners given by that $S_\omega (\Delta_\omega - k^2 \omega^2)$ for equation \eqref{Slambda} and $N_{\omega}$.
-\section{Analysis }
+\section{Functional framework}
 
 \begin{Def}
-	Definition of the modified Sobolev spaces $H^s_{\omega}$.
+	Definition of the modified Sobolev spaces $H^s_{\omega}$ as complement of polynomials for the norm 
+	\[ \norm{u}_s^2 = \sum_{n=0}^{+\infty} (1+n^2)^{\frac{s}{2}}\abs{{u}_n}^2\]
+	where $\hat{u}_n = \int_{-1}^1 \dfrac{uT_n}{\omega}$ for all reak $s$.  
 \end{Def}
 \begin{The}
 	For the bilinear form $(u,v)\mapsto\int_{-1}^{1}\frac{uv}{\omega}$, $H^s_{\omega}$ is the dual of $H^{-s}_{\omega}$. We have compact injections from $H^s_{\omega} \to H^t_{\omega}$ when $s < t$. 
 \end{The}
+\begin{The}
+	The space of (smooth functions) polynomials is dense in $H^s_\omega$ for all $s$. 
+\end{The}
+\begin{The}
+	For all $s \in \N$, (we note $s=n$ in this case), we have 
+	\[ \norm{u}_n = \int_{-1}^{1} \dfrac{\abs{\left(\omega dx\right)^n u}^2}{\omega}dx\] 
+	For $n=1$ in particular, one has 
+	\[ \norm{u}_{1} = \int_{-1}^{1} \omega \abs{u'}^2\]
+\end{The}
+\begin{The}
+	Eventuellement un résultat d'interpolation ? C'est facile à faire avec les suites, on peut en déduire le résultat sous forme "locale" qu'on avait tant cherché. Peut-être qu'on peut même en arriver à une interpolation autre part que sur le segment (pour un arc ouvert) par changement de variable. 
+\end{The}
+(par définition)
+
+\begin{The}
+	On peut définir de manière implicite les espaces de Sobolev pour $s = \pm \frac{1}{2}$. Par exemple 
+	
+	\[\norm{u}_{\frac{1}{2}} = \int_{\Gamma\times \Gamma} \ln\abs{x-y}\omega(x)\omega(y) u'(x)u'(y)dxdy\]
+\end{The}
+Dans ce cas il faudrait montrer que les deux manières d'étendre la définition se raccordent bien (et ça permettrait de démontrer les résultats d'interpolation requis). On aurait également un vision Fourier discrète pour les courbes fermées. 
 
 \subsection{Study on the segment with $k \neq 0$.}
 
@@ -94,6 +116,7 @@ We write $H_0(z) = \frac{-1}{2\pi} \ln|z| J_0(z) + R(z)$ where $R$ is an even en
 		A similar argument gives the other result. 
 	\end{proof}	
 \end{Prop}
+Pas sûr que ce soit utile.
 \begin{Prop}
 	For any $k$, we define $ k_1 : r \mapsto \left(J_0(kr) - 1 \right) \ln(|r|)$ defined on $\mathbb{R}$. Then the function $-\Delta_{\omega} k_1$ is bounded on $\mathbb{R}$. 
 	\begin{proof}
@@ -148,6 +171,12 @@ We note $G_k(t,t')$ the kernel of the non-zero non-flat arc operator.
 	where $P$ is a polynmial in $t$ and $t'$. 
 \end{Lem}
 \begin{Lem}
+	The second term in this decomposition is the kernel of a bounded operator from $H^s_{\omega}$ to $H^{s+2}_{\omega}$.
+	\begin{proof}
+		Même raisonnement (on regarde une fois de plus l'action de $\Delta_\omega$ et on conclut avec une borne $L^2$ de l'intégrale de Cauchy. )
+	\end{proof}
+\end{Lem}
+\begin{Lem}
 	The application $f \mapsto \omega^2 f$ is continuous in $H^s_{\omega}$ for any $s$. 
 	\begin{proof}
 		This is obvious as $\abs{\duality{\omega^2f}{T_n}_{\omega}} \leq  \abs{\duality{f}{T_n}_{\omega}}$.
@@ -170,9 +199,17 @@ We note $G_k(t,t')$ the kernel of the non-zero non-flat arc operator.
 	\end{proof} 
 \end{Lem}
 Be careful, the map $f\mapsto f'$ is not continuous from $H^1_{\omega}$ to $L^2_{\omega}$, as can be checked with the example $f = \omega$. 
+
+Les deux lemmes précédents : même preuve.
+
 \begin{Lem}
 	$S_k - S_0 = \omega(t)^2\frac{k^2}{2}L^2 S_0 \Delta_{\omega}^{-1}$ 
 \end{Lem}
+
+\section{Application to preconditioning}
+
+In this section we propose two preconditioners for the Scattering problem, one based on the use of a method for the square root of an operator. We prove that the preconditioned systems have a conditioning that is independent of the mesh size. We show applications. 
+
 
 \bibliographystyle{plain}
 \IfFileExists{biblio.bib}{\bibliography{biblio}}{\bibliography{/home/martin/Thesis/Biblio/biblio}}
