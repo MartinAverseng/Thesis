@@ -1,0 +1,50 @@
+//MAP431 mini projet : Ecolement visqueux
+//Binome : Zhexuan HUANG et Wenjian DONG
+//Tuteur : Martin Averseng
+
+//Question 10
+
+//Establish the mesh
+int NN=20;
+border a1(t=0,1){x=t; y=0; label=1;}
+border a2(t=0,1){x=1; y=t; label=2;}
+border a3(t=0,1){x=(1-t); y=1; label=3;}
+border a4(t=0,1){x=0; y=(1-t); label=4;}
+mesh Th = buildmesh(a1(NN)+a2(NN)+ a3(NN)+a4(NN));
+
+//Configure the vector space
+fespace Xh(Th,P2);
+fespace Mh(Th,P1);
+Xh u2,v2;
+Xh u1,v1;
+Mh p,q;
+func f1=0;
+func f2=-1;
+
+//Sovle FV1
+solve FV1 (u1,u2,p,v1,v2,q) =
+int2d(Th)( ( dx(u1)*dx(v1) + dy(u1)*dy(v1)
++ dx(u2)*dx(v2) + dy(u2)*dy(v2) )
+- p*dx(v1) - p*dy(v2)
++ dx(u1)*q + dy(u2)*q )
+- int2d(Th)(f1*v1+f2*v2)
++ on(1,u1=0,u2=0);
+
+plot(Th,[u1,u2],wait=1,fill=1,dim=2,value=10,cmm="FV1,[u1,u2]");
+plot(Th,p,wait=1,fill=1,dim=2,value=10,cmm="FV1,p");
+
+//Sovle FV2
+solve FV2 (u1,u2,p,v1,v2,q) =
+int2d(Th)( ( 2*dx(u1)*dx(v1) + (dy(u1)+dx(u2))*dy(v1)
++(dy(u1)+dx(u2))*dx(v2) + 2*dy(u2)*dy(v2) )
+- p*dx(v1) - p*dy(v2)
++ dx(u1)*q + dy(u2)*q )
+- int2d(Th)(f1*v1+f2*v2)
++ on(1,u1=0,u2=0);
+
+plot(Th,[u1,u2],wait=1,fill=1,dim=2,value=10,cmm="FV2,[u1,u2]");
+plot(Th,p,wait=1,fill=1,dim=2,value=10,cmm="FV2,p");
+
+
+
+

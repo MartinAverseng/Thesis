@@ -1,0 +1,102 @@
+\begin{thebibliography}{10}
+
+\bibitem{atkinson1991numerical}
+Kendall~E Atkinson and Ian~H Sloan.
+\newblock The numerical solution of first-kind logarithmic-kernel integral
+  equations on smooth open arcs.
+\newblock {\em mathematics of computation}, 56(193):119--139, 1991.
+
+\bibitem{bruno2012second}
+Oscar~P Bruno and St{\'e}phane~K Lintner.
+\newblock Second-kind integral solvers for te and tm problems of diffraction by
+  open arcs.
+\newblock {\em Radio Science}, 47(6), 2012.
+
+\bibitem{costabel2003asymptotics}
+Martin Costabel, Monique Dauge, and Roland Duduchava.
+\newblock Asymptotics without logarithmic terms for crack problems.
+\newblock 2003.
+
+\bibitem{hiptmair2017closed}
+Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
+\newblock Closed-form exact inverses of the weakly singular and hypersingular
+  operators on disks.
+\newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
+
+\bibitem{jerez2011variational}
+Carlos Jerez-Hanckes and Jean-Claude N{\'e}d{\'e}lec.
+\newblock Variational forms for the inverses of integral logarithmic operators
+  over an interval.
+\newblock {\em Comptes Rendus Mathematique}, 349(9-10):547--552, 2011.
+
+\bibitem{jerez2012explicit}
+Carlos Jerez-Hanckes and Jean-Claude N{\'e}d{\'e}lec.
+\newblock Explicit variational forms for the inverses of integral logarithmic
+  operators over an interval.
+\newblock {\em SIAM Journal on Mathematical Analysis}, 44(4):2666--2694, 2012.
+
+\bibitem{mason2002chebyshev}
+John~C Mason and David~C Handscomb.
+\newblock {\em Chebyshev polynomials}.
+\newblock CRC Press, 2002.
+
+\bibitem{mclean1986spectral}
+W~McLean.
+\newblock A spectral galerkin method for a boundary integral equation.
+\newblock {\em Mathematics of computation}, 47(176):597--607, 1986.
+
+\bibitem{mclean2000strongly}
+William Charles~Hector McLean.
+\newblock {\em Strongly elliptic systems and boundary integral equations}.
+\newblock Cambridge university press, 2000.
+
+\bibitem{monch1996numerical}
+Lars M{\"o}nch.
+\newblock On the numerical solution of the direct scattering problem for an
+  open sound-hard arc.
+\newblock {\em Journal of computational and applied mathematics},
+  71(2):343--356, 1996.
+
+\bibitem{sloan1992collocation}
+Ian~H Sloan and EP~Stephan.
+\newblock Collocation with chebyshev polynomials for symm's integral equation
+  on an interval.
+\newblock {\em The ANZIAM Journal}, 34(2):199--211, 1992.
+
+\bibitem{stephan1984augmented}
+Ernst~P Stephan and Wolfgang~L Wendland.
+\newblock An augmented galerkin procedure for the boundary integral method
+  applied to two-dimensional screen and crack problems.
+\newblock {\em Applicable Analysis}, 18(3):183--219, 1984.
+
+\bibitem{wendland1990hypersingular}
+Ernst~P Stephan and Wolfgang~L Wendland.
+\newblock A hypersingular boundary integral method for two-dimensional screen
+  and crack problems.
+\newblock {\em Archive for Rational Mechanics and Analysis}, 112(4):363--390,
+  1990.
+
+\bibitem{urzua2014optimal}
+Carolina~Alejandra Urz{\'u}a~Torres et~al.
+\newblock Optimal preconditioners for solving two-dimensional fractures and
+  screens using boundary elements.
+\newblock 2014.
+
+\bibitem{yan1989mesh}
+Yeli Yan and Ian~H Sloan.
+\newblock Mesh grading for integral equations of the first kind with
+  logarithmic kernel.
+\newblock {\em SIAM journal on numerical analysis}, 26(3):574--587, 1989.
+
+\bibitem{yan1988integral}
+Yeli Yan, Ian~H Sloan, et~al.
+\newblock {\em On integral equations of the first kind with logarithmic
+  kernels}.
+\newblock University of NSW, 1988.
+
+\bibitem{yan1990cosine}
+Yi~Yan.
+\newblock Cosine change of variable for symm's integral equation on open arcs.
+\newblock {\em IMA Journal of Numerical Analysis}, 10(4):521--535, 1990.
+
+\end{thebibliography}

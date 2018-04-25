@@ -1,0 +1,45 @@
+//On construit un domaine omega ainsi qu'un maillage associe.
+int N=10;
+border a(t=0,1){x=t;y=0;label=1;}
+border b(t=0,1){x=0;y=1-t;label=2;}
+border c(t=0,1){x=1-t;y=t;label=3;}
+mesh Th = buildmesh(a(N)+b(N)+c(N));
+
+
+//On definit des espaces d'elements finis et on declare des fonctions
+//dans ces espaces 
+fespace Vh(Th,P2);
+Vh u1,u2,v1,v2;
+fespace Ph(Th,P1);
+Ph p,q;
+
+//FV du probleme
+solve FV2([u1,u2,p],[v1,v2,q])=
+//On developpe des produit tensoriels. 
+int2d(Th)(dx(u1)*dx(v1)+dx(u2)*dx(v2)+dy(u1)*dy(v1)+dy(u2)*dy(v2))
++int2d(Th)(dx(u1)*dx(v1)+dx(u2)*dy(v1)+dy(u1)*dx(v2)+dy(u2)*dy(v2))
+-int2d(Th)((dx(v1)+dy(v2))*p)
+-int2d(Th)((dx(u1)+dy(u2))*q) //forme bilineaire
+-int2d(Th)(v1+v2) //forme lineaire car f=(1,1)
++on(1,p=x+y) //on fixe p(0,0)=0
++on(1,u1=x,u2=0)
++on(2,u1=0,u2=-y)
++on(3,u1=x,u2=-y);
+
+//Resolution du probleme par les deux formulations variationnelles FV2
+FV2;
+
+//Visualiser les resultats
+plot([u1,u2],wait=1,value=true,cmm="le champs de vitesse");
+plot(p,wait=1,value=true,cmm="la pression");
+
+//Calcul d'erreur en utilisant la norme H1(omega)^{2} pour u et L2(omega)
+//pour p
+real erroru;
+real errorp;
+erroru = int2d(Th)((u1-x)^2+(dx(u1)-1)^2+(dy(u1)^2))
++ int2d(Th)((u2+y)^2+(dx(u2))^2+(dy(u2)+1)^2);
+errorp = int2d(Th)((p-(x+y))^2);
+
+cout <<"erreur sur le champs de vitesse:"<< erroru << endl;
+cout <<"erreur sur la pression:"<< errorp << endl;

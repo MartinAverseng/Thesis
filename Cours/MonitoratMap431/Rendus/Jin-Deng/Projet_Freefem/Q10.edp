@@ -1,0 +1,39 @@
+//definir le maillage
+int N=20;
+border a1(t=0,1){x=t; y=0; label=1;}
+border a2(t=0,1){x=1; y=t; label=2;}
+border a3(t=0,1){x=(1-t); y=1; label=3;}
+border a4(t=0,1){x=0; y=(1-t); label=4;}
+border a5(t=0,1){x=0; y=0; label=5;} // un point(0,0)
+mesh Th = buildmesh(a1(N)+a2(N)+ a3(N)+a4(N));
+//plot(Th, wait=1, cmm="Maillage, N=20");
+
+//definition de f=[fx,fy]
+func fx=0;
+func fy=-1;
+
+////////P2 pour u et P1 pour p
+fespace Vh4(Th,P2);
+fespace Qh4(Th,P1);
+
+Vh4 uhx, uhy, vhx, vhy; 
+Qh4 p,q;
+
+problem question10FV1([uhx, uhy, p], [vhx, vhy, q])=
+  int2d(Th)(dx(uhx)*dx(vhx)+dy(uhx)*dy(vhx)+dx(uhy)*dx(vhy)+dy(uhy)*dy(vhy)-p*(dx(vhx)+dy(vhy))-q*(dx(uhx)+dy(uhy)))
+  -int2d(Th)(fx*vhx+fy*vhy)
+  +on(1,5,uhx=0,uhy=0);
+
+question10FV1;
+plot([uhx,uhy],wait=1,fill=1,dim=2,value=10,cmm="La solution de FV1-10");
+plot(p,wait=1,fill=1,dim=2,value=10,cmm="La solution de FV1-10");
+
+problem question10FV2([uhx, uhy, p], [vhx, vhy, q])=
+  int2d(Th)((2*dx(vhx)*dx(uhx)+(dy(vhx)+dx(vhy))*(dy(uhx)+dx(uhy))+2*dy(vhy)*dy(uhy))-p*(dx(vhx)+dy(vhy))-q*(dx(uhx)+dy(uhy)))
+  -int2d(Th)(fx*vhx+fy*vhy)
+  +on(1,5,uhx=0,uhy=0); 
+
+question10FV2;
+plot([uhx,uhy],wait=1,fill=1,dim=2,value=10,cmm="La solution de FV2-10");
+plot(p,wait=1,fill=1,dim=2,value=10,cmm="La solution de FV2-10");
+

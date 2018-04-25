@@ -1,0 +1,54 @@
+//definir le maillage
+int N=20;
+real pi=3.1415926;
+border a1(t=5*pi/4,7*pi/4){x=cos(t);y=sin(t);label=1;}
+border a2(t=7*pi/4,9*pi/4){x=cos(t);y=sin(t);label=2;}
+border a3(t=1*pi/4,3*pi/4){x=cos(t);y=sin(t);label=3;}
+border a4(t=3*pi/4,5*pi/4){x=cos(t);y=sin(t);label=4;}
+mesh Th = buildmesh(a1(N)+a2(N)+ a3(N)+a4(N));
+plot(Th, wait=1, cmm="Maillage, N=20, initial");
+
+//definition de f=[fx,fy]
+func fx=0;
+func fy=-1;
+
+////////P2 pour u et P1 pour p
+fespace Vh4(Th,P2);
+fespace Qh4(Th,P1);
+
+Vh4 uhx, uhy, vhx, vhy; 
+Qh4 p,q;
+
+problem question13FV2([uhx, uhy, p], [vhx, vhy, q])=
+  int2d(Th)((2*dx(vhx)*dx(uhx)+(dy(vhx)+dx(vhy))*(dy(uhx)+dx(uhy))+2*dy(vhy)*dy(uhy))-p*(dx(vhx)+dy(vhy))-q*(dx(uhx)+dy(uhy)))
+  -int2d(Th)(fx*vhx+fy*vhy)
+  +on(1,5,uhx=0,uhy=0); 
+
+question13FV2;
+plot([uhx,uhy],wait=1,fill=1,dim=2,value=10,cmm="La solution de FV2-13");
+plot(p,wait=1,fill=1,dim=2,value=10,cmm="La solution de FV2-13");
+
+real delta=1;
+real minT0= checkmovemesh(Th,[x,y]); // the min triangle area
+while(1) // find a correct move mesh
+ {
+   real minT=checkmovemesh(Th,[x+uhx*delta,y+uhy*delta]);//the min triangle area
+   if (minT > minT0/5) break ; // if big enough
+   delta/=10;
+ }
+Th=movemesh(Th,[x+uhx*delta, y+uhy*delta]);
+plot(Th, wait=1, cmm="Maillage, N=20, 1 iteration");
+
+question13FV2;
+Th=movemesh(Th,[x+uhx*delta, y+uhy*delta]);//le programme s'arrete ici
+plot(Th, wait=1, cmm="Maillage, N=20, 2 iteration");
+
+question13FV2;
+Th=movemesh(Th,[x+uhx*delta, y+uhy*delta]);
+plot(Th, wait=1, cmm="Maillage, N=20, 3 iteration");
+
+question13FV2;
+Th=movemesh(Th,[x+uhx*delta, y+uhy*delta]);
+plot(Th, wait=1, cmm="Maillage, N=20, 4 iteration");
+
+//on ne peut plus avancer pour faire iterer ce processus.

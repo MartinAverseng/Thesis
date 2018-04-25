@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.31)  3 APR 2018 17:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.1)  23 APR 2018 17:27
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
 **draft_v1.tex
 (./draft_v1.tex
 LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 5 language(s) loaded.
+Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -275,8 +275,6 @@ File: babel.def 2016/02/24 3.9q Babel common definitions
 \babel@savecnt=\count109
 \U@D=\dimen116
 )
-\l@british = a dialect from \language\l@english 
-\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -1224,26 +1222,31 @@ LaTeX Font Info:    Try loading font information for U+stmry on input line 9.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 15.
+(Font)              <9> on input line 16.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 15.
+(Font)              <5> on input line 16.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 106.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\not' on input line 106.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 106.
+Overfull \hbox (8.81616pt too wide) in paragraph at lines 109--109
+[]\OT1/lmr/bx/n/14.4 Revisiting the lit-ter-a-ture with these def-
+ []
 
 [3]
-Overfull \hbox (88.00868pt too wide) detected at line 124
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 137.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\not' on input line 137.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 137.
+
+
+Overfull \hbox (88.00868pt too wide) detected at line 155
 \OMS/lmsy/m/n/9 ^^@\OT1/lmr/m/n/9 ^^A[]\OML/lmm/m/it/9 K[] \OT1/lmr/m/n/9 = [](
 \OMS/lmsy/m/n/9 j\OML/lmm/m/it/9 r\OMS/lmsy/m/n/9 j\OT1/lmr/m/n/9 ) [] + (\OML/
 lmm/m/it/9 r[] \OMS/lmsy/m/n/9 ^^@ \OT1/lmr/m/n/9 1) [] + \OML/lmm/m/it/9 J[]\O
@@ -1251,14 +1254,8 @@ T1/lmr/m/n/9 (\OML/lmm/m/it/9 kr\OT1/lmr/m/n/9 ) \OMS/lmsy/m/n/9 ^^@ \OT1/lmr/m
 /n/9 1\OML/lmm/m/it/9 :
  []
 
-
-Overfull \hbox (20.60043pt too wide) in paragraph at lines 143--144
-\OT1/lmr/m/n/9 We con-sider a smooth non-intersecting curve $^^@$ in $\U/msb/m/
-n/9 R[]$ \OT1/lmr/m/n/9 and a smooth parametriza-
- []
-
-
-Overfull \hbox (45.65591pt too wide) detected at line 154
+[4]
+Overfull \hbox (45.65591pt too wide) detected at line 207
 \OML/lmm/m/it/9 J[]\OT1/lmr/m/n/9 (\OML/lmm/m/it/9 k []\OT1/lmr/m/n/9 ) = 1 \OM
 S/lmsy/m/n/9 ^^@ []\OML/lmm/m/it/9 L[] [][] \OT1/lmr/m/n/9 + [] [][] + (\OML/lm
 m/m/it/9 t \OMS/lmsy/m/n/9 ^^@ \OML/lmm/m/it/9 t[]\OT1/lmr/m/n/9 )[]\OML/lmm/m/
@@ -1266,32 +1263,32 @@ it/9 F\OT1/lmr/m/n/9 (\OML/lmm/m/it/9 t; t[]\OT1/lmr/m/n/9 )
  []
 
 
-Overfull \hbox (43.68391pt too wide) in paragraph at lines 161--161
+Overfull \hbox (43.68391pt too wide) in paragraph at lines 214--214
 [] 
  []
 
-[4]
-Overfull \hbox (79.79884pt too wide) in alignment at lines 166--170
+
+Overfull \hbox (79.79884pt too wide) in alignment at lines 219--223
  [][][] []
  []
 
-(./draft_v1.bbl [5]) [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
+[5] (./draft_v1.bbl) [6] [7]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 287.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 287.
  (./draft_v1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 287.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 287.
 Package rerunfilecheck Info: File `draft_v1.out' has not changed.
-(rerunfilecheck)             Checksum: F74350296B315C7144FAD5A80E0D802D;329.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 217.
+(rerunfilecheck)             Checksum: 2F28FEE67919A4C1D96252E869C754A4;480.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 287.
  ) 
 Here is how much of TeX's memory you used:
- 28035 strings out of 494924
- 652910 string characters out of 6179708
- 851545 words of memory out of 5000000
- 30781 multiletter control sequences out of 15000+600000
+ 28049 strings out of 493029
+ 652965 string characters out of 6136235
+ 856291 words of memory out of 5000000
+ 31022 multiletter control sequences out of 15000+600000
  52713 words of font info for 54 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
+ 1141 hyphenation exceptions out of 8191
  64i,11n,84p,777b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/en
 c/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/s
@@ -1308,10 +1305,10 @@ share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public
 .pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb></usr/share/texmf/fonts/
 type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy9.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on draft_v1.pdf (6 pages, 288202 bytes).
+Output written on draft_v1.pdf (7 pages, 292323 bytes).
 PDF statistics:
- 180 PDF objects out of 1000 (max. 8388607)
- 151 compressed objects within 2 object streams
- 40 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 209 PDF objects out of 1000 (max. 8388607)
+ 179 compressed objects within 2 object streams
+ 55 named destinations out of 1000 (max. 500000)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 

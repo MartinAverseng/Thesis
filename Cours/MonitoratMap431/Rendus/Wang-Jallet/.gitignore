@@ -1,0 +1,44 @@
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.xdv
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.thm
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# listings
+*.lol
+_*.tex
+
+# visual-studio-code specific settings
+settings.json
+
+
+# eps files
+deformation-*/*.eps
+deformation-*/*.png
+*.eps

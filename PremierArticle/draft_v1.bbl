@@ -1,12 +1,5 @@
 \begin{thebibliography}{1}
 
-\bibitem{antoine2007generalized}
-Xavier Antoine and Marion Darbas.
-\newblock Generalized combined field integral equations for the iterative
-  solution of the three-dimensional helmholtz equation.
-\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
-  41(1):147--167, 2007.
-
 \bibitem{bruno2012second}
 Oscar~P Bruno and St{\'e}phane~K Lintner.
 \newblock Second-kind integral solvers for te and tm problems of diffraction by

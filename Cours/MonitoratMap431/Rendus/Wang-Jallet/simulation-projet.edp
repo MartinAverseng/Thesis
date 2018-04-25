@@ -1,0 +1,120 @@
+//  Projet MAP431 : Ecoulements visqueux
+//  Partie 2 - Implementation numerique
+//  (code repris depuis de la PC8 puis modifié)
+verbosity = 0;
+
+//************
+// QUESTION 8
+//************
+
+// Nombre de triangles. 
+// On n'utilise pas N car N est une variable globale freefem !
+int num=20;
+
+border gamma1(t=0,1){ x=t; y=0; label=1; }
+
+border gamma2(t=0,1){ x=1; y=t; label=2; }
+
+border gamma3(t=0,1){ x=1-t; y=1; label=3; }
+
+border gamma4(t=0,1){ x=0; y=1-t; label=4; }
+
+// on maille le carre unite
+mesh Th = buildmesh(gamma1(num) + gamma2(num) + gamma3(num) + gamma4(num));
+plot(Th,wait=1, cmm="Initial mesh on unit square");
+
+// Definition de l'espace elements finis
+fespace Vh(Th, [P2,P2,P1]);         
+
+// éléments finis P1 pour chacune des composante de u et P0 pour p.
+Vh [u1,u2,ph], [v1,v2,qh];
+
+// terme source
+func f1 = 0;
+func f2 = -y;
+
+// (FV1)
+
+problem FV1([u1, u2, ph],[v1,v2,qh]) = 
+	int2d(Th)(
+		dx(u1)*dx(v1) + dy(u1)*dy(v1) + dx(u2)*dx(v2) + dy(u2)*dy(v2)
+		- ph*(dx(v1)+dy(v2)) - qh*(dx(u1)+dy(u2)) )
+	- int2d(Th)( f1*v1 + f2*v2 )
+	+on(gamma1,u1=0,u2=0);
+
+problem FV2([u1,u2,ph],[v1,v2,qh]) = 
+	int2d(Th)( dx(u1)*dx(v1) + dy(u2)*dy(v2) + 0.5*(dx(u2)+dy(u1))*(dx(v2) + dy(v1)) )
+	- int2d(Th)( ph*(dx(v1)+dy(v2)) + qh*(dx(u1)+dy(u2)) )
+	- int2d(Th)( f1*v1 + f2*v2 )
+	+ on(gamma1,u1=0,u2=0);
+
+// ************
+// QUESTION 10
+// ************
+
+// visualiser la donnée initiale
+func int plotF(real f1, real f2, bool wait) {
+	fespace Vh2D(Th, [P2,P2]);
+	Vh2D [fh1,fh2] = [f1,f2];
+	plot([fh1,fh2], wait=wait,fill=true);
+}
+plotF(f1,f2,true);
+
+FV1;
+
+int i = 1;
+plot([u1,u2], ps="fv"+i+"-stream.eps",cmm="Velocity field",wait=true,fill=true,value=true);
+plot(ph,ps="fv"+i+"-pressure.eps",cmm="Pressure field",wait=true,fill=true,value=10);
+
+
+FV2;
+
+i = 2;
+plot([u1,u2], ps="fv"+i+"-stream.eps",cmm="Velocity field",wait=true,fill=true,value=true);
+plot(ph,ps="fv"+i+"-pressure.eps",cmm="Pressure field",wait=true,fill=true,value=10);
+
+// *******************
+// QUESTIONS 11 ET 12
+// *******************
+
+string baseAnimTitle = "Deformation step ";
+string filenumber;
+
+// Déformation avec FV1
+func int evolve1(int numsteps, real coef) {
+	string baseAnimFile = "deformation-FV1/evol_deform_";
+	
+	for (int j = 0; j < numsteps; j++) {
+		Th = movemesh(Th, [x+u1*coef, y+u2*coef]);
+		FV1;
+
+		if (j < 10) { filenumber = "0"+j; }
+		else { filenumber = j; }
+
+		plot(Th, wait=1,cmm="Evolution step " + j, ps=baseAnimFile + filenumber + ".eps");
+		// plot([u1,u2], wait=1,cmm="Evolution step " + j);
+
+	}
+}
+
+// evolve1(100, 0.06);
+
+// Déformation avec FV2
+func int evolve2(int numsteps, real coef) {
+	string baseAnimFile = "deformation-FV2/evol_deform_";
+	
+	for (int j = 0; j < numsteps; j++) {
+
+		Th = movemesh(Th, [x+u1*coef, y+u2*coef]);
+		FV2;
+
+		if (j < 10) { filenumber = "0"+j; }
+		else { filenumber = j; }
+
+		plot(Th, wait=1,cmm="Evolution step " + j, ps=baseAnimFile + filenumber + ".eps");
+		// plot([u1,u2], wait=1,cmm="Evolution step " + j);
+
+	}
+}
+
+evolve2(100, 0.06);
