@@ -37,6 +37,11 @@ classdef SimpleCurve
             plot(xt,yt);
             axis equal
         end
+        function[r] = length(this)
+            dx = @(t)(1e8*(this.x(t + 1e-8) - this.x(t)));
+            dy = @(t)(1e8*(this.y(t + 1e-8) - this.y(t)));
+            r = integral(@(t)(sqrt(dx(t).^2 + dy(t).^2)),this.I(1),this.I(2));
+        end
     end
     
 end

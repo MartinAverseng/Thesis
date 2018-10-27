@@ -77,7 +77,14 @@ classdef P1disc < FEcell
             beta{2} = -a./l;
             
         end
-        
+        function[cb] = constantTerm(~,b,X,A,B)
+            [~,~,~,~,~,~,alpha,beta,~] = parameters_singInt(X,repmat(A,size(X,1),1),repmat(B,size(X,1),1));
+            if b==1
+                cb = beta./(beta-alpha);
+            else
+                cb = -alpha./(beta-alpha);
+            end
+        end
     end
     
 end

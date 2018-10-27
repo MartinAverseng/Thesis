@@ -1,0 +1,32 @@
+\documentclass[]{article}
+\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+
+\title{Réflexion sur les poids et les changements de variable}
+\author{Martin Averseng}
+
+
+\begin{document}
+	\maketitle
+	
+	Soit un poids $\omega(s)$, et l'opérateur intégral 
+	\[S\phi = \int_{\gamma} G(s - s') \omega(s')ds'.\]
+	
+	On peut former l'équivalent de la fonction $\arccos$, que je vais noter $\varphi$, numériquement, en prenant : 
+	
+	\[\varphi(s) = \int_{0}^{s} \omega(s) ds.\]
+	
+	On peut même se débrouiller pour éviter la singularité en prenant 
+	
+	\[\varphi(s) = -\int_{s}^{H} \omega(s) ds.\]
+	
+	ou $H$ est plus grand que la plus grande abscisse curviligne possible.
+	
+	En dimension plus grande, on peut écrire : 
+	\[ \int_{\Omega} G(x - y) \omega(y) dy\]
+	on cherche u tel que $\Delta u = \omega$ et $u$ est nul sur le bord du domaine $\Omega$. Puis on pose $\varphi = \nabla u$ de telle sorte que $div \varphi = \omega$. On aura alors 
+	\[\int_{\Omega} G(x - y) \omega(y) dy = \int_{\Omega} G(\varphi(x) - \varphi(y)) \omega(y) + reste\]
+	et ce terme se calcule :
+	\[\int_{\Omega} G(\varphi(x) - \varphi(y)) \omega(y) = \int_{\Omega} div (F(\varphi(x) - \varphi(y))) dy = \int_{\partial \Omega} F(\varphi(x) - \varphi(y))d\sigma(y)\]
+	ou $F$ est une primitive du noyau singulier $G$. 
+	
+\end{document}

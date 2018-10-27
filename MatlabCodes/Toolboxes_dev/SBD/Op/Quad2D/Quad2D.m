@@ -6,8 +6,7 @@ classdef Quad2D
     properties (Constant,Hidden)
         % Constants developped to help choosing the number of points for
         % the circular discretisation of the spectrum.
-        gamma3 = exp(1)/2*0.8;
-        gamma4 = 1;
+        gamma = exp(1)/2*0.8;
     end
     properties (Access = public)
         %rq; % The radial quadrature
@@ -34,13 +33,14 @@ classdef Quad2D
                 %q2d.rq = radialQuad;
                 alpha= radialQuad.alpha;
                 rho = radialQuad.rho;
+                P = length(rho);
                 assert(rho(1)==0);
                 tol = radialQuad.tol;
                 q2d.offset = alpha(1);
                 alpha = alpha(2:end);
                 rho = rho(2:end);
                 
-                Ns = fix(Quad2D.gamma3 * rho.^(Quad2D.gamma4) + (5*log(1/(tol+10^(-10)))));
+                Ns = fix((Quad2D.gamma * rho + (4*log(P*abs(alpha)/(tol+10^(-10)))))/2 + 1)*2+1;
                 N = sum(Ns);
                 xxi_nu = zeros(N,2);
                 ww_nu = zeros(N,1);
@@ -119,10 +119,10 @@ classdef Quad2D
             xxi_nu = this.xi_nu;
             ww_nu = this.w_nu;
             Nxi = length(xxi_nu);
-            ttol = this.tol/10 + 1e-10;
+            ttol = this.tol/100 + 1e-10;
             if Nxi >0
                 out = nufft2d3(Nxi, xxi_nu(:,1), xxi_nu(:,2), ...
-                    ww_nu, +1, ttol, size(x,1), x(:,1), x(:,2));
+                    ww_nu, +1, ttol, size(x,1), x(:,1), x(:,2)) + this.offset;
             else
                 out = 0*size(x,1);
             end
@@ -137,7 +137,7 @@ classdef Quad2D
             xxi_nu = this.xi_nu;
             ww_nu = this.w_nu;
             Nxi = length(xxi_nu);
-            ttol = this.tol/10;
+            ttol = min(this.tol/10 + 1e-10,1e-6);
             if this.verbose >=1
                 fprintf('*')
             end

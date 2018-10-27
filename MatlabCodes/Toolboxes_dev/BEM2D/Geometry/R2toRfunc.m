@@ -125,8 +125,17 @@ classdef R2toRfunc < func
         end
     end
     methods (Static)
+        function[B] = X
+            B = R2toRfunc(@(Z)(Z(:,1)));
+        end
+        function[B] = Y
+            B = R2toRfunc(@(Z)(Z(:,2)));
+        end
         function[B] = Tn(n)
             B = R2toRfunc(@(Z)(chebyshevT(n,Z(:,1))));
+        end
+        function[B] = Un(n)
+            B = R2toRfunc(@(Z)(chebyshevU(n,Z(:,1))));
         end
     end
 end

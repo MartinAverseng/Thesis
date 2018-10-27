@@ -4,28 +4,29 @@ classdef singleLayer < BIO
         r=1;
         k;
         ln_reg;
+        correctionMethod = 'constantTerm';
     end
     
     methods
-        function[this] = singleLayer(k,VVh,XX,AopOpt,r)
-            if ~exist('XX','var')||isempty(XX)
-                XX = VVh.gaussPoints;
-            end
-            this.k = k;
-            if ~exist('AopOpt','var')||isempty(AopOpt)
-                AopOpt = {};
-            end
-            if ~exist('r','var')||isempty(r)
-                r = 1;
-            end
+        function[this] = singleLayer(VVh,varargin)
+            p = inputParser;
+            p.addOptional('k',0);
+            p.addOptional('Xdata',VVh.gaussPoints );
+            p.addOptional('Op_opt',{})
+            p.addOptional('r',1);
+            p.addOptional('correcMethod','constantTerm');
+            p.parse(varargin{:});
+            k = p.Results.k; XX = p.Results.Xdata; AopOpt = p.Results.Op_opt;
+            r = p.Results.r; correcMethod = p.Results.correcMethod;
             this.r = r;
             this.Vh = VVh;
-            this.ln_reg = this.Vh.regularize(XX,'ln');
+            this.ln_reg = this.Vh.regularize(XX,'ln','correcMethod',correcMethod);
             if k > 0
                 kern = 1i/4*H0Kernel(k);
             else
                 kern = (-1/(2*pi))*LogKernel(r);
             end
+            this.k = k;
             this.kernel = kern;
             this.Aop = Op(XX,kern,VVh.gaussPoints,AopOpt{:});
             this.AopOpt = AopOpt;
@@ -33,9 +34,9 @@ classdef singleLayer < BIO
             this.V = 'V';
         end
         function[] = set_X(this,XX,varargin)
-            if isequal(XX,this.X)
-                return
-            end
+%             if isequal(XX,this.X)
+%                 return
+%             end
             this.Aop = this.Aop.update_X(XX,varargin{:});
             this.ln_reg = this.Vh.regularize(XX,'ln');
             this.X = XX;

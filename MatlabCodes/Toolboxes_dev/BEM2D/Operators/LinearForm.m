@@ -20,7 +20,7 @@ classdef LinearForm < AbstractMatrix
             assert(isa(u,'FE_func'));
             errorMessage = 'This linear form is not defined on the same FE space as argument ''u''';
             assert(isequal(u.feSpace,this.feSpace),errorMessage);
-            r = sum(this.concretePart.*u.v);
+            r = sum(this.concretePart.*conj(u.v));
         end
         function[out] = or(this,u)
             out = this.eval(u);

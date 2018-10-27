@@ -1,0 +1,63 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: PlanArticle.aux
+The style file: plain.bst
+Database file #1: /home/martin/Thesis/Biblio/biblio.bib
+Warning--I didn't find a database entry for "Christiansen"
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "Levadoux"
+Warning--I didn't find a database entry for "DarbasAntoine"
+Warning--I didn't find a database entry for ""
+Warning--I didn't find a database entry for "Bruno"
+Warning--I didn't find a database entry for "Jerez"
+Warning--I didn't find a database entry for "Hiptmair"
+Warning--I didn't find a database entry for "postell1990h"
+Warning--I didn't find a database entry for "costabel1988convergence"
+Warning--I didn't find a database entry for "betcke2014spectral"
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 19 entries,
+            2118 wiz_defined-function locations,
+            639 strings with 7541 characters,
+and the built_in function-call counts, 5954 in all, are:
+= -- 595
+> -- 263
+< -- 1
++ -- 107
+- -- 84
+* -- 415
+:= -- 1010
+add.period$ -- 57
+call.type$ -- 19
+change.case$ -- 94
+chr.to.int$ -- 0
+cite$ -- 20
+duplicate$ -- 214
+empty$ -- 472
+format.name$ -- 84
+if$ -- 1218
+int.to.chr$ -- 0
+int.to.str$ -- 19
+missing$ -- 21
+newline$ -- 98
+num.names$ -- 38
+pop$ -- 90
+preamble$ -- 1
+purify$ -- 78
+quote$ -- 0
+skip$ -- 158
+stack$ -- 0
+substring$ -- 412
+swap$ -- 27
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 70
+warning$ -- 1
+while$ -- 63
+width$ -- 21
+write$ -- 203
+(There were 2 error messages)

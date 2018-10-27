@@ -25,7 +25,7 @@ drawnow
 
 
 X = Vh.gaussPoints;
-Sop = singleLayer(k,Vh,[],{'a_factor',20,'tol',1e-3});
+Sop = singleLayer(Vh,'Op_opt',{'a_factor',20,'tol',1e-3},'k',k);
 Sgalerk= Sop.galerkine(Vh,'U');
 l = Vh.secondMember(-planeWave);
 

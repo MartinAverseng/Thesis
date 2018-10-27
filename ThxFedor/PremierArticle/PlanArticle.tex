@@ -1,0 +1,603 @@
+\documentclass[]{article}
+\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+
+\newcommand{\oD}{\prescript{\omega}{}{\Delta}}
+\newcommand{\Do}{\Delta_{\omega}}
+
+\begin{document}
+	\toDo{Commencer à concaténer les références}
+\section{Introduction}
+
+
+\cite{costabel2003asymptotics} Papier de Costabel sur l'asymtptotique des solutions. 
+\cite{yan1990cosine}
+Explication de l'objectif du préconditionnement. Dire que dans le cas d'un ouvert Lipschitzien, on a plusieurs stratégies, mais pour un arc ouvert, elles s'effondrent. Solution trouvée par Oscar Bruno. Expliquer le lien qu'on va faire avec Darbas et co. 
+
+\paragraph{The scattering problem}
+We focus on the following problem, modeling the scattering of a wave by an open line. Let $\Gamma$ a smooth non-intersecting open curve. We define a choose a smooth unit normal vector $n$ and let $\sigma$ the usual measure on $\Gamma$. Let $k > 0$, we seak a solution of the following two problems:
+\begin{itemize}
+	\item[-] Dirichlet problem (D):  
+	\begin{equation}
+	\left \{
+	\begin{aligned}
+	-\Delta u - k^2 u &= 0, & \text{ in } \R^2 \setminus \Gamma \\
+	u &= u_D, & \text{ on } \Gamma \\
+	\end{aligned} \right.
+	\label{DirichletProblem}
+	\end{equation}
+	\item[-] Neumann problem (N): 
+	\begin{equation}
+	\left \{
+	\begin{aligned}
+	-\Delta u - k^2 u &= 0, && \text{ in } \R^2 \setminus \Gamma \\
+	\dfrac{\partial u}{\partial n} &= u_N. && \text{ on } \Gamma 
+	\end{aligned} \right.
+	\label{NeumannProblem}
+	\end{equation} 
+\end{itemize}
+If we add the Sommerfeld radiation condition
+\begin{equation}
+\dfrac{\partial u}{\partial |x|} - iku = o\left(\frac{1}{\sqrt{\abs{x}}}\right)
+	\label{Sommerfeld}
+\end{equation}
+\begin{The} Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (D) and (N) together with \eqref{Sommerfeld} both have a unique solution $u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, and it is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen, for the Dirichlet problem, the solution has an unbounded gradient, with
+\[\dfrac{\partial u}{\partial n}(x) = O\left(\frac{1}{\sqrt{d(x,\partial \Omega)}}\right),\]
+For the Neumann problem, one has
+\[u(x) = \sum_{i=1}^2 \alpha_i \sqrt{\rho_i}\chi_i + \psi\]
+where $\psi \in \tilde{H}^{3/2}(\Gamma)$. Here, $\chi_1$ and $\chi_2$ are two functions concentrated near each edge of the arc, $\rho_i$ is the distance between $x$ and the tip $i$, and $\alpha_i$ are two real numbers. 
+\end{The}
+For a proof for the Dirichlet problem, see \cite{stephan1984augmented} (Dirichlet). For the Neumann problem, see \cite{wendland1990hypersingular,monch1996numerical}.
+For the definition of Sobolev spaces on an open set and on a Lipschitz curve, refer to \cite{mclean2000strongly}. $H^{1}_\textup{loc}(\Omega)$ is the set of functions $u$ such that for all smooth functions $\chi$ compactly supported in $\Omega$, $\chi u \in H^1(\Omega)$. Sobolev spaces on a smooth curve are defined by transport. To extend the definition of these spaces to an open curve $\Gamma$, we also follow \cite{mclean2000strongly}, by considering any smooth closed curved $\dot{\Gamma}$ containing $\Gamma$, and defining 
+\[H^s(\Gamma) = \enstq{U_{|\Gamma}}{ U \in H^s(\dot{\Gamma}) }\]
+obviously, this definition does not depend on the particular choice of smooth closed curve $\dot{\Gamma}$ containing $\Gamma$. Moreover,
+\[\tilde{H}^s(\Gamma) = \enstq{u \in H^s(\Gamma)}{\tilde{u} \in H^s(\dot{\Gamma})}\]
+where $\tilde{u}$ denotes the extension by zero of $u$ on $\tilde{\Gamma}$, and $\psi$ is in $H^{3/2}(\Gamma)$ 
+  
+\paragraph{Integral operators}
+
+We now define the classical layer potentials and integral operators that allow to represent the solution of (D) and (N). 
+\paragraph{Single-layer potential}
+The single-layer potential $\text{SL}_k$ is given by 
+\begin{equation}
+\text{SL}_k\lambda(x) = \int_{\Gamma}G_k(x-y)\lambda(y)d\sigma(y)
+\end{equation}
+for any smooth functions $\lambda$. It is well-known that for any smooth compactly supported function, $\chi \text{SL}_k$ extends uniquely to a continuous mapping
+\[\chi \text{SL}_k : \tilde{H}^{-1/2}(\Gamma) \to H^1(\R^2).\] 
+We will use the abusive notation
+\[\text{SL}_k \lambda = \int_{\Gamma}G_k(x-y)\lambda(y)d\sigma(y) \]
+even for $\lambda \in \tilde{H}^{-1/2}(\Gamma)$. 
+Here, $G_k$ is the Green's function defined by 
+\begin{equation}
+\left\{
+\begin{aligned}
+G_0(z) &= -\dfrac{1}{2\pi} \ln \abs{z}, && \text{ if } k= 0,\\
+G_k(z) &= \frac{i}{4}H_0(k|z|), && \text{ if } k > 0.
+\end{aligned} \right.
+\end{equation} 
+We define the operator $S_k$ as $S_k = \gamma \text{SL}_k$ where $\gamma$ is the trace operator on $\Gamma$. When $k = 0$, we simply note this operator $S$. It follows from the trace theorem that $S_k$ is continuous from $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. 
+ 
+\paragraph{Double-layer potential}
+The double layer potential $\text{DL}_k$ is given by 
+\[\text{DL}_k \mu(x) = \int_{\Gamma} n(y) \cdot \nabla G_k(x-y) \mu(y) d\sigma(y).\]
+for any smooth function $\mu$. This time, $\chi \text{DL}_k$ extends to a continuous mapping 
+\[\chi \text{DL}_k : \tilde{H}^{1/2}(\Gamma) \to H^{1}(\R^2 \setminus \Gamma)\]
+and the function $\text{DL}_k \mu$ has a jump across $\Gamma$. We define 
+\[D_k \mu  = \lbrace\textup{DL} \mu \rbrace\]
+where $\lbrace u \rbrace$ denotes the average value of $u$ on each side of $\Gamma$. $D_k$ is then a continuous operator from $\tilde{H}^{1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. 
+
+It is well-known that the normal derivative of $\text{DL}\mu$ is continuous across $\Gamma$, allowing us to define the hypersingular operator $N_k = \partial_n \text{DL}$. This operator admits the following representation:
+\begin{eqnarray*}
+	N_k \mu &=& \lim_{\varepsilon \to 0^+} \int_{\Gamma} n(y) \cdot \nabla G(x + \varepsilon n(x) - y) \mu(y) d\sigma(y).
+\end{eqnarray*}
+The kernel of this operator has a non-integrable singularity, but numerical calculations are made possible by the following formula, valid for smooth functions $\mu$ and $\nu$ that vanish at the edge of $\Gamma$: 
+\[\duality{N_k \mu}{\nu} = \int_{\Gamma} G_k(x-y) \mu'(x) \nu'(y) - k^2 G_k(x,y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\]
+We know that $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously.  
+We can now obtain the solution of the Dirichlet and Neumann problems through the resolution of an integral equation:
+\begin{The} 
+	The solution of \eqref{DirichletProblem}, \eqref{Sommerfeld} is given by 
+	\[ u = \textup{SL}_k \lambda\]
+	where $\lambda$ satisfies the integral equation 
+	\begin{equation}
+		S_k \lambda = - u_D
+		\label{dirichletIntEq}
+	\end{equation}
+	The solution of \eqref{NeumannProblem}, \eqref{Sommerfeld} is given by 
+	\[ u = \textup{DL}_k \mu\]
+	where $\mu$ satisfies the integral equation 
+	\begin{equation}
+		N_k \mu = u_N
+		\label{NeumannIntEq}
+	\end{equation}
+\end{The}
+
+The remainder of the paper focuses on the numerical solution of the integral equations \eqref{dirichletIntEq} and \eqref{NeumannIntEq} using Galerkin finite elements. Though this will not lead to spectral convergence as when using trigonometric polynomial, we aim to generalize our method to cases where the eigenvectors of the operators are not explicitly known. In the first section, we treat the two equations corresponding to the case $k=0$ and when $\Gamma$ is the segment. We introduce the same rescaled operators as in \cite{bruno2012second}. We derive a simple preconditioner for both integral equation in the form of the square root of the differential operators \eqref{cheb1} and \eqref{cheb2}, and verify its efficiency on numerical experiments using Galerkin discretization with piecewise linear finite elements. In the next section, we treat the general case using standard compact perturbation arguments, leading to a new preconditioner. Numerical tests are again provided.
+
+\section{The case $k=0$ on a flat segment}
+
+In this section, we restrict our attention to the case where $\Gamma$ is the open segment $(-1,1) \times \{0\}$, and $k=0$. We will study the properties of the equations 
+\[S\lambda = -u_D\]
+and 
+\[N\mu = u_N\]
+and show their invertibility in a range of Sobolev-like spaces. The Chebyshev polynomials of first and second kind will play an important role as a basis of our Hilbert space. 
+The Chebyshev polynomials of the first kind are given by 
+\[T_n(x) = \cos(n \arccos(x)),\]
+while those of the second kind are 
+\[U_n(x) = \dfrac{\sin((n+1) \arccos(x))}{\sqrt{1 - x^2}}\]
+$T_n$ and $U_n$ are polynomials of degree $n$, and are orthogonal families respectively for the Hilbert spaces 
+$$L^2_{\frac{1}{\omega}} \isdef \enstq{f \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}$$
+and 
+$$L^2_{\omega} \isdef \enstq{f \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} {f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}.$$
+If we note $\omega(x) = \sqrt{1-x^2}$, and $\partial_x$ the derivation operator, the Chebyshev polynomials satisfy
+\begin{eqnarray}
+	(\omega\partial_x)^2 T_n &=& -n^2T_n \label{cheb1}\\
+	(\partial_x\omega)^2 U_n &=& -(n+1)^2U_n \label{cheb2}
+\end{eqnarray}
+These relations will play a very important role in our analysis. Together with \autoref{STn} and \autoref{NUn}, they are the foundation of the preconditioners we shall introduce. 
+
+\subsection{Single layer equation}
+
+In this section we focus on the equation $S\lambda = -u_D$, that is we seek $\lambda \in \tilde{H}^{-1/2}$ such that 
+
+\begin{equation}
+	-\frac{1}{2\pi}\int_{-1}^{1} \log|x-y| \lambda(y) = -u_D(x), \quad \forall x\in (-1,1)\label{Slambda}
+\end{equation} 
+
+This equation is sometimes called "Symm's integral equation" and its resolution has received a lot of attention in the 1990's. Numerical methods, using both collocation and galerkine have been presented and analyzed \cite{atkinson1991numerical,yan1988integral,yan1990cosine,sloan1992collocation,yan1989mesh}. The solution is connected to the exterior Dirichlet problem for the Laplace operator, but attention must be paid when the solution $\lambda$ obtained does not satisfy $\duality{1}{\lambda}_\Gamma = 0$: in this case, $\textup{SL}\lambda$ is not a bounded solution of the Dirichlet problem. See \cite{atkinson1991numerical} for a link with the logarithmic capacity of the line and how we recover the bounded solution from the solution of \eqref{Slambda}.
+
+Our analysis lies on the following formula. For a proof, see for example \cite{mason2002chebyshev} Theorem 9.2. Note this is also the main ingredient in \cite{bruno2012second}.
+
+
+\paragraph{Autre idée de présentation.}
+We first start with a commutation result
+\begin{Prop}
+	Commutation de $S_\omega$ et $(\omega \partial_x)^2$. 
+\end{Prop}
+Exploitation en terme de vp. Dire qu'on a deux opérateurs avec spectre discret. (L'un est compact dans $L^2\frac{1}{\omega}$, (sans preuve pour l'instant).
+
+\begin{Prop}
+	\[ -\frac{1}{2\pi}\int_{-1}^{1} \frac{\ln|t-s|}{\sqrt{1 - s^2}}T_n(s)ds = \lambda_n T_n(t)\]
+	where
+	\[\lambda_n = \begin{cases}
+	\dfrac{\ln(2)}{2} & \text{if } n=0\\
+	\dfrac{1}{2n} & \text{otherwise}.
+	\end{cases}\]
+	\label{STn}
+\end{Prop}
+An equivalent statement, and a rather beautiful decomposition can be found in \cite{jerez2012explicit} (Theorem 4.4), and also \cite{urzua2014optimal}. The proof in \cite{jerez2012explicit} is different from that of \cite{mason2002chebyshev}.
+\begin{The}	
+	For a given $x \in (-1,1)$, the logarithmic kernel admits the following expansion 
+	\[ \ln|x-y| = -\ln(2) - \sum_{n=1}^{+\infty} \frac{2}{n}T_n(x)T_n(y)\]
+	Where the convergence of the series is understood in $L^2_\frac{1}{\omega}$
+\end{The}
+
+\begin{Def}
+	For a smooth function $u$ defined on $(-1,1)$, we call the Fourier-Chebyshev decomposition of $u$ the following series 
+	\[ u(x) = \sum_{n=0}^{+\infty} \hat{u}_n T_n(x)\]
+	where the Fourier-Chebyshev coefficients $u_n$ are defined as 
+	\[ \hat{u}_n \isdef \begin{cases}
+	\dfrac{1}{\pi}\displaystyle\int_{-1}^{1} \dfrac{u(x) T_n(x)}{\sqrt{1-x^2}}dx & \text{ if } n \neq 0\\
+	\dfrac{2}{\pi}\displaystyle\int_{-1}^{1} \dfrac{u(x)}{\sqrt{1-x^2}}dx & \text{ otherwise.}\\
+	\end{cases}\]
+\end{Def}
+When $u$ is a smooth function, the series converges uniformly to $u$. We have the Parseval identity 
+\[ \int_{-1}^{1} \frac{u^2(x)}{\sqrt{1-x^2}} dx =  \frac{\pi \hat{u}_0^2}{2} + \pi\sum_{n=1}^{+\infty}\hat{u}_n^2,\]
+
+\begin{Def}
+	For all $s \geq 0$, we may define 
+	\[T^s = \enstq{ u \in L^2_\frac{1}{\omega}}{ \sum_{n=0}^{+\infty}(1+n^2)^s \hat{u}_n^2 < + \infty}.\]
+	This is a Hilbert space for the scalar product
+	\[\duality{u}{v}_{T^s} = \frac{\pi}{2}\hat{u}_0 \hat{v}_0 + \pi\sum_{n=1}^{+\infty}(1+n^2)^s\hat{u}_n \hat{v}_n.\]
+	We note $T^{\infty} \isdef \displaystyle\cap_{s \in \R} T^s$. This is a Frechet space. Let us note $T^{-\infty}$ the set of continuous linear forms on $T^{\infty}$. For $l \in T^{-\infty}$, we note $\hat{l}_n = l(T_n)$, so that for $u \in T^{\infty}$, 
+	\[l(u) = \frac{\pi}{2}\hat{l}_0 \hat{u}_0 + \pi \sum_{n=1}^{+\infty} \hat{l}_n \hat{u}_n\] 
+	We choose to identify the dual of $L^2_\frac{1}{\omega}$ to itself using the previous bilinear form.  With this identification, any element of $T^s$ with $s \geq 0$ can also be seen as an element of $T^{-\infty}$.  
+	The space $T^{-s}$ can be defined for all $s \geq 0$ as
+	\[T^{-s} = \enstq{ u \in T^{-\infty}}{ \sum_{n=0}^{+\infty}{(1 + n^2)^{-s} \hat{u}_n^2} < \infty}.\]
+	$T^{-s}$ is the dual of $T^s$ using the same identification. Obviously, for any real $s$, if $u \in T^s$, the sequence of polynomials $S_N(x) = \sum_{n=0}^{N} u_n T_n(x)$ converges to $u$ in $T^s$. Thus, the space of smooth function is dense in $T^s$ for all $s \in \R$. For $s < t$, we have compact inclusion $T^s \subset T^t$.
+\end{Def}
+\begin{Lem}
+	\[T^{\infty} = C^{\infty}([-1,1])\]
+	\begin{proof}
+		If $u \in C^{\infty}(-1,1)$, then we can obtain by induction using integration by parts, and using \eqref{cheb1}, for any $k \in \N$
+		\[\hat{u}_n = \frac{(-1)^k}{n^{2k}} \int_{-1}^{1} \dfrac{(\omega\partial_x)^{2k} u(x) T_n(x)}{\omega(x)}dx.\]
+		Noting that $(\omega \partial_x)^2 = (1-x^2)\partial_x^2 - x \partial_ x$, this proves $C^{\infty}(-1,1) \subset T^{\infty}$. To prove the opposite inclusion, first notice that, by normal convergence of the series, $C^0 \subset T^{\infty}$. Now, let $u \in T^{\infty}$, it suffices to show that $u' \in T^{\infty}$ and apply an induction argument. Applying term by term differentiation, we obtain
+		\[u'(x) = \sum_{n=1}^{+\infty} n u_n U_{n-1}(x).\] 
+		We can now use 
+		\[U_n(x) = \begin{cases}
+		2\displaystyle\sum_{\textup{odd } j}^n T_j & \textup{ for odd } $n$\\
+		2\displaystyle\sum_{\textup{even } j}^n T_j - 1& \textup{ for even } $n$
+		\end{cases}\]
+		to see that $u'$ is indeed in $T^{\infty}$. 
+	\end{proof}
+\end{Lem}
+
+\begin{Prop}
+	\toDo{Pas sûr que ce soit utile, ni même vrai...}
+	For $m \in \N$, the norm on $T^m_\omega$ is equivalent to 
+	\[\norm{u}_m^2 = \int_{-1}^{1}\frac{u^2}{\omega} + \int_{-1}^1 \dfrac{\abs{(\omega \partial_x)^m u}^2}{\omega}\]
+\end{Prop}
+Using the decomposition of the logarithmic kernel on the basis $T_n$, we see that the solution $\lambda$ to equation \eqref{Slambda} admits the following expansion 
+	\[ \lambda(x) = \frac{1}{\sqrt{1-x^2}}\left( \dfrac{2}{\ln(2)}\hat{g}_0 + \sum_{n=1}^{+ \infty} 2n\hat{g}_n T_n(x)\right).\]
+We deduce the following well-known fact:
+\begin{Cor}
+	If the data $g$ is in $C^{\infty}(-1,1)$, the solution $\lambda$ to the equation 
+	\[S\lambda = g\]
+	is of the form 
+	\[\lambda = \dfrac{\varphi}{\sqrt{1-x^2}}\]
+	with $\varphi \in C^{\infty}(-1,1)$.  
+\end{Cor}
+\begin{Rem}
+	The behavior in $\frac{1}{\sqrt{1-x^2}}$ is consistent with the expected asymptotic behavior near the edge. 
+\end{Rem}
+This motivates the following definition. We introduce the weighted single Layer operator: 
+\begin{Def}
+	Let 
+	\[\opFromTo{S_\omega}{\phi \in \Cinf([-1,1])}{-\dfrac{1}{2\pi}}{\int_{-1}^1\dfrac{\ln|t-s|}{\omega(s)} \phi(s)ds}\]
+\end{Def}
+This definition is the same as in \cite{bruno2012second}. We can now state the following result.
+\begin{Def}
+	We also define the operator 
+	\[\opFromTo{(\omega\partial_x)^2}{\phi \in \Cinf([-1,1])}{(1-x^2)\phi''(x) - x \phi'(x)}\]
+\end{Def}
+
+The action of these operators on $T^{\infty}$ is easy to analyze using \eqref{cheb1} and \autoref{STn}. By density of $T^{\infty}$ in $T^s$ for all $s$, we get:
+\begin{Prop}
+	The operator $S_\omega$ is a self-adjoint, positive definite operator, and defines a continuous bijection from $T^{s}$ to $T^{s+1}$ for all real $s$. In particular, $S_\omega$ is compact in $T^s$. 
+	Similarly, for any $s \in \R$, the operator $-(\omega \partial_x)^2$ is positive, self-adjoint, and continuous from $T^s$ to $T^{s-2}$. Moreover, its resolvent is compact from $L^2_\frac{1}{\omega} \to L^2_\frac{1}{\omega}$, thus it has a discrete spectrum. Its eigenvalues are the Chebyshev polynomials, (which thus form a Hilbert basis of $L^2_\frac{1}{\omega}$). \toDo{En fait, je sais que la parenthèse est triviale, mais ça permet de voir d'une autre manière ce qu'on a dit. Pour toute fonction de poids sur un domaine, on peut définir un opérateur auto-adjoint correspondant, et les vp correspondantes. On peut ainsi construire les espaces de Sobolev à poids comme précédemment. On peut espérer qu'une version à poids du simple couche soit adaptée à cette échelle d'espaces.}
+\end{Prop}
+The next two lemmas show that the solution to the Symm's integral equation can be recovered from the solution to $S_\omega \varphi = u_D$ in the usual spaces. 
+\begin{Lem}
+	$\tilde{H}^{-1/2}(-1,1) = \frac{1}{\omega}T^{-1/2}$ and for $u \in \tilde{H}^{-1/2}(-1,1)$, $u = \frac{\varphi}{\omega}$:
+	\[c\norm{u}_{\tilde{H}^{-1/2}} \leq \norm{\varphi}_{T^{-1/2}} \leq C\norm{u}_{\tilde{H}^{-1/2}}.\] 
+	\begin{proof}
+		Since the logarithmic capacity of the segment is $\frac{1}{4}$, the operator $S$ is positive and bounded below on $\tilde{H}^{-1/2}(-1,1)$, (\cite{mclean2000strongly} chap. 8)
+		so the norm on $\tilde{H}^{-1/2}(-1,1)$ is equivalent to 
+		\[\norm{u}_{\tilde{H}^{-1/2}} \sim \sqrt{\duality{Su}{u}}.\]
+		On the other hand, it is obvious that
+		\[ \norm{\varphi}_{T^{-1/2}} \sim \sqrt{\duality{S_\omega \varphi}{\varphi}_\omega}.\]
+		It remains to notice that the two duality products coincide.
+	\end{proof}
+\end{Lem}
+\toDo{Attention : on pourrait croire que $(\omega \partial_x)^2 \omega = - \omega$, car ceci est vrai pour tout $x \in (-1,1)$. En réalité, $(\omega \partial_x)^2 \omega = - \omega + \delta_{-1} + \delta_1$. On en déduit d'ailleurs que $\omega \in T^{3/2 - \varepsilon}$ pour tout $\varepsilon > 0$, et $\omega \notin T^{3/2}$. La morale de l'histoire est qu'il faut faire attention à la dérivabilité au bord pour pouvoir appliquer $(\omega \partial_x)^2$.}
+\begin{Lem}
+	\[H^{1/2}(-1,1) = T^{1/2}\]
+	and for $u \in H^{1/2}(-1,1)$ we have
+	\[\norm{u}_{H^{1/2}} \sim \norm{u}_{T^{1/2}}\]
+	\begin{proof}
+		Since, using the standard identification of the dual with the $L^2$ scalar product, $(H^{1/2})'(-1,1) =  \tilde{H}^{-1/2}(-1,1)$ (cf \cite{mclean1986spectral} chap. 3), so
+		\[\norm{u}_{H^{\frac{1}{2}}} = \sup_{v\in \tilde{H}^{-\frac{1}{2}}, v\neq 0} \dfrac{\duality{u}{v}}{\norm{v}_{\tilde{H}^{-\frac{1}{2}}}}\]
+		According to the previous lemma, for all $v\in \tilde{H}{-\frac{1}{2}}$, the function $\varphi = \omega v$ is in $T^{-1/2}$, and $\norm{ v}_{\tilde{H}^{-1/2}} \sim \norm{\varphi}_{T^{-1/2}}$. Also, notice $\duality{u}{v} = \duality{u}{\varphi}_\omega$. Thus 
+		\[\norm{u}_{H^{1/2}} \sim \sup_{\varphi \in T^{-1/2}} \dfrac{\duality{u}{\varphi}_\omega}{\norm{\varphi}_{T^{-1/2}}}\]
+		The last quantity is the $T^{1/2}$ norm of $u$ since $T^{1/2}$ is identified to the dual of $T^{-1/2}$ for $\duality{\cdot}{\cdot}_\omega$. 
+	\end{proof}
+\end{Lem}
+From the series decomposition of the logarithmic kernel, we may find an explicit kernel for the inverse of $S_\omega$ by applying the differential operator $-(\omega \partial_x)^2$ to both sides. However, the resulting kernel has a non-integrable singularity, so that integration by parts will be necessary in order to use it in a numerical setting. See \cite{jerez2011variational,urzua2014optimal}, where explicit variational forms for this operators are derived rigorously. The same method is also employed in the recent \cite{hiptmair2017closed} in $\R^3$ in the case of the disk. We just state here the following formal decomposition:
+\[\dfrac{d^2}{dxdy}\log\frac{M(x,y)}{|x-y|^2} = \frac{-1+xy}{2|x-y|^2} = \sum_{n=1}^{+ \infty} n T_n(x)T_n(y)\]
+with 
+$M(x,y) = \frac{1}{2}\left((y-x)^2 + (\omega(x) + \omega(y))^2\right) $.
+
+We here show an alternative way of defining this exact inverse, which will lead to an operator in the fom of a square root. To state the next result, we define the operator $\pi_{0}$ in the following way 
+\[\pi_0 u(x)  = \frac{2}{\pi} \int_{-1}^{1}\frac{u(y)}{\omega(y)}dy\]
+Notice $\pi_0 T_0 = T_0$. For any $s \in \R$, if $u \in T^s$, then $\pi_0 u$ can be defined as
+\[\duality{\pi_0 u}{v}_{\omega} = \duality{v}{T_0}_{\omega}, \quad v\in T^{\infty}\]  
+
+\begin{The}
+	The operators $S_\omega$, $-(\omega\partial_x)^2$, and $\pi_0$ commute and satisfy: 
+	\[4 S_{\omega}\left(-(\omega\partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right)S_{\omega} = I\]
+\end{The}
+Note that the commutation between $S\omega$ and $(\omega \partial_x)^2$ can be verified directly. When computing $[S_\omega,(\omega\partial_x)^2] = S_\omega (\omega \partial_x)^2 - (\omega\partial_x)^2S_\omega$, we obtain the quantity
+\[[S_\omega,(\omega\partial_x)^2] = \]
+The term $ jesaisplusquoi$ \toDo{juste retrouver le calcul} vanishes as soon as $\omega^2$ is a linear or quadratic function. For example, this means that, taking a semi-open line instead of the segment, we also have a simple spectral analysis of the problem, using this time the eigenvectors of the operator $-(\sqrt{x} \partial_x)^2$ on the Hilbert space $L^2_{1/\sqrt{x}}$
+\begin{Def}
+	Let an operator $A : T^s \to T^{s + 2p}$ such that 
+	\[AT_n = a_n T_n\]
+	with $a_n \geq 0$. We define $\sqrt{A} T^s \to T^{s + p}$ as the operator satisfying 
+	\[\sqrt{A}T_n = \sqrt{a_n} T_n.\]
+\end{Def}
+
+\begin{Cor}
+	The inverse of $S_\omega$ can be expressed as 
+	\begin{eqnarray*}
+		S_{\omega}^{-1} &=& 4S_\omega\left(-(\omega \partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right)\\
+		&=& 2\sqrt{-(\omega \partial_x)^2 + \frac{1}{\ln(2)^2}\pi_0}
+	\end{eqnarray*}
+\end{Cor}
+The last result shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be thought as inverse operators (modulo constant terms) and that, at the very least, $\sqrt{-(\omega \partial_x)^2}$ can be used as a preconditioner for $S_\omega$. Indeed, $\sqrt{-(\omega \partial_x)^2}S_\omega$ is a compact perturbation of identity. 
+
+\toDo{Darbas et Antoine à citer ici.}
+
+
+
+
+
+
+\subsection{Neumann} 
+
+We now turn our attention to the equation 
+
+\begin{equation}
+N\lambda = g
+\label{EquationIntegrale2}
+\end{equation} 
+
+Similarly to the previous section and following the works cited previously we consider a rescaled version of the hypersingular operator $N_\omega \isdef N \omega:$
+
+\[N_\omega \mu = \lim_{\varepsilon\to 0}\int_{-1}^{1} n(y)\cdot\nabla G(x + \varepsilon n(x) - y) \sqrt{1-y^2} dy\]
+
+Again this definition coincides with the operator $N_\omega$ of \cite{bruno2012second}.
+
+We will see that $N_\omega$ can also be analyzed in a very simple functional framework. As well as a decomposition in Chebyshev polynomials of the first kind, any function can be expanded in polynomials of the second kind: 
+\[u(x) = \sum_{n=0}^{+\infty} \bar{u}_n U_n(x)\]
+where 
+\[\bar{u}_n = \dfrac{2}{\pi}\int_{-1}^{1}\sqrt{1 - x^2}u(x)U_n(x)dx.\]
+
+\begin{Prop}
+	Commutation de $N_\omega$ et $(\partial_x \omega)^2$. 
+\end{Prop}
+
+\begin{Def}
+	For all $s \geq 0$, we define in a similar fashion as $T^s$:
+	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\bar{u}_n^2}.\]
+	We define the dual $U^{-s}$ of $U^s$ the same way as $T^{-s}$. 
+\end{Def}
+\paragraph{Digression : link between $U^s$ and $T^s$ :}
+\begin{Prop}
+	For $s \in \R^+$, 
+	\[T^s \subset U^s\] 
+	Moreover, the inclusion is strict. 
+	\begin{proof}
+		To show the inclusion, it suffices to observe that for $n \geq 2$, $T_n = \frac{U_n - U_{n-2}}{2}$. 
+		To show that the inclusion is strict, note that $\frac{1}{\omega}$ is in $U^0$ and not in $T^0$. For general $s \geq 0$, introduce the function 
+		\[ u^N = \sum_{n=0}^{2N+1} n^{-s} u_n U_n\]
+		where $u_n = \duality{\frac{1}{\omega}}{U_n}_\omega = [\frac{T_{n+1}}{n+1}]_{-1}^1 = \frac{1 + (-1)^n}{n+1}.$
+		This function is in $U^{\infty}$ and 
+		\[\lim_{N\to \infty}u^N = u \in U^s.\]
+		Using the fact that $u_n = 0$ for $n$ odd, we can rewrite 
+		\[u^N = \sum_{n=0}^{N}(2n+1)^{-s}\frac{1}{n + 1}\sum_{j=0}^{n}T_{2j + 1}\]
+		\[u^N = \sum_{j = 0}^N \left( \sum_{n = j}^N \frac{1}{(2n+1)^s(n+1)} \right)T_{2j+1}\]
+		Let us fix some $n$, and let  
+		\[\alpha_{n} = \lim_{N \to \infty} \hat{u}_{2n+1}\]
+		We have
+		\[\alpha_n = \sum_{j = n}^{+ \infty}\frac{1}{(2j+1)^{s}(j+1)}.\]
+		 For large $n$, 
+		\[\alpha_n \sim \frac{C}{n^s}\]
+		Let us assume that $u^N$ converges to some $u$ in $T^s$. Then, by continuity one must have $\alpha_n = \hat{u}_n$, but 
+		\[\sum_{n=0}^{+\infty} (1 + n^2)^s\alpha_n^2\]
+		is a divergent series contradicting that $u \in T^s$.  
+	\end{proof}
+\end{Prop}
+We shall see that, up to an identification that we will define now, the former result is true for all $s \in \R$. 
+\begin{Def}
+	We define a map $\iota : T^{-\infty} \to U^{-\infty}$
+	\[(\overline{\iota u})_n = \begin{cases}
+	\hat{u}_0 & \text{if } n = 0\\
+	\frac{\hat{u}_1}{2} & \text{if } n = 1\\
+	\frac{\hat{u}_{n} - u_{n+2}}{2} & \text{if } n \geq 2\\
+	\end{cases} \]
+	or, equivalently, for $u \in T^{-\infty}$, and $v\in U^{\infty}$, 
+	\[\duality{\iota u}{v}_\omega = \duality{u}{\omega^2 v}_\frac{1}{\omega}.\]
+\end{Def}
+\begin{Prop}
+	For all $s \in \R$, the map $\iota$ is a (non-surjective) isometry from $T^s$ to $U^s$. Let $u \in T^s$, then if $s \geq 0$, $\iota u = u$, while if $s \leq 0$, we will identify $u$ with $\iota u$ as a member of $U^{s}$. In this sense, $T^s \subset U^s$ for all $s$ (with strict inclusion).  
+\end{Prop}
+\begin{Prop}
+	There exists no linear continuous map $L$ from $U^0$ to $T^{-\infty}$ satisfying, for $u \in U^{+\infty}$
+	\[\duality{Lu}{T_n}_\frac{1}{\omega} = \duality{\frac{u}{\omega}}{\frac{T_n}{\omega}}_\omega\]
+	That is, there is no natural identification of functions in $U^0$ to an element of $T^{-\infty}$. However, for $s > 1/2$, this map exists and is the identity for locally integrable functions. It is continuous from $U^s$ to $T^{s-1}$. In other words
+	\[\forall s > 1/2, \quad U^s \subset T^{s-1}\]
+\end{Prop}
+We will see later that this inclusion is also strict. 
+\begin{Def}
+	We define an operator $\partial_x : T^{-\infty} \to U^{-\infty}$ as 
+	\[\duality{\partial_x u}{v}_\omega = - \duality{u}{\omega \partial_x \omega v}_\frac{1}{\omega}\]
+	Similarly, we define an operator $\omega\partial_x\omega : U^{-\infty} \to T^{-\infty}$ by
+	\[\duality{\omega\partial_x\omega u}{v}_\omega = -\duality{u}{\partial_x v}.\]
+	For all $s \in \R$, $\partial_x$ and $\omega \partial_x \omega$ define continuous operators from $T^{s+1}$ to $U^s$ and from $U^{s+1}$ to $T^s$ respectively. When $v$ is compactly supported in $(-1,1)$, and when $u$ is locally integrable, those definitions coincide with the derivative of $u$ in the sense of distributions $\mathcal{D}'(-1,1)$. For $u \in T^1$, we have the expression
+	\[\partial_x u(x) = \sum_{n=0}^{+ \infty} n \hat{u}_{n+1}U_n(x)\]
+	where the sum converges in $L^2_\omega$. Moreover, we have
+	\[\norm{u}_{T^1}^2 = \norm{u}_{L^2_\frac{1}{\omega}}^2 + \norm{\partial_x u}^2_{L^2_\omega}\]
+\end{Def}
+\begin{Prop}
+	The inclusion $U^s \subset T^{s-1}$ for $s > 1/2$ is always strict.
+	\begin{proof}
+		If we assume by contradiction that $U^s = T^{s-1}$ for some $s$, this means that $\omega \partial_x \omega$ is continuous from $T^s$ to itself. Using 
+		\[\omega \partial_x \omega T_n  = \frac{(n-1)T_{n-1} - (n+1)T_{n+1}}{2}\]
+		we can easily construct a counter-example by using an alternating sequence. 
+	\end{proof}
+\end{Prop}
+\begin{Def}
+	\textbf{Trace operators:} For $u \in T^{\infty}$, we may define 
+	\[\gamma_1 u = u(1)\]
+	\[\gamma_{-1} u = u(-1)\]
+\end{Def}
+\begin{Prop}
+	$\gamma_1$ and $\gamma_{-1}$ can be extended to continuous linear forms on $T^{s}$ for $s > \frac{1}{2}$, that is 
+	\[\abs{u(1)} \leq C_s \norm{u}_{T^{s}} \] 
+	\[\abs{u(-1)} \leq C_s \norm{u}_{T^{s}} \] 
+	\begin{proof}
+		We have $\duality{\delta_1}{T_n}_\frac{1}{\omega} = 1$ thus $\delta_1 \in T^{-1/2-\varepsilon}$ for all $\varepsilon > 0$. 
+	\end{proof}
+\end{Prop}
+\begin{Def} For $s > 1/2$, we define $T^s_0$ as 
+	\[T^s_0 = \enstq{u \in T^s}{u(1) = u(-1) = 0}.\]
+	\toDo{Then it appears that $T^s_0$ is the completion of smooth compactly supported functions on $(-1,1)$ in the norm of $T^s$. Pas sûr.} 
+\end{Def}
+\begin{Prop}
+	For $u \in T^1_0$ have the Poincaré inequality 
+	\[\norm{u}_{T^1}^2 \leq C \norm{\partial_x u}_{U^0}^2\]
+\end{Prop}
+\begin{Prop}
+	We have the following characterizations
+	\[U^s = \enstq{\partial_x u + c}{ u \in T^{s+1}, c \in \R}\]
+	\[T^s= \enstq{(\omega \partial_x \omega) u + c}{u \in U^{s+1}, c \in \R}\]
+	In particular $U^{\infty} = C^{\infty}(-1,1)$.  
+	\begin{proof}
+		$T_n' = nU_{n-1}$.
+
+	\end{proof}
+\end{Prop}
+\toDo{Récap.}
+\begin{Prop}
+	For all $s$, the following inclusion is strict and continuous 
+	\[ T^s \subset U^s\]
+	And for $s > 1/2$, 
+	\[ U^s \subset T^{s-1}\]
+	Moreover, the map $u \mapsto \omega\partial_x\omega u$ is continuous from $U^{s+1}$ to $T^s$, and the map $u \mapsto u'$ is continuous from $T^{s+1}$ to $U^s$. 
+	The inclusions are optimal in the following sense : for all $\eta \in (0,1)$, there exists $f \in T^{s-\eta}$ and $f\notin U^s$. If $s > 1/2$,  there exists $g \in U^s$ such that $g\notin T^{s-\eta}$.  
+	\begin{proof}
+		\toDo{Redite d'avant...}
+		The first inclusion is obvious using the fact that, for $n \geq 2$, $T_n = \frac{U_n - U_{n-2}}{2}$. The second comes from the expressions
+		\[U_{2n} = \sum_{j = 0}^n T_{2j}, \quad U_{2n+1} = \sum_{j=0}^n T_{2j+1} - 1\]
+		and the continuity of the adjoint of the Cesarò operator on $l^2(\N)$, an argument also involved in the analysis of \cite{bruno2012second}. To see that the inclusion are strict, observe that $x \mapsto \frac{1}{\sqrt{1-x^2}}$ is in $L^2_\omega$ and not in $L^2_\frac{1}{\omega}$, showing that $T^0$ is strictly included in $U^0$. Also, assume by contradiction that $U^s = T^{s-1}$. Then, by the above proposition, it follows that
+		\[T^s = \enstq{\omega \partial_x \omega u + c}{u \in T^s, c \in \R}\]
+		In particular, $L^2_\frac{1}{\omega} = \enstq{\omega \partial_x \omega u + c}{u \in L^2_\frac{1}{\omega}, c \in \R} $.  
+		For $u=1$, we shall see that $\omega \partial_x \omega u \notin L^2_\frac{1}{\omega}$. To see it, we must take care to the precise definition of $\omega \partial_x \omega$. We must in fact expresse $omega \partial_x \omega T_n$ in function of $T_j$. For simplicity, let us assume that $n$ is odd.
+		\begin{eqnarray*}
+			\omega \partial_x \omega T_n &=& n(1-x^2)U_{n-1} - x T_n
+		\end{eqnarray*}
+		Now, we use
+		\[(1-x^2)U_{n-1} = xT_n - T_{n+1}\]
+		to get
+		\[\omega \partial_x \omega T_n = (n-1)\frac{T_{n+1} + T_{n-1}}{2} - nT_{n+1}\]
+		\[\omega \partial_x \omega T_n  = \frac{(n-1)T_{n-1} - (n+1)T_{n+1}}{2}\]
+		\toDo{caractérisation par nullité au bord. En fait, si $u$ est dans $l^2$ et positive, il se pourrait qu'on arrive à contrôler $(n+1)u_{n+1} - (n-1)u_{n-1}$ par la $\frac{u_{n+1} + u_n}{2}$. (en tout cas, penser au cas $u_n = \frac{1}{n^2}$}.
+	\end{proof}
+\end{Prop}
+
+\toDo{Pour les inclusions strictes, je réfléchis à la preuve. Je pense qu'il suffit de le montrer pour un $s$, ensuite on a des bijections bicontinues de $H^s$ dans $H^t$.}
+\toDo{J'ai le reste de la preuve en photo.}
+
+\paragraph{Fin de la digression}
+
+
+\begin{Prop}
+	$N_\omega$ is a positive definite, self-adjoint operator continuous from $U^s_\omega$ to $U^{s-1}_\omega$ for all real $s$. For all $n \in \N$, we have 
+	\[N_\omega U_n = \frac{n+1}{2}U_n.\]
+	Moreover, $-(\partial_x\omega)^2$ is also positive definite with
+	\[\forall n \in \N,\quad  -(\partial_x \omega)^2 U_n = (n+1)^2 U_n\]
+	\label{NUn}
+\end{Prop}
+
+Like before, we have the following link between $U^{-1/2}$, $U^{1/2}$ and the usual Sobolev spaces. 
+
+\begin{Prop}
+	\[\omega U^{1/2} = \tilde{H}^{1/2}(-1,1)\]
+	\[ U^{-1/2} = H^{-1/2}(-1,1)\]
+	\begin{proof}
+		\[ \norm{\omega u}_{\tilde{H}^{1/2}} = \sqrt{\duality{N\omega u}{\omega u}} = \sqrt{\duality{N_\omega u}{u}_\omega} = \norm{u}_{U^{1/2}}\]
+	\end{proof}
+	
+\end{Prop}
+
+In \cite{bruno2012second}, it is shown that $N_\omega S_\omega$ and $S_\omega N_\omega$ are order zero operators with a spectrum concentrated around $\frac{1}{4}$, which can be exploited for preconditioning purposes. 
+
+
+Analogously to the previous, one can derive the formal expansions as in \cite{jerez2012explicit}
+\[\frac{1}{(x-y)^2} = \sum_{n=0}^{+\infty} 2(n+1)U_n(x)U_n(y)\]
+Leading, by applying for $(\partial_x\omega)^{-2}$ on both sides, to the following explicit kernel for the inverse:
+\[\ln\left(\dfrac{(y-x)^2 + (\omega(x) + \omega(y))^2}{2|x-y|}\right) = \sum_{n=0}^{+\infty} \dfrac{2 U_n(x) U_n(y)}{n+1}.\]
+Here we derive an alternative explicit inversion formula using the operator $-(\partial_x \omega)^2$.
+\begin{The} The operators $U_n$ and $-(\partial_x \omega)^2$ commute and 
+\[-4 N_\omega (\partial_x \omega)^{-2} N_{\omega} = I\]
+The inverse of $N_\omega$ is therefore 
+\begin{eqnarray*}
+	N_\omega^{-1} &=& - 4 N_\omega (\partial_x \omega)^2\\
+	&=& 2\sqrt{-(\partial_x \omega)^2}
+\end{eqnarray*}
+\end{The}
+The inverse of $N_\omega$ is thus given by $\sqrt{-(\partial_x \omega)^2 }$. 
+
+\subsection{Numerical evidence}
+Expliquer comment on l'implémente et comment on calcule les intégrales. Parler des quadratures de Gauss. 
+
+\begin{Prop}
+	Ordre de convergence des éléments finis.
+\end{Prop}
+Proposition de préconditionneurs. 
+Transition : on veut faire pareil avec $k \neq 0$ : que cela devient ? 
+
+\section{Non-flat arc, Helmholtz}
+
+
+\subsection{Preliminaries}
+
+
+\begin{Lem}
+	Let $(k_{m,n})_{(m,n)\in \N^2}$ a sequence of real numbers. Let $s, t \in \R$ and assume
+	\[ \sum_{m,n} (1 + n^2)^{t} (1 + m^2)^{-s} k_{m,n}^2 < \infty\]
+	Then the operator $K$ defined by 
+	\[Ku = \sum_{m=0}^{+\infty} \left(\sum_{n=0}^{+\infty} k_{m,n} \hat{u}_n\right) T_m(x)\]
+	is continuous from $H^s$ to $H^t$. 
+\end{Lem}
+
+\begin{Lem}
+	Let $k(x,y) \in C^{\infty}[(-1,1)^2]$ and let the operator 
+	\[Ku(x) = \int_{-1}^{1} \dfrac{k(x,y) u(y)}{\omega(y)}.\]
+	Then $K$ can be extended to a continuous operator from $H^s$ to $H^t$ for all real $s$ and $t$. Moreover, $\textup{Ran}(K) \subset C^{\infty}(-1,1)$.
+	\begin{proof}
+		Following the previous lemma, we must show that 
+		\[\sum_{m,n} (1+m^2)^t(1+n^2)^{-s}k_{m,n}^2 <\infty\]
+		for all reals $s$ and $t$, where 
+		\[k_{m,n} = \int_{-1}^{1}\int_{-1}^{1} \dfrac{k(x,y) T_m(x) T_n(y)}{\omega(x) \omega(y)}.\]
+		Using integration by parts, we can obtain, for all $m,n \in \N^*$, and for any $\alpha, \beta \in \N$
+		\[k_{m,n} = \dfrac{(-1)^{k+l}}{m^{2\alpha}n^{2\beta}}\int_{-1}^{1} \int_{-1}^{1} \dfrac{(\omega(x) \partial_x)^{2\alpha}(\omega(y) \partial_y)^{2\beta}k(x,y)T_m(x)T_n(y)}{\omega(x) \omega(y)}.\]
+		Since $k \in C^{\infty}$, it follows that for all $\alpha, \beta \in \N$, there exists a constant $C_{\alpha,\beta}$ such that
+		\[\abs{k_{m,n}} \leq \dfrac{C_{\alpha,\beta}}{m^{2\alpha}n^{2\beta}},\]
+		which achieves the proof. 
+	\end{proof}
+\end{Lem}
+
+We can obtain a more precise result
+
+\begin{Lem}
+	Using the same notation as the previous lemma, let $\alpha$, $\beta$ such that, 
+	\[\int_{-1}^{1} \int_{-1}^{1}\dfrac{\abs{(\omega(x)\partial_x)^{\alpha} (\omega(y)\partial_y)^{\beta}k(x,y)}^2}{\omega(x)\omega(y)}dxdy < +\infty\]
+	Then $K$ is continuous from $H^{-\beta}$ to $H^{\alpha}$. 
+	\begin{proof}
+		Bessel's identity, we have to treat the cases $\alpha$ odd or even separately.  
+	\end{proof}
+	
+\end{Lem}
+
+
+\subsection{Dirichlet}
+
+Expliquer quelle équation on résout. Dire qu'il y a existence et unicité. 
+
+\begin{Def}
+	Weighted single-layer for $k\neq 0$. $S^k_\omega$ 
+\end{Def}
+We have the expansion
+\[H_0(k|x-y|) = \frac{-1}{2\pi} \ln|x-y| J_0(k |x-y|) + R(x,y)\]
+where $R$ is infinitely smooth. 
+\begin{The}
+	One has the commutation 
+	\[S^k_\omega(-(\omega \partial_x)^2 - k^2\omega^2) =  (-(\omega \partial_x)^2 - k^2\omega^2)S^k_\omega \]
+\end{The}
+\begin{Rem}
+	The operators $S^k_\omega$ and $-(\omega \partial_x)^2 - k^2\omega^2$ share the same eigenvectors. These functions as the Mathieu cosine functions. 
+\end{Rem}
+
+\begin{Rem}
+	The proof uses ideas from pseudo-differential operators theory. 
+\end{Rem}
+
+\subsection{Neumann}
+
+\subsection{Numerical results}
+
+
+\section{Conclu}
+
+Résumé de ce qu'on a fait, du lien qu'on a fait. Ouverture sur les singularités de type coin puis 3D. Beaucoup plus compliqué car pas de relations analytiques qui nous aident. 
+Expliquer la beauté de l'approche numérique avec un poids. On propose le préconditioneur avec un test numérique ? 
+
+Possible analyse pseudo-diff ? En reparler ? Lien avec Antoine et Darbas. 
+
+
+\bibliographystyle{plain}
+\IfFileExists{biblio.bib}{\bibliography{biblio}}{\bibliography{/home/martin/Thesis/Biblio/biblio}}
+
+
+\end{document}
+
+

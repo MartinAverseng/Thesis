@@ -1,0 +1,60 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: PlanArticle.aux
+The style file: plain.bst
+Database file #1: /home/emile/Documents/Martin/Thesis/Biblio/biblio.bib.bib
+Warning--I didn't find a database entry for "Christiansen"
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "Levadoux"
+Warning--I didn't find a database entry for "DarbasAntoine"
+Warning--I didn't find a database entry for ""
+Warning--I didn't find a database entry for "Bruno"
+Warning--I didn't find a database entry for "Jerez"
+Warning--I didn't find a database entry for "Hiptmair"
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 22 entries,
+            2118 wiz_defined-function locations,
+            653 strings with 8034 characters,
+and the built_in function-call counts, 6997 in all, are:
+= -- 702
+> -- 312
+< -- 1
++ -- 126
+- -- 100
+* -- 501
+:= -- 1185
+add.period$ -- 66
+call.type$ -- 22
+change.case$ -- 111
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 247
+empty$ -- 551
+format.name$ -- 100
+if$ -- 1428
+int.to.chr$ -- 0
+int.to.str$ -- 22
+missing$ -- 24
+newline$ -- 113
+num.names$ -- 44
+pop$ -- 101
+preamble$ -- 1
+purify$ -- 92
+quote$ -- 0
+skip$ -- 180
+stack$ -- 0
+substring$ -- 496
+swap$ -- 30
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 82
+warning$ -- 1
+while$ -- 75
+width$ -- 24
+write$ -- 236
+(There were 2 error messages)

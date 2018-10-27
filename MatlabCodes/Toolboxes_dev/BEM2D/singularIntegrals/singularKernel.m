@@ -14,10 +14,10 @@ classdef (Abstract) singularKernel
             % for all k, and any function f sufficiently smooth
             % \int_[A,B] K(x^k,y)f(y)dy approx sum_{i} w_i^k f(y_i^k)
             % applying the Golub-Welsch algorithm
-            % The proble is rescaled to computing weights and nodes for 
-            % \int_{0}^{1} K(x^k,A + (B - A)*u)f(A + (B -A)*u)du 
+            % The problem is rescaled to computing weights and nodes for
+            % \int_{0}^{1} K(x^k,A + (B - A)*u)f(A + (B -A)*u)du
             % = sum_{i} wtilde_i^k f(A + (B - A) utilde_i^k)
-            % The first integral is recovered by 
+            % The first integral is recovered by
             % int_{[A,B]}K(x^k,y)f(y)dy = norm(B-A) \int_{0}^1 K(x^k,A +
             % (B-A)u) f(A + (B-A)u) du  approx norm(B-A) \sum_{i}wtilde_i^k f(A + (B-A)utilde_i^k)
             % Thus
@@ -81,10 +81,12 @@ classdef (Abstract) singularKernel
                 W(:,m) = l*omegam;
             end
         end
+        
         function[I] = I0seg(this,X,A,B)
             % returns \int_{[A,B]} k(X,Y)dY
             I = this.IN(X,A,B,0);
         end
+        
     end
     methods (Static)
         function [a,b,d] = parameters_singInt(X,A,B)
@@ -113,6 +115,11 @@ classdef (Abstract) singularKernel
         % I = IN(this,x,A,B,N) :
         % computes the integral I = \int_{0}^1 k(X,A + (B-A)*u) u^n du
         Nm = Nmax(this)
+        I = Icomp_r(this,r,t0,rt0_ders,A,B)
+        % I Icomp_r(this,r,A,B)
+        % computes \int_{a}^b k(r(t0), r(t)) dt
+        F = primitiveOfKernel(this,s)
     end
+    
 end
 

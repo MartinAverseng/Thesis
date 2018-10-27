@@ -226,14 +226,15 @@ classdef func
         function[C] = minus(A,B)
             C = A + -B;
         end
-        function[r] = scal(A,B,Vh,q)
-            q =inputOrDefaultQuad(q);
+        function[r] = scal(A,B,Vh)
+            
             [A_new,B_new] = operationInterpreter(A,B);
             if or(nargin==2,isempty(Vh))
                 Vh = commonSpace(A,B);
                 assert(~isempty(Vh),...
                     'You must specify on which Fe space this scalar product must be computed...');
             end
+            q = Vh.quad.num;
             [uh1,f1] = parts(A_new);
             [uh2,f2] = parts(B_new);
             M = Vh.Mass;
@@ -242,7 +243,7 @@ classdef func
             r = (M*uh1|uh2) + (l1|uh2) + (l2|uh1) + Vh.integral(f1*f2);
         end
         function[r] = or(A,B)
-            r = scal(A,B,[],3);
+            r = scal(A,B,[]);
         end
         
         

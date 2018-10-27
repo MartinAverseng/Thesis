@@ -1,0 +1,44 @@
+\documentclass[]{article}
+\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+
+\title{Preuve non-stabilité par composition}
+\author{Martin Averseng}
+
+
+\begin{document}
+	\maketitle
+	\begin{Lem}
+		Let $u_n$ and $v_n$ two bounded sequences with either $u_n$ or $v_n$ absolutely converging. Then, for all $m \in \N$, there holds
+		\[ \sum_{n = 0}^{+ \infty} u_n \frac{v_{n + m} + v_{\abs{n - m}}}{2} = \frac{u_0 v_m - u_m v_0}{2} + \sum_{n = 0}^{+ \infty} v_n \frac{u_{n + m} + u_{\abs{n - m}}}{2}.\]
+	\end{Lem}	
+\begin{proof}
+	We have 
+	\begin{eqnarray*}
+		\sum_{n = 0}^{+\infty} u_n \frac{v_{n + m} + v_{\abs{n - m}}}{2} &=& \sum_{n = 0}^{+ \infty} \frac{u_n}{2}v_{n + m} + \sum_{n = 0}^{m-1} \frac{u_n}{2} v_{m-n} + \sum_{n = m}^{+ \infty} \frac{u_n}{2}v_{n - m}\\
+		&=& \sum_{n = m}^{+\infty}\frac{u_{n - m}}{2} v_n + \sum_{n = 1}^{m} \frac{u_{m - n}}{2} v_n + \sum_{n=0}^{+\infty} \frac{u_{n+m}}{2} v_n
+	\end{eqnarray*}
+	and the conclusion follows. 
+\end{proof}
+\begin{Lem} 
+	Let $\alpha$ any $C^{\infty}$ function, and let $A$ the operator defined as $A u = \alpha(x) u(x)$. We assume that for any operator $\Lambda$ defined by 
+	\[\Lambda u =  \sum_{n = 0}^{+\infty} \lambda_n \hat{u}_n T_n(x)\]
+	the composition $\Lambda A$ can be expressed as an operator $B$ satisfying
+	\[B u = \sum_{n = 0}^{+\infty} b(x,n) \hat{u}_n T_n(x)\]
+	where the functions $b(x,n)$ are $C^{\infty}$. Then $\alpha$ is a constant function. 
+	\begin{proof}
+		Let us write $\alpha = \sum_{i = 0}^{+\infty} \alpha_i T_i(x)$. Fix $n \in \N$, we have 
+		\begin{eqnarray*}
+			\alpha T_n &=& \sum_{i = 0}^{+ \infty} \alpha_i T_n T_i\\
+			&=& \sum_{i = 0}^{+ \infty} \alpha_i \frac{T_{n+i} + T_{\abs{n - i}}}{2}\\
+			&=& \frac{\alpha_0 T_n - \alpha_n}{2} + \sum_{i = 0}^{+ \infty} \frac{\alpha_{n + i} + \alpha_{\abs{n - i}}}{2} T_i
+		\end{eqnarray*}
+	according to the previous lemma. Fix some $0 < i < n$ and choose $\lambda_k = 0$ except for $k = i$, with $\lambda_i = 1$. Then
+	\[ \Lambda \alpha T_n = \lambda_{i} \frac{\alpha_{n + i}+ \alpha_{n - i}}{2}T_{i}.\]
+	By assumption, there exists a function $b(x,n)$ that is $C^{\infty}$ such that 
+	\[b(x,n) T_n =  \frac{\alpha_{n + i}+ \alpha_{n - i}}{2}T_{i}(x).\]
+	Since $T_n$ has strictly more roots than $T_i$, we can fix an $x$ for which the left side is $zero$ while $T_i \neq 0$. Thus, and this holds for all $1 < i < n$, $\alpha_{n + i} = - \alpha_{n - i}$. This implies that for all $n > 0$, $\alpha_n = 0$, and thus, $\phi(x) = \phi_0 T_0$ is a constant function. 
+	\end{proof}
+\end{Lem}
+
+
+\end{document}

@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{The scattering problem in 2D}{}% 2
+\BOOKMARK [1][-]{section.3}{The case of Laplace equation on a flat segment}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Analytic setting}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Single layer equation}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Hypersingular equation}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{A remark on the products SN and NS}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Galerkin analysis}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Dirichlet problem}{subsection.3.5}% 9
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Neumann problem}{subsection.3.5}% 10
+\BOOKMARK [2][-]{subsection.3.6}{Numerical results}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.6.1}{Convergence rates}{subsection.3.6}% 12
+\BOOKMARK [3][-]{subsubsection.3.6.2}{Efficiency of the preconditioners}{subsection.3.6}% 13
+\BOOKMARK [1][-]{section.4}{The case of the Helmholtz equation on a segment}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Dirichlet}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Non-flat arc, Helmholtz}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Neumann}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Numerical results}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Conclu}{}% 19
+\BOOKMARK [1][-]{section.7}{Commutation of N and \(x \)2 + k22}{}% 20
+\BOOKMARK [1][-]{section.8}{Plus}{}% 21

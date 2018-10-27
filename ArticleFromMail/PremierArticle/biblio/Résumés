@@ -1,0 +1,33 @@
+* En passant
+** Intéressant
+*** Très pertinent
+**** Clé
+
+
+*Hiptmair Closed-form : 
+Donne des formules explicites des inverses pour le simple couche et l'hypersingulier pour un disque. Ressemble à la formule 2d pour le segment. 
+
+* Hiptmair Optimal Operator Precond
+Il y a un passage intéressant sur l'application du travail de Steinbach à leur cas pour montrer la condition inf-sup pour le préconditionneur. 
+
+** Nédélec Hanckes explicit weak : 
+Donne des formules explicites pour les inverses sur le segment. Etudie aussi les propriétés de parité et imparité de la trace dans les conditions Neumann ou Dirichlet. À lire. 
+
+
+***These CAROLINA ALEJANDRAURZ UATORRES : présence d'opérateurs modifiés. à lire !!
+
+
+Sur les asymptotiques de coin 
+1°) Costabel 1985 : Un papier imposant sur l'utilisation de la transformée de Mellin pour prouver la convergence de l'approche de Galerkine avec des fonctions singulières dans l'espace de test. Dur à lire ! Contient pas mal d'informations.
+
+
+
+
+Sur Symm : 
+1°) 1991 - the numerical solution of first-kind log kernel int eq on smooth open arcs
+Analyse l'équation de Laplace et fournit une étude de convergence détaillée. 
+2°) 1996 : Mönch On the numerical solutions of the direct scattering. (Conditions de Neumann, k non nul, arc non plat)
+Prouve unicité. 
+Fait un gros développement asymptotique de son noyau (hypersingulier)
+Prouve l'existence. Utilise la colocation. 
+

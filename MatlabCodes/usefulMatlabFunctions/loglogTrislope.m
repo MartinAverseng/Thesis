@@ -29,10 +29,10 @@ p1 = p + ry;
 p2 = p + 2*ry;
 loglog(X,X.^slope*exp(p),'k--');
 loglog(t,t.^slope*exp(p1),'r');
-loglog(t,[t(1) t(1)].^slope*exp(p1),'r');
-loglog([t(2) t(2)],[t(1) t(2)].^slope*exp(p1),'r');
+loglog(t,[t(2) t(2)].^slope*exp(p1),'r');
+loglog([t(1) t(1)],[t(1) t(2)].^slope*exp(p1),'r');
 s = sprintf('p = %.3f',fix(slope*1000)/1000);
-text(t(1),t(1)^slope*exp(p2),s)
+text(t(1),t(2)^slope*exp(p2),s)
 grid on;
 hold off
 

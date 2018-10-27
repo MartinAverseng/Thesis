@@ -102,9 +102,9 @@ classdef Op < AbstractMatrix
                         rMinTest = op.rMinTest;
                         if rMinTest < op.a*op.rMax
                             warning(['There are pairs of points closer than ', ...
-                            'parameter ''a''. It was however requested not ',...
-                            'to compute the local interactions. This may lead to',... 
-                            ' inaccurate results']);
+                                'parameter ''a''. It was however requested not ',...
+                                'to compute the local interactions. This may lead to',...
+                                ' inaccurate results']);
                         end
                     end
                 end
@@ -146,7 +146,7 @@ classdef Op < AbstractMatrix
         end
         function[r] = rMinTest(this)
             % First pass
-            x1 = this.x(1,:);
+            x1 = mean(this.x,1);
             [~,ind] = min(sqrt((x1(1) - this.y(:,1)).^2 + (x1(2) - this.y(:,2)).^2));
             y1 = this.y(ind,:);
             % Second pass
@@ -192,39 +192,48 @@ classdef Op < AbstractMatrix
             op.rxy = cell2mat(rxyTemp')'/op.rMax;
             idx = zeros(size(jdx));
             sp_ind = 1;
-            for x_ind=1:length(I);
+            for x_ind=1:length(I)
                 idx(sp_ind:(sp_ind+length(I{x_ind})-1)) = x_ind;
                 sp_ind = sp_ind + length(I{x_ind});
             end
             % Save memory
-            clear I;
             times.rangeSearch = toc(tRangeSearch);
             NCI = length(op.rxy);
-            Nxi = op.q2d.Nxi;
+%             Nxi = op.q2d.Nxi;
             % close-field
             if NCI ~= 0
-                tComputeInteractions = tic;
                 rxyApply = op.rxy;
-                rxyApply(rxyApply*op.rMax < 1e-8) = 1e-8/op.rMax;
-                B1_inds = op.kernel.func(rxyApply);
-                %B1_inds(or(isinf(B1_inds),isnan(B1_inds))) = op.kernel.func(1e-8/op.rMax);
+                rxyApply(rxyApply*op.rMax < 1e-15) = 1e-15/op.rMax; 
+                exact_Interactions = op.kernel.func(rxyApply); % Exact local interactions
                 
-                times.computeInteractions = toc(tComputeInteractions);
-                
-                % local correction of error due to NUFFT
-                if op.verbose >=1
-                    fprintf('NUFFT for local correction : *\n')
-                end
-                tNUFFTcloseField = tic;
-                B2_inds = nufft2d3(Nxi, op.q2d.xi_nu(:,1), op.q2d.xi_nu(:,2), ...
-                    op.q2d.w_nu, +1, op.tol/10, length(idx),...
-                    op.x(idx,1) - op.y(jdx,1), op.x(idx,2) - op.y(jdx,2));
-                times.NUFFTcloseField = toc(tNUFFTcloseField);
-                
-                % Sparse matrix
+%                 exact_Interactions(or(isinf(exact_Interactions),isnan(exact_Interactions))) = 0;
                 tAssemble = tic;
-                B_inds = B1_inds - B2_inds - op.q2d.offset;
-                op.concretePart = sparse(idx,jdx,B_inds,op.N1,op.N2);
+                C1 = sum(abs(op.rq.alpha0.*Cp(op.rq.rho)).*op.rq.rho.^2); % Bound for the second derivative.
+                Ninterp = fix(sqrt(C1)*op.a/sqrt(8*op.tol))+10; % Guarantees interpolation error < tol.
+                xinterp = linspace(0,op.a*1.1,Ninterp);
+                yinterp = op.rq.eval(xinterp);
+                radial_quadratureNear0 = interp1(xinterp,yinterp,op.rxy); % we remove the radial
+                % quadrature contribution (using interpolation to avoid evaluating at
+                % all points).
+                
+                C_val = exact_Interactions - radial_quadratureNear0;
+                
+                op.concretePart = sparse(idx,jdx,C_val,op.N1,op.N2);
+%                 % local correction of error due to NUFFT
+%                 if op.verbose >=1
+%                     fprintf('NUFFT for local correction : *\n')
+%                 end
+%                 tNUFFTcloseField = tic;
+%                 B1_inds = op.kernel.func(rxyApply);   
+% %                 B1_inds(or(isinf(B1_inds),isnan(B1_inds))) = 0;
+%                 B2_inds = nufft2d3(Nxi, op.q2d.xi_nu(:,1), op.q2d.xi_nu(:,2), ...
+%                     op.q2d.w_nu, +1, op.tol/100, length(idx),...
+%                     op.x(idx,1) - op.y(jdx,1), op.x(idx,2) - op.y(jdx,2));
+%                 times.NUFFTcloseField = toc(tNUFFTcloseField);
+%                 % Sparse matrix
+%                 tAssemble = tic;
+%                 B_inds = B1_inds - B2_inds - op.q2d.offset;
+%                 op.concretePart = sparse(idx,jdx,B_inds,op.N1,op.N2);
                 times.assemble = toc(tAssemble);
             else
                 % No close interactions
@@ -247,7 +256,7 @@ classdef Op < AbstractMatrix
             % data.
             % 1°) New rescaling
             rMaxNew = Op.rMaxCalc(X,op.Y);
-            if any([rMaxNew > op.rMax,op.tol > p.Results.tol, p.Results.a*p.Results.a_factor ~= op.a])
+            if any([rMaxNew > op.rMax,op.tol > p.Results.tol, p.Results.a*p.Results.a_factor ~= op.a,1])
                 % Then we have to update the quadrature since it is not
                 % valid up to rMaxTest or to requested tolerance
                 disp('Recomputing a quadrature');
@@ -255,12 +264,14 @@ classdef Op < AbstractMatrix
                 op.rMax = rMaxNew;
                 op.x = X/op.rMax;
                 op.y = op.y*rMaxPrevious/op.rMax;
-                op.a = p.Results.a*p.Results.a_factor;
+                op.a = max(min(p.Results.a*p.Results.a_factor,0.5),0.9*op.rMinTest/op.rMax);
+%                 op.a = p.Results.a*p.Results.a_factor;
                 op.N1 = size(X,1);
                 op.kernel = op.kernel.dilatation(rMaxNew/rMaxPrevious);
                 if op.full
                     op = op.computeFullMatrix;
                 else
+                    op.a = max(min(p.Results.a*p.Results.a_factor,0.5),0.9*op.rMinTest/op.rMax);
                     op.rq = op.kernel.radialQuadKernel(op.a,op.tol);
                     op.q2d = Quad2D(op.rq);
                     if p.Results.principalPart
@@ -284,7 +295,7 @@ classdef Op < AbstractMatrix
             op.q2d = Quad2D(op.rq);
             %% Local Part
             % If we decrease a, we just have to remove the pairs that are a
-            % bit too far. 
+            % bit too far.
             if ~isa(op.kernel,'J0Kernel')
                 op = op.createLocalPart;
                 % Computes the local interactions
@@ -298,7 +309,7 @@ classdef Op < AbstractMatrix
             NCI0 = NCI;
             memClose = NCI*16;
             memFar = Nxi*24;
-            alpha = 1; % Guessed dependance of NCI in variable a. 
+            alpha = 1; % Guessed dependance of NCI in variable a.
             dataAlpha = [];
             a0 = op.a;
             a_current = a0;
@@ -310,7 +321,7 @@ classdef Op < AbstractMatrix
                 NCI = op.NCI(a_current);
                 memClose = NCI*16;
                 memFar = Nxi*24;
-                dataAlpha = [dataAlpha,log(NCI/NCI0)/log(a_current/a0)];%#ok 
+                dataAlpha = [dataAlpha,log(NCI/NCI0)/log(a_current/a0)];%#ok
                 alpha = mean(dataAlpha);
             end
             op = op.change_a(a_current);
@@ -318,24 +329,24 @@ classdef Op < AbstractMatrix
         function[op] = balanceTime(op)
             Vtest = randn(size(op,2),1);
             tClose = tic;
-            q_close_test = op.concretePart*Vtest;%#ok 
+            q_close_test = op.concretePart*Vtest;%#ok
             tClose = toc(tClose);
             if tClose < 0.01
                 tClose = tic;
                 for i = 1:10
-                    q_close_test = op.concretePart*Vtest;%#ok 
+                    q_close_test = op.concretePart*Vtest;%#ok
                 end
                 tClose = toc(tClose)/10;
             end
             tFar = tic;
-            q_far_test = op.abstractPart(Vtest);%#ok 
+            q_far_test = op.abstractPart(Vtest);%#ok
             tFar = toc(tFar);
             while or(tClose>5*tFar,tClose < tFar/5)
                 if tClose > tFar
                     lambda = 0.75;
                 else
                     lambda = 1.25;
-                    try 
+                    try
                         MemTest = ones(fix(1.5*op.NCI),1); %#ok
                         clear A;
                     catch
@@ -347,7 +358,7 @@ classdef Op < AbstractMatrix
                 end
                 op = op.change_a(lambda*op.a);
                 tClose = tic;
-                q_close_test = op.concretePart*Vtest;%#ok 
+                q_close_test = op.concretePart*Vtest;%#ok
                 tClose = toc(tClose);
                 if tClose < 0.01
                     tClose = tic;
@@ -357,7 +368,7 @@ classdef Op < AbstractMatrix
                     tClose = toc(tClose)/10;
                 end
                 tFar = tic;
-                q_far_test = op.abstractPart(Vtest);%#ok 
+                q_far_test = op.abstractPart(Vtest);%#ok
                 tFar = toc(tFar);
             end
         end
@@ -375,15 +386,16 @@ classdef Op < AbstractMatrix
             X1_Y1 = repmat(X1,1,NY) - repmat(Y1',NX,1);
             X2_Y2 = repmat(X2,1,NY) - repmat(Y2',NX,1);
             rXY = sqrt(X1_Y1.^2 + X2_Y2.^2);
+            rXY(rXY*op.rMax < 1e-15) = 1e-15/op.rMax;
             op.timesClose.computeInteractions = toc(tComputeInteractions);
             op.concretePart = op.kernel.func(rXY);
-            op.concretePart(or(isnan(op.concretePart),...
-                isinf(op.concretePart))) = op.kernel.func(1e-8/op.rMax);
+%             op.concretePart(or(isnan(op.concretePart),...
+%                 isinf(op.concretePart))) = 0;
             op.timeTotalAssembling = toc(tTotalAssembling);
             op.full = true;
             op.timesClose.total = toc(tTotalAssembling);
         end
-
+        
         %% Display
         function[] = disp(this)
             printStarLine;
@@ -530,8 +542,9 @@ classdef Op < AbstractMatrix
                         id = shuffle(i);
                         xx = this.x(id,:);
                         rrxy = sqrt((xx(1)-yy(:,1)).^2 +(xx(2)-yy(:,2)).^2);
-                        rrxy(rrxy*this.rMax < 1e-8) = 1e-8/this.rMax;
-                        q2(i + max(toc(beginning)-tVal,0)*1i) = sum(fun(rrxy).*V);
+                        eval = fun(rrxy);
+                        eval(or(isinf(eval),isnan(eval))) = 0;
+                        q2(i + max(toc(beginning)-tVal,0)*1i) = sum(eval.*V);
                     end
                 catch
                     %raised on purpose

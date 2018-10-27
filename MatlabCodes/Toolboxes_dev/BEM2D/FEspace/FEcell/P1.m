@@ -29,6 +29,14 @@ classdef P1 < FEcell
                 cb = -alpha./(beta-alpha);
             end
         end
+        function[cb] = linearTerm(~,b,X,A,B)
+            [~,~,~,~,~,~,alpha,beta,~] = parameters_singInt(X,repmat(A,size(X,1),1),repmat(B,size(X,1),1));
+            if b==1
+                cb = -1./(beta-alpha);
+            else
+                cb = 1./(beta-alpha);
+            end
+        end
         function[f] = singularIntegralDictionnary(this,name)
             switch name
                 case 'ln'
