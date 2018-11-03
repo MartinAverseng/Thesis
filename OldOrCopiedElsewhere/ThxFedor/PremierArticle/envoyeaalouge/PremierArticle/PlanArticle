@@ -1,0 +1,7 @@
+\documentclass[]{article}
+\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+
+\begin{document}
+\maketitle
+azazda
+\end{document}

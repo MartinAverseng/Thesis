@@ -4,6 +4,7 @@ classdef hyperSingular_w < BIO
         r=1;
         k;
         ln_omega_reg;
+        ln_omega2_reg
         correctionMethod = 'constantTerm';
     end
     
@@ -25,11 +26,14 @@ classdef hyperSingular_w < BIO
             this.r = r;
             this.k = k;
             this.Vh = VVh;
-            this.ln_omega_reg = this.Vh.regularizeHypersingular(XX);
+            this.ln_omega_reg = this.Vh.ln_omega_reg(XX);
+            
             if k > 0
                 kern = 1i/4*H0Kernel(k);
+                this.ln_omega2_reg = this.Vh.ln_omega2_reg(XX);
             else
                 kern = (-1/(2*pi))*LogKernel(r);
+                this.ln_omega2_reg = 0;
             end
             this.kernel = kern;
             this.Aop = Op(XX,kern,VVh.gaussPoints,AopOpt{:});
@@ -62,8 +66,13 @@ classdef hyperSingular_w < BIO
                 -1/(2*pi)*this.ln_omega_reg;
         end
         function[bili] = galerkine(this)
-            mat = (this.Vh.omega_dx_omega.'*AbstractMatrix.spdiag(this.Vh.W).')*this.Mat;
-            bili = BilinearForm(this.Vh,this.Vh,mat);
+            Mkern = this.Aop;
+            Wint = AbstractMatrix.spdiag(this.Vh.W).';
+            M1 = Mkern*(Wint*this.Vh.omega_dx_omega) -1/(2*pi)*this.ln_omega_reg;
+            mat1 = this.Vh.omega_dx_omega.'*Wint*M1;
+            M2 = Mkern*(Wint*this.Vh.omega2) -1/(2*pi)*this.ln_omega2_reg;
+            mat2 = this.Vh.omega2.'*Wint*M2;
+            bili = BilinearForm(this.Vh,this.Vh,mat1 - this.k^2*mat2);
         end
     end
 end

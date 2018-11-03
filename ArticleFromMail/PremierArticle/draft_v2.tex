@@ -8,10 +8,11 @@
 	\maketitle
 	
 	\begin{abstract}
+		We introduce new preconditioners for the first kind integral equations involved in the resolution of the Dirihclet and Neumann problems on open arcs in the plane, both for Laplace and Helmholtz equations. We use weighted versions of the layer potentials, and introduce our preconditioners as square roots of local operators, in close analogy to the case of closed curves. 
 	\end{abstract}
 	
-	\section{Introduction}
-	The problem of preconditionning the linear systems coming from the discretization of integral equations
+	\section*{Introduction}
+	The problem of preconditionning the linear systems coming from the discretization of first kind integral equations
 	has received considerable attention since two decades roughly. Among the possible strategies are the so-called 
 	pseudo-differential preconditionner, whose analysis uses tools from pseudo-differential calculus \cite{Christiansen,Nedelec,Levadoux,DarbasAntoine}. Roughly speaking, if the original problem is written in the abstract way
 	\begin{equation}
@@ -33,15 +34,19 @@
 	are difficult to analyze on such domains.
 	
 	Nevertheless, a program similar to those given on smooth manifold was proposed a few years ago \cite{Bruno,Nedelec,Jerez,Hiptmair} who tackled the problem of preconditionning the first or second layer potential
-	for Laplace or Helmholtz equation in dimension 2 or 3 but for very particular domains: a straight and then curved segment in 2D and a unit disc in 3D.
+	for Laplace or Helmholtz equation in dimension 2 or 3 but for very particular domains: a straight and then curved segment in 2D and a unit disc in 3D. Here, we introduce a new kind of preconditioners for the weighted layer potentials studied in many other works such as \cite{bruno2012second}. We include numerical results to test their efficiency. 
+		
+	In the first section, we give an overview of the resolution of the Laplace and Helmholtz scattering problems by means of layer potentials on singular domains. In the second, we restrict our attention to the case of the Laplace operator in the case of the unit segment. We then generalize our results to non-zero frequency and non-flat arc in the third section. The fourth section describes a simple Galerkin setting to test our preconditioners. Numerical results are exposed in the last section. 
 	
-	\toDo{finir l'intro et mettre le plan}
+%	The remainder of the paper focuses on the numerical solution of the integral equations \eqref{dirichletIntEq} and \eqref{NeumannIntEq} using Galerkin finite elements. Though this will not lead to spectral convergence as when using trigonometric polynomial, we aim to generalize our method to cases where the eigenvectors of the operators are not explicitly known. In the first section, we treat the two equations corresponding to the case $k=0$ and when $\Gamma$ is the segment. We introduce the same rescaled operators as in \cite{bruno2012second}. We derive a simple preconditioner for both integral equation in the form of the square root of the differential operators \eqref{cheb1} and \eqref{cheb2}, and verify its efficiency on numerical experiments using Galerkin discretization with piecewise polynomial finite elements. In the next section, we treat the general case using standard compact perturbation arguments, leading to a new preconditioner. Numerical tests are again provided.
 	
-	The remainder of the paper focuses on the numerical solution of the integral equations \eqref{dirichletIntEq} and \eqref{NeumannIntEq} using Galerkin finite elements. Though this will not lead to spectral convergence as when using trigonometric polynomial, we aim to generalize our method to cases where the eigenvectors of the operators are not explicitly known. In the first section, we treat the two equations corresponding to the case $k=0$ and when $\Gamma$ is the segment. We introduce the same rescaled operators as in \cite{bruno2012second}. We derive a simple preconditioner for both integral equation in the form of the square root of the differential operators \eqref{cheb1} and \eqref{cheb2}, and verify its efficiency on numerical experiments using Galerkin discretization with piecewise polynomial finite elements. In the next section, we treat the general case using standard compact perturbation arguments, leading to a new preconditioner. Numerical tests are again provided.
+	\toDo{Peaufiner l'intro}
 	
+	Throughout this article, $C$ refers to a constant which specific value can change from line to line. 
 	
-	\section{The scattering problem in 2D}
-	We focus here on the 2D case and consider the problem of the scattering of a wave by an open line. Let $\Gamma$ be a smooth non-intersecting open curve, and let $k \geq 0$ the wave number. We seek for a solution of the problem
+	\section{The scattering problem outside an open curve}
+	
+	Let $\Gamma$ be a smooth non-intersecting open curve, and let $k \geq 0$ the wave number. We seek a solution of the problem
 	\begin{equation}
 	-\Delta u - k^2 u = 0,  \text{ in } \R^2 \setminus \Gamma
 	\label{Helmholtz}
@@ -69,12 +74,11 @@
 	In the preceding equation $n$ stands for a smooth unit normal vector to $\Gamma$.
 	
 	Existence and uniqueness of solutions to the previous problems are guaranteed by the following theorem.
-	\begin{The}(see e.g. \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}) Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) and (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) both possess a unique solution $u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen $\Gamma$, for the Dirichlet problem, the solution has an unbounded gradient, with for $x\in \gamma$
-		\[\dfrac{\partial u}{\partial n}(x) = O\left(\frac{1}{\sqrt{d(x,\partial \Gamma)}}\right),\]
-		while for the Neumann problem, one has \toDo{pas joli}
-		\toDo{Qu'est-ce qui n'est pas joli exactement ? Je ne sais pas trop quoi changer.}
-		\[u(x) = \sum_{i=1}^2 \alpha_i \sqrt{\rho_i}\chi_i + \psi\]
-		where $\psi \in \tilde{H}^{3/2}(\Gamma)$. Here, $\chi_1$ and $\chi_2$ are two functions concentrated near each edge of the arc, $\rho_i$ is the distance between $x$ and the tip $i$, and $\alpha_i$ are two real numbers. 
+	\begin{The}(see e.g. \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}) Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) and (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) both possess a unique solution $u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen $\Gamma$ $\lambda$ is unbounded:
+		\[\lambda(x) = O\left(\frac{1}{\sqrt{d(x,\partial \Gamma)}}\right).\]
+	 	Near an edge of the arc, $\mu$ is locally given by
+		\[\mu(x) = C\sqrt{d(x,\partial \Gamma)} + \psi.\]
+		where $\psi \in \tilde{H}^{3/2}(\Gamma)$ and $C$.
 	\end{The}
 	
 	For the definition of Sobolev spaces on smooth open curves, we follow
@@ -86,7 +90,7 @@
 	where $\tilde{u}$ denotes the extension by zero of $u$ on $\tilde{\Gamma}$.
 	
 	\paragraph{Single-layer potential}  
-	The solution to the preceding problems can be expressed through integral formulations. Namely, we define for any smooth function $\lambda$ defined on $\Gamma$ the single-layer potential $\mathcal{S}_k$  by 
+	We define the single-layer potential by
 	\begin{equation}
 	\mathcal{S}_k\lambda(x) = \int_{\Gamma}G_k(x-y)\lambda(y)d\sigma(y)
 	\label{defSk}
@@ -99,29 +103,23 @@
 	G_k(z) &= \frac{i}{4}H_0(k|z|), && \text{ if } k > 0,
 	\end{aligned} \right.
 	\end{equation} 
-	for $x\in \mathbb{R}^2\setminus \Gamma$. Here $H^{(0)}_k$ is the Hankel function of the first kind. It is well known that $\mathcal{S}_k$ can be extended to a continuous mapping 
-	\[\mathcal{S}_k : \tilde{H}^{-1/2}(\Gamma) \to H^1_{\text{loc}}(\R^2)\] 
-	and calling $S_k = \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$, we may write the solution
-	$u$ of the Dirichlet problem (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) as
+	for $x\in \mathbb{R}^2\setminus \Gamma$. Here $H_0$ is the Hankel function of the first kind. 
+	The solution $u$ of the Dirichlet problem can be computed from (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) as
 	\begin{equation}
 	u = \mathcal{S}_k \lambda
 	\end{equation}
-	where $\lambda \in \tilde{H}^{-1/2}(\Gamma)$ solves
+	where $\lambda \in \tilde{H}^{-1/2}(\Gamma)$ is the unique solution to 
 	\begin{equation}
 	S_k \lambda = u_D\,.
 	\label{Sklambda}
 	\end{equation}
+	Here, $S_k \isdef \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$. The operator $S_k$ maps continuously $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$.
 	
 	\paragraph{Double-layer and hypersingular potentials}
 	Similarly, we introduce the double layer potential $\mathcal{D}_k$ by 
 	\[\mathcal{D}_k \mu(x) = \int_{\Gamma} n(y) \cdot \nabla G_k(x-y) \mu(y) d\sigma(y).\]
-	for any smooth function $\mu$ defined on $\gamma$. This time, $\mathcal{D}_k$ extends to a continuous mapping 
-	\[\mathcal{D}_k : \tilde{H}^{1/2}(\Gamma) \to H^{1}_{\text{loc}}(\R^2 \setminus \Gamma)\]
-	and the function $\mathcal{D}_k \mu$ has a jump across $\Gamma$. We define 
-	\[D_k \mu  = \lbrace\mathcal{D}_k \mu \rbrace\]
-	where $\lbrace u \rbrace$ denotes the average value of $u$ on each side of $\Gamma$. $D_k$ is then a continuous operator from $\tilde{H}^{1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. 
-	
-	It is well-known that the normal derivative of $\mathcal{D}_k\mu$ is continuous across $\Gamma$, allowing us to define the hypersingular operator $N_k = \partial_n \mathcal{D}_k$. This operator admits the representation for $x\in \Gamma$
+	for any smooth function $\mu$ defined on $\gamma$.
+	The normal derivative of $\mathcal{D}_k\mu$ is continuous across $\Gamma$, allowing us to define the hypersingular operator $N_k = \partial_n \mathcal{D}_k$. This operator admits the representation for $x\in \Gamma$
 	\begin{equation}
 	N_k \mu = \lim_{\varepsilon \to 0^+} \int_{\Gamma} n(y) \cdot \nabla G(x + \varepsilon n(x) - y) \mu(y) d\sigma(y).
 	\label{defNk}
@@ -141,14 +139,14 @@
 	\label{Nkmu}
 	\end{equation}  
 	
-	\section{The case of Laplace equation on a flat segment}
+	\section{Laplace equation on a flat segment}
 	
 	In this section, we restrict our attention to the case where $\Gamma$ is the open segment $(-1,1) \times \{0\}$, and $k=0$. We study the properties of the equations 
 	\[S\lambda = -u_D\]
 	and 
 	\[N\mu = u_N\]
 	and show their invertibility in a range of Sobolev-like spaces. This problem has been already considered thoroughly, both
-	in terms of analytical and numerical properties in the literature (see for instance \cite{,,,}), and it turns out that the Chebyshev polynomials of first and second kind play a very important role. However, we go further compared to the literature
+	in terms of analytical and numerical properties in the literature (see for instance \cite{jiang2004second,bruno2012second}), and it turns out that the Chebyshev polynomials of first and second kind play a very important role. However, we go further compared to the literature by 
 	by constructing a functional framework close to Sobolev spaces, based on Chebyshev polynomials that
 	allows us to give a complete framework for the existence and uniqueness of the solutions to the preceding equations, as well as
 	new preconditioners.
@@ -170,7 +168,7 @@
 	(\omega\partial_x)^2 T_n &=& -n^2T_n\,, \label{cheb1}\\
 	(\partial_x\omega)^2 U_n &=& -(n+1)^2U_n\, .\label{cheb2}
 	\end{eqnarray}
-	(Notice that by $(\partial_x\omega)^2 U_n$ we mean $\partial_x(\omega \partial_x (\omega U_n))$.)
+	(Notice that by $(\partial_x\omega) f$ we mean $(\omega f)'$.)
 	As we shall see, the preceding equations are crucial in our analysis. 
 	
 	Both $T_n$ and $U_n$ are polynomials of degree $n$, and form orthogonal families respectively of the Hilbert spaces 
@@ -274,6 +272,137 @@
 		Therefore, $u'$ is in $U^{\infty} = T^{\infty}$. 
 	\end{proof}
 	
+	\begin{Prop}
+		If $\psi$ is a $C^{\infty}$ function on $[-1,1]$, then the operator
+		\[ u(t) \mapsto \psi(t) u(t)\]
+		is of order $0$, and for any $s \in \R$, 
+		\[ \norm{\psi u}_{T^s} \leq C2^{\abs{s}/2}\norm{u}_{T^s} \norm{\psi}_{T^{\abs{s}+1}}.\]
+		where $C$ is independent of $\psi$ and $s$. 
+		\begin{proof}
+			Let $u \in T^s$, we rewrite $u$ as 
+			\[ u = \sum_{n = -\infty}^{+ \infty}u_n'T_n\]
+			where for $n< 0$ we define $T_{n} = T_{\abs{n}}$, and with 
+			\[u_n' = \begin{cases}
+			u_0 & \text{ if } n = 0\\
+			\frac{u_{\abs{n}}}{2} & \text{ otherwise.}
+			\end{cases}\]
+			We apply the same idea to $\psi$, and using $T_m T_n = T_{m+n} + T_{m-n}$, 
+			\[\psi u = \sum_{m,n} u'_n \psi'_m (T_{m+n} + T_{m-n}) = \sum_{m} \left(\sum_{n}u'_n(\psi'_{n + m} + \psi'_{n - m})\right) T_m\]
+			With the same convenstions as for $\psi$ and $u$, let us compute $(\psi u)'_n$. For $ n \neq 0$, we have
+			\[(\psi u)_n' = \sum_{m} u'_m \psi'_{m+n}+\sum_n u'_n \psi'_{m-n},\]
+			\[(\psi u)_0' = 2\sum_{m} u'_m \psi'_m.\]
+			Thus, we have, for all $n \in \Z$, $(\psi u)'_n = S^1_n + S^2_n$ with $S_1^n = \sum_{m} u'_m \psi'_{n+m}$ and $S_2^n = \sum_m u'_m \psi'_{n - m}$. Applying Peetre's inequality, we get, for all $n \in \Z$, 
+			\[(1 + n^2)^{s/2}\abs{S^1_n} \leq 2^{\abs{s}/2}\sum_{m}(1 + m^2)^{s/2} \abs{u'_m}  (1 + |m+n|^2)^{\abs{s/2}} \abs{\psi'_{m+n}} \]
+			and by Young's inequality with $r = 2, p = 2, q = 1$, 
+			\[\sum_{n = - \infty}^{+ \infty} (1+ n^2)^s \abs{S^1_n}^2 \leq 2^{\abs{s}}\norm{u}_s^2 \left(\sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}/2}\abs{\psi'_m}\right)^2 \]		
+			The last sum is finite because $\psi \in T^{\abs{s}+1}$ and
+			\[\sum_{m=-\infty}^{+\infty}(1 + m^2)^{\abs{s}/2} \abs{\psi'_m} \leq \sqrt{\left(\sum_{m = -\infty}^{+ \infty} \frac{1}{1 + m^2} \right)\left(\sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}+1}\abs{\psi'}_m^2\right)}.\]
+			Similar computations lead to the same estimate for $S^2_n$ and thus, 
+			\[\norm{\psi u}_{T^s}^2 = \sum_{m = - \infty}^{+ \infty} (1 + m^2)^s \abs{(\psi u)'_m}^2 \leq C 2^{\abs{s}} \norm{u}_{T^s}^2 \norm{\psi}_{T^{\abs{s} + 1}}^2. \]
+		\end{proof}
+		\begin{Lem}
+			Let $g(x,y)$ the kernel of an integral operator of order $\alpha \in \R$ in the spaces $T^s$, that is,
+			\[G : u \mapsto \int_{-1}^{1} \frac{g(x,y) u(y)}{\omega(y)}dy\]
+			is continuous from $T^s$ to $T^{s + \alpha}$ for all $s$. Let $R(x,y)$ a $C^{\infty}$ function. Then the operator 
+			\[K : \int_{-1}^{1} \frac{g(x,y) R(x,y) u(y)}{\omega(y)}dy\]
+			is of order $\alpha$. 
+		\end{Lem}
+		\begin{proof}
+			Since $R$ is in $C^{\infty}$, one can show that $R$ admits the following expression:
+			\begin{equation}
+			R(x,y) = \sum_{m,n} r_{m,n} T_m(x) T_n(y)
+			\label{sommenormalementcv}
+			\end{equation}
+			Moreover, the regularity of $R$ ensures $r_{m,n}$ satisfies for all $s,t \in \R$, 
+			\[\sum_{m,n} (1 + m^2)^s (1 + n^2)^t\abs{r_{m,n}}^2 < +\infty.\] 
+			To prove this property, one can for example apply the operator $(\omega \partial_x)^2$ repeatedly in the two variables. The resulting function is $C^\infty$, and in particular, square integrable on $[0,1] \times [0,1]$. We then write the Parseval's identity and the result follows. We can thus write 
+			\[Ku = \sum_{m,n} r_{m,n} T_m G T_n u  \]
+			where for each $m,n$, the operator $T_m G T_n$ is defined by 
+			\[ T_m G T_n u (x)= T_m(x) \int_{-1}^{1} \dfrac{G(x,y) T_n(y)u(y)}{\omega(y)}dy.\]
+			This operator is in $L(T^s,T^{s+\alpha})$ by the previous lemma, with 	
+			\[\norm{T_m G T_n}_{T^s \to T^{s+\alpha}} \leq \norm{G}_{T^s \to T^{s + \alpha}} 2^{\abs{s} + \abs{s + \alpha}}(1 + n^2)^{\abs{s}+1}(1 + m^2)^{\abs{s+ \alpha} + 1}.\]
+			thus, the series in \eqref{sommenormalementcv} is normally convergent in $L(T^s, T^{s + \alpha})$, which proves the claim. 
+		\end{proof}
+	\end{Prop}
+	\begin{Lem}
+		\label{LemInjectionsContinues}
+		For all $\varepsilon >0$, if $u \in T^{\frac{1}{2} + \varepsilon}$, then $u$ is continuous and there exists a constant $C$ such that for all $x \in [-1,1]$,
+		\[ \abs{u(x)} \leq C \norm{u}_{T^{1/2 + \varepsilon}}.\]	
+		Similarly, if $u \in U^{3/2 + \varepsilon}$, then $u$ is continuous and 
+		\[ \abs{u(x)} \leq C \norm{u}_{U^{3/2 + \varepsilon}}.\]
+		\begin{proof}
+			We write 
+			\[\abs{u(x)} \leq \sum_{n = 0}^{+ \infty} \abs{\hat{u}_n}\]
+			since for all $n$, $\norm{T_n}_{L^\infty} = 1$. Cauchy-Schwarz's inequality then yields
+			\[\abs{u(x)} \leq \sqrt{\sum_{n= 0}^{+ \infty} \frac{1}{(1+ n^2)^{\frac{1}{2}+ \varepsilon}}} \norm{u}_{T^{\frac{1}{2} + \varepsilon}}.\]
+			For the second statement, we use the inclusion $U^{s} \subset T^{s-1}$ valid for $s > 1/2$, as established in \autoref{inclusionsTsUs}. 
+		\end{proof}	
+	\end{Lem}
+	\begin{Lem}
+		We have $L^2_\omega = \frac{1}{\omega}L^2_\frac{1}{\omega}$ and the pointwise multiplication by $\frac{1}{\omega}$ defines an bijective isometry from $L^2_\frac{1}{\omega}$ to $L^2_\omega$ with inverse $\omega$. 
+		\label{isometrie}
+	\end{Lem}
+	\begin{Lem}
+		For all real $s$, the operator $\partial_x$ can be extended into a continuous map from $T^{s+1}$ to $U^{s}$ as
+		\[ \duality{\partial_x u}{v}_{\omega} \isdef -\duality{u}{\omega \partial_x \omega v}_{\frac{1}{\omega}}.\] 
+		For all real $s$, the  operator $\omega \partial_x \omega$ can be extended into a continuous operator from $U^{s+1} \to T^{s}$ as
+		\[\duality{\omega \partial_x \omega u}{v}_\frac{1}{\omega} \isdef -\duality{u}{\partial_x v}_\omega.\]
+		\begin{proof}
+			First, note that if $v \in T^{\infty}$, then  $\omega \partial_x \omega v = (1-x^2)v' - xv \in T^{\infty}$. The definition of $\partial_x$ is thus correct. The claimed continuity  is an immediate consequence of 
+			\[\omega \partial_x \omega U_n = -(n+1) T_{n+1}.\]
+			The second assertion comes from $T_n' = nU_{n-1}$. 
+		\end{proof}
+	\end{Lem}
+	\noindent The following corollary will be used in our Galerkin analysis:
+	\begin{Cor}
+		\label{corDxT2T0}
+		The operator $\partial_x$ is continuous from $T^{s+2}$ to $T^s$ for all $s > -1/2 $ and from $U^{s+2}$ to $U^s$ for all $s > - 3/2$.
+	\end{Cor}
+	\begin{proof}
+		For the first case we use $\partial_x$ is continuous from $T^{s+2}$ to $U^{s+1}$ and then the identity is continuous from $U^{s+1}$ to $T^s$. For the second, we use the same arguments in the reverse order. 
+	\end{proof}
+	We now provide a characterization of the spaces $T^s$ and $U^s$. For this, we need the following result:
+	\begin{Cor}
+		\label{omegadxetdxomga}
+		The operator $\omega \partial_x$ defined on $T^{\infty}$ as 
+		\[\omega \partial_x u = \omega u'\]
+		has a continuous extension from $T^1$ to $T^0$. Similarly, the operator $\partial_x \omega$ has a continuous extension from $U^1$ to $U^0$. 
+		\begin{proof}
+			For the first part, we use the fact that $\partial_x$ is continuous from $T^1$ to $U^0$, and, by \autoref{isometrie}, $\omega$ is continuous from $U^0$ to $T^0$. 
+			For the second part, we use the fact that $\omega \partial_x \omega$ is continuous from $U^1$ to $T^0$, and from the same lemma, the multiplication by $\frac{1}{\omega}$ is continuous from $T^0$ to $U^0$. 
+		\end{proof}
+	\end{Cor}
+	For a function $u$ defined on $[a,b]$, we denote by $\tilde{u}$ the function defined on $[\theta_a,\theta_b] \isdef [\arccos(a),\arccos(b)]$ as
+	\[ \tilde{u}(\theta) = u(\cos(\theta))\]
+	and by $Vu$ the function defined as 
+	\[Vu(\theta) \isdef \sin(\theta) \tilde{u}(\theta).\]
+	We then have the following characterization:
+	\begin{The}
+		A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u}$ satisfying $\tilde{u}\in H^n(-\pi,\pi)$. In this case, 
+		\[ \norm{u}_{T_n}\sim \norm{\tilde{u}}_{H^n}, \abs{u}_{T^n} \sim \abs{\tilde{u}}_{H^n}.\]
+		Similarly, $u$ belongs to  $\in U^n$ if and only if $ u = \frac{1}{\sqrt{1 - x^2}} Vu  \circ  \arccos$  for some odd function $Vu$ in  $H^n(-\pi,\pi)$. In this case, 
+		\[\norm{u}_{U_n} \sim \abs{Vu}_{H^n}.\]	
+		Moreover, of $ u \in T^n$, then $(\omega \partial_x)^n u$ is in $L^2_\frac{1}{\omega}$ and 
+		\[ \abs{u}_{T^n}^2 \sim \int_{-1}^{1} \frac{((\omega \partial_x)^n u)^2}{\omega}.\]
+		\noindent If $u \in U^n$, $(\partial_x \omega)^n \in L^2_\omega$ and 
+		\[ \norm{u}_{U_n} = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
+		\label{thmChar}
+	\end{The}
+	\begin{proof}
+		The first two equivalences stem from the fact that 
+		\[\hat{u}_n = \frac{1}{\pi}\int_{-\pi}^{\pi} \tilde{u}(\theta) \cos(n \theta), \check{u}_n = \frac{1}{\pi} \int_{-\pi}^{\pi} Vu(\theta) \sin((n+1)\theta)d\theta,\]
+		which can be verified by using the change of variables $x = \cos\theta$ in the definitions of $\hat{u}_n$ and $\check{u}_n$. 
+		Now, let us show that if $ u \in T^n$, then $(\omega \partial_x)^n$ is in $L^2_\frac{1}{\omega}$. The operator $(\omega \partial_x)^2$ is continuous from $T^s$ to $T^{s-2}$ for all real $s$ which implies the result if $n$ is even. If $n$ is odd, say $n = 2k + 1$, we write $(\omega \partial_x)((\omega \partial_x)^{2})^k$, and conclude using \autoref{omegadxetdxomga}.
+		The same kind of proof also shows that if $u \in U^n$, $(\partial_x \omega )^nu \in L^2_\omega$.
+		The rest of the proof can be performed by computing the quantities for functions in $T^{\infty}$, perform integrations by part and conclude with the density of $C^{\infty}$ in $T^s$ and $U^s$. 
+	\end{proof}
+	\begin{Def}
+		If $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. When $A$ and $B$ are such that there exists a smoothing operator $R$ such that 
+		\[A = B + R,\]
+		we write $A = B \textup{  mod  }  T^{\infty}$.
+	\end{Def}
+	
+	
 	\subsection{Single layer equation}
 	
 	In this section we focus on the equation $S\lambda = g$, that is we seek $\lambda \in \tilde{H}^{-1/2}$ such that 
@@ -285,7 +414,7 @@
 	
 	%The solution is connected to the exterior Dirichlet problem for the Laplace operator, but attention must be paid when the solution $\lambda$ obtained does not satisfy $\duality{1}{\lambda}_\Gamma = 0$: in this case, $\textup{SL}\lambda$ is not a bounded solution of the Dirichlet problem. See \cite{atkinson1991numerical} for a link with the logarithmic capacity of the line and how we recover the bounded solution from the solution of \eqref{Slambda}.
 	
-	Our analysis lies on the following formula. For a proof, see for example \cite{mason2002chebyshev} Theorem 9.2. Note that this is also the main ingredient in several connected works, as \cite{jiang2004second} and \cite{bruno2012second}.
+	Our analysis lies on the following formula. For a proof, see for example \cite{mason2002chebyshev} Theorem 9.2. Note that this is also the main ingredient in several connected works, such as \cite{jiang2004second} and \cite{bruno2012second}.
 	
 	%
 	%\paragraph{Autre idée de présentation.}
@@ -299,9 +428,9 @@
 	%Exploitation en terme de vp. Dire qu'on a deux opérateurs avec spectre discret. (L'un est compact dans $L^2_\frac{1}{\omega}$, (sans preuve pour l'instant).
 	%
 	\begin{Prop}
-		\[ -\frac{1}{2\pi}\int_{-1}^{1} \frac{\ln|x-y|}{\sqrt{1 - y^2}}T_n(y)dy = \lambda_n T_n(x)\]
+		\[ -\frac{1}{2\pi}\int_{-1}^{1} \frac{\ln|x-y|}{\sqrt{1 - y^2}}T_n(y)dy = s_n T_n(x)\]
 		where
-		\[\lambda_n = \begin{cases}
+		\[s_n = \begin{cases}
 		\dfrac{\ln(2)}{2} & \text{if } n=0\\
 		\dfrac{1}{2n} & \text{otherwise}.
 		\end{cases}\]
@@ -310,7 +439,7 @@
 
 	Using the decomposition of $g$ and of the logarithmic kernel on the basis $T_n$, we see that the solution $\lambda$ to equation \eqref{Slambda} admits the following expansion 
 	\begin{equation}
-	\lambda(x) = \frac{1}{\sqrt{1-x^2}}\sum_{n=0}^{+ \infty} \frac{\hat{g}_n}{\lambda_n} T_n(x).
+	\lambda(x) = \frac{1}{\sqrt{1-x^2}}\sum_{n=0}^{+ \infty} \frac{\hat{g}_n}{s_n} T_n(x).
 	\label{expansionLambda}
 	\end{equation}
 	We deduce the following well-known fact:
@@ -324,7 +453,7 @@
 		\begin{proof}
 			Let $\alpha = \sqrt{1 - x^2}\lambda$ where $\lambda$ is the solution of $S\lambda = g$ with $g \in C^{\infty}([-1,1])$. 
 			\autoref{LemTinfCinf} implies that $g \in T^{\infty}$, and by equation \eqref{expansionLambda}, 
-			\[ \hat{\alpha}_n = \frac{\hat{g}_n}{\lambda_n},\]
+			\[ \hat{\alpha}_n = \frac{\hat{g}_n}{s_n},\]
 			so $\alpha$ also  belongs to $T^{\infty} = C^{\infty}([-1,1])$. 
 		\end{proof}
 	\end{Cor}
@@ -356,13 +485,13 @@
 	and let $\lambda = \frac{\alpha}{\omega}$.  
 	
 	
-	We are now in a position to find the inverse of $S_\omega$. An explicit inverse has already appeared in the literature. In 
+	We are now in a position to find an expression for the inverse of $S_\omega$. An explicit inverse has already appeared in the literature. In 
 	particular, in \cite{jerez2011variational,urzua2014optimal}, explicit variational forms for this inverse operator are derived rigorously. (A similar method is also employed in the recent paper \cite{hiptmair2017closed} in $\R^3$ for the case of the unit disk.) We just state here the following formal decomposition:
 	\[\dfrac{d^2}{dxdy}\log\frac{M(x,y)}{|x-y|^2} = \frac{-1+xy}{2|x-y|^2} = \sum_{n=1}^{+ \infty} n T_n(x)T_n(y)\]
 	with 
 	$M(x,y) = \frac{1}{2}\left((y-x)^2 + (\omega(x) + \omega(y))^2\right) $.
 	
-	However, using the preceding analysis, we have an alternative way of defining this exact inverse, which leads to an  inverse in the form of the square root of a local operator. To state the next result, we define the operator $\pi_{0}$ as the $L^2_{1/\omega}$ 
+	However, using the preceding analysis, we have an alternative way of defining this exact inverse, which leads to an expression in the form of the square root of a local operator. To state the next result, we define the operator $\pi_{0}$ as the $L^2_{1/\omega}$ 
 	orthogonal projector on $T_0$. Namely 
 	\[\pi_0 \alpha(x)  = \frac{1}{\pi} \int_{-1}^{1}\frac{\alpha(y)}{\omega(y)}dy\,.\]
 	The preceding definition can be extended to $u \in T^s$ for any $s \in \R$ by setting $\pi_0 u$ as the solution of
@@ -408,7 +537,46 @@
 		\end{equation}
 	\end{Cor}
 	
-	The last result shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be thought as inverse operators (modulo constant terms) and that, at the very least, $\sqrt{-(\omega \partial_x)^2}$ can be used as a preconditioner for $S_\omega$. Indeed, $2\sqrt{-(\omega \partial_x)^2}S_\omega$ is a compact perturbation of identity. This makes a clear link with the approximation of the Dirichlet to Neumann map proposed in \cite{antoine2007generalized} in terms of a square root operator. The link will be even clearer when Helmholtz equation will be considered. 
+	The last result shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be thought as inverse operators (modulo constant terms) and that, at the very least, $\sqrt{-(\omega \partial_x)^2}$ can be used as a preconditioner for $S_\omega$. Indeed, $2\sqrt{-(\omega \partial_x)^2}S_\omega$ is a compact perturbation of identity. This makes a clear link with the approximation of the Dirichlet to Neumann map proposed in \cite{antoine2007generalized} in terms of a square root operator. The link will be even clearer when Helmholtz equation will be considered. In the figure below, we compare the number of iterations for the numerical resolution of Equation \eqref{Somegaalpha} by the method detailed in \autoref{sec:NumericalRes} without preconditioner, and with a preconditioner given by $M^{-1} \left[B \right] M^{-1}$ where $M$ is the mass matrix and $\left[ B \right]$ is the Galerkin matrix of the operator $\sqrt{ -(\omega \partial_x)^2}$. 
+	
+		\begin{table}
+		\begin{center}
+			\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
+				\hline
+				\multicolumn{1}{||c|}{ }&
+				\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
+				\hline
+				$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+				\hline\hline
+				25 & 7 & 0.07 & 25 & 0.19\\ 
+				\hline
+				50 & 7 & 0.10 & 37 & 0.45\\
+				\hline
+				100 & 7 & 0.14 & 48 & 0.80\\
+				\hline
+				200 & 7 & 0.18 & 62 & 1.21\\
+				\hline
+				400 & 7 & 0.33 & 78 & 2.51\\
+				\hline
+				800 & 7 & 0.78 & 99 & 5.48\\
+				\hline
+				1600 & 7 & 2.24 & 124 & 12.88\\
+				\hline
+			\end{tabular}
+		\end{center}
+		\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
+		\label{TableNitTimeLaplaceDirichlet}
+	\end{table}
+	
+	
+	
+	
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.7]{figs/PrecondDirichletLaplaceSeg.png}
+		\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 500$.}
+		\label{FigureNitLaplaceDirichlet}
+	\end{figure}
 	
 	\subsection{Hypersingular equation} 
 	
@@ -676,44 +844,7 @@
 	where $x_0 = 0.5$, $c = 1e^{-5}$. In \autoref{TableNitTimeLaplaceDirichlet}, we show the evolution of the number of iterations as the size of the mesh increases. This data confirms that the number of iterations is independant of the mesh size. In \autoref{FigureNitLaplaceDirichlet}, we show the relative residual history for the resolution of this linear system with $N = 500$. 
 	
 	
-	\begin{table}
-		\begin{center}
-			\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
-				\hline
-				\multicolumn{1}{||c|}{ }&
-				\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
-				\hline
-				$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
-				\hline\hline
-				25 & 7 & 0.07 & 25 & 0.19\\ 
-				\hline
-				50 & 7 & 0.10 & 37 & 0.45\\
-				\hline
-				100 & 7 & 0.14 & 48 & 0.80\\
-				\hline
-				200 & 7 & 0.18 & 62 & 1.21\\
-				\hline
-				400 & 7 & 0.33 & 78 & 2.51\\
-				\hline
-				800 & 7 & 0.78 & 99 & 5.48\\
-				\hline
-				1600 & 7 & 2.24 & 124 & 12.88\\
-				\hline
-			\end{tabular}
-		\end{center}
-		\caption{Number of iteration and time needed for the computation of the solution to \eqref{Slambda} using Galerkin finite elements with and without preconditioner.}
-		\label{TableNitTimeLaplaceDirichlet}
-	\end{table}
-	
-	
-	
-	
-	\begin{figure}
-		\centering
-		\includegraphics[scale=0.7]{PrecondLaplaceDirichletIterations}
-		\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 500$.}
-		\label{FigureNitLaplaceDirichlet}
-	\end{figure}
+
 	
 	
 	\subsection{Numerical results}

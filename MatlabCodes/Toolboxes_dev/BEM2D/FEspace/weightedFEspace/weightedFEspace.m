@@ -128,6 +128,20 @@ classdef weightedFEspace < FEspace
             s_diag =  spdiags(s,0,this.nint,this.nint);
             Mat = omega2_diag*this.dphi - s_diag*this.phi;
         end
+        function[Mat] = omega2(this)
+            if strcmp(this.weight_id,'sqrt(1-t^2)')
+                om2 = this.weight(this.sVec).^2;
+                om2(or(isinf(om2),isnan(om2))) = 0;
+                om2_diag = spdiags(om2,0,this.nint,this.nint);
+                Wd = spdiags(this.W,0,this.nint,this.nint);
+                Mat = this.phi'*Wd*om2_diag*this.phi;
+            else
+                om2 = 1./this.weight(this.sVec).^2;
+                om2(or(isinf(om2),isnan(om2))) = 0;
+                om2_diag = spdiags(om2,0,this.nint,this.nint);
+                Mat = om2_diag*this.phi;
+            end
+        end
         function[Mat] = regularize(this,X,singKernel_id,varargin)
             % Creates the Matrix  Mat such that Mat*U = \int_{\Gamma} kernel(\abs{X-y})u(y)dy -
             % \intApprox{\Gamma} kernel(\abs{X-y})u(y)dy
@@ -145,7 +159,7 @@ classdef weightedFEspace < FEspace
                     Mat  = this.correctionPrecise(X,singKernel_id,varargin);
             end
         end
-        function[Mat] = regularizeHypersingular(this,X)
+        function[Mat] = ln_omega_reg(this,X)
             % Vh a weighted FE space.
             % This function computes the sparse matrix
             % Aik = Cik(\int_[this]K(X_k,y)  - \intApprox_[this]K(X_k,y))
@@ -205,6 +219,90 @@ classdef weightedFEspace < FEspace
                         omega2 = 1./this.weight(s0).^2;
                         omega2(or(isinf(omega2),isnan(omega2))) = 0;
                         H = (L/2-s0).*cb + omega2.*db;
+                        % Compute the approximation that was used for
+                        % \int_{[A,B]}G(X_k(k,:),Y) dY for each k.
+                        
+                        
+                        % Compute the exact integral to replace :
+                        exactInt = this.I0exact(singK, X_k,segNum); % method that computes
+                        % exactly \int_{[A,B]} G(X_k(k,:),Y) dY for each k.
+                        
+                        % Store the correction.
+                        correc_kib = H.*(exactInt - approxInt);
+                        lines{b} = [lines{b};ks];
+                        cols{b} = [cols{b};0*ks + i];
+                        vals{b} = [vals{b};correc_kib];
+                    end
+                   
+                    
+                end
+            end
+            % We have a corrective patch for each b on the whole mesh. Sum
+            % them to get the final correction.
+            Mat = sparse(lines{1},cols{1},vals{1},M,ndof);
+            for b = 2:Nb
+                Mat = Mat + sparse(lines{b},cols{b},vals{b},M,ndof);
+            end
+        end
+        function[Mat] = ln_omega2_reg(this,X)
+            % Vh a weighted FE space.
+            % This function computes the sparse matrix
+            % Aik = Cik(\int_[this]K(X_k,y)  - \intApprox_[this]K(X_k,y))
+            % where the non-zeros indexes are chosen when X_k is close to
+            % the segments attached to the dof number i. Cik is the
+            % piecewise constant function on each segment of the mesh such
+            % that the i-th basis function can be written on each segment
+            % as phi_i(Y) = Cik(Y) + someConstant times (X_k - Y)
+            
+            M = size(X,1); % Number of points in X
+            me = this.mesh;
+            l = me.length; % vector containing length of each segment in the mesh.
+            L = sum(l);
+            ndof = this.ndof;
+            T = this.dofIndexes;
+            feCell = this.fe_cell;
+            Nb = feCell.Nb;
+            singK = logSingK;
+            func = singK.k.func;
+            
+            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            lines = cell(Nb,1); cols = cell(Nb,1); vals = cell(Nb,1);
+            %             threshold = 4*max(l);
+            %             I = isClose(X,this.dofCoords,threshold);
+            %             dofsToLoop = find(~cellfun('isempty',I))';
+            for i = 1:this.ndof %dofsToLoop
+                for b = 1:Nb
+                    segNum = find(T(:,b)==i); % On which segment is
+                    % the b-th basis function attached to dof i.
+                    %                     X_k = X(I{i}',:);
+                    if isempty(segNum)
+                        % nothing to do
+                    else
+                        A = [Ax(segNum) Ay(segNum)]; B = [Bx(segNum) By(segNum)]; % the segment is [A,B].
+                        
+                        
+                        Mid = (A + B)/2; % segment middle.
+                        lAB2 = l(segNum)^2*2; % squared length of the segment.
+                        
+                        
+                        
+                        % We select in X the points that are within three balls centered
+                        % respectively on A,B and Mid, and of radius lAB.
+                        AX2 = (X(:,1) - Ax(segNum)).^2 + (X(:,2) - Ay(segNum)).^2;
+                        BX2 = (X(:,1) - Bx(segNum)).^2 + (X(:,2) - By(segNum)).^2;
+                        MX2 = (X(:,1) - Mid(1)).^2 + (X(:,2) - Mid(2)).^2;
+                        ks = find(or(AX2 < lAB2, or(BX2 < lAB2,MX2<lAB2)));
+                        X_k = X(ks,:); % seclected points in X.
+                        %for each k, parameter cb(k) such that phi_b(Y) = cb(k) + C*(X_k(k,:) - Y)
+                        % where C is some constant.
+                        approxInt = this.I0approx(func,X_k,segNum);
+                        cb = this.fe_cell.constantTerm(b,X_k,A,B);
+                        [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
+                        [sA,~] = this.mesh.s_seg(segNum);
+                        s0 = sA - alpha;
+                        omega2 = 1./this.weight(s0).^2;
+                        omega2(or(isinf(omega2),isnan(omega2))) = 0;
+                        H = omega2.*cb;
                         % Compute the approximation that was used for
                         % \int_{[A,B]}G(X_k(k,:),Y) dY for each k.
                         

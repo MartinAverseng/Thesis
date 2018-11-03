@@ -1,0 +1,59 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: draft_v3.aux
+The style file: plain.bst
+Database file #1: /home/martin/Thesis/Biblio/biblio.bib
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "Levadoux"
+Warning--I didn't find a database entry for "DarbasAntoine"
+Warning--I didn't find a database entry for ""
+Warning--I didn't find a database entry for "Bruno"
+Warning--I didn't find a database entry for "Jerez"
+Warning--I didn't find a database entry for "Hiptmair"
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 24 entries,
+            2118 wiz_defined-function locations,
+            664 strings with 8458 characters,
+and the built_in function-call counts, 7747 in all, are:
+= -- 783
+> -- 338
+< -- 2
++ -- 137
+- -- 108
+* -- 549
+:= -- 1300
+add.period$ -- 72
+call.type$ -- 24
+change.case$ -- 121
+chr.to.int$ -- 0
+cite$ -- 25
+duplicate$ -- 278
+empty$ -- 609
+format.name$ -- 108
+if$ -- 1591
+int.to.chr$ -- 0
+int.to.str$ -- 24
+missing$ -- 26
+newline$ -- 123
+num.names$ -- 48
+pop$ -- 109
+preamble$ -- 1
+purify$ -- 100
+quote$ -- 0
+skip$ -- 208
+stack$ -- 0
+substring$ -- 561
+swap$ -- 41
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 90
+warning$ -- 1
+while$ -- 84
+width$ -- 26
+write$ -- 258
+(There were 2 error messages)

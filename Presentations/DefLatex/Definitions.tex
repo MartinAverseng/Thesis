@@ -19,8 +19,10 @@
 %\usepackage{bm}
 \usepackage{cite}
 \usepackage{color}
+
 \usepackage{float}
-\usepackage{graphicx}
+\usepackage[pdftex]{graphicx}
+\usepackage[outdir = ./]{epstopdf}
 \usepackage[utf8]{inputenc}
 \usepackage{mathtools}
 %\usepackage{mdframed}
@@ -32,6 +34,7 @@
 %\usepackage{textcomp}
 \usepackage{tikz}
 \usepackage{url}
+
 %\renewcommand{\proofname}{Proof}
 \newtheorem{monTheoNumrote}{Théorème} % Environnement numéroté en fonction de la section
 %\newtheorem*{monTheoNonNumerote}{Théorème}  % Environnement non numéroté
@@ -114,3 +117,46 @@
 	\end{equation}}
 \newcommand{\opFromTo}[3]{#1 : #2 \longrightarrow #3}
 \pgfplotsset{compat=newest}
+% \itemequation[label]{text before}{equation}
+\makeatletter
+\newcommand*{\itemequation}[3][]{%
+	\begingroup
+	\refstepcounter{equation}%
+	\ifx\\#1\\%
+	\else
+	\label{#1}%
+	\fi
+	\sbox0{#2}%
+	\sbox2{#3}%
+	\sbox4{ \@eqnnum}%
+	\dimen@=.5\dimexpr\linewidth-\wd2\relax
+	% Warning for overlapping
+	\let\CenterInSpace=N%
+	\ifcase
+	\ifdim\wd0>\dimen@
+	\z@
+	\else
+	\ifdim\wd4>\dimen@
+	\z@
+	\else
+	\@ne
+	\fi
+	\fi
+	\let\CenterInSpace=Y%
+	\fi
+	\ifdim\dimexpr\wd0+\wd2+\wd4\relax>\linewidth
+	\@latex@warning{Equation is too large}%
+	\fi
+	\noindent
+	\rlap{\copy0}%
+	\ifx\CenterInSpace Y%
+	\rlap{\hbox to \linewidth{\kern\wd0\hss\copy2\hss\kern\wd4}}%
+	\else
+	\rlap{\hbox to \linewidth{\hfill\copy2\hfill}}%
+	\fi
+	\hbox to \linewidth{\hfill\copy4}%
+	\hspace{0pt}% allow linebreak
+	\endgroup
+	\ignorespaces
+}
+\makeatother

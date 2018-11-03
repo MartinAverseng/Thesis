@@ -19,45 +19,45 @@ while executing---line 1049 of file plain.bst
 Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
 while executing---line 1090 of file plain.bst
 Warning--empty journal in urzua2014optimal
-You've used 20 entries,
+You've used 19 entries,
             2118 wiz_defined-function locations,
-            646 strings with 7715 characters,
-and the built_in function-call counts, 6260 in all, are:
-= -- 627
-> -- 276
+            639 strings with 7588 characters,
+and the built_in function-call counts, 5961 in all, are:
+= -- 595
+> -- 269
 < -- 1
-+ -- 112
-- -- 88
-* -- 438
-:= -- 1062
-add.period$ -- 60
-call.type$ -- 20
-change.case$ -- 99
++ -- 108
+- -- 86
+* -- 416
+:= -- 1013
+add.period$ -- 57
+call.type$ -- 19
+change.case$ -- 95
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 225
-empty$ -- 496
-format.name$ -- 88
-if$ -- 1280
+cite$ -- 20
+duplicate$ -- 214
+empty$ -- 469
+format.name$ -- 86
+if$ -- 1219
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 22
-newline$ -- 103
-num.names$ -- 40
-pop$ -- 93
+int.to.str$ -- 19
+missing$ -- 21
+newline$ -- 98
+num.names$ -- 38
+pop$ -- 91
 preamble$ -- 1
-purify$ -- 82
+purify$ -- 79
 quote$ -- 0
-skip$ -- 166
+skip$ -- 159
 stack$ -- 0
-substring$ -- 433
-swap$ -- 28
+substring$ -- 402
+swap$ -- 27
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 74
+type$ -- 70
 warning$ -- 1
-while$ -- 67
-width$ -- 22
-write$ -- 214
+while$ -- 63
+width$ -- 21
+write$ -- 203
 (There were 2 error messages)

@@ -12,7 +12,7 @@ curve = SimpleCurve(x,y,I);
 
 k = 0;
 
-Ns = [30 60 100];
+Ns = [30 60 80];
 n = 2;
 lambda1 = R2toRfunc.Un(n);
 u01 = (n+1)/2*R2toRfunc.Un(n);

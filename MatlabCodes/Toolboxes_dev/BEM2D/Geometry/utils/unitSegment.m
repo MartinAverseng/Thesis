@@ -1,13 +1,16 @@
-function [ c , incWave] = unitSegment(k)
+function [ c , incWave, dxf, dyf] = unitSegment(k)
 
 c = openline(-1,1);
 
 
 
-if and(nargout == 2,nargin ==1)
-    theta_inc = pi/2;
+if and(nargout >= 2,nargin ==1)
+    theta_inc = pi/4;
     X = R2toRfunc.X; Y = R2toRfunc.Y;
-    incWave = exp(1i*k*(X*cos(theta_inc) + Y*sin(theta_inc)));
+    incWave = exp(1i*k*(X*cos(theta_inc) + Y*sin(theta_inc)));%*1/sqrt((X^2 + (Y-0.01)^2));
+%     incWave = sqrt(((X-1.001)^2 + (Y-0.001)^2));
+    dxf = 1i*k*cos(theta_inc)*incWave;% = d(incwave)/dx
+    dyf = 1i*k*sin(theta_inc)*incWave;
 end
 
 

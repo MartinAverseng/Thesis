@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.12)  25 OCT 2018 17:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.12)  30 OCT 2018 09:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1246,47 +1246,40 @@ LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <6> not available
 (Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 9.
 
 
-LaTeX Warning: Citation `Christiansen' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `Christiansen' on page 1 undefined on input line 17.
 
 
-LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 17.
 
 
-LaTeX Warning: Citation `Levadoux' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `Levadoux' on page 1 undefined on input line 17.
 
 
-LaTeX Warning: Citation `DarbasAntoine' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `DarbasAntoine' on page 1 undefined on input line 17.
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 17.
+(Font)              <10> on input line 18.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 17.
+(Font)              <7> on input line 18.
 
-LaTeX Warning: Citation `Bruno' on page 1 undefined on input line 35.
-
-
-LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 35.
+LaTeX Warning: Citation `Bruno' on page 1 undefined on input line 36.
 
 
-LaTeX Warning: Citation `Jerez' on page 1 undefined on input line 35.
+LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 36.
 
 
-LaTeX Warning: Citation `Hiptmair' on page 1 undefined on input line 35.
+LaTeX Warning: Citation `Jerez' on page 1 undefined on input line 36.
 
 
-LaTeX Warning: Reference `dirichletIntEq' on page 1 undefined on input line 40.
-
-
-
-LaTeX Warning: Reference `NeumannIntEq' on page 1 undefined on input line 40.
+LaTeX Warning: Citation `Hiptmair' on page 1 undefined on input line 36.
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 51.
- [2] [3]
-Overfull \hbox (0.45102pt too wide) detected at line 133
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 56.
+ [2]
+Overfull \hbox (0.45102pt too wide) detected at line 131
 [][] [] \OT1/lmr/m/n/10 = [][] \OML/lmm/m/it/10 G[]\OT1/lmr/m/n/10 (\OML/lmm/m/
 it/10 x \OMS/lmsy/m/n/10 ^^@ \OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/1
 0 ^^V[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ^^W
@@ -1300,20 +1293,8 @@ lmm/m/it/10 n\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/
 [\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 ) \OML/lmm/m/it/10 :
  []
 
-
-LaTeX Warning: Citation `' on page 4 undefined on input line 151.
-
-
-LaTeX Warning: Citation `' on page 4 undefined on input line 151.
-
-
-LaTeX Warning: Citation `' on page 4 undefined on input line 151.
-
-
-LaTeX Warning: Citation `' on page 4 undefined on input line 151.
-
-[4] [5] [6] [7] [8]
-Overfull \hbox (1.59624pt too wide) in paragraph at lines 325--327
+[3] [4] [5] [6] [7] [8] [9] [10] [11]
+Overfull \hbox (1.59624pt too wide) in paragraph at lines 454--456
 []\OT1/lmr/m/n/10 Let $\OML/lmm/m/it/10  \OT1/lmr/m/n/10 = []\OML/lmm/m/it/10 
 ^^U$ \OT1/lmr/m/n/10 where $\OML/lmm/m/it/10 ^^U$ \OT1/lmr/m/n/10 is the so-lu-
 tion of $\OML/lmm/m/it/10 S^^U \OT1/lmr/m/n/10 = \OML/lmm/m/it/10 g$ \OT1/lmr/m
@@ -1322,175 +1303,170 @@ m/n/10 ([\OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 1\OML/lmm/m/it/10 ; \OT1/lmr/m/n/1
 0 1])$.
  []
 
-[9] [10] [11]
+[12] [13]
 
-LaTeX Warning: Citation `postell1990h' on page 12 undefined on input line 486.
-
-
-LaTeX Warning: Citation `costabel1988convergence' on page 12 undefined on input
- line 486.
-
-[12]
-
-LaTeX Warning: Citation `postell1990h' on page 13 undefined on input line 492.
-
-LaTeX Font Info:    Try loading font information for U+bbm on input line 520.
-(/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
-File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [13]
-
-LaTeX Warning: Reference `thmChar' on page 14 undefined on input line 539.
-
-[14]
-
-LaTeX Warning: Reference `corDxT2T0' on page 15 undefined on input line 566.
+LaTeX Warning: Reference `sec:NumericalRes' on page 14 undefined on input line 
+540.
 
 
-LaTeX Warning: Reference `LemmaT-1/2' on page 15 undefined on input line 578.
-
-[15] [16]
-
-LaTeX Warning: Reference `LemInjectionsContinues' on page 17 undefined on input
- line 639.
+LaTeX Warning: File `figs/PrecondDirichletLaplaceSeg.png' not found on input li
+ne 576.
 
 
-LaTeX Warning: Reference `corDxT2T0' on page 17 undefined on input line 653.
+! Package pdftex.def Error: File `figs/PrecondDirichletLaplaceSeg.png' not foun
+d: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.576 ...0.7]{figs/PrecondDirichletLaplaceSeg.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 576
+.
+(/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [14] [15]
+
+LaTeX Warning: Citation `postell1990h' on page 16 undefined on input line 654.
 
 
-Overfull \hbox (17.54881pt too wide) in paragraph at lines 660--662
-\OT1/lmr/m/n/10 By the ana-log of C^^Sea's lemma []Lemma 8[][], one has $[][] \
-OMS/lmsy/m/n/10 ^^T [][]$\OT1/lmr/m/n/10 .
- []
+LaTeX Warning: Citation `costabel1988convergence' on page 16 undefined on input
+ line 654.
+
+[16]
+
+LaTeX Warning: Citation `postell1990h' on page 17 undefined on input line 660.
 
 [17]
+LaTeX Font Info:    Try loading font information for U+bbm on input line 688.
+ (/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+) [18]
 
-LaTeX Warning: Reference `lemU12H12' on page 18 undefined on input line 667.
+LaTeX Warning: Reference `LemmaT-1/2' on page 19 undefined on input line 746.
 
-Package epstopdf Info: Source file: <PrecondLaplaceDirichletIterations.eps>
-(epstopdf)                    date: 2018-05-02 15:51:00
-(epstopdf)                    size: 36053 bytes
-(epstopdf)             Output file: <PrecondLaplaceDirichletIterations-eps-conv
-erted-to.pdf>
-(epstopdf)                    date: 2018-05-02 15:53:46
-(epstopdf)                    size: 11522 bytes
-(epstopdf)             Command: <repstopdf --outfile=PrecondLaplaceDirichletIte
-rations-eps-converted-to.pdf PrecondLaplaceDirichletIterations.eps>
-(epstopdf)             \includegraphics on input line 713.
-Package epstopdf Info: Output file is already uptodate.
-<PrecondLaplaceDirichletIterations-eps-converted-to.pdf, id=343, 429.605pt x 33
-9.2675pt>
-File: PrecondLaplaceDirichletIterations-eps-converted-to.pdf Graphic file (type
- pdf)
-<use PrecondLaplaceDirichletIterations-eps-converted-to.pdf>
-Package pdftex.def Info: PrecondLaplaceDirichletIterations-eps-converted-to.pdf
-  used on input line 713.
-(pdftex.def)             Requested size: 300.72144pt x 237.48563pt.
-[18] [19 <./PrecondLaplaceDirichletIterations-eps-converted-to.pdf>] [20]
+[19] [20] [21]
+Overfull \hbox (22.54881pt too wide) in paragraph at lines 828--830
+\OT1/lmr/m/n/10 By the ana-log of C^^Sea's lemma []Lemma 12[][], one has $[][] 
+\OMS/lmsy/m/n/10 ^^T [][]$\OT1/lmr/m/n/10 .
+ []
 
-LaTeX Warning: Citation `betcke2014spectral' on page 21 undefined on input line
- 775.
 
-[21] [22] [23] [24]
+LaTeX Warning: Reference `lemU12H12' on page 22 undefined on input line 835.
+
+[22] [23]
+
+LaTeX Warning: Citation `betcke2014spectral' on page 24 undefined on input line
+ 906.
+
+[24] [25] [26] [27]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 903.
+(Font)              <14.4> on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 903.
+(hyperref)                removing `math shift' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 903.
+(hyperref)                removing `subscript' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 903.
+(hyperref)                removing `\omega' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 903.
+(hyperref)                removing `math shift' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 903.
+(hyperref)                removing `math shift' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\partial' on input line 903.
+(hyperref)                removing `\partial' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 903.
+(hyperref)                removing `subscript' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 903.
+(hyperref)                removing `\omega' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 903.
+(hyperref)                removing `superscript' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 903.
+(hyperref)                removing `superscript' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 903.
+(hyperref)                removing `\omega' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 903.
+(hyperref)                removing `superscript' on input line 1034.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 903.
+(hyperref)                removing `math shift' on input line 1034.
 
-[25] (./draft_v2.bbl [26]) [27]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 959.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 959.
+[28] (./draft_v2.bbl [29]) [30]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1090.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1090.
  (./draft_v2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 959.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 959.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1090.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1090.
+
 Package rerunfilecheck Info: File `draft_v2.out' has not changed.
-(rerunfilecheck)             Checksum: 11BD2100C58C9A80745138FAD3CBBD36;1329.
+(rerunfilecheck)             Checksum: BDB23A539071FE5FB7D1FDF10AAAEF50;1285.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 959.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1090.
  ) 
 Here is how much of TeX's memory you used:
- 28723 strings out of 494923
- 674065 string characters out of 6180741
+ 28758 strings out of 494923
+ 674431 string characters out of 6180741
  887667 words of memory out of 5000000
- 31370 multiletter control sequences out of 15000+600000
- 62828 words of font info for 63 fonts, out of 8000000 for 9000
+ 31400 multiletter control sequences out of 15000+600000
+ 63139 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  76i,13n,128p,1038b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc} </home/martin/.texlive201
 7/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk>{/usr/share/texmf/fonts/enc/
-dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/sha
-re/texmf/fonts/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/public/
-lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/te
-xmf/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lme
-x10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fo
-nts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pf
-b></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/publi
-c/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts
-/type1/public/lm/lmsy5.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></
-usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/p
-ublic/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/s
-ymbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/sy
-mbols/msbm7.pfb>
-Output written on draft_v2.pdf (27 pages, 430527 bytes).
+dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/s
+hare/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm
+-mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texm
+f/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx
+9.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/font
+s/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb
+></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type
+1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/s
+hare/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public
+/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texm
+f/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.p
+fb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/typ
+e1/public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></us
+r/share/texmf/fonts/type1/public/lm/lmsy5.pfb></usr/share/texmf/fonts/type1/pub
+lic/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/
+texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/l
+mtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
+bm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msb
+m7.pfb>
+Output written on draft_v2.pdf (30 pages, 487725 bytes).
 PDF statistics:
- 538 PDF objects out of 1000 (max. 8388607)
- 474 compressed objects within 5 object streams
- 138 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 569 PDF objects out of 1000 (max. 8388607)
+ 502 compressed objects within 6 object streams
+ 150 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 
