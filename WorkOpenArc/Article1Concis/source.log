@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.31)  5 NOV 2018 15:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.31)  5 NOV 2018 17:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**draft_v3.tex
-(./draft_v3.tex
+**source.tex
+(./source.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 5 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -22,8 +22,8 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-) (../Definitions.tex
-(/usr/share/texmf/tex/latex/lm/lmodern.sty
+)
+(../../Definitions.tex (/usr/share/texmf/tex/latex/lm/lmodern.sty
 Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -1162,8 +1162,8 @@ Package caption Info: hyperref package is loaded.
 \c@Def=\count158
 \c@Rem=\count159
 \c@Que=\count160
-) (./draft_v3.aux)
-\openout1 = `draft_v3.aux'.
+) (./source.aux)
+\openout1 = `source.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
@@ -1180,7 +1180,8 @@ LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 6.
- (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+
+(/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 \AtBeginShipoutBox=\box45
@@ -1198,9 +1199,9 @@ LaTeX Info: Redefining \ref on input line 6.
 LaTeX Info: Redefining \pageref on input line 6.
 LaTeX Info: Redefining \nameref on input line 6.
 
-(./draft_v3.out) (./draft_v3.out)
+(./source.out) (./source.out)
 \@outlinefile=\write4
-\openout4 = `draft_v3.out'.
+\openout4 = `source.out'.
 
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -1272,271 +1273,185 @@ LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 16.
 
 LaTeX Warning: Citation `Levadoux' on page 1 undefined on input line 16.
 
-
-LaTeX Warning: Citation `DarbasAntoine' on page 1 undefined on input line 16.
-
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 17.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 17.
 
-LaTeX Warning: Citation `Bruno' on page 1 undefined on input line 35.
-
-
-LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 35.
-
-
-LaTeX Warning: Citation `Jerez' on page 1 undefined on input line 35.
-
-
-LaTeX Warning: Citation `Hiptmair' on page 1 undefined on input line 35.
+LaTeX Warning: Citation `gmres' on page 1 undefined on input line 26.
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 58.
- [2] [3]
-Overfull \hbox (0.45102pt too wide) detected at line 135
-[][] [] \OT1/lmr/m/n/10 = [][] \OML/lmm/m/it/10 G[]\OT1/lmr/m/n/10 (\OML/lmm/m/
-it/10 x \OMS/lmsy/m/n/10 ^^@ \OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/1
-0 ^^V[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ^^W
-[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 ) \OMS/lmsy/m/n/10 ^^@ \OM
-L/lmm/m/it/10 k[]G[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x; y\OT1/lmr/m/n/10 )\OML
-/lmm/m/it/10 ^^V\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/
-it/10 ^^W\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 n
-\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 ) \OMS/lmsy/m/n/10 ^^A \OML/
-lmm/m/it/10 n\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/
-10 d^^[\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 d^^
-[\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 ) \OML/lmm/m/it/10 :
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 47.
+ [2] [3] [4] [5] [6]
+[7] [8]
+Overfull \hbox (0.88673pt too wide) in paragraph at lines 356--357
+\OT1/lmr/m/n/10 in-verse op-er-a-tors (mod-ulo con-stant terms) and that, at th
+e very least, $[]$
  []
 
-[4]
+[9]
+<../figs/PrecondDirichletLaplaceSeg.png, id=222, 429.10312pt x 316.18124pt>
+File: ../figs/PrecondDirichletLaplaceSeg.png Graphic file (type png)
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 168.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 168.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 168.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 168.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 168.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 168.
-
-[5] [6] [7] [8] [9]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 367.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 367.
-
-[10] [11]
-Overfull \hbox (5.28564pt too wide) in alignment at lines 436--440
- [][][] []
- []
-
-
-Overfull \hbox (37.68362pt too wide) in paragraph at lines 440--442
-\OT1/lmr/m/n/10 We show that asump-tion (ii) holds for one of the terms $[] \OM
-L/lmm/m/it/10 b\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 k; j\OT1/lmr/m/n/10 )$
- []
-
-[12] [13] [14] [15]
-Overfull \hbox (1.59624pt too wide) in paragraph at lines 577--579
-[]\OT1/lmr/m/n/10 Let $\OML/lmm/m/it/10  \OT1/lmr/m/n/10 = []\OML/lmm/m/it/10 
-^^U$ \OT1/lmr/m/n/10 where $\OML/lmm/m/it/10 ^^U$ \OT1/lmr/m/n/10 is the so-lu-
-tion of $\OML/lmm/m/it/10 S^^U \OT1/lmr/m/n/10 = \OML/lmm/m/it/10 g$ \OT1/lmr/m
-/n/10 with $\OML/lmm/m/it/10 g \OMS/lmsy/m/n/10 2 \OML/lmm/m/it/10 C[]\OT1/lmr/
-m/n/10 ([\OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 1\OML/lmm/m/it/10 ; \OT1/lmr/m/n/1
-0 1])$.
- []
-
-[16] [17]
-<figs/PrecondDirichletLaplaceSeg.png, id=334, 429.10312pt x 316.18124pt>
-File: figs/PrecondDirichletLaplaceSeg.png Graphic file (type png)
-
-<use figs/PrecondDirichletLaplaceSeg.png>
-Package pdftex.def Info: figs/PrecondDirichletLaplaceSeg.png used on input line
- 717.
+<use ../figs/PrecondDirichletLaplaceSeg.png>
+Package pdftex.def Info: ../figs/PrecondDirichletLaplaceSeg.png used on input l
+ine 384.
 (pdftex.def)             Requested size: 300.37013pt x 221.32535pt.
- [18] [19 <./figs/PrecondDirichletLaplaceSeg.png (PNG copy)>] [20]
-<figs/PrecondNeumannLaplaceSeg.png, id=376, 429.10312pt x 316.18124pt>
-File: figs/PrecondNeumannLaplaceSeg.png Graphic file (type png)
+ [10 <../figs/PrecondDirichletLaplaceSeg.png (PNG copy)>] [11]
+<../figs/PrecondNeumannLaplaceSeg.png, id=250, 429.10312pt x 316.18124pt>
+File: ../figs/PrecondNeumannLaplaceSeg.png Graphic file (type png)
 
-<use figs/PrecondNeumannLaplaceSeg.png>
-Package pdftex.def Info: figs/PrecondNeumannLaplaceSeg.png used on input line 8
-32.
-(pdftex.def)             Requested size: 300.37013pt x 221.32535pt.
- [21] [22 <./figs/PrecondNeumannLaplaceSeg.png (PNG copy)>] [23] [24] [25] [26]
- [27]
-<figs/PrecondDirichletHelmSegPDF.pdf, id=462, 429.605pt x 316.18124pt>
-File: figs/PrecondDirichletHelmSegPDF.pdf Graphic file (type pdf)
+<use ../figs/PrecondNeumannLaplaceSeg.png>
+Package pdftex.def Info: ../figs/PrecondNeumannLaplaceSeg.png used on input lin
+e 472.
+(pdftex.def)             Requested size: 214.55103pt x 158.09023pt.
+ [12 <../figs/PrecondNeumannLaplaceSeg.png (PNG copy)>] [13] [14]
+<../figs/PrecondDirichletHelmSegPDF.pdf, id=289, 429.605pt x 316.18124pt>
+File: ../figs/PrecondDirichletHelmSegPDF.pdf Graphic file (type pdf)
 
-<use figs/PrecondDirichletHelmSegPDF.pdf>
-Package pdftex.def Info: figs/PrecondDirichletHelmSegPDF.pdf used on input line
- 1044.
+<use ../figs/PrecondDirichletHelmSegPDF.pdf>
+Package pdftex.def Info: ../figs/PrecondDirichletHelmSegPDF.pdf used on input l
+ine 571.
 (pdftex.def)             Requested size: 214.80197pt x 158.09023pt.
-
-Overfull \hbox (9.5858pt too wide) in paragraph at lines 1048--1068
+ [15]
+Overfull \hbox (9.5858pt too wide) in paragraph at lines 575--595
 \OT1/lmr/m/n/10 cal com-par-isons, this time with the pre-con-dion-ing op-er-a-
 tor $[][]$. 
  []
 
 
 
-pdfTeX warning: /usr/bin/pdflatex (file ./figs/PrecondNeumannHelmSegPDF.pdf): P
-DF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figs/PrecondNeumannHelmSegPDF.pdf, id=465, 421.575pt x 316.18124pt>
-File: figs/PrecondNeumannHelmSegPDF.pdf Graphic file (type pdf)
+pdfTeX warning: /usr/bin/pdflatex (file ../figs/PrecondNeumannHelmSegPDF.pdf): 
+PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<../figs/PrecondNeumannHelmSegPDF.pdf, id=301, 421.575pt x 316.18124pt>
+File: ../figs/PrecondNeumannHelmSegPDF.pdf Graphic file (type pdf)
 
-<use figs/PrecondNeumannHelmSegPDF.pdf>
-Package pdftex.def Info: figs/PrecondNeumannHelmSegPDF.pdf used on input line 1
-071.
+<use ../figs/PrecondNeumannHelmSegPDF.pdf>
+Package pdftex.def Info: ../figs/PrecondNeumannHelmSegPDF.pdf used on input lin
+e 599.
 (pdftex.def)             Requested size: 210.78697pt x 158.09023pt.
- [28 <./figs/PrecondDirichletHelmSegPDF.pdf>]
+Package epstopdf Info: Source file: <../figs/arcOfSpiral800_3.eps>
+(epstopdf)                    date: 2018-11-05 10:31:31
+(epstopdf)                    size: 3386065 bytes
+(epstopdf)             Output file: <./arcOfSpiral800_3-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-11-05 16:39:08
+(epstopdf)                    size: 1760186 bytes
+(epstopdf)             Command: <repstopdf --outfile=./arcOfSpiral800_3-eps-con
+verted-to.pdf ../figs/arcOfSpiral800_3.eps>
+(epstopdf)             \includegraphics on input line 627.
+Package epstopdf Info: Output file is already uptodate.
 
-pdfTeX warning: /usr/bin/pdflatex (file ./figs/arcOfSpiral200CroppedPDF.pdf): P
-DF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figs/arcOfSpiral200CroppedPDF.pdf, id=480, 640.05322pt x 592.96532pt>
-File: figs/arcOfSpiral200CroppedPDF.pdf Graphic file (type pdf)
+<./arcOfSpiral800_3-eps-converted-to.pdf, id=303, 704.6325pt x 604.2575pt>
+File: ./arcOfSpiral800_3-eps-converted-to.pdf Graphic file (type pdf)
 
-<use figs/arcOfSpiral200CroppedPDF.pdf>
-Package pdftex.def Info: figs/arcOfSpiral200CroppedPDF.pdf used on input line 1
-098.
-(pdftex.def)             Requested size: 276.00105pt x 255.70299pt.
- [29 <./figs/PrecondNeumannHelmSegPDF.pdf>] [30 <./figs/arcOfSpiral200CroppedPD
-F.pdf>] [31]
-LaTeX Font Info:    Try loading font information for U+bbm on input line 1162.
-
-(/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
-File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [32] [33] [34]
-[35]
-Overfull \hbox (22.54881pt too wide) in paragraph at lines 1302--1304
-\OT1/lmr/m/n/10 By the ana-log of C^^Sea's lemma []Lemma 28[][], one has $[][] 
-\OMS/lmsy/m/n/10 ^^T [][]$\OT1/lmr/m/n/10 .
- []
-
+<use ./arcOfSpiral800_3-eps-converted-to.pdf>
+Package pdftex.def Info: ./arcOfSpiral800_3-eps-converted-to.pdf used on input 
+line 627.
+(pdftex.def)             Requested size: 345.0pt x 295.84904pt.
+ [16 <../figs/PrecondDirichletHelmSegPDF.pdf> <../figs/PrecondNeumannHelmSegPDF
+.pdf>] [17 <./arcOfSpiral800_3-eps-converted-to.pdf>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 1326.
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 1326.
+(Font)              <14.4> on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 1326.
+(hyperref)                removing `math shift' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 1326.
+(hyperref)                removing `subscript' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 1326.
+(hyperref)                removing `\omega' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 1326.
+(hyperref)                removing `math shift' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\partial' on input line 1326.
+(hyperref)                removing `math shift' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 1326.
+(hyperref)                removing `\partial' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 1326.
+(hyperref)                removing `subscript' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 1326.
+(hyperref)                removing `\omega' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 1326.
+(hyperref)                removing `superscript' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 1326.
+(hyperref)                removing `superscript' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 1326.
+(hyperref)                removing `\omega' on input line 663.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 1326.
+(hyperref)                removing `superscript' on input line 663.
 
-[36] [37] [38] (./draft_v3.bbl [39] [40]) [41]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1510.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1510.
- (./draft_v3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1510.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1510.
 
-Package rerunfilecheck Info: File `draft_v3.out' has not changed.
-(rerunfilecheck)             Checksum: E69AE27C80EF436BE62DC57F768A2153;1232.
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 663.
+
+[18] (./source.bbl [19] [20]) [21]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 737.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 737.
+ (./source.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 737.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 737.
+Package rerunfilecheck Info: File `source.out' has not changed.
+(rerunfilecheck)             Checksum: 194F51C6E01102C2E295044F315B3BFB;625.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1510.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 737.
  ) 
 Here is how much of TeX's memory you used:
- 28799 strings out of 494924
- 664788 string characters out of 6179708
- 877589 words of memory out of 5000000
- 31370 multiletter control sequences out of 15000+600000
- 62828 words of font info for 63 fonts, out of 8000000 for 9000
+ 28655 strings out of 494924
+ 662868 string characters out of 6179708
+ 873595 words of memory out of 5000000
+ 31302 multiletter control sequences out of 15000+600000
+ 62302 words of font info for 59 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 64i,14n,84p,1225b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/emile/.texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk>{/usr/share/t
-exmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-m
-athit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/font
-s/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb
-></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr
-/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/pub
-lic/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/share
-/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/
-lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/f
-onts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pf
-b></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/type
-1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/sha
-re/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm
-/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texm
-f/fonts/type1/public/lm/lmsy5.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/
-type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/symbols/msbm7.pfb>
-Output written on draft_v3.pdf (41 pages, 1182677 bytes).
+ 64i,15n,84p,834b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
+c/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/s
+hare/texmf/fonts/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/publi
+c/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/
+texmf/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/l
+mex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/
+fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.
+pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/t
+ype1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></us
+r/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/pub
+lic/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/te
+xmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9
+.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts
+/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb><
+/usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/
+public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on source.pdf (21 pages, 2262767 bytes).
 PDF statistics:
- 768 PDF objects out of 1000 (max. 8388607)
- 672 compressed objects within 7 object streams
- 203 named destinations out of 1000 (max. 500000)
- 190 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 479 PDF objects out of 1000 (max. 8388607)
+ 409 compressed objects within 5 object streams
+ 122 named destinations out of 1000 (max. 500000)
+ 118 words of extra memory for PDF output out of 10000 (max. 10000000)
 
