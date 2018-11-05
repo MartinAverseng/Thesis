@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: concis_v1.aux
+The style file: plain.bst
+Database file #1: biblio.bib
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "Levadoux"
+Warning--I didn't find a database entry for "gmres"
+Warning--I didn't find a database entry for ""
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 26 entries,
+            2118 wiz_defined-function locations,
+            669 strings with 8708 characters,
+and the built_in function-call counts, 8474 in all, are:
+= -- 854
+> -- 380
+< -- 1
++ -- 153
+- -- 122
+* -- 624
+:= -- 1428
+add.period$ -- 78
+call.type$ -- 26
+change.case$ -- 134
+chr.to.int$ -- 0
+cite$ -- 27
+duplicate$ -- 291
+empty$ -- 664
+format.name$ -- 122
+if$ -- 1727
+int.to.chr$ -- 0
+int.to.str$ -- 26
+missing$ -- 28
+newline$ -- 133
+num.names$ -- 52
+pop$ -- 116
+preamble$ -- 1
+purify$ -- 111
+quote$ -- 0
+skip$ -- 211
+stack$ -- 0
+substring$ -- 632
+swap$ -- 34
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 98
+warning$ -- 1
+while$ -- 91
+width$ -- 28
+write$ -- 280
+(There were 2 error messages)
