@@ -14,24 +14,24 @@ while executing---line 1090 of file plain.bst
 Warning--empty journal in urzua2014optimal
 You've used 26 entries,
             2118 wiz_defined-function locations,
-            667 strings with 8657 characters,
-and the built_in function-call counts, 8480 in all, are:
-= -- 859
-> -- 369
-< -- 2
-+ -- 149
-- -- 118
-* -- 610
-:= -- 1420
+            669 strings with 8715 characters,
+and the built_in function-call counts, 8474 in all, are:
+= -- 854
+> -- 380
+< -- 1
++ -- 153
+- -- 122
+* -- 624
+:= -- 1428
 add.period$ -- 78
 call.type$ -- 26
-change.case$ -- 132
+change.case$ -- 134
 chr.to.int$ -- 0
 cite$ -- 27
-duplicate$ -- 300
-empty$ -- 667
-format.name$ -- 118
-if$ -- 1740
+duplicate$ -- 291
+empty$ -- 664
+format.name$ -- 122
+if$ -- 1727
 int.to.chr$ -- 0
 int.to.str$ -- 26
 missing$ -- 28
@@ -39,18 +39,18 @@ newline$ -- 133
 num.names$ -- 52
 pop$ -- 116
 preamble$ -- 1
-purify$ -- 109
+purify$ -- 111
 quote$ -- 0
-skip$ -- 223
+skip$ -- 211
 stack$ -- 0
-substring$ -- 633
-swap$ -- 43
-text.length$ -- 2
+substring$ -- 632
+swap$ -- 34
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 98
 warning$ -- 1
-while$ -- 92
+while$ -- 91
 width$ -- 28
 write$ -- 280
 (There were 2 error messages)

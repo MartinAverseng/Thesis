@@ -654,9 +654,69 @@ In this section, we show some numerical results to illustrate the efficiency of 
 	
 \section{Numerical methods}
 \label{sec:numerMeth}
-	
-	\toDo{J'ai commencé mais c'est sur l'autre ordi. À inclure}.
-	
+
+\subsection{Galerkin setting}
+
+\label{subsec:GalerkinSetting}
+To solve numerically the integral equations presented earlier, various method have been described and analyzed. Standard discretization on a uniform mesh with piecewise polynomial trial functions leads to very poor rates of convergences (see for example \cite[Chap. 4, ]{sauter2011boundary} and subsequent remark). Several methods have been developed to remedy this problem. One can for example enrich the trial space with special singular functions, refine the mesh near the segment tips, (h-BEM) or increase the polynomial order in the trial space. The combination of the last two methods, known as h-p BEM, can achieve an exponential rate of convergence with respect to the dimension of the trial space, see \cite{postell1990h} and references therein. Spectral methods, involving trigonometric polynomials have also been analyzed for example \cite{bruno2012second}, and some results exist for piecewise linear functions in the colocation setting \cite{costabel1988convergence}. 
+
+Here, we describe a simple Galerkin setting, suited to the spaces $T^s$ and $U^s$. We use with piecewise affine functions defined on a non-uniform mesh, which is refined towards the edges of the curve. More precisely, let
+$-1 = x_0 < x_1 < \cdots < x_N = 1$ and let $\theta_i \isdef \arccos(x_i)$. We choose the points $x_i$ such that $(\theta_i)$ are equispaced. We denote by $h$ the value $\theta_{1} - \theta_0$. The nodes of the mesh are then set to $X_i = r(x_i)$, where $r$ is a smooth parametrization of the curve $\Gamma$. This turns out to be analog to a graded mesh with the grading parameter set to $2$, that is, near the edge, the width of the $i-th$ interval is approximately $(ih)^2$. In comparison, in the h-BEM method with $p=1$ polynomial order, this modification alone would only lead to a convergence rate in $O(h)$ (cf. \cite[Theorem 1.3]{postell1990h}). The second step to recover optimal convergence is to use a weighted $L^2$ scalar product (with weight either $\frac{1}{\omega}$ and $\omega$), to assemble the operators in their natural spaces. We state here without proofs, the orders of convergence of this method. The proofs can be found in \cite{}. To keep matters simple, we restrict our presentation to the case $\Gamma = (-1,1)$, $k = 0$. 
+
+\paragraph{Dirichlet problem} For the resolution the single-layer equation \eqref{Slambda} we use a variational formulation of \eqref{Somegaalpha} to compute an approximation $\alpha_h$ of $\alpha$, and set $\lambda_h = \frac{\alpha_h}{\omega}$. Let $V_h$ the Galerkin space of (discontinuous) piecewise affine functions with breakpoints at $x_i$. Let $\alpha_h$ the unique solution in $V_h$ to
+\[ \duality{S_\omega \alpha_h}{\alpha_h'}_\frac{1}{\omega} = -\duality{u_D}{\alpha_h'}_\frac{1}{\omega}, \quad \forall \alpha_h' \in V_h.\]
+We then have
+\begin{The}
+	If the data $u_D$ is in $T^{s+1}$ for some $-1/2 \leq s \leq 2$, then there holds:
+	\[ \norm{\lambda - \lambda_h}_{\tilde{H}^{-1/2}} \leq C h^{s+1/2} \norm{u_D}_{T^{s+1}}.\]
+	\label{theOrdreCVDirichlet}
+\end{The}
+In particular, when $u_D$ is smooth, it belongs to $T^{\infty}$ so the rate of convergence is $h^{5/2}$.
+
+\paragraph{Neumann problem.} For the numerical resolution of \eqref{Nmu}, we use a variational form for equation \eqref{Nomegabeta}, and solve it using a Galerkin method with continuous piecewise affine functions. We introduce $W_h$ the space of continuous piecewise affine functions with breakpoints at $x_i$, and we denote by $\beta_h$ the unique solution in $W_h$ to the variational equation:
+\begin{equation}
+\duality{N_\omega \beta_h}{\beta_h'}_{\omega} = \duality{u_N}{\beta_h'}_{\omega}, \quad \forall \beta_h' \in W_h.
+\label{NomegaBetaGalerk}
+\end{equation}
+Then, $\mu_h = \omega \beta_h$ is the proposed approximation for $\mu$. 
+\begin{The}
+	If $u_N \in U^{s-1}$, for some $\frac{1}{2} \leq s \leq 2$, there holds 
+	\[\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \leq C h^{s - \frac{1}{2}}\norm{u_N}_{U^{s-1}}.\]
+	\label{theOrdreCVNeumann}
+\end{The}
+
+\subsection{Numerical quadratures and compression method}
+
+\paragraph{Weakly singular kernels.} To compute the elements of the matrix of the operators with weakly singular kernel, we use Gaussian quadratures for the weights $\frac{1}{\omega}$ and $\omega$, with $3$ points on each segment. As a result, we obtain a vector $(x_k)$ of $3N$ points in $\R^2$ and a vector $(w_k)$ of $3N$ quadrature weights. If $p$ stands for the weight ($1/\omega$ or $\omega$), then quantities of the form $\int_\Gamma \int_\Gamma  p(x)p(y)\phi_i(x) G_k(x,y) \phi_j(y)$, are approximated by
+\begin{equation}
+\label{approxDoubleIntegral}
+\int_\Gamma \int_\Gamma   p(x)p(y)\phi_i(x) G_k(x,y) \phi_j(y) \approx \sum_{k = 1}^N w_k \phi_i(x_k) \sum_{l = 1}^N  w_l G(x_k,x_l) \phi_j(x_l).
+\end{equation}
+Since the kernel $G_k$ is singular, we must correct the previous formula when $x_k$ and $x_l$ are close from each other. This is done by the following method. For each segment $I_n$ in the mesh, we find the subset $(x_k')$of the points $x_k$ that are closer than a fixed threshold from $I_n$. For those points, we compute more accurately the integral 
+\[ \int_{I_n} p(y)G_k(x_k,y) \phi_j(y),\]
+by any method at our disposal (variable change, substraction of the singularity amnong others, see for instance \cite{sauter2011boundary}). The second integral is then approximated using the previous quadrature. 
+Note that in this framework, the addition of the weight $p$ only requires minor modification over a standard BEM code. Basically, one only needs to compute numerical quadratures for the weight $p$, for which open source routines are available, and implement a method to compute the close integrals with the weight $p$. Using the variable change $x = \cos(\theta)$, the weight disappears and the only singularity left is that of $G_k$. 
+
+\paragraph{Hypersingular operator.} Although the weighted hypersingular $N_{k,\omega}$ operator has a non-integrable kernel, we have the formula
+\[\duality{N_{k,\omega} \beta}{\beta'}_\omega = \duality{S_{k,\omega}\left(\omega \partial_x \omega \right)u}{\left(\omega \partial_x \omega \right) v}_\frac{1}{\omega} - k^2 \duality{S_\omega \omega^2 u}{\omega^2 v}_\frac{1}{\omega}.\]
+This only involves weakly singular kernels and is thus treated by the previous method. 
+
+\paragraph{Compression method} The rhs of \eqref{approxDoubleIntegral} is the scalar product of a vector with a discrete convolution. To accelerate the computation and to avoid assembling the full matrix $(G_k(x_k,x_l))$, we use \toDo{Citer EBD alors que pas encore accepté ?}. 
+
+\subsection{Preconditioning the linear systems}
+
+For an operator $A$, let us denote by $\left[A\right]_p$ the Galerkin matrix of the operator for the weight $p(x)$. When the operator $BA$ is a compact perturbation of the identity (either in $T^s$ or $U^s$) then, following \cite{steinbach1998construction}, we precondition the linear system $\left[A\right]_p x = y$ by the matrix $\left[I\right]^{-1}_p \left[B\right]_p \left[I\right]_p^{-1}$. If $B$ is the inverse of a local operator $C$, then it is easier to compute $\left[C\right]_p$. This time, the good choice for the preconditioner is $\left[C\right]_p^{-1}$. When testing the pair $S_{k,\omega}, N_{k,\omega}$ as mutual preconditioner, the operator $S_{k,\omega}N_{k,\omega}$ is discretized as $\left[I_d\right]_\frac{1}{\omega}^{-1} \left[S_{k,\omega}\right]_\frac{1}{\omega}\left[I_d\right]_{\omega}^{-1}\left[N_{k,\omega}\right]_\omega$, yielding very satisfactory results. 
+
+The preconditioners introduced in this work are in the form of square roots of local operators. More precisely, we introduced two preconditioners $P_1$ and $P_2$ with 
+\begin{eqnarray*}
+	P_1(k) &=& \left(-(\omega \partial_x)^2 - k^2 \omega^2\right)^{1/2}\\
+	P_2(k) &=& \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1/2}
+\end{eqnarray*}
+For the second equation, we rewrite 
+\[P_2(k) = \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1} \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{1/2},\]
+which brings us back to computing the square root of a sparse matrix. When the frequency is $0$, we use the method exposed in \cite{hale2008computing}. When the frequency is non-zero, the previous method fails since the spectrum of the matrix contains negative values. In \cite{antoine2007generalized}, a method involving a Padé approximation of the square root, with a rotated branch cut, is used to compute the matrix of an operator of the form $\sqrt{X - k^2 I_d}$ where $X$ is a positive definite operator. This method gives excellent results in our context when using $X = -(\partial \omega_x)^2 + k^2 \left(I_d - \omega^2\right)$. 
+
+
 \section{Conclu} 
 	
 \appendix

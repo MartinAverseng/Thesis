@@ -37,6 +37,12 @@ Martin Costabel, Vince~J Ervin, and Ernst~P Stephan.
   equation on open curves.
 \newblock {\em Mathematics of computation}, 51(183):167--179, 1988.
 
+\bibitem{hale2008computing}
+Nicholas Hale, Nicholas~J Higham, and Lloyd~N Trefethen.
+\newblock Computing a\^{}$\alpha$,$\backslash$log(a), and related matrix
+  functions by contour integrals.
+\newblock {\em SIAM Journal on Numerical Analysis}, 46(5):2505--2523, 2008.
+
 \bibitem{hiptmair2014mesh}
 Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
 \newblock Mesh-independent operator preconditioning for boundary elements on
@@ -48,13 +54,6 @@ Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
 \newblock Closed-form exact inverses of the weakly singular and hypersingular
   operators on disks.
 \newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
-
-\bibitem{jerez2010boundary}
-C~Jerez-Hanckes and J-C N{\'e}d{\'e}lec.
-\newblock Boundary hybrid galerkin method for elliptic and wave propagation
-  problems in r3 over planar structures.
-\newblock {\em Integral Methods in Science and Engineering, Volume 2}, pages
-  203--212, 2010.
 
 \bibitem{jerez2012explicit}
 Carlos Jerez-Hanckes and Jean-Claude N{\'e}d{\'e}lec.
@@ -72,11 +71,6 @@ Shidong Jiang and Vladimir Rokhlin.
 John~C Mason and David~C Handscomb.
 \newblock {\em Chebyshev polynomials}.
 \newblock CRC Press, 2002.
-
-\bibitem{mclean1986spectral}
-W~McLean.
-\newblock A spectral galerkin method for a boundary integral equation.
-\newblock {\em Mathematics of computation}, 47(176):597--607, 1986.
 
 \bibitem{mclean2000strongly}
 William Charles~Hector McLean.
@@ -119,6 +113,12 @@ Ian~H Sloan and EP~Stephan.
 \newblock Collocation with chebyshev polynomials for symm's integral equation
   on an interval.
 \newblock {\em The ANZIAM Journal}, 34(2):199--211, 1992.
+
+\bibitem{steinbach1998construction}
+Olaf Steinbach and Wolfgang~L Wendland.
+\newblock The construction of some efficient preconditioners in the boundary
+  element method.
+\newblock {\em Advances in Computational Mathematics}, 9(1-2):191--216, 1998.
 
 \bibitem{stephan1984augmented}
 Ernst~P Stephan and Wolfgang~L Wendland.

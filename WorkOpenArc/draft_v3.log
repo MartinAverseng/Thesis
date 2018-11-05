@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.31)  5 NOV 2018 17:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.31)  5 NOV 2018 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**source.tex
-(./source.tex
+**draft_v3.tex
+(./draft_v3.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 5 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -22,8 +22,8 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-(../../Definitions.tex (/usr/share/texmf/tex/latex/lm/lmodern.sty
+) (../Definitions.tex
+(/usr/share/texmf/tex/latex/lm/lmodern.sty
 Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -1162,8 +1162,8 @@ Package caption Info: hyperref package is loaded.
 \c@Def=\count158
 \c@Rem=\count159
 \c@Que=\count160
-) (./source.aux)
-\openout1 = `source.aux'.
+) (./draft_v3.aux)
+\openout1 = `draft_v3.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
@@ -1180,8 +1180,7 @@ LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 6.
-
-(/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+ (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 \AtBeginShipoutBox=\box45
@@ -1199,9 +1198,9 @@ LaTeX Info: Redefining \ref on input line 6.
 LaTeX Info: Redefining \pageref on input line 6.
 LaTeX Info: Redefining \nameref on input line 6.
 
-(./source.out) (./source.out)
+(./draft_v3.out) (./draft_v3.out)
 \@outlinefile=\write4
-\openout4 = `source.out'.
+\openout4 = `draft_v3.out'.
 
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -1268,183 +1267,493 @@ LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <6> not available
 (Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 8.
 
 
-LaTeX Warning: Citation `Nedelec' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `christiansen2002preconditioner' on page 1 undefined on
+ input line 16.
 
 
-LaTeX Warning: Citation `Levadoux' on page 1 undefined on input line 16.
+LaTeX Warning: Citation `levadoux2005proposition' on page 1 undefined on input 
+line 16.
+
+
+LaTeX Warning: Citation `antoine2007generalized' on page 1 undefined on input l
+ine 16.
+
+
+LaTeX Warning: Citation `mclean1997preconditioning' on page 1 undefined on inpu
+t line 16.
 
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 17.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 17.
 
-LaTeX Warning: Citation `gmres' on page 1 undefined on input line 26.
+LaTeX Warning: Citation `bruno2012second' on page 1 undefined on input line 35.
+
+
+
+LaTeX Warning: Citation `jerez2012explicit' on page 1 undefined on input line 3
+5.
+
+
+LaTeX Warning: Citation `hiptmair2017closed' on page 1 undefined on input line 
+35.
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: Citation `antoine2007generalized' on page 2 undefined on input l
+ine 37.
+
+
+LaTeX Warning: Citation `saad1986gmres' on page 2 undefined on input line 37.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 2 undefined on input line 37.
+
+
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 47.
- [2] [3] [4] [5] [6]
-[7] [8]
-Overfull \hbox (0.88673pt too wide) in paragraph at lines 356--357
-\OT1/lmr/m/n/10 in-verse op-er-a-tors (mod-ulo con-stant terms) and that, at th
-e very least, $[]$
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 56.
+[2]
+
+LaTeX Warning: Citation `stephan1984augmented' on page 3 undefined on input lin
+e 78.
+
+
+LaTeX Warning: Citation `wendland1990hypersingular' on page 3 undefined on inpu
+t line 78.
+
+
+LaTeX Warning: Citation `monch1996numerical' on page 3 undefined on input line 
+78.
+
+
+LaTeX Warning: Citation `mclean2000strongly' on page 3 undefined on input line 
+86.
+
+[3]
+Overfull \hbox (0.45102pt too wide) detected at line 133
+[][] [] \OT1/lmr/m/n/10 = [][] \OML/lmm/m/it/10 G[]\OT1/lmr/m/n/10 (\OML/lmm/m/
+it/10 x \OMS/lmsy/m/n/10 ^^@ \OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/1
+0 ^^V[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ^^W
+[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 ) \OMS/lmsy/m/n/10 ^^@ \OM
+L/lmm/m/it/10 k[]G[]\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x; y\OT1/lmr/m/n/10 )\OML
+/lmm/m/it/10 ^^V\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/
+it/10 ^^W\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 n
+\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 ) \OMS/lmsy/m/n/10 ^^A \OML/
+lmm/m/it/10 n\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 )\OML/lmm/m/it/
+10 d^^[\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 x\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 d^^
+[\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 y\OT1/lmr/m/n/10 ) \OML/lmm/m/it/10 :
  []
 
-[9]
-<../figs/PrecondDirichletLaplaceSeg.png, id=233, 429.10312pt x 316.18124pt>
-File: ../figs/PrecondDirichletLaplaceSeg.png Graphic file (type png)
 
-<use ../figs/PrecondDirichletLaplaceSeg.png>
-Package pdftex.def Info: ../figs/PrecondDirichletLaplaceSeg.png used on input l
-ine 384.
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 166.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 166.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 166.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 166.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 166.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 166.
+
+[4] [5]
+
+LaTeX Warning: Citation `bruno2012second' on page 6 undefined on input line 231
+.
+
+
+LaTeX Warning: Citation `atkinson1991numerical' on page 6 undefined on input li
+ne 231.
+
+
+LaTeX Warning: Citation `yan1988integral' on page 6 undefined on input line 231
+.
+
+
+LaTeX Warning: Citation `yan1990cosine' on page 6 undefined on input line 231.
+
+[6] [7] [8] [9]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 365.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 365.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 365.
+
+[10] [11]
+Overfull \hbox (5.28564pt too wide) in alignment at lines 434--438
+ [][][] []
+ []
+
+
+Overfull \hbox (37.68362pt too wide) in paragraph at lines 438--440
+\OT1/lmr/m/n/10 We show that asump-tion (ii) holds for one of the terms $[] \OM
+L/lmm/m/it/10 b\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 k; j\OT1/lmr/m/n/10 )$
+ []
+
+[12] [13]
+
+LaTeX Warning: Citation `jiang2004second' on page 14 undefined on input line 52
+0.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 14 undefined on input line 52
+0.
+
+[14]
+
+LaTeX Warning: Citation `atkinson1991numerical' on page 15 undefined on input l
+ine 534.
+
+
+LaTeX Warning: Citation `yan1988integral' on page 15 undefined on input line 53
+4.
+
+
+LaTeX Warning: Citation `yan1990cosine' on page 15 undefined on input line 534.
+
+
+
+LaTeX Warning: Citation `sloan1992collocation' on page 15 undefined on input li
+ne 534.
+
+
+LaTeX Warning: Citation `yan1989mesh' on page 15 undefined on input line 534.
+
+
+LaTeX Warning: Citation `mason2002chebyshev' on page 15 undefined on input line
+ 538.
+
+
+LaTeX Warning: Citation `jiang2004second' on page 15 undefined on input line 53
+8.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 15 undefined on input line 53
+8.
+
+
+Overfull \hbox (1.59624pt too wide) in paragraph at lines 575--577
+[]\OT1/lmr/m/n/10 Let $\OML/lmm/m/it/10  \OT1/lmr/m/n/10 = []\OML/lmm/m/it/10 
+^^U$ \OT1/lmr/m/n/10 where $\OML/lmm/m/it/10 ^^U$ \OT1/lmr/m/n/10 is the so-lu-
+tion of $\OML/lmm/m/it/10 S^^U \OT1/lmr/m/n/10 = \OML/lmm/m/it/10 g$ \OT1/lmr/m
+/n/10 with $\OML/lmm/m/it/10 g \OMS/lmsy/m/n/10 2 \OML/lmm/m/it/10 C[]\OT1/lmr/
+m/n/10 ([\OMS/lmsy/m/n/10 ^^@\OT1/lmr/m/n/10 1\OML/lmm/m/it/10 ; \OT1/lmr/m/n/1
+0 1])$.
+ []
+
+
+LaTeX Warning: Citation `bruno2012second' on page 15 undefined on input line 58
+3.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 15 undefined on input line 58
+4.
+
+[15]
+
+LaTeX Warning: Citation `jerez2010boundary' on page 16 undefined on input line 
+610.
+
+
+LaTeX Warning: Citation `mclean2000strongly' on page 16 undefined on input line
+ 618.
+
+
+LaTeX Warning: Citation `mclean1986spectral' on page 16 undefined on input line
+ 632.
+
+[16]
+
+LaTeX Warning: Citation `jerez2012explicit' on page 17 undefined on input line 
+640.
+
+
+LaTeX Warning: Citation `urzua2014optimal' on page 17 undefined on input line 6
+40.
+
+
+LaTeX Warning: Citation `hiptmair2017closed' on page 17 undefined on input line
+ 640.
+
+[17]
+
+LaTeX Warning: Citation `antoine2007generalized' on page 18 undefined on input 
+line 681.
+
+
+LaTeX Warning: Reference `sec:numerMeth' on page 18 undefined on input line 681
+.
+
+<figs/PrecondDirichletLaplaceSeg.png, id=291, 429.10312pt x 316.18124pt>
+File: figs/PrecondDirichletLaplaceSeg.png Graphic file (type png)
+
+<use figs/PrecondDirichletLaplaceSeg.png>
+Package pdftex.def Info: figs/PrecondDirichletLaplaceSeg.png used on input line
+ 707.
 (pdftex.def)             Requested size: 300.37013pt x 221.32535pt.
- [10 <../figs/PrecondDirichletLaplaceSeg.png (PNG copy)>] [11]
-<../figs/PrecondNeumannLaplaceSeg.png, id=261, 429.10312pt x 316.18124pt>
-File: ../figs/PrecondNeumannLaplaceSeg.png Graphic file (type png)
+ [18]
 
-<use ../figs/PrecondNeumannLaplaceSeg.png>
-Package pdftex.def Info: ../figs/PrecondNeumannLaplaceSeg.png used on input lin
-e 472.
-(pdftex.def)             Requested size: 214.55103pt x 158.09023pt.
- [12 <../figs/PrecondNeumannLaplaceSeg.png (PNG copy)>] [13] [14]
-<../figs/PrecondDirichletHelmSegPDF.pdf, id=301, 429.605pt x 316.18124pt>
-File: ../figs/PrecondDirichletHelmSegPDF.pdf Graphic file (type pdf)
+LaTeX Warning: Citation `bruno2012second' on page 19 undefined on input line 72
+1.
 
-<use ../figs/PrecondDirichletHelmSegPDF.pdf>
-Package pdftex.def Info: ../figs/PrecondDirichletHelmSegPDF.pdf used on input l
-ine 571.
+
+LaTeX Warning: Citation `bruno2012second' on page 19 undefined on input line 73
+8.
+
+[19 <./figs/PrecondDirichletLaplaceSeg.png (PNG copy)>]
+
+LaTeX Warning: Citation `jerez2012explicit' on page 20 undefined on input line 
+774.
+
+[20]
+
+LaTeX Warning: Reference `sec:numerMeth' on page 21 undefined on input line 788
+.
+
+<figs/PrecondNeumannLaplaceSeg.png, id=328, 429.10312pt x 316.18124pt>
+File: figs/PrecondNeumannLaplaceSeg.png Graphic file (type png)
+
+<use figs/PrecondNeumannLaplaceSeg.png>
+Package pdftex.def Info: figs/PrecondNeumannLaplaceSeg.png used on input line 8
+14.
+(pdftex.def)             Requested size: 300.37013pt x 221.32535pt.
+ [21]
+
+LaTeX Warning: Citation `bruno2012second' on page 22 undefined on input line 82
+0.
+
+[22 <./figs/PrecondNeumannLaplaceSeg.png (PNG copy)>]
+
+LaTeX Warning: Citation `NIST:DLMF' on page 23 undefined on input line 869.
+
+[23]
+
+LaTeX Warning: Citation `betcke2014spectral' on page 24 undefined on input line
+ 871.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 24 undefined on input line 87
+5.
+
+[24] [25] [26]
+
+LaTeX Warning: Reference `sec:numerMeth' on page 27 undefined on input line 100
+1.
+
+[27] <figs/PrecondDirichletHelmSegPDF.pdf, id=406, 429.605pt x 316.18124pt>
+File: figs/PrecondDirichletHelmSegPDF.pdf Graphic file (type pdf)
+
+<use figs/PrecondDirichletHelmSegPDF.pdf>
+Package pdftex.def Info: figs/PrecondDirichletHelmSegPDF.pdf used on input line
+ 1026.
 (pdftex.def)             Requested size: 214.80197pt x 158.09023pt.
- [15]
-Overfull \hbox (9.5858pt too wide) in paragraph at lines 575--595
+
+Overfull \hbox (9.5858pt too wide) in paragraph at lines 1030--1050
 \OT1/lmr/m/n/10 cal com-par-isons, this time with the pre-con-dion-ing op-er-a-
 tor $[][]$. 
  []
 
 
 
-pdfTeX warning: /usr/bin/pdflatex (file ../figs/PrecondNeumannHelmSegPDF.pdf): 
-PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<../figs/PrecondNeumannHelmSegPDF.pdf, id=312, 421.575pt x 316.18124pt>
-File: ../figs/PrecondNeumannHelmSegPDF.pdf Graphic file (type pdf)
+pdfTeX warning: /usr/bin/pdflatex (file ./figs/PrecondNeumannHelmSegPDF.pdf): P
+DF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figs/PrecondNeumannHelmSegPDF.pdf, id=409, 421.575pt x 316.18124pt>
+File: figs/PrecondNeumannHelmSegPDF.pdf Graphic file (type pdf)
 
-<use ../figs/PrecondNeumannHelmSegPDF.pdf>
-Package pdftex.def Info: ../figs/PrecondNeumannHelmSegPDF.pdf used on input lin
-e 599.
+<use figs/PrecondNeumannHelmSegPDF.pdf>
+Package pdftex.def Info: figs/PrecondNeumannHelmSegPDF.pdf used on input line 1
+053.
 (pdftex.def)             Requested size: 210.78697pt x 158.09023pt.
+ [28 <./figs/PrecondDirichletHelmSegPDF.pdf>]
 
+pdfTeX warning: /usr/bin/pdflatex (file ./figs/arcOfSpiral800_3.pdf): PDF inclu
+sion: found PDF version <1.7>, but at most version <1.5> allowed
+<figs/arcOfSpiral800_3.pdf, id=425, 704.6325pt x 604.2575pt>
+File: figs/arcOfSpiral800_3.pdf Graphic file (type pdf)
 
-pdfTeX warning: /usr/bin/pdflatex (file ../figs/arcOfSpiral800_3.pdf): PDF incl
-usion: found PDF version <1.7>, but at most version <1.5> allowed
-<../figs/arcOfSpiral800_3.pdf, id=314, 704.6325pt x 604.2575pt>
-File: ../figs/arcOfSpiral800_3.pdf Graphic file (type pdf)
-
-<use ../figs/arcOfSpiral800_3.pdf>
-Package pdftex.def Info: ../figs/arcOfSpiral800_3.pdf used on input line 627.
+<use figs/arcOfSpiral800_3.pdf>
+Package pdftex.def Info: figs/arcOfSpiral800_3.pdf used on input line 1080.
 (pdftex.def)             Requested size: 345.0pt x 295.84904pt.
- [16 <../figs/PrecondDirichletHelmSegPDF.pdf> <../figs/PrecondNeumannHelmSegPDF
-.pdf>] [17 <../figs/arcOfSpiral800_3.pdf>]
-[18] [19]
+ [29 <./figs/PrecondNeumannHelmSegPDF.pdf>]
+
+LaTeX Warning: Citation `bruno2012second' on page 30 undefined on input line 10
+84.
+
+
+LaTeX Warning: Citation `bruno2012second' on page 30 undefined on input line 10
+84.
+
+
+LaTeX Warning: Citation `sauter2011boundary' on page 30 undefined on input line
+ 1114.
+
+
+LaTeX Warning: Citation `postell1990h' on page 30 undefined on input line 1114.
+
+
+
+LaTeX Warning: Citation `bruno2012second' on page 30 undefined on input line 11
+14.
+
+
+LaTeX Warning: Citation `costabel1988convergence' on page 30 undefined on input
+ line 1114.
+
+[30 <./figs/arcOfSpiral800_3.pdf>]
+
+LaTeX Warning: Citation `postell1990h' on page 31 undefined on input line 1120.
+
+
+[31]
+LaTeX Font Info:    Try loading font information for U+bbm on input line 1148.
+ (/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+) [32] [33]
+[34] [35]
+Overfull \hbox (22.54881pt too wide) in paragraph at lines 1288--1290
+\OT1/lmr/m/n/10 By the ana-log of C^^Sea's lemma []Lemma 28[][], one has $[][] 
+\OMS/lmsy/m/n/10 ^^T [][]$\OT1/lmr/m/n/10 .
+ []
+
+[36]
+
+LaTeX Warning: Citation `steinbach1998construction' on page 37 undefined on inp
+ut line 1321.
+
+[37]
+
+LaTeX Warning: Citation `hale2008computing' on page 38 undefined on input line 
+1330.
+
+
+LaTeX Warning: Citation `antoine2007generalized' on page 38 undefined on input 
+line 1330.
+
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 723.
+(Font)              <14.4> on input line 1340.
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 723.
+(hyperref)                removing `subscript' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 723.
+(hyperref)                removing `\omega' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 723.
+(hyperref)                removing `math shift' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 723.
+(hyperref)                removing `math shift' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 723.
+(hyperref)                removing `\partial' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\partial' on input line 723.
+(hyperref)                removing `subscript' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 723.
+(hyperref)                removing `\omega' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 723.
+(hyperref)                removing `superscript' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 723.
+(hyperref)                removing `superscript' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 723.
+(hyperref)                removing `\omega' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 723.
+(hyperref)                removing `superscript' on input line 1340.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 723.
+(hyperref)                removing `math shift' on input line 1340.
 
+[38] [39] [40] (./draft_v3.bbl
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 723.
+LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
-[20] [21] (./source.bbl [22] [23]) [24]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 797.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 797.
- (./source.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 797.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 797.
-Package rerunfilecheck Info: File `source.out' has not changed.
-(rerunfilecheck)             Checksum: B730FE21AEAB1C194582B89050F7B0CF;869.
+) [41]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1539.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1539.
+ (./draft_v3.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1539.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1539.
+
+Package rerunfilecheck Info: File `draft_v3.out' has not changed.
+(rerunfilecheck)             Checksum: CF352AD43667BE22FFA4A06625487D0F;1486.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 797.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1539.
  ) 
 Here is how much of TeX's memory you used:
- 28666 strings out of 494924
- 663096 string characters out of 6179708
- 873595 words of memory out of 5000000
- 31310 multiletter control sequences out of 15000+600000
- 62302 words of font info for 59 fonts, out of 8000000 for 9000
+ 28788 strings out of 494924
+ 664487 string characters out of 6179708
+ 876589 words of memory out of 5000000
+ 31375 multiletter control sequences out of 15000+600000
+ 67054 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 64i,15n,84p,1079b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/en
-c/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/s
-hare/texmf/fonts/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/publi
-c/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/
-texmf/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/l
-mex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/
-fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi5.
-pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/t
-ype1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></us
-r/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/pub
-lic/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/te
-xmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf/fonts
-/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb><
-/usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/
-public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on source.pdf (24 pages, 2280493 bytes).
+ 64i,14n,84p,1233b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/emile/.texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk>{/usr/share/t
+exmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-m
+athit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/font
+s/enc/dvips/lm/lm-mathex.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb
+></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/typ
+e1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lmbxi10.pfb></us
+r/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/pu
+blic/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/sha
+re/texmf/fonts/type1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/l
+m/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf
+/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.
+pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/t
+ype1/public/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/
+share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public
+/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/tex
+mf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lms
+y5.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/font
+s/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on draft_v3.pdf (41 pages, 2363602 bytes).
 PDF statistics:
- 527 PDF objects out of 1000 (max. 8388607)
- 454 compressed objects within 5 object streams
- 137 named destinations out of 1000 (max. 500000)
- 142 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 704 PDF objects out of 1000 (max. 8388607)
+ 609 compressed objects within 7 object streams
+ 186 named destinations out of 1000 (max. 500000)
+ 214 words of extra memory for PDF output out of 10000 (max. 10000000)
 
