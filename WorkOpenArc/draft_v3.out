@@ -11,9 +11,12 @@
 \BOOKMARK [2][-]{subsection.4.3}{Non-flat arc}{section.4}% 11
 \BOOKMARK [2][-]{subsection.4.4}{Numerical results}{section.4}% 12
 \BOOKMARK [1][-]{section.5}{Numerical methods}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{Dirichlet problem}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{Neumann problem}{section.5}% 15
-\BOOKMARK [2][-]{subsection.5.3}{Preconditioning the linear systems}{section.5}% 16
-\BOOKMARK [1][-]{section.6}{Conclu}{}% 17
-\BOOKMARK [1][-]{appendix.A}{Commutation of N and \(x \)2 + k22}{}% 18
-\BOOKMARK [1][-]{appendix.B}{Proof of Theorem 6}{}% 19
+\BOOKMARK [2][-]{subsection.5.1}{Galerkine setting}{section.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.1.1}{Dirichlet problem}{subsection.5.1}% 15
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Neumann problem}{subsection.5.1}% 16
+\BOOKMARK [3][-]{subsubsection.5.1.3}{Numerical quadratures and compression method}{subsection.5.1}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Preconditioning the linear systems}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Conclu}{}% 19
+\BOOKMARK [1][-]{appendix.A}{Commutation of N and \(x \)2 + k22}{}% 20
+\BOOKMARK [1][-]{appendix.B}{Proof of Theorem 6}{}% 21
+\BOOKMARK [1][-]{appendix.C}{Suggestion de d\351coupage}{}% 22

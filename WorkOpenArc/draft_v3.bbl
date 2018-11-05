@@ -37,6 +37,12 @@ Martin Costabel, Vince~J Ervin, and Ernst~P Stephan.
   equation on open curves.
 \newblock {\em Mathematics of computation}, 51(183):167--179, 1988.
 
+\bibitem{hale2008computing}
+Nicholas Hale, Nicholas~J Higham, and Lloyd~N Trefethen.
+\newblock Computing a\^{}$\alpha$,$\backslash$log(a), and related matrix
+  functions by contour integrals.
+\newblock {\em SIAM Journal on Numerical Analysis}, 46(5):2505--2523, 2008.
+
 \bibitem{hiptmair2017closed}
 Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
 \newblock Closed-form exact inverses of the weakly singular and hypersingular
@@ -62,6 +68,13 @@ Shidong Jiang and Vladimir Rokhlin.
   open surfaces ii.
 \newblock {\em Journal of Computational Physics}, 195(1):1--16, 2004.
 
+\bibitem{levadoux2005proposition}
+David~P Levadoux.
+\newblock Proposition de pr{\'e}conditionneurs pseudo-diff{\'e}rentiels pour
+  l'{\'e}quation cfie de l'{\'e}lectromagn{\'e}tisme.
+\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
+  39(1):147--155, 2005.
+
 \bibitem{mason2002chebyshev}
 John~C Mason and David~C Handscomb.
 \newblock {\em Chebyshev polynomials}.
@@ -71,6 +84,12 @@ John~C Mason and David~C Handscomb.
 W~McLean.
 \newblock A spectral galerkin method for a boundary integral equation.
 \newblock {\em Mathematics of computation}, 47(176):597--607, 1986.
+
+\bibitem{mclean1997preconditioning}
+W~McLean and Thanh Tran.
+\newblock A preconditioning strategy for boundary element galerkin methods.
+\newblock {\em Numerical Methods for Partial Differential Equations},
+  13(3):283--301, 1997.
 
 \bibitem{mclean2000strongly}
 William Charles~Hector McLean.
@@ -97,6 +116,13 @@ FV~Postell and Ernst~P Stephan.
 \newblock {\em Computer Methods in Applied Mechanics and Engineering},
   83(1):69--89, 1990.
 
+\bibitem{saad1986gmres}
+Youcef Saad and Martin~H Schultz.
+\newblock Gmres: A generalized minimal residual algorithm for solving
+  nonsymmetric linear systems.
+\newblock {\em SIAM Journal on scientific and statistical computing},
+  7(3):856--869, 1986.
+
 \bibitem{sauter2011boundary}
 Stefan~A Sauter and Christoph Schwab.
 \newblock Boundary element methods.
@@ -107,6 +133,12 @@ Ian~H Sloan and EP~Stephan.
 \newblock Collocation with chebyshev polynomials for symm's integral equation
   on an interval.
 \newblock {\em The ANZIAM Journal}, 34(2):199--211, 1992.
+
+\bibitem{steinbach1998construction}
+Olaf Steinbach and Wolfgang~L Wendland.
+\newblock The construction of some efficient preconditioners in the boundary
+  element method.
+\newblock {\em Advances in Computational Mathematics}, 9(1-2):191--216, 1998.
 
 \bibitem{stephan1984augmented}
 Ernst~P Stephan and Wolfgang~L Wendland.

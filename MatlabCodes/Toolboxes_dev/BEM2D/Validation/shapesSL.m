@@ -3,8 +3,8 @@
 
 Main;
 addpath(genpath('/home/martin/Thesis/MatlabCodes/DarbasBrunoEtCie/'))
-nn = 800;
-curve = spirale;
+nn = 500;
+curve = Vcurve;
 l = length(curve);
 k = nn*pi/l;
 % [curve,incWave] = unitSegment(k);
@@ -12,7 +12,9 @@ k = nn*pi/l;
 % [curve,incWave,dxf,dyf] = semicircle(k);
 %[curve,incWave] = parabola();
 %[curve,incWave] = ellipse();
-[curve,incWave] = spirale(k);
+% [curve,incWave] = spirale(k);
+% [curve,incWave] = Scurve(k);
+[curve,incWave] = Vcurve(k);
 figure
 plot(curve);
 
@@ -35,7 +37,7 @@ omega2 = Wh.Mass.concretePart;
 % K = inv(omega2*dM*omega2);
 K1 = dM - k^2*(omega2-M);
 K = dM - k^2*omega2;
-Np = 40;
+Np = 25;
 theta = pi/3;
 keps = k+1i*0.02*k^(1/3);
 sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
@@ -45,7 +47,7 @@ sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
 % plot((dM - k^2*omega2)*u);
 % hold on
 % plot(real(sqrtDarbasK1(M\sqrtDarbasK1(u))));
-Op_opt = {'tol',1e-4,'a_factor',12};
+Op_opt = {'tol',1e-3,'a_factor',12};
 Sw = singleLayer(Vh,...
     'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
 % 
@@ -140,12 +142,12 @@ clear secondMemb
 % -1 <= x <= 1, -1.5 <= y <= 1.5
 close all;
 figure
-y1 = -1; y2 = 1.5;
-x1 = -1.2; x2 = 1.5;
+y1 = -1; y2 = 1;
+x1 = -2; x2 = 2;
 x1tmp = x1; y1tmp = y1;
 x2tmp = x1; y2tmp = y1;
-step_x = (x2 - x1);
-step_y = (y2 - y1);
+step_x = (x2 - x1)/2;
+step_y = (y2 - y1)/2;
 while x1tmp < x2
     x2tmp = x1tmp + step_x;
     while y1tmp < y2
@@ -153,7 +155,7 @@ while x1tmp < x2
         x = linspace(x1tmp,x2tmp,2000);
         y = linspace(y1tmp,y2tmp,2000);
         [X,Y] = meshgrid(x,y);
-        Sw.set_X([X(:) Y(:)],'a',a/20);
+        Sw.set_X([X(:) Y(:)],'a',a/30);
         valsDiffr = Sw*lambda2;
         valsInc = incWave([X(:) Y(:)]);
 %         valsInc = cilyndWave([X(:) Y(:)]);

@@ -5,19 +5,18 @@ addpath(genpath('/home/martin/Thesis/MatlabCodes/DarbasBrunoEtCie/'))
 nn = 50;
 k = nn*pi/2;
 % k = 0;
-% [curve,incWave] = unitSegment(k);
+[curve,incWave] = unitSegment();
 
 %[curve,incWave,dxf,dyf] = semicircle(k);
 % [curve,incWave] = parabola(k);
 %[curve,incWave] = ellipse();
-[curve,incWave] = spirale(k);
+% [curve,incWave] = spirale(k);
 figure
 plot(curve);
 l = curve.length;
-
-
+k = 0;
 N = fix(10*k);
-% N = 200;
+N = 3200;
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
     'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);
@@ -42,19 +41,19 @@ sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
 % clear omega2;
 % u = randn(N+1,1);
 % plot((dM - k^2*omega2)*u);
-% hold on
+% hold on 
 % plot(real(sqrtDarbasK1(M\sqrtDarbasK1(u))));
-Op_opt = {'tol',1e-4,'a_factor',8};
+Op_opt = {'tol',1e-4,'a_factor',20};
 Nw = hyperSingular_w(Vh,'k',k,'Op_opt',Op_opt);
 Nwgalerk = Nw.galerkine;
-Sw = singleLayer(Vh,...
-    'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
+% Sw = singleLayer(Vh,...
+%     'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
 % 
 % Nw = hyperSingular_w(Vh,'Op_opt',Op_opt,'k',k);
-Swgalerk = Sw.galerkine(Vh,'U');
-Prec1 = @(u)(M2\(Swgalerk*invM(u)));
-PrecDarbas = @(u)(K\sqrtDarbasK1(invM(u)));
-% Prec2 = @(u)(invM(TrefethenSqrt(dM,4,invM(u),M,1,2*Vh.ndof^2))+ 0*invM(u)+ 1*(1/log(2))^2*invM(T0_star_galerk*invM(u)));
+% Swgalerk = Sw.galerkine(Vh,'U');
+% Prec1 = @(u)(M2\(Swgalerk*invM(u)));
+% PrecDarbas = @(u)(K\sqrtDarbasK1(invM(u)));
+Prec2 = @(u)(dM\TrefethenSqrt(dM,15,invM(u),M,1/2,Vh.ndof^2));
 % Prec2 = @(u)(omega2\(TrefethenSqrt(omega2*dMinv*omega2,4,omega2\u,omega2,0.5/Vh.ndof^2,1)));
 % Prec3 = @(u)(Nwgalerk*invM(u));
 % Prec4 = @(u)(omega2\(Nwgalerk.concretePart*invM(u)));
@@ -72,16 +71,16 @@ clear M M2 L U Q P dM K K1 omega2
 secondMemb = Wh.secondMember(incWave);
 % l = Vh.secondMember(-cilyndWave);
 % u0 = FE_func(Vh,Swgalerk.concretePart \ l.concretePart);
-% t0 = tic;
-% [lambda0,FLAG0,RELRES0,ITER0,RESVEC0] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N);
-% t0 = toc(t0);
-% disp(t0)
-t1 = tic;
-[lambda1,FLAG1,RELRES1,ITER1,RESVEC1] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N,Prec1);
-t1 = toc(t1);
-disp(t1);
+t0 = tic;
+[lambda0,FLAG0,RELRES0,ITER0,RESVEC0] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N);
+t0 = toc(t0);
+disp(t0)
+% t1 = tic;
+% [lambda1,FLAG1,RELRES1,ITER1,RESVEC1] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N,Prec1);
+% t1 = toc(t1);
+% disp(t1);
 t2 = tic;
-[lambda2,FLAG2,RELRES2,ITER2,RESVEC2] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N,PrecDarbas);
+[lambda2,FLAG2,RELRES2,ITER2,RESVEC2] = variationalSol(Nwgalerk,secondMemb,[],1e-8,N,Prec2);
 t2 = toc(t2);
 disp(t2);
 % disp(t2);
@@ -94,14 +93,14 @@ disp(t2);
 % [lambda4,FLAG4,RELRES4,ITER4,RESVEC4] = variationalSol(Swgalerk,l,[],1e-8,N,Prec4);
 % t4 = toc(t4);
 % % [lambda2,FLAG2,RELRES2,ITER2,RESVEC2] = variationalSol(Swgalerk,l,[],1e-8,N,Swgalerk.concretePart);
-figure
-% semilogy(1:length(RESVEC1),RESVEC1,'-o');
-% semilogy(1:length(RESVEC0),RESVEC0/norm(secondMemb.concretePart),'-o');
-
-semilogy(1:length(RESVEC1),RESVEC1/norm(Prec1(secondMemb.concretePart)),'-o');
-hold on;
-semilogy(1:length(RESVEC2),RESVEC2/norm(PrecDarbas(secondMemb.concretePart)),'-o');
-% semilogy(1:length(RESVEC2),RESVEC2/norm(PrecMartin(secondMemb.concretePart)),'-o');
+% figure
+% % semilogy(1:length(RESVEC1),RESVEC1,'-o');
+% % semilogy(1:length(RESVEC0),RESVEC0/norm(secondMemb.concretePart),'-o');
+% 
+% semilogy(1:length(RESVEC1),RESVEC1/norm(Prec1(secondMemb.concretePart)),'-o');
+% hold on;
+% semilogy(1:length(RESVEC2),RESVEC2/norm(PrecDarbas(secondMemb.concretePart)),'-o');
+% % semilogy(1:length(RESVEC2),RESVEC2/norm(PrecMartin(secondMemb.concretePart)),'-o');
 % semilogy(1:length(RESVEC3),RESVEC3/norm(Prec3(secondMemb.concretePart)),'-o');
 % semilogy(1:length(RESVEC4),RESVEC4/norm(Prec4(l.concretePart)),'-o');
 % legend({sprintf('Without preconditioner, %s s',num2str(t0)),...

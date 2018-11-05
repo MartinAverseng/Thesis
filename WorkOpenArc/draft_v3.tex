@@ -7,14 +7,14 @@
 \maketitle
 
 \begin{abstract}
-	We introduce new preconditioners for the weighted layer potentials on open arcs in the plane, involved in the solution of first-kind integral equations. These preconditioners are in the form of square roots of local operators. 
+	We introduce new efficient preconditioners for the Helmholtz weighted single layer potential and hypersingular on open curves. Those preconditioners are in the form of square roots of local differential operators. 
 \end{abstract}
 
 \section*{Introduction}
 
 The problem of preconditionning the linear systems coming from the discretization of first kind integral equations
 has received considerable attention since two decades roughly. Among the possible strategies are the so-called 
-pseudo-differential preconditionner, whose analysis uses tools from pseudo-differential calculus \cite{christiansen2002preconditioner,Nedelec,Levadoux,DarbasAntoine}. Roughly speaking, if the original problem is written in the abstract way
+pseudo-differential preconditionner, whose analysis uses tools from pseudo-differential calculus \cite{christiansen2002preconditioner,levadoux2005proposition,antoine2007generalized,mclean1997preconditioning}. \toDo{Ai-je cité les bons articles ?}. Roughly speaking, if the original problem is written in the abstract way
 \begin{equation}
 	\mathcal{L}u=f\,,
 	\label{eq1}
@@ -27,19 +27,17 @@ that, when left mulitplying the (\ref{eq1}) by $\mathcal{K}$, one needs to solve
 Now if $\mathcal{K}\mathcal{L}$ is a compact perturbation of the identity, the condition number of the discretized underlying
 system is independant of the chosen size of the mesh, leading to optimal convergence rate of the numerical methods used to solve the system.
 
-Several strategies, depending on the problem to solve have been studied in the literature \cite{} to propose such operators $\mathcal{K}$, that often turn out to be very effective in practice, when numerical applications are considered.
+Several strategies, depending on the problem to solve have been studied in the literature \cite{} \toDo{Tu voulais mettre qqch ici ?} to propose such operators $\mathcal{K}$, that often turn out to be very effective in practice, when numerical applications are considered.
 However, all the preceding results and theories are limited to smooth domains and very little is known when the integral equation 
 is posed on domains with corners (in 2D), wedges or conical points (in 3D). One of the reason might be the fact that 
 pseudo-differential calculus is difficult to generalize on such manifolds, and more problematic, the underlying operators
 are difficult to analyze on such domains.
 
-Nevertheless, a program similar to those given on smooth manifold was proposed a few years ago \cite{Bruno,Nedelec,Jerez,Hiptmair} who tackled the problem of preconditionning the first or second layer potential
-for Laplace or Helmholtz equation in dimension 2 or 3 but for very particular domains: a straight and then curved segment in 2D and a unit disc in 3D.
-In the case of an open arc, efficient preconditioners have been suggested for weighted versions of the usual layer potentials \cite{bruno2012second,jiang2004second,jerez2012explicit}. In \cite{bruno2012second}, generalized Calderon relations are established for these weighted operators, showing that the weighted single-layer and hypersingular operators can be efficiently used as mutual preconditioners. In \cite{jerez2012explicit}, a full functional framework is developed that is highly connected with the spaces we shall introduce, as will appear in \autoref{LemmaT-1/2}, \autoref{LemmaT1/2} and \autoref{lemU12H12}.
+Nevertheless, a program similar to those given on smooth manifold was proposed a few years ago \cite{bruno2012second,jerez2012explicit,hiptmair2017closed} \toDo{autres à rajouter ?} who tackled the problem of preconditionning the first or second layer potential for Laplace or Helmholtz equation in dimension 2 or 3 but for very particular domains: a straight and then curved segment in 2D and a unit disc in 3D. \toDo{Je ne suis pas vraiment d'accord, ils disent à chaque fois que par perturbation compacte on peut traiter le cas non-flat.}
 
-Here, we build alternative preconditioners for these weighted operators, using ideas inspired by pseudo-differential theory. These preconditioners are in the form of the square root of local operators, in close analogy to \cite{christiansen2002preconditioner}. Since our aim is to generalize our ideas to more complex geometries, both in 2D and 3D we do not use the high order spectral methods available for this problem \cite{bruno2012second}, but rather introduce the simplest possible Galerkin method with piecewise polynomial functions. The only difference as compared to usual boundary element methods is the use of a weighted $L^2$ space as the underlying Hilbert space. This translates into numerical quadratures with a weight on the open arc, together with a slightly refined mesh towards the edges of the arc. As a result, our numerical method involves only minor modifications with respect to standard BEM, and thus, can be implemented easily. We show that the orders of convergence obtained are the same as those on smooth closed curves for piecewise polynomials. 
+Here, we build preconditioners for the single-layer potential and the hypersingular operator, using ideas inspired by pseudo-differential theory. These preconditioners are in the form of the square root of local operators, in close analogy to \cite{antoine2007generalized}, and lead to a drastic reduction of the number of the iterations in the GMRES method \cite{saad1986gmres}. Since our aim is to generalize our ideas to more complex geometries, both in 2D and 3D we do not use the high order spectral methods available for this problem \cite{bruno2012second}, but rather introduce the simplest possible Galerkin method with piecewise polynomial functions. The only difference as compared to usual boundary element methods is the use of a weighted $L^2$ space as the underlying Hilbert space. This translates into numerical quadratures with a weight on the open arc, together with a slightly refined mesh towards the edges of the arc. As a result, our numerical method involves only minor modifications with respect to standard BEM, and thus, can be implemented easily. We show that the orders of convergence obtained are the same as those on smooth closed curves for piecewise polynomials. 
 	
-The paper is organized as follows: in the first section, we give an overview of the resolution of the Laplace and Helmholtz scattering problems by means of layer potentials on open arcs. We then define two family of spaces, $T^s$ and $U^s$ in the second section, that will be the basis of our pseudo-differential theory. We introduce a class of operators for which we are able to estimate the order. In the third section, we apply these new tools to the Laplace equation in the case of the unit segment, and give explicit inverses of the weighted layer potentials in terms of square roots of local operators. We then generalize our results to non-zero frequency and non-flat arc in the third section. The fourth section is dedicated to expose the numerical method. 
+The paper is organized as follows: in the first section, we give an overview of the resolution of the Laplace and Helmholtz scattering problems by means of layer potentials on open arcs. We then define two family of spaces, $T^s$ and $U^s$ in the second section, that will be the basis of our pseudo-differential theory. We introduce a class of operators for which we are able to estimate the order. In the third section, we apply these new tools to the Laplace equation in the case of the unit segment, and give explicit inverses of the weighted layer potentials in terms of square roots of local operators. We then generalize our results to non-zero frequency and non-flat arc in the fourth section. The last section is dedicated to expose the numerical method. 
 
 %	The remainder of the paper focuses on the numerical solution of the integral equations \eqref{dirichletIntEq} and \eqref{NeumannIntEq} using Galerkin finite elements. Though this will not lead to spectral convergence as when using trigonometric polynomial, we aim to generalize our method to cases where the eigenvectors of the operators are not explicitly known. In the first section, we treat the two equations corresponding to the case $k=0$ and when $\Gamma$ is the segment. We introduce the same rescaled operators as in \cite{bruno2012second}. We derive a simple preconditioner for both integral equation in the form of the square root of the differential operators \eqref{cheb1} and \eqref{cheb2}, and verify its efficiency on numerical experiments using Galerkin discretization with piecewise polynomial finite elements. In the next section, we treat the general case using standard compact perturbation arguments, leading to a new preconditioner. Numerical tests are again provided.
 
@@ -81,8 +79,8 @@ Existence and uniqueness of solutions to the previous problems are guaranteed by
 	(see e.g. \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}) Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) and (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) both possess a unique solution $u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen $\Gamma$ $\lambda$ is unbounded:
 	\[\lambda(x) = O\left(\frac{1}{\sqrt{d(x,\partial \Gamma)}}\right).\]
 	Near an edge of the arc, $\mu$ is locally given by
-	\[\mu(x) = C\sqrt{d(x,\partial \Gamma)} + \psi.\]
-	where $\psi \in \tilde{H}^{3/2}(\Gamma)$ and $C$.
+	\[\mu(x) = C\sqrt{d(x,\partial \Gamma)} + \psi\]
+	where $\psi \in \tilde{H}^{3/2}(\Gamma)$.
 \end{The}
 
 For the definition of Sobolev spaces on smooth open curves, we follow
@@ -148,7 +146,7 @@ where $\mu \in \tilde{H}^{1/2}(\Gamma)$ solves
 \section{Analytical setting}
 \label{sec:analyticalSetting}
 
-In this section, we introduce a new analytical setting that will allow us to analyze the integral equations that will appear later in a unified and simple framework.	We introduce the Chebyshev polynomials of first and second kinds, respectively given by 
+In this section, we introduce a new analytical setting that will allow us to analyze the integral equations in a unified and simple framework.	We introduce the Chebyshev polynomials of first and second kinds, respectively given by 
 \[T_n(x) = \cos(n \arccos(x)),\]
 and 
 \[U_n(x) = \dfrac{\sin((n+1) \arccos(x))}{\sqrt{1 - x^2}}\,.\]
@@ -363,7 +361,7 @@ and by $Vu$ the function defined as
 	which can be verified by using the change of variables $x = \cos\theta$ in the definitions of $\hat{u}_n$ and $\check{u}_n$. 
 	Now, let us show that if $ u \in T^n$, then $(\omega \partial_x)^n$ is in $L^2_\frac{1}{\omega}$. The operator $(\omega \partial_x)^2$ is continuous from $T^s$ to $T^{s-2}$ for all real $s$ which implies the result if $n$ is even. If $n$ is odd, say $n = 2k + 1$, we write $(\omega \partial_x)((\omega \partial_x)^{2})^k$, and conclude using \autoref{omegadxetdxomga}.
 	The same kind of proof also shows that if $u \in U^n$, $(\partial_x \omega )^nu \in L^2_\omega$.
-	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, perform integrations by part and conclude with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
+	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by part and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
 \end{proof}
 \subsection{Classes of operators on $T^s$}
 \label{subsec:classesOfOp}
@@ -692,19 +690,11 @@ The last result shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be
 			\hline
 			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			25 & 7 & 0.1 & 25 & 0.14\\ 
-			\hline
 			50 & 7 & 0.11 & 35 & 0.21\\
-			\hline
-			100 & 7 & 0.12 & 44 & 0.36\\
 			\hline
 			200 & 7 & 0.14 & 53 & 0.55\\
 			\hline
-			400 & 7 & 0.17 & 64 & 0.95\\
-			\hline
 			800 & 7 & 0.29 & 76 & 2.0 \\
-			\hline
-			1600 & 7 & 0.51 & 90 & 4.3\\
 			\hline
 			3200 & 7 & 0.95 & 107 & 9.5\\
 			\hline
@@ -807,21 +797,13 @@ In \autoref{TableNitTimeLaplaceNeumann}, we compare the number of iterations for
 			\hline
 			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			25 & 4 & 0.07 & 25 & 0.14\\ 
+			50 & 4 & 0.05 & 50 & 0.05\\
 			\hline
-			50 & 4 & 0.09 & 50 & 0.31\\
+			200 & 3 & 0.05 & 200 & 0.25\\
 			\hline
-			100 & 4 & 0.10 & 100 & 0.74\\
+			800 & 3 & 0.06 & 799 & 3.7 \\
 			\hline
-			200 & 4 & 0.12 & 200 & 2.0\\
-			\hline
-			400 & 4 & 0.21 & 400 & 7.3\\
-			\hline
-			800 & 4 & 0.56 & 799 & 30 \\
-			\hline
-			1600 & 4 & 2.5 & 1579 & 120\\
-			\hline
-			3200 & 4 & 17.7 & 3007 & 630\\
+			3200 & 3 & 0.6 & 3007 & 630\\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -843,7 +825,7 @@ In \autoref{TableNitTimeLaplaceNeumann}, we compare the number of iterations for
 
 \section{Helmholtz equation}
 	
-	In this section, we introduce preconditioners for the integral equations on $\Gamma = [-1,1]$ for the Helmholtz equation. Recall the definition of the single layer and hypersingular operators, $S_k$ and $N_k$, given in \eqref{defSk} and \eqref{defNk}, and the integral equations for the Dirichlet and Neumann problems, \eqref{Sklambda} and \eqref{Nkmu}. As before, let $S_{k,\omega} \isdef S_k \frac{1}{\omega}$ and $N_{k,\omega} \isdef N_k \omega$. We begin by establishing the following result:
+	In this section, we introduce preconditioners for the integral equations on $\Gamma = (-1,1)$ for the Helmholtz equation. Recall the definition of the single layer and hypersingular operators, $S_k$ and $N_k$, given in \eqref{defSk} and \eqref{defNk}, and the integral equations for the Dirichlet and Neumann problems, \eqref{Sklambda} and \eqref{Nkmu}. As before, let $S_{k,\omega} \isdef S_k \frac{1}{\omega}$ and $N_{k,\omega} \isdef N_k \omega$. We begin by establishing the following result:
 	
 	\begin{The}
 		\label{Commutations}
@@ -1018,7 +1000,7 @@ In the more general case of a $C^{\infty}$ non-intersecting open curve $\Gamma$ 
 \label{subsec:efficiencyHelm}
 
 In this section, we show some numerical results to illustrate the efficiency of our approach. Numerical tests are run with a high-level programming language, on a 16GB RAM laptop, \toDo{Spec de l'ordis à terminer}. Numerical methods are detailed in \autoref{sec:numerMeth}. In each case, to fully resolve the frequency, the number of segments in the discretization is set to $N \approx 10k$, where $k = \frac{\pi}{\lambda}$ is the wavenumber. In the GMRES iteration, we require a relative residual below $1e-8$. 
-\paragraph{Flat segment, Dirichlet boundary condition.} In \autoref{TableNitTimeHlemholtzDirichlet} we report the number of GMRES iterations for the numerical resolution of Equation \eqref{Somegaalpha} on the segment $\Gamma = (-1,1)$, when the linear system is preconditioned by the operator $\sqrt{-(\omega \partial_x)^2 - k^2 \omega^2}$, as compared to the case where no preconditioner is used.  In \autoref{FigureNitHelmDirichlet}, we plot the relative residual history in the GMRES method with and without preconditioner for a problem with $L = 400 \lambda$. The Dirichlet data is set to $u_D(x) = e^{ikx}$. 
+\paragraph{Flat segment, Dirichlet boundary condition.} In \autoref{TableNitTimeHlemholtzDirichlet} we report the number of GMRES iterations for the numerical resolution of Equation \eqref{Somegaalpha} on the segment $\Gamma = (-1,1)$, when the linear system is preconditioned by the operator $\sqrt{-(\omega \partial_x)^2 - k^2 \omega^2}$, as compared to the case where no preconditioner is used.  In \autoref{FigureNitHelmDirichlet}, we plot the relative residual history in the GMRES method with and without preconditioner for a problem with $L = 800 \lambda$. The Dirichlet data is set to $u_D(x) = e^{ikx}$. 
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
@@ -1096,7 +1078,7 @@ In this section, we show some numerical results to illustrate the efficiency of 
 \end{table}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{figs/arcOfSpiral200CroppedPDF}
+	\includegraphics[width=1\linewidth]{figs/arcOfSpiral800_3}
 	\caption{Sample diffraction pattern (Dirichlet boundary conditions) with left to right incidence for an arc of spiral of size $L = 800 \lambda$. After the resolution of the integral equation, the image is obtained in a few seconds.}
 	\label{ArcOfSpiral}
 \end{figure}
@@ -1124,7 +1106,11 @@ In this section, we show some numerical results to illustrate the efficiency of 
 \end{table}
 
 \section{Numerical methods}
-\label{sec:numerMeth}
+
+
+\subsection{Galerkine setting}
+
+\label{subsec:GalerkineSetting}
 
 In this section, we describe and analyze the Galerkin scheme used to solve the integral equations in this work. To keep matters simple, we focus on equations \eqref{Slambda} and \eqref{Nmu} on the flat strip. The results extend to the general case using standard arguments in the theory of boundary element methods. Standard discretization on a uniform mesh with piecewise polynomial trial functions leads to very poor rates of convergences (see for example \cite[Chap. 4, ]{sauter2011boundary} and subsequent remark). Several methods have been developed to remedy this problem. One can for example enrich the trial space with special singular functions, refine the mesh near the segment tips, (h-BEM) or increase the polynomial order in the trial space. The combination of the last two methods, known as h-p BEM, can achieve an exponential rate of convergence with respect to the dimension of the trial space, see \cite{postell1990h} and references therein. Spectral methods, involving trigonometric polynomials have also been analyzed for example \cite{bruno2012second}, and some results exist for piecewise linear functions in the colocation setting \cite{costabel1988convergence}. 
 
@@ -1134,7 +1120,7 @@ In what follows, we introduce a discretization of the segment $[-1,1]$ as $-1 = 
 \[ h \isdef \min_{i=0\cdots N-1} \abs{\theta_{i+1} - \theta_{i}}.\]
 In practice, one should use a mesh for which $\abs{\theta_i - \theta_{i+1}}$ is constant. This turns out to be analog to a graded mesh with the grading parameter set to $2$, that is, near the edge, the width of the $i-th$ interval is approximately $(ih)^2$. In comparison, in the h-BEM method with $p=1$ polynomial order, this would only lead to a convergence rate in $O(h)$ (cf. \cite[Theorem 1.3]{postell1990h}).
 
-\subsection{Dirichlet problem}
+\subsubsection{Dirichlet problem}
 
 In this section, we present the method to compute a numerical approximation of the solution $\lambda$ of \eqref{Slambda}. To achieve it, we use a variational formulation of \eqref{Somegaalpha} to compute an approximation $\alpha_h$ of $\alpha$, and set $\lambda_h = \frac{\alpha_h}{\omega}$. Let $V_h$ the Galerkin space of (discontinuous) piecewise affine functions with breakpoints at $x_i$. Let $\alpha_h$ the unique solution in $V_h$ to
 \[ \duality{S_\omega \alpha_h}{\alpha_h'}_\frac{1}{\omega} = -\duality{u_D}{\alpha_h'}_\frac{1}{\omega}, \quad \forall \alpha_h' \in V_h.\]
@@ -1231,7 +1217,7 @@ From this we can derive the rate of convergence for $\alpha_h$ to the true solut
 	\[\norm{\alpha - \mathbbm{P}_h \alpha}_{T^{-1/2}} \leq \dfrac{h^s \norm{\alpha}_{T^s} h^{1/2}\norm{\eta}_{T^{1/2}}}{\norm{\eta}_{T^{1/2}}} = h^{s+\frac{1}{2}} \norm{\alpha}_{T^s}.\]
 \end{proof}
 
-\subsection{Neumann problem}
+\subsubsection{Neumann problem}
 
 We now turn to the numerical resolution of \eqref{Nmu}. We use a variational form for equation \eqref{Nomegabeta}, and solve it using a Galerkin method with continuous piecewise affine functions. We introduce $W_h$ the space of continuous piecewise affine functions with breakpoints at $x_i$, and we denote by $\beta_h$ the unique solution in $W_h$ to the variational equation:
 \begin{equation}
@@ -1312,10 +1298,38 @@ We shall prove the following:
 	Consequently, 
 	\[\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \leq  C\norm{(I - \Pi_h)\beta}_{U^{1/2}} \leq C h^{s - 1/2} \norm{\beta}_{U^s} \leq C h^{s - 1/2} \norm{u_N}_{U^{s-1}}.\]
 \end{proof}
+
+\subsubsection{Numerical quadratures and compression method}
+
+\paragraph{Weakly singular kernels.} To compute the elements of the matrix of the operators which kernel have a weak singularity, we use Gaussian quadratures for the weights $\frac{1}{\omega}$ and $\omega$, with $3$ points on each segment. As a result, we obtain a vector $(x_k)$ of $3N$ points in $\R^2$ and a vector $(w_k)$ of $3N$ quadrature weights. If $p$ stands for the weight ($1/\omega$ or $\omega$), then quantities of the form $\int_\Gamma \int_\Gamma  p(x)p(y)\phi_i(x) G_k(x,y) \phi_j(y)$, are approximated by
+\begin{equation}
+\label{approxDoubleIntegral}
+	\int_\Gamma \int_\Gamma   p(x)p(y)\phi_i(x) G_k(x,y) \phi_j(y) \approx \sum_{k = 1}^N w_k \phi_i(x_k) \sum_{l = 1}^N  w_l G(x_k,x_l) \phi_j(x_l).
+\end{equation}
+Since the kernel $G_k$ is singular, we must correct the previous formula when $x_k$ and $x_l$ are close from each other. This is done by the following method. For each segment $I_n$ in the mesh, we find the subset $(x_k')$of the points $x_k$ that are closer than a fixed threshold from $I_n$. For those points, we compute more accurately the integral 
+\[ \int_{I_n} p(y)G_k(x_k,y) \phi_j(y),\]
+by any method at our disposal (variable change, substraction of the singularity...). The second integral is then approximated using the previous quadrature. 
+Note that in this framework, the addition of the wait $p$ requires only minor modification over a standard BEM code. Basically, one only needs to compute numerical quadratures for the weight $p$, for which open source routines are available, and implement a method to compute the close integrals with the weight $p$. Note that using the variable change $x = \cos(\theta)$, the weight disappears and the only singularity left is that of $G_k$. 
+
+\paragraph{Hypersingular operator.} Although the weighted hypersingular $N_{k,\omega}$ operator has a non-integrable kernel, the formulawe have the formula
+\[\duality{N_{k,\omega} \beta}{\beta'}_\omega = \duality{S_{k,\omega}\left(\omega \partial_x \omega \right)u}{\left(\omega \partial_x \omega \right) v}_\frac{1}{\omega} - k^2 \duality{S_\omega \omega^2 u}{\omega^2 v}_\frac{1}{\omega}.\]
+This only involves weakly singular kernels and is thus treated by the previous method. 
+
+\paragraph{Compression method} The rhs of \eqref{approxDoubleIntegral} is the scalar product of a vector with a discrete convolution. To accelerate the computation and to avoid assembling the full matrix $(G_k(x_k,x_l))$, we use \toDo{Citer EBD alors que pas encore accepté ?}. 
+
 \subsection{Preconditioning the linear systems}
 
+For an operator $A$, let us denote by $\left[A\right]_p$ the Galerkine matrix of the operator for the weight $p(x)$. When the operator $BA$ is a compact perturbation of the identity (either in $T^s$ or $U^s$) then, following \cite{steinbach1998construction}, we precondition the linear system $\left[A\right]_p x = y$ by the matrix $\left[I\right]^{-1}_p \left[B\right]_p \left[I\right]_p^{-1}$. If $B$ is the inverse of a local operator $C$, then it is easier to compute $\left[C\right]_p$. This time, the good choice for the preconditioner is $\left[C\right]_p^{-1}$. When testing the pair $S_{k,\omega}, N_{k,\omega}$ as mutual preconditioner, the operator $S_{k,\omega}N_{k,\omega}$ is discretized as $\left[I_d\right]_\frac{1}{\omega}^{-1} \left[S_{k,\omega}\right]_\frac{1}{\omega}\left[I_d\right]_{\omega}^{-1}\left[N_{k,\omega}\right]_\omega$, yielding very satisfactory results. 
 
-	
+The preconditioners introduced in this work are in the form of square roots of local operators. More precisely, we introduced two preconditioners $P_1$ and $P_2$ with 
+\begin{eqnarray*}
+	P_1(k) &=& \left(-(\omega \partial_x)^2 - k^2 \omega^2\right)^{1/2}\\
+	P_2(k) &=& \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1/2}
+\end{eqnarray*}
+For the second equation, we rewrite 
+\[P_2(k) = \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1} \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{1/2},\]
+which brings us back to computing the square root of a sparse matrix. When the frequency is $0$, we use the method exposed in \cite{hale2008computing}. When the frequency is non-zero, the previous method fails since the spectrum of the matrix contains negative values. In \cite{antoine2007generalized}, a method involving a Padé approximation of the square root, with a rotated branch cut, is used to compute the matrix of an operator of the form $\sqrt{X - k^2 I_d}$ where $X$ is a positive definite operator. This method gives excellent results in our context when using $X = -(\partial \omega_x)^2 + k^2 \left(I_d - \omega^2\right)$. 
+
 \section{Conclu}
 
 Résumé de ce qu'on a fait, du lien qu'on a fait. Ouverture sur les singularités de type coin puis 3D. Beaucoup plus compliqué car pas de relations analytiques qui nous aident. 
@@ -1441,6 +1455,21 @@ and on the other hand
 After substracting, this gives the rather surprising identity identity
 \[\left(\partial_x S_\omega xS_\omega \omega^2  - S_\omega x \partial_x  S_\omega \omega^2 \right)U_n = \frac{U_n}{4n(n+2)}\]
 which of course proves our claim.
+
+\section{Suggestion de découpage}
+
+J'y ai un tout petit peu réfléchi : 
+\begin{itemize}
+	\item[-] Les analyses pseudo-diffs des espaces $T^s$, bien qu'intéressantes, sont trop longues et ne se justifient pas vraiment dans le simple but de faire une méthode numérique. 
+	\item[-] La méthode de Galerkine est bien analysée et nouvelle (à ma connaissance) mais n'est pas vraiment essentielle pour le message. 
+\end{itemize}
+Je pense qu'on pourrait envisager 3 articles. 
+Un très concis sur la méthode numérique en elle-même. Utiliser le minimum d'info pour k=0, donner les inverses exacts, prouver la commutation des opérateurs pour k non nul, puis balancer les préconditionneurs, et mettre les figures. 
+
+Un article un peu à part sur la méthode de Galerkine, et tous les aspects numériques (bcp moins d'impact)
+
+Un article (peut-être juste sur arxiv ?) sur les espaces $T^s$ et $U^s$, qui donne toutes les justifications théoriques. (une sorte de version étendue de cet article.)
+
 
 %	\section{Order of the operators $O_n$}
 %	\label{orderOn}
