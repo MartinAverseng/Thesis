@@ -1,5 +1,5 @@
 \documentclass[a4paper]{article}
-\input{/home/martin/Thesis/Presentations/DefLatex/Definitions.tex}
+\input{../Definitions.tex}
 
 \title{Preconditionning the Helmholtz problem on curved arcs in dimension 2}
 \author{Fran\c{c}ois Alouges and Martin Averseng\footnote{CMAP, Ecole polytechnique, Route de Saclay, 91128 Palaiseau Cedex.}}
@@ -12,8 +12,7 @@
 
 \section*{Introduction}
 
-The problem of preconditionning the linear systems coming from the discretization of first kind integral equations
-has received considerable attention since two decades roughly. Among the possible strategies are the so-called 
+The problem of preconditionning the linear systems coming from the discretization of first kind integral equations has received considerable attention since two decades roughly. Among the possible strategies are the so-called 
 pseudo-differential preconditionner, whose analysis uses tools from pseudo-differential calculus \cite{christiansen2002preconditioner,levadoux2005proposition,antoine2007generalized,mclean1997preconditioning}. \toDo{Ai-je cité les bons articles ?}. Roughly speaking, if the original problem is written in the abstract way
 \begin{equation}
 	\mathcal{L}u=f\,,
@@ -393,7 +392,7 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 	The function $a$ is called the symbol of $A$ and is denoted by $\sigma_A$. 
 \end{Def}
 \begin{Rem}
-	The condition (i) does not define uniquely the symbol of $A$, since $T_{-n} = T_n$. We will not tackle the question whether conditions (ii) and (iii) ensure uniqueness. The notation $\sigma_A$ thus refers to one possible symbol of $A$. The symbols can be viewed as infinite matrix with a finite band of diagonals. Condition (ii) requires the coefficients on each diagonal to be smooth functions of $k$. 
+	The condition (i) does not define uniquely the symbol of $A$, since $T_{-n} = T_n$. We will not tackle the question whether conditions (ii) and (iii) ensure uniqueness. The notation $\sigma_A$ thus refers to one possible symbol of $A$. The symbols can be viewed as infinite matrix with a finite band of diagonals. Condition (ii) further requires that the coefficients on each diagonal be smooth functions of $k$. 
 \end{Rem}
 \begin{Lem}
 	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
