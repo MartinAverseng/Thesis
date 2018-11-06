@@ -57,41 +57,41 @@ classdef weightedFEspace < FEspace
             % elementary quadrature after variable change
             [uhat,u_what] = Gauss_Legendre1D(q,0,1);
             uhat = flipud(uhat); u_what = flipud(u_what);
-%             for i = 1:length(I) % loop over the segments where the quad
-%                 % needs to be changed.
-%                 seg_num = I(i);
-%                 AB = m.segment(seg_num);
-%                 A = AB(1); B = AB(2); % indexes of the vertex defining A and B
-%                 sA = sVert(A);
-%                 sB = sVert(B);
-%                 % get coords of A and B.
-%                 A = this.mesh.vertex(A);
-%                 B = this.mesh.vertex(B);
-%                 % transformation  s = L/2*(1 + cos(theta))
-%                 % We let x = cos(theta), s = L/2(1 + x)
-%                 theta1 = real(acos(2*sA/L-1));
-%                 theta2 = real(acos(2*sB/L-1));
-%                 xhat = sort(cos(theta1 + (theta2 - theta1)*uhat));
-%                 if strcmp(this.weight_id,'1/sqrt(1-t^2)')
-%                     what = abs((theta2 - theta1))*u_what;
-%                 else
-%                     what = (1-xhat.^2).*abs((theta2 - theta1)).*u_what;
-%                 end
-%                 sref = ((xhat +1)*L/2 - sA)/(sB-sA); % map to the unit segment.
-%                 idx = (seg_num-1)*q + (1:q)';
-%                 u = (B-A);
-%                 this.gaussPoints(idx,1) = A(1) + u(1)*sref;
-%                 this.gaussPoints(idx,2) = A(2) + u(2)*sref;
-%                 for b = 1:this.fe_cell.Nb
-%                     [phi,dxphi] = this.fe_cell.basis(sref);
-%                    
-%                     dof = T(seg_num,b);
-%                     this.phi(idx,dof) = phi(:,b);
-%                     this.dphi(idx,dof) = dxphi(:,b)/l(seg_num);
-%                 end
-%                 this.W(idx) = what;
-%                 this.sVec(idx) = sA + sref*(sB - sA);
-%             end
+            for i = 1:length(I) % loop over the segments where the quad
+                % needs to be changed.
+                seg_num = I(i);
+                AB = m.segment(seg_num);
+                A = AB(1); B = AB(2); % indexes of the vertex defining A and B
+                sA = sVert(A);
+                sB = sVert(B);
+                % get coords of A and B.
+                A = this.mesh.vertex(A);
+                B = this.mesh.vertex(B);
+                % transformation  s = L/2*(1 + cos(theta))
+                % We let x = cos(theta), s = L/2(1 + x)
+                theta1 = real(acos(2*sA/L-1));
+                theta2 = real(acos(2*sB/L-1));
+                xhat = sort(cos(theta1 + (theta2 - theta1)*uhat));
+                if strcmp(this.weight_id,'1/sqrt(1-t^2)')
+                    what = abs((theta2 - theta1))*u_what;
+                else
+                    what = (1-xhat.^2).*abs((theta2 - theta1)).*u_what;
+                end
+                sref = ((xhat +1)*L/2 - sA)/(sB-sA); % map to the unit segment.
+                idx = (seg_num-1)*q + (1:q)';
+                u = (B-A);
+                this.gaussPoints(idx,1) = A(1) + u(1)*sref;
+                this.gaussPoints(idx,2) = A(2) + u(2)*sref;
+                for b = 1:this.fe_cell.Nb
+                    [phi,dxphi] = this.fe_cell.basis(sref);
+                   
+                    dof = T(seg_num,b);
+                    this.phi(idx,dof) = phi(:,b);
+                    this.dphi(idx,dof) = dxphi(:,b)/l(seg_num);
+                end
+                this.W(idx) = what;
+                this.sVec(idx) = sA + sref*(sB - sA);
+            end
             % Vectorial version of the loop:
             T = this.dofIndexes; 
             sA = sVert(T(:,1));
@@ -105,7 +105,7 @@ classdef weightedFEspace < FEspace
             if strcmp(this.weight_id,'1/sqrt(1-t^2)')
                 what = repelem(abs(theta2 - theta1),this.quad.num).*repmat(u_what,this.nseg,1);
             else
-                what = (1-xhat.^2).*repelem(abs(theta2 - theta1),this.quad.num).*repmat(u_what,this.nseg,1);
+                what = (1-xhat.^2).*repelem(abs(theta2 - theta1),3).*repmat(u_what,this.nseg,1);
             end
             sA = repmat(sA,1,this.quad.num)';
             sA = sA(:);
@@ -129,8 +129,7 @@ classdef weightedFEspace < FEspace
                 this.phi = this.phi + sparse(lines,cols,phi(:,b),this.nint,this.ndof);
                 this.dphi = this.dphi + sparse(lines,cols,dxphi(:,b)./repelem(l,this.quad.num),this.nint,this.ndof);
             end
-            this.W = what;
-            Wdiag = AbstractMatrix.spdiag(this.W);
+            Wdiag = AbstractMatrix.spdiag(what);
             M_mat = AbstractMatrix(this.phi'*Wdiag*this.phi);
             dM_mat = AbstractMatrix(this.dphi'*Wdiag*this.dphi);
             this.Mass = BilinearForm(this,this,M_mat);
@@ -236,7 +235,7 @@ classdef weightedFEspace < FEspace
                         
                         
                         Mid = (A + B)/2; % segment middle.
-                        lAB2 = l(segNum)^2*4; % squared length of the segment.
+                        lAB2 = l(segNum)^2*2; % squared length of the segment.
                         
                         
                         

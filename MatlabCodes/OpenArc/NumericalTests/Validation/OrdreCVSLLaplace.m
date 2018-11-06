@@ -20,7 +20,7 @@ lambda1 = sqrt(1 - X^2);
 u01 = -1/(2*pi)*((1 - X)*log(1 - X) + (1 + X)*log(1 + X) - 2);
 
 [errH_12_nonreg,errL2_nonreg] = testSL_OrderCV(curve,lambda1, u01, Ns,k,...
-    'correcMethod','constantTerm','quadNum',10,'fullMatrix',true);
+    'correcMethod','constantTerm','quadNum',15,'fullMatrix',true);
 figure
 loglogTrislope(1./Ns(:),abs(errH_12_nonreg))
 hold on
@@ -31,7 +31,7 @@ u02 = 2/3*log(1 + X) - 1/3*X^3*log(X + 1) - 16/9 + X*log(X + 1) + 2/3*X^2 + 2/3*
 u02 = -1/(2*pi)*(u02);
 
 [errH_12,errL2] = testSL_OrderCV(curve,lambda2, u02, Ns,k,...
-     'correcMethod','constantTerm','quadNum',10,'fullMatrix',true);
+     'correcMethod','constantTerm','quadNum',15,'fullMatrix',true);
 figure
 loglogTrislope(1./Ns(:),real(errH_12))
 hold on

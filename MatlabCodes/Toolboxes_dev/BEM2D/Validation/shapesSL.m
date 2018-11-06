@@ -3,30 +3,30 @@
 
 Main;
 addpath(genpath('/home/martin/Thesis/MatlabCodes/DarbasBrunoEtCie/'))
-nn = 500;
-curve = Vcurve;
+nn = 100;
+curve = spirale;
 l = length(curve);
-k = nn*pi/l;
+k = nn*2*pi/l;
 % [curve,incWave] = unitSegment(k);
 
 % [curve,incWave,dxf,dyf] = semicircle(k);
 %[curve,incWave] = parabola();
 %[curve,incWave] = ellipse();
-% [curve,incWave] = spirale(k);
+[curve,incWave] = spirale(k);
 % [curve,incWave] = Scurve(k);
-[curve,incWave] = Vcurve(k);
+% [curve,incWave] = Vcurve(k);
 figure
 plot(curve);
 
 
-N = fix(10*k);
+N = fix(15*nn);
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
-    'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);
+    'quadNum',2,'specialQuadSegs',1:meshAdapt.nseg);
 M = Vh.Mass.concretePart;
 [L,U,P,Q] = lu(M);
 invM = @(u)(Q*(U\(L \(P*u))));
-Wh =  weightedFEspace(meshAdapt,'P1','sqrt(1-t^2)',3);
+Wh =  weightedFEspace(meshAdapt,'P1','sqrt(1-t^2)',2);
 % Xh = FEspace(meshAdapt,'P1',5);
 % M0 = Xh.Mass;
 % dM = (Vh.omega_dx_omega)'*AbstractMatrix.spdiag(Vh.W)*(Vh.omega_dx_omega);
@@ -142,20 +142,20 @@ clear secondMemb
 % -1 <= x <= 1, -1.5 <= y <= 1.5
 close all;
 figure
-y1 = -1; y2 = 1;
-x1 = -2; x2 = 2;
+y1 = -10; y2 = 10;
+x1 = -10; x2 = 10;
 x1tmp = x1; y1tmp = y1;
 x2tmp = x1; y2tmp = y1;
-step_x = (x2 - x1)/2;
-step_y = (y2 - y1)/2;
+step_x = (x2 - x1)/8;
+step_y = (y2 - y1)/8;
 while x1tmp < x2
     x2tmp = x1tmp + step_x;
     while y1tmp < y2
         y2tmp = y1tmp + step_y;
-        x = linspace(x1tmp,x2tmp,2000);
-        y = linspace(y1tmp,y2tmp,2000);
+        x = linspace(x1tmp,x2tmp,400);
+        y = linspace(y1tmp,y2tmp,400);
         [X,Y] = meshgrid(x,y);
-        Sw.set_X([X(:) Y(:)],'a',a/30);
+        Sw.set_X([X(:) Y(:)],'a',a/10);
         valsDiffr = Sw*lambda2;
         valsInc = incWave([X(:) Y(:)]);
 %         valsInc = cilyndWave([X(:) Y(:)]);
@@ -192,10 +192,5 @@ caxis([-10 18]);
 hold on;
 plot(curve);
 axis tight
-
-%% Animation.
-
-figure
-animateWave(x1,x2,k,amplitude)
 
 
