@@ -187,9 +187,10 @@ classdef FEspace < handle
             singK = singKernel(singKernel_id);
             func = singK.k.func;
             
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            EDG = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            Ax = EDG(:,1); Ay = EDG(:,2); Bx = EDG(:,3); By = EDG(:,4);
             lines = cell(Nb,1); cols = cell(Nb,1); vals = cell(Nb,1);
-            threshold = 4*max(l);
+            threshold = 1.5*max(l);
             I = isClose(X,this.dofCoords,threshold);
             dofsToLoop = find(~cellfun('isempty',I))';
             for i = dofsToLoop %dofsToLoop
@@ -219,7 +220,7 @@ classdef FEspace < handle
                         X_k = X_k(ks,:); % seclected points in X.
                         %for each k, parameter cb(k) such that phi_b(Y) = cb(k) + C*(X_k(k,:) - Y)
                         % where C is some constant.
-                        approxInt = this.I0approx(func,X_k,segNum);
+                        approxInt = this.I0approx(func,X_k,A,B,segNum);
                         cb = this.fe_cell.constantTerm(b,X_k,A,B);
                         
                         % Compute the approximation that was used for
@@ -227,7 +228,7 @@ classdef FEspace < handle
                         
                         
                         % Compute the exact integral to replace :
-                        exactInt = this.I0exact(singK, X_k,segNum); % method that computes
+                        exactInt = this.I0exact(singK, X_k,A,B,segNum); % method that computes
                         % exactly \int_{[A,B]} G(X_k(k,:),Y) dY for each k.
                         
                         % Store the correction.
@@ -245,7 +246,7 @@ classdef FEspace < handle
                 Mat = Mat + sparse(lines{b},cols{b},vals{b},M,ndof);
             end
         end
-        function[res] = I0approx(this,func,X_k,segNum)
+        function[res] = I0approx(this,func,X_k,~,~,segNum)
             q = this.quad.num;
             % Gauss points and weights on segment
             idx = (segNum-1)*q + (1:q)'; %
@@ -258,9 +259,7 @@ classdef FEspace < handle
             %             Gkq(or(isnan(Gkq),isinf(Gkq))) = 0; % this is a global convention
             res = Gkq*Wq;
         end
-        function[res] = I0exact(this,singK,X_k,segNum)
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
-            A = [Ax(segNum) Ay(segNum)]; B = [Bx(segNum) By(segNum)]; % the segment is [A,B].
+        function[res] = I0exact(~,singK,X_k,A,B,~)
             res = singK.I0seg(X_k,A,B);
         end
         

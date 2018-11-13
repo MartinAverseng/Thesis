@@ -296,15 +296,16 @@ classdef weightedFEspace < FEspace
             M = size(X,1); % Number of points in X
             me = this.mesh;
             l = me.length; % vector containing length of each segment in the mesh.
-            L = sum(l);
+%             L = sum(l);
             ndof = this.ndof;
-            T = this.dofIndexes;
+%             T = this.dofIndexes;
             feCell = this.fe_cell;
             Nb = feCell.Nb;
             singK = logSingK;
             func = singK.k.func;
             
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            EDG = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            Ax = EDG(:,1); Ay = EDG(:,2); Bx = EDG(:,3); By = EDG(:,4);
             lines = cell(Nb,1); cols = cell(Nb,1); vals = cell(Nb,1);
             %             threshold = 4*max(l);
             %             I = isClose(X,this.dofCoords,threshold);
@@ -317,6 +318,7 @@ classdef weightedFEspace < FEspace
                     if isempty(segNum)
                         % nothing to do
                     else
+                        
                         A = [Ax(segNum) Ay(segNum)]; B = [Bx(segNum) By(segNum)]; % the segment is [A,B].
                         
                         
@@ -334,11 +336,14 @@ classdef weightedFEspace < FEspace
                         X_k = X(ks,:); % seclected points in X.
                         %for each k, parameter cb(k) such that phi_b(Y) = cb(k) + C*(X_k(k,:) - Y)
                         % where C is some constant.
-                        approxInt = this.I0approx(func,X_k,segNum);
-                        cb = this.fe_cell.constantTerm(b,X_k,A,B);
                         [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
                         [sA,~] = this.mesh.s_seg(segNum);
                         s0 = sA - alpha;
+                        approxInt = this.I0approx(func,X_k,A,B,segNum);
+                        cb = this.fe_cell.constantTerm(b,X_k,A,B);
+                        
+                        
+                        
                         omega2 = 1./this.weight(s0).^2;
                         omega2(or(isinf(omega2),isnan(omega2))) = 0;
                         H = omega2.*cb;
@@ -347,7 +352,7 @@ classdef weightedFEspace < FEspace
                         
                         
                         % Compute the exact integral to replace :
-                        exactInt = this.I0exact(singK, X_k,segNum); % method that computes
+                        exactInt = this.I0exact(singK, X_k,A,B,segNum); % method that computes
                         % exactly \int_{[A,B]} G(X_k(k,:),Y) dY for each k.
                         
                         % Store the correction.
@@ -367,18 +372,16 @@ classdef weightedFEspace < FEspace
                 Mat = Mat + sparse(lines{b},cols{b},vals{b},M,ndof);
             end
         end
-        function[res] = I0approx(this,func,X_k,segNum)
+        function[res] = I0approx(this,func,X_k,A,B,segNum)
+            [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
+            [sA,~] = this.mesh.s_seg(segNum);
+            s0 = sA - alpha;
             q = this.quad.num;
+            L = sum(this.mesh.length);
             % Gauss points and weights on segment
             idx = (segNum-1)*q + (1:q)';
             sq = this.sVec(idx);
             Wq = this.W(idx); % weights
-            L = sum(this.mesh.length);
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
-            A = [Ax(segNum) Ay(segNum)]; B = [Bx(segNum) By(segNum)]; % the segment is [A,B].
-            [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
-            [sA,~] = this.mesh.s_seg(segNum);
-            s0 = sA - alpha;
             phi = @(s)(-real(acos(2*s/L - 1)));
             Akq = (phi(sq)' - phi(s0))./(repmat(this.weight(s0),1,length(sq)));
             Akq(abs(Akq)<1e-15) = 1e-15;
@@ -386,12 +389,10 @@ classdef weightedFEspace < FEspace
             
             res = (Gkq*Wq);
         end
-        function[res] = I0exact(this,singK,X_k,segNum)
+        function[res] = I0exact(this,singK,X_k,A,B,segNum)
             F = singK.primitiveOfKernel;
             % Gauss points and weights on segment
             L = sum(this.mesh.length);
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
-            A = [Ax(segNum) Ay(segNum)]; B = [Bx(segNum) By(segNum)]; % the segment is [A,B].
             [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
             [sA,sB] = this.mesh.s_seg(segNum);
             s0 = sA - alpha;

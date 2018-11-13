@@ -7,6 +7,10 @@ classdef MeshCurve < handle
         tVertices;
         repartition = []; %optional
         bounds = [-1,1];
+        edgesCoords;
+        sVertices;
+        length
+        L
     end
     
     methods
@@ -42,6 +46,14 @@ classdef MeshCurve < handle
             if c.closed
                 this.segments = [this.segments;N+1,1];
             end
+            xA = this.vertices(this.segments(:,1),1);
+            yA = this.vertices(this.segments(:,1),2);
+            xB = this.vertices(this.segments(:,2),1);
+            yB = this.vertices(this.segments(:,2),2);
+            this.edgesCoords = [xA,yA,xB,yB];
+            this.length = sqrt((xB-xA).^2 + (yB-yA).^2);
+            this.L = sum(this.length);
+            this.sVertices = [0;cumsum(this.length)];
         end
         function[this] = remesh(this,N)
             this = MeshCurve(this.curve,N,this.repartition,this.bounds);
@@ -82,12 +94,6 @@ classdef MeshCurve < handle
             segs = this.segments;
             seg = segs(i,:);
         end
-        function[xA,xB,yA,yB] = edgesCoords(this)
-            xA = this.vertices(this.segments(:,1),1);
-            yA = this.vertices(this.segments(:,1),2);
-            xB = this.vertices(this.segments(:,2),1);
-            yB = this.vertices(this.segments(:,2),2);
-        end
         function[tl] = Tl_t(this)
             % returns the list of applications Tl : [0,1] -> [tl,tl+1]
             % defined by Tl(u) = a*u + b
@@ -96,13 +102,10 @@ classdef MeshCurve < handle
             tl = [a(:),b(:)];
             
         end
-        function[l] = length(this)
-            [x1,x2,y1,y2] = this.edgesCoords;
-            l = sqrt((x2-x1).^2 + (y2-y1).^2);
-        end
         function[MM] = M(this,s)
             s = s(:);
-            [x1,x2,y1,y2] = this.edgesCoords;
+            X = this.edgesCoords;
+            x1 = X(:,1); y1 = X(:,2); x2 = X(:,3); y2 = X(:,4);
             ids = this.whichSegment_s(s);
             sVert = this.sVertices;
             sloc = (s - sVert(ids))./(sVert(ids+1)-sVert(ids));
@@ -118,9 +121,6 @@ classdef MeshCurve < handle
             tVert = this.tVertices;
             tloc = (t - tVert(ids))./(tVert(ids+1)-tVert(ids));
             ss = int_l(ids) + tloc.*l(ids);
-        end
-        function[sVert] = sVertices(this)
-            sVert = [0;cumsum(this.length)];
         end
         function[sA,sB] = s_seg(this,seg_num)
             sVert = this.sVertices;

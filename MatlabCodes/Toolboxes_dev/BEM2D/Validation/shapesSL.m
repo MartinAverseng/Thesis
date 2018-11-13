@@ -3,41 +3,38 @@
 
 Main;
 addpath(genpath('/home/martin/Thesis/MatlabCodes/DarbasBrunoEtCie/'))
-nn = 100;
-curve = spirale;
+nn = 400;
+curve = unitSegment;
 l = length(curve);
 k = nn*2*pi/l;
-% [curve,incWave] = unitSegment(k);
+[curve,incWave] = unitSegment(k);
 
 % [curve,incWave,dxf,dyf] = semicircle(k);
 %[curve,incWave] = parabola();
 %[curve,incWave] = ellipse();
-[curve,incWave] = spirale(k);
+% [curve,incWave] = spirale(k);
 % [curve,incWave] = Scurve(k);
 % [curve,incWave] = Vcurve(k);
 figure
 plot(curve);
 
 
-N = fix(15*nn);
+N = fix(25*nn);
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
-    'quadNum',2,'specialQuadSegs',1:meshAdapt.nseg);
+    'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);
 M = Vh.Mass.concretePart;
 [L,U,P,Q] = lu(M);
 invM = @(u)(Q*(U\(L \(P*u))));
-Wh =  weightedFEspace(meshAdapt,'P1','sqrt(1-t^2)',2);
-% Xh = FEspace(meshAdapt,'P1',5);
-% M0 = Xh.Mass;
+Wh =  weightedFEspace(meshAdapt,'P1','sqrt(1-t^2)',3);
 % dM = (Vh.omega_dx_omega)'*AbstractMatrix.spdiag(Vh.W)*(Vh.omega_dx_omega);
 % dM = dM.concretePart;
-% dMinv = inv(dM);
 dM =  Wh.dMass.concretePart;
 omega2 = Wh.Mass.concretePart;
 % K = inv(omega2*dM*omega2);
 K1 = dM - k^2*(omega2-M);
 K = dM - k^2*omega2;
-Np = 25;
+Np = 40;
 theta = pi/3;
 keps = k+1i*0.02*k^(1/3);
 sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
@@ -47,7 +44,7 @@ sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
 % plot((dM - k^2*omega2)*u);
 % hold on
 % plot(real(sqrtDarbasK1(M\sqrtDarbasK1(u))));
-Op_opt = {'tol',1e-3,'a_factor',12};
+Op_opt = {'tol',1e-3,'a_factor',8};
 Sw = singleLayer(Vh,...
     'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
 % 
@@ -56,23 +53,17 @@ Swgalerk = Sw.galerkine(Vh,'U');
 % T0_scal_phi = Vh.phi'*Vh.W;
 % T0_star_galerk = T0_scal_phi*T0_scal_phi'/sum(Vh.W);
 % Nwgalerk = Nw.galerkine;
-Prec1 = @(u)(invM(Swgalerk*invM(K*invM(u))));
+% Prec1 = @(u)(invM(Swgalerk*invM(K*invM(u))));
 PrecDarbas = @(u)(invM(sqrtDarbasK1(invM(u))));
 % clear M L U Q P dM K K1 omega2 
 % Prec2 = @(u)(invM(TrefethenSqrt(dM,4,invM(u),M,1,2*Vh.ndof^2))+ 0*invM(u)+ 1*(1/log(2))^2*invM(T0_star_galerk*invM(u)));
 % Prec2 = @(u)(omega2\(TrefethenSqrt(omega2*dMinv*omega2,4,omega2\u,omega2,0.5/Vh.ndof^2,1)));
 % Prec3 = @(u)(Nwgalerk*invM(u));
 % Prec4 = @(u)(omega2\(Nwgalerk.concretePart*invM(u)));
-% X0 = 0;
-% Y0 = 0;
-% Np = 20;
-% theta = pi/3;
-% keps = k+1i*1*k^(1/3);
-% X = -omega2\dM;
-% sqrtOmega2 = @(u)(invM(TrefethenSqrt(omega2,4,invM(u),M,1/(Vh.ndof)^2,1)));
-% sqrtDarbas = @(x)(padePrecondDarbas(x,Np,theta,keps,M,X));
-% PrecMartin = @(l)(sqrtOmega2(sqrtDarbas(l)));
-% cilyndWave = R2toRfunc(@(Z)(besselh(0,k*sqrt((Z(:,1) - X0).^2 + (Z(:,2) - Y0).^2))));
+% Y0 = 0.6;
+% X0 = -4;
+% cylindWave = R2toRfunc(@(Z)(besselh(0,k*sqrt((Z(:,1) - X0).^2 + (Z(:,2) - Y0).^2))));
+% incWave = cylindWave;
 secondMemb = Vh.secondMember(-incWave);
 % secondMemb = Wh.normalDerivative(dxf,dyf);
 % l = Vh.secondMember(-cilyndWave);
@@ -129,68 +120,68 @@ disp(t2);
 % clear lambda1
 % 
 % lambda = variationalSol(Swgalerk,secondMemb,[],1e-8,N,Prec3);
-
+% 
 %% Compute the radiating solution.
-a = Sw.Aop.a;
-clear K;
-clear M;
-clear Swgalerk
-clear Wh
-clear L U P Q
-clear secondMemb
-% I want the solution in the square 
-% -1 <= x <= 1, -1.5 <= y <= 1.5
-close all;
-figure
-y1 = -10; y2 = 10;
-x1 = -10; x2 = 10;
-x1tmp = x1; y1tmp = y1;
-x2tmp = x1; y2tmp = y1;
-step_x = (x2 - x1)/8;
-step_y = (y2 - y1)/8;
-while x1tmp < x2
-    x2tmp = x1tmp + step_x;
-    while y1tmp < y2
-        y2tmp = y1tmp + step_y;
-        x = linspace(x1tmp,x2tmp,400);
-        y = linspace(y1tmp,y2tmp,400);
-        [X,Y] = meshgrid(x,y);
-        Sw.set_X([X(:) Y(:)],'a',a/10);
-        valsDiffr = Sw*lambda2;
-        valsInc = incWave([X(:) Y(:)]);
-%         valsInc = cilyndWave([X(:) Y(:)]);
-        clear Y;
-        valsDiffr = reshape(valsDiffr,size(X,1),size(X,2));
-        valsInc = reshape(valsInc,size(X,1),size(X,2));
-        clear X;
-        amplitude = valsInc+valsDiffr;
-        clear valsInc ;
-        clear valsDiffr;
-        
-        res = 20*log(abs(amplitude))/log(10);
-        clear amplitude;
-        imagesc(x,y,res);
-        hold on
-        
-        y1tmp = y2tmp;
-        
-        clear res;
-        axis equal
-        axis xy
-        xlim([x1 x2])
-        ylim([y1 y2])
-        drawnow
-    end
-    x1tmp = x2tmp;
-    y1tmp = y1;
-    y2tmp = y1;
-end
-
-% % 
-colormap gray
-caxis([-10 18]);
-hold on;
-plot(curve);
-axis tight
-
+% a = Sw.Aop.a;
+% clear K;
+% clear M;
+% clear Swgalerk
+% clear Wh
+% clear L U P Q
+% clear secondMemb
+% % I want the solution in the square 
+% % -1 <= x <= 1, -1.5 <= y <= 1.5
+% close all;
+% figure
+% y1 = -1.5; y2 = 2;
+% x1 = -5; x2 = 1.5;
+% x1tmp = x1; y1tmp = y1;
+% x2tmp = x1; y2tmp = y1;
+% step_x = (x2 - x1)/5;
+% step_y = (y2 - y1)/5;
+% while x1tmp < x2
+%     x2tmp = x1tmp + step_x;
+%     while y1tmp < y2
+%         y2tmp = y1tmp + step_y;
+%         x = linspace(x1tmp,x2tmp,600);
+%         y = linspace(y1tmp,y2tmp,600);
+%         [X,Y] = meshgrid(x,y);
+%         Sw.set_X([X(:) Y(:)],'a',a/10);
+%         valsDiffr = Sw*lambda2;
+% %         valsInc = incWave([X(:) Y(:)]);
+%         valsInc = incWave([X(:) Y(:)]);
+%         clear Y;
+%         valsDiffr = reshape(valsDiffr,size(X,1),size(X,2));
+%         valsInc = reshape(valsInc,size(X,1),size(X,2));
+%         clear X;
+%         amplitude = valsInc+valsDiffr;
+%         clear valsInc ;
+%         clear valsDiffr;
+%         
+%         res = 20*log(abs(amplitude))/log(10);
+%         clear amplitude;
+%         imagesc(x,y,res);
+%         hold on
+%         
+%         y1tmp = y2tmp;
+%         
+%         clear res;
+%         axis equal
+%         axis xy
+%         xlim([x1 x2])
+%         ylim([y1 y2])
+%         drawnow
+%     end
+%     x1tmp = x2tmp;
+%     y1tmp = y1;
+%     y2tmp = y1;
+% end
+% 
+% % % 
+% colormap gray
+% caxis([-30 -15]);
+% hold on;
+% plot(curve);
+% axis tight
+% 
 

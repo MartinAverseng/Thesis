@@ -16,7 +16,7 @@ classdef (Abstract) FEcell
         function[N] = ndof(this,mesh)
             N = size(this.dofCoords(mesh),1);
         end
-        function [U,dsU] = dof2points(this,xhat,mesh)
+        function [U,dsU,L] = dof2points(this,xhat,mesh)
             
             % * U is the matrix that maps the coordinates of a FE function
             % defined on a mesh, to the values of this function on the
@@ -55,7 +55,6 @@ classdef (Abstract) FEcell
             
             % Lengths for the jacobian
             L = mesh.length;
-            
             for k = 1:n
                 for b = 1:this.Nb
                     indexes = (k-1)*this.Nb*nseg + (b-1)*nseg + (1:nseg);

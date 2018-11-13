@@ -62,7 +62,8 @@ classdef NumericalQuadrature
         function[w] = weights(this,mesh)
             n = this.num;
             w = zeros(mesh.nseg*n,1);
-            [zx1,zx2,zy1,zy2] = mesh.edgesCoords;            
+            X = mesh.edgesCoords;
+            zx1 = X(:,1); zx2 = X(:,2); zy1 = X(:,3); zy2 = X(:,4);
             for i = 1:n               
                 w(i:n:end) = sqrt((zx1-zx2).^2 + (zy1 - zy2).^2)*this.what(i);
             end
