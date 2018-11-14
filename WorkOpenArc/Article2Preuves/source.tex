@@ -100,10 +100,11 @@ The normal derivative of $\mathcal{D}_k\mu$ is continuous across $\Gamma$, allow
 	\label{defNk}
 \end{equation}
 The kernel of this operator has a non-integrable singularity, but numerical calculations are made possible by the following formula, valid for smooth functions $\mu$ and $\nu$ that vanish at the extremities of $\Gamma$: 
-\begin{equation}
-	\duality{N_k \mu}{\nu} = \int_{\Gamma\times \Gamma} G_k(x-y) \mu'(x) \nu'(y) - k^2 G_k(x,y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\,.
+\begin{align*}
+	\duality{N_k \mu}{\nu} = &\int_{\Gamma\times \Gamma} G_k(x-y) \mu'(x) \nu'(y)\\
+	& - k^2 G_k(x,y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\,.
 	\label{NkenfonctiondeSk}
-\end{equation}
+\end{align*}
 It is also known that $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously, and that the solution $u$ to the Neumann problem (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) can be written as
 \begin{equation}
 	u = \mathcal{D}_k \mu
@@ -137,6 +138,9 @@ which can be rewritten under the form
 As we shall see, the preceding equations are crucial in our analysis. 
 
 \subsection{Spaces $T^s$ and $U^s$}
+
+
+\subsubsection{Definitions}
 
 Both $T_n$ and $U_n$ are polynomials of degree $n$, and form orthogonal families respectively of the Hilbert spaces 
 $$L^2_{\frac{1}{\omega}} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}$$
@@ -209,6 +213,9 @@ The preceding analysis can be generalized to define Sobolev-like spaces.
 	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\check{u}_n^2}.\]
 	We extend as before the definition to negative indices by setting $U^{-s}$ to be the dual of $U^s$ for $s\geq 0$, this time with respect to the duality $\duality{\cdot}{\cdot}_\omega$. 
 \end{Def}
+
+\subsubsection{Basic properties}
+
 Obviously, for any real $s$, if $u \in T^s$ the sequence of polynomials 
 \[S_N(x) = \sum_{n=0}^{N} \hat{u}_n T_n(x)\]
 converges to $u$ in $T^s$. The same assertion holds for $u \in U^s$ when $T_n$ is replaced by $U_n$. Therefore
@@ -242,7 +249,7 @@ We deduce the following inclusions:
 		&=& 4\norm{r_n}^2_{l^2}.
 	\end{eqnarray*}	
 \end{proof}
-One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have the following result:
+\noindent One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have the following result:
 \begin{Lem}
 	\[T^{\infty} = C^{\infty}([-1,1])\,.\]
 	\label{LemTinfCinf}
@@ -255,6 +262,43 @@ One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have 
 	To prove the converse inclusion, first notice that, by normal convergence of the series, $T^{\infty} \subset C^0([-1,1]) $. Now, let $u \in T^{\infty}$, it suffices to show that $u' \in T^{\infty}$ and apply an induction argument. Applying term by term differentiation, we obtain
 	\[u'(x) = \sum_{n=1}^{+\infty} n u_n U_{n-1}(x).\] 
 	Therefore, $u'$ is in $U^{\infty} = T^{\infty}$. 
+\end{proof}
+\begin{Rem}
+	For $s \leq \frac{1}{2}$, the functions of $U^s$ cannot be identified to functions in $T^{-\infty}$. Indeed, let assume that this is the case. Then, there must exist a map $I$ continuous from $U^{\frac{1}{2}}$ to $T^{-\infty}$ with the property 
+	\[\forall u \in U^{\infty}, \quad Iu = u.\]
+	Now, let us consider for example the function $u$ defined by $\check{u}_n = \frac{1}{n \ln(n)}$. Note that $u$ is in $U^{1/2}$. Let $u_N = \sum_{n = 0}^{N} \check{u_n}U_n$. This is a sequence of elements of $U^{\infty}$ converging to $u$ in $U^{1/2}$. By continuity of $I$, and since $I u_N = u_N$, the sequence $(\duality{u_N}{T_0}_\frac{1}{\omega})_{N\in \N}$ must converge with limit $\duality{Iu}{T_0}$. This is not the case since 
+	\[\duality{u_N}{T_0}_\frac{1}{\omega} = \sum_{n=0}^{N} \check{u}_n\duality{U_n}{T_0}_\frac{1}{\omega} = \sum_{k = 0}^{\lfloor \frac{N}{2} \rfloor} \frac{1}{2k \ln(2k)} \]
+	is diverging.
+\end{Rem}
+Two natural derivation operators arise from our context, that give another link between $T^s$ and $U^s$. They arise from the identities 
+\begin{align}
+	\partial_x T_n &= n U_{n-1}\,, \label{der1} \\
+	\omega \partial_x \omega U_n &= -(n+1)T_{n+1}\,. \label{der2}
+\end{align}
+The first one is obtained for example from the trigonometric definition of $T_n$. This combined with $-(\omega \partial_x)^2 T_n = n^2 T_n$ gives the second identity. 
+\begin{Def}
+	\label{derivations}
+	For all real $s$, the operator $\partial_x$ can be extended into a continuous map from $T^{s+1}$ to $U^{s}$ defined as 
+	\[\forall v \in U^{\infty}, \quad \duality{\partial_x u}{v}_{\omega} \isdef -\duality{u}{\omega \partial_x \omega v}_{\frac{1}{\omega}} \,.\] 
+	In a similar fashion, the  operator $\omega \partial_x \omega$ can be extended into a continuous map from $U^{s+1}$ to $T^{s}$ defined as
+	\[\forall v \in T^{\infty}, \quad \duality{\omega \partial_x \omega u}{v}_\frac{1}{\omega} \isdef -\duality{u}{\partial_x v}_\omega.\]
+\end{Def}
+\begin{proof}
+	Using the identities \eqref{der1} and \eqref{der2}, one can check that the formulas indeed extend the usual definition of the two operators for smooth functions. We now show that the map $\partial_x$ extended this way is continuous from $T^{s+1}$ to $U^s$. The definition 
+	\[\forall v \in U^{\infty}, \duality{\partial_x u}{v} \isdef -\duality{u}{\omega \partial_x \omega v}\]
+	gives a sense to $\partial_x u$ for all $u$ in $T^{-\infty}$, as a duality $T^{-\infty} \times T^{\infty}$ product, because if $v \in U^{\infty} (= C^{\infty})$, then $\omega \partial_x \omega v = (1-x^2)v' - xv$ also lies in $C^{\infty} (= T^\infty)$. It remains to check the announced continuity. Letting $w = \partial_x u$, we have, by definition, for all $n$
+	\[\check{w}_n = \duality{w}{U_n}_{\omega} = - \duality{u}{\omega \partial_x \omega U_n}_\frac{1}{\omega} = n \duality{u}{T_{n+1}}_\frac{1}{\omega} = n\hat{u}_{n+1}\]
+	Obviously, this implies the announced continuity with
+	\[ \norm{w}_{U^s} \leq \norm{u}_{T^{s+1}}\,.\]
+	The properties of $\omega \partial_x \omega$ on $T^s$ are established in a similar way. 
+\end{proof}
+The operator $\partial_x$ isn't continuous from $T^s$ to $T^{s-1}$. However, the following result holds:
+\begin{Cor}
+	\label{corDxT2T0}
+	The operator $\partial_x$ is continuous from $T^{s+2}$ to $T^s$ for all $s > -1/2 $ and from $U^{s+2}$ to $U^s$ for all $s > - 3/2$.
+\end{Cor}
+\begin{proof}
+	For the first case we use $\partial_x$ is continuous from $T^{s+2}$ to $U^{s+1}$ and then the identity is continuous from $U^{s+1}$ to $T^s$. For the second, we use the same arguments in the reverse order. 
 \end{proof}
 \begin{Lem}
 	\label{LemInjectionsContinues}
@@ -270,50 +314,13 @@ One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have 
 	\[\abs{u(x)} \leq \sqrt{\sum_{n= 0}^{+ \infty} \frac{1}{(1+ n^2)^{\frac{1}{2}+ \varepsilon}}} \norm{u}_{T^{\frac{1}{2} + \varepsilon}}.\]
 	For the second statement, we use the inclusion $U^{s} \subset T^{s-1}$ valid for $s > 1/2$, as established in \autoref{inclusionsTsUs}. 
 \end{proof}	
+
+\subsubsection{Characterization of $T^n$ and $U^n$.}
+In this section, we provide a characterization of the spaces $T^s$ and $U^s$ in terms of $L^2$ norms of the derivatives.
 \begin{Lem}
-	We have $L^2_\omega = \frac{1}{\omega}L^2_\frac{1}{\omega}$ and the pointwise multiplication by $\frac{1}{\omega}$ defines an bijective isometry from $L^2_\frac{1}{\omega}$ to $L^2_\omega$ with inverse $\omega$. 
+	There holds $L^2_\omega = \frac{1}{\omega}L^2_\frac{1}{\omega}$ and the pointwise multiplication by $\frac{1}{\omega}$ defines a bijective isometry from $L^2_\frac{1}{\omega}$ to $L^2_\omega$ with inverse $\omega$. 
 	\label{isometrie}
 \end{Lem}
-\begin{Lem}
-	\label{omega2continuUsTs}
-	The multiplication by $\omega^2$ defines a continuous operator from $U^s$ to $T^s$. 
-\end{Lem}
-\begin{proof}
-	This fact is a consequence of the identity $\omega^2 U_n = \frac{T_{n} - T_{n+2}}{2}$. 
-\end{proof}
-Two natural derivation operators arise from our context, that give another link between $T^s$ and $U^s$. 
-\begin{Lem}
-	\label{derivations}
-	For all real $s$, the operator $\partial_x$ can be extended into a continuous map from $T^{s+1}$ to $U^{s}$ defined as 
-	\[ \duality{\partial_x u}{v}_{\omega} \isdef -\duality{u}{\omega \partial_x \omega v}_{\frac{1}{\omega}} \quad \forall v \in U^{\infty}.\] 
-	For all real $s$, the  operator $\omega \partial_x \omega$ can be extended into a continuous operator from $U^{s+1} \to T^{s}$ as
-	\[\duality{\omega \partial_x \omega u}{v}_\frac{1}{\omega} \isdef -\duality{u}{\partial_x v}_\omega.\]
-	
-\end{Lem}
-\begin{proof}
-	The result is related to the two identites
-	\[T_n' = n U_{n-1} \quad \omega \partial_x \omega U_n = -(n+1)T_{n+1}.\]
-	The first one is obtained for example from the trigonometric definition of $T_n$. This combined with $-(\omega \partial_x)^2 T_n = n^2 T_n$ gives the second identity. Now, let $u \in T^{s+1}$ for some $s \in \R$, with 
-	\[ u = \sum_{n = 0}^{+ \infty} \hat{u}_n T_n.\]
-	When $u$ is smooth, the coefficients $\hat{u}_n$ have a fast decay and thus,  $\partial_x u$ is just given by term by term differentiation
-	\[\partial_x u = \sum_{n=0}^{+ \infty} n \hat{u}_n U_{n-1}.\]
-	If we fix $v \in U^{\infty}$, we then have
-	\[\duality{\partial_x u}{v}_\omega = \sum_{n = 0}^{+ \infty} (n+1)\hat{u}_{n+1} \check{v}_n.\]
-	Since $\omega \partial_x \omega v = -\sum_{n=0}^{+ \infty}(n+1) \check{v}_{n} T_{n+1}$, we indeed have 
-	\[\duality{\partial_x u}{v}_\omega = -\duality{u}{\omega \partial_x \omega v}_\frac{1}{\omega}.\]
-	The rhs still has a sense when $u$ is not differentiable, because if $v \in U^{\infty}$, then $v$ is $C^\infty$ and $\omega \partial_x \omega v = (1-x^2)v' - xv$ also lies in $C^{\infty} = U^\infty$. This thus provides a definition, in a weak sense, of the derivative of $u$. We just have to check that the announced continuity. For all $n$, we have $\duality{\partial_x u}{U_n}_\omega = n\hat{u}_{n-1}$
-	The definition of $\partial_x$ is thus correct. The claimed continuity  is an immediate consequence of 
-	\[\omega \partial_x \omega U_n = -(n+1) T_{n+1}.\]
-	The second assertion comes from $T_n' = nU_{n-1}$. 
-\end{proof}
-Contrary to intuition, the operator $\partial_x$ isn't continuous from $T^s$ to $T^{s-1}$. However, the following result holds:
-\begin{Cor}
-	\label{corDxT2T0}
-	The operator $\partial_x$ is continuous from $T^{s+2}$ to $T^s$ for all $s > -1/2 $ and from $U^{s+2}$ to $U^s$ for all $s > - 3/2$.
-\end{Cor}
-\begin{proof}
-	For the first case we use $\partial_x$ is continuous from $T^{s+2}$ to $U^{s+1}$ and then the identity is continuous from $U^{s+1}$ to $T^s$. For the second, we use the same arguments in the reverse order. 
-\end{proof}
 \begin{Lem}
 	\label{omegadxetdxomga}
 	The operator $\omega \partial_x$ defined on $T^{\infty}$ as 
@@ -324,32 +331,32 @@ Contrary to intuition, the operator $\partial_x$ isn't continuous from $T^s$ to 
 	For the first part, we use the fact that $\partial_x$ is continuous from $T^1$ to $U^0$, and, by \autoref{isometrie}, $\omega$ is continuous from $U^0$ to $T^0$. 
 	For the second part, we use the fact that $\omega \partial_x \omega$ is continuous from $U^1$ to $T^0$, and from the same lemma, the multiplication by $\frac{1}{\omega}$ is continuous from $T^0$ to $U^0$. 
 \end{proof}
-We can now provide a characterization of the spaces $T^s$ and $U^s$ in terms of $L^2$ norms of the derivatives. For a function $u$ defined on $[a,b]$, we denote by $\tilde{u}$ the function defined on $[\theta_a,\theta_b] \isdef [\arccos(a),\arccos(b)]$ as
-\[ \tilde{u}(\theta) = u(\cos(\theta))\]
-and by $Vu$ the function defined as 
-\[Vu(\theta) \isdef \sin(\theta) \tilde{u}(\theta).\]
+We can now state the main result of this paragraph. For a function $u$ defined on $[-1,1]$, we denote by $Cu$ the function defined on $[0,\pi]$ by
+\[ Cu(\theta) = u(\cos(\theta))\]
+and by $Su$ the function defined as 
+\[Su(\theta) \isdef \sin(\theta) Cu(\theta).\]
 \begin{Lem}
-	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u}$ satisfying $\tilde{u}\in H^n(-\pi,\pi)$. In this case, 
-	\[ \norm{u}_{T_n}\sim \norm{\tilde{u}}_{H^n}, \abs{u}_{T^n} \sim \abs{\tilde{u}}_{H^n}.\]
-	Similarly, $u$ belongs to  $\in U^n$ if and only if $ u = \frac{1}{\sqrt{1 - x^2}} Vu  \circ  \arccos$  for some odd function $Vu$ in  $H^n(-\pi,\pi)$. In this case, 
-	\[\norm{u}_{U_n} \sim \abs{Vu}_{H^n}.\]	
+	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u} \in H^n(-\pi,\pi)$. In this case, $Cu = \tilde{u}$ and
+	\[ \norm{u}_{T_n}\sim \norm{Cu}_{H^n} \mbox{ and } \abs{u}_{T^n} \sim \abs{Cu}_{H^n}.\]
+	Similarly, $u$ belongs to  the space $U^n$ if and only if $u = \frac{1}{\sqrt{1 - x^2}} \tilde{u}  \circ  \arccos$  for some odd function $\tilde{u}$ in  $H^n(-\pi,\pi)$. In this case, $Su = \tilde{u}$ and
+	\[\norm{u}_{U_n} \sim \abs{Su}_{H^n}.\]	
 	Moreover, if $ u \in T^n$, then $(\omega \partial_x)^n u$ is in $L^2_\frac{1}{\omega}$ and 
 	\[ \abs{u}_{T^n}^2 \sim \int_{-1}^{1} \frac{((\omega \partial_x)^n u)^2}{\omega}.\]
-	\noindent If $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
+	\noindent Similarly, if $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
 	\[ \norm{u}_{U_n} = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
 	\label{thmChar}
 \end{Lem}
 \begin{proof}
 	The first two equivalences stem from the fact that 
-	\[\hat{u}_n = \frac{1}{\pi}\int_{-\pi}^{\pi} \tilde{u}(\theta) \cos(n \theta), \quad  \check{u}_n = \frac{1}{\pi} \int_{-\pi}^{\pi} Vu(\theta) \sin((n+1)\theta)d\theta,\]
+	\[\hat{u}_n = \frac{1}{\pi}\int_{-\pi}^{\pi} Cu(\theta) \cos(n \theta), \quad  \check{u}_n = \frac{1}{\pi} \int_{-\pi}^{\pi} Su(\theta) \sin((n+1)\theta)d\theta,\]
 	which can be verified by using the change of variables $x = \cos\theta$ in the definitions of $\hat{u}_n$ and $\check{u}_n$. 
 	Now, let us show that if $ u \in T^n$, then $(\omega \partial_x)^n$ is in $L^2_\frac{1}{\omega}$. The operator $(\omega \partial_x)^2$ is continuous from $T^s$ to $T^{s-2}$ for all real $s$ which implies the result if $n$ is even. If $n$ is odd, say $n = 2k + 1$, we write $(\omega \partial_x)((\omega \partial_x)^{2})^k$, and conclude using \autoref{omegadxetdxomga}.
 	The same kind of proof also shows that if $u \in U^n$, $(\partial_x \omega )^nu \in L^2_\omega$.
-	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by part and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
+	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by parts and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
 \end{proof}
-\subsection{Classes of operators on $T^s$}
+\subsection{Some classes of operators on $T^s$}
 \label{subsec:classesOfOp}
-We now proceed to define a class of operators on $T^s$ that is stable under composition and enjoys some properties similar to pseudo-differential operators. However, we shall not look for asymptotic expansions of symbols, to keep matters as simple as possible. The class we define may thus be quite far from a proper definition of pseudo-differential operators. The main result we need is \autoref{CommutPDO}. To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
+We now proceed to define a class of operators on $T^s$ that is stable under composition and enjoys some properties similar to pseudo-differential operators. However, we shall not look for asymptotic expansions of symbols, a result we don't need for our application. Results analog to asymptotic expansion and symbolic calculus may actually not be available for the rudimentary class we introduce here. For this reason, we refrain from using the term "pseudo-differential operators". The main motivation for this definition is \autoref{CommutPDO}. To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
 
 \begin{Def}
 	Let $p\in \R$. If  $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$ in the scale $T^s$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. 
@@ -359,7 +366,7 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 
 \begin{Def}
 	\label{DefEquivModTp}
-	Let $A$ and $B$ to operators of order $s$ in the scale $T^s$. When the operator 
+	Let $A$ and $B$ two operators of order $s$ in the scale $T^s$. When the operator 
 	$A - B$ is of order $p \in (0,+\infty]$, we shall write 
 	\[A = B + T_p.\]
 	When the scale is $U^s$ instead of $T^s$, we write 
@@ -367,18 +374,21 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 \end{Def}
 
 \begin{Def}
-	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if there exists a function $a : \N^2 \to \R$ satisfying: 
+	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if there exists a function $a : \N \times \Z \to \R$ satisfying: 
 	\begin{itemize} 
 		\item[(i)]$	\forall k \in \Z, \quad A T_k = \displaystyle\sum_{i = -\infty}^{+\infty} a(k,i)T_{k-i}$
-		\item[(ii)]$	\forall \alpha \in \N, \forall  i,k  \in \Z, \quad  \abs{\Delta_k^\alpha a(k,i)} \leq C_{\alpha,i} (1 + k^2)^{p - \alpha}$
+		\item[(ii)]$	\forall \alpha \in \N, \forall  i,k  \in \Z, \quad  \abs{\Delta_k^\alpha a(k,i)} \leq C_{\alpha,i} (1 + k)^{p - \alpha}$
 		\item[(iii)] There exists $N \in \N$ such that
 		\[\abs{i} \geq N \implies \forall k \in \Z, \quad a(k,i) = 0.\]  
 	\end{itemize}
+	where $\Delta_k$ is the discrete derivation operator in the first variable, defined by
+	\[\Delta_k a(k,i) = a(k+1,i) - a(k,i),\]
+	and $\Delta^\alpha_k$ is the $\alpha$-th iterate of $\Delta_k$.
 	The function $a$ is called the symbol of $A$ and is denoted by $\sigma_A$. 
 \end{Def}
-\begin{Rem}
-	The condition (i) does not define uniquely the symbol of $A$, since $T_{-n} = T_n$. We will not tackle the question whether conditions (ii) and (iii) ensure uniqueness. The notation $\sigma_A$ thus refers to one possible symbol of $A$. The symbols can be viewed as infinite matrix with a finite band of diagonals. Condition (ii) further requires that the coefficients on each diagonal be smooth functions of $k$. 
-\end{Rem}
+Symbols can be viewed as semi-infinite matrix $(a(k,i))_{k \in \N, i \in \Z}$. The condition (ii) controls the decay of the coefficients along the horizontal lines $i = $ constant, while (iii) imposes that the vertical bandwidth is finite.
+
+An awkward feature of this definition, allowed by the convention $T_{-n} = T_n$, is that the null operator admits non-trivial symbols, and thus, the symbol of an operator $A$ is not defined uniquely. The notation $\sigma_A$ only refers to one possible symbol of $A$. It seems difficult to find a natural definition both ensuring uniqueness of the symbol and expressing the same conditions as above. 
 \begin{Lem}
 	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
 \end{Lem}
@@ -397,34 +407,41 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 \end{proof}
 \begin{Lem}
 	\label{LemCompo}
-	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ and $BA$ are in $S^{p + q}$, 
+	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ is in $S^{p + q}$, 
 \end{Lem}
 \begin{proof}
-	The composition of two operators $A T_k = \sum_{i = -\infty}^{+ \infty} a(k,i) T_{k-i}$ and $B T_k = \sum_{i = - \infty}^{+ \infty} b(k,i) T_{k-i}$ gives rise to an operator $C = \sum_{i = - \infty}^{+ \infty} c(k,i) T_{k-i}$ for which a symbol is given by 
+	A symbol of $AB$ is given by
 	\[c(k,i) = \sum_{j = - \infty}^{+ \infty} a(k - j, i - j) b(k,j).\]
-	This formula is obtained writing the expression of $AB T_n$ using their symbol and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
-	The number of non-zero terms in this decomposition is obviously finite, so we must simply check the requirement (ii). It is enough to show that for any $j \in \Z$, the function $c_{i,j}(k) \isdef a(k-j,i-j) b(k,j)$ satisfies
-	\[\forall \alpha \in \N, \forall i,k, \in \Z, \abs{\Delta_k^\alpha c_{i,j}} \leq C_{i,j,k} (1 + k^2)^{p + q - \alpha}.\]
-	To prove this, one can check by induction that for any two functions $c,d : \N \to \R$, $\Delta^\alpha (c d)(k)$ is a linear combination of terms of the form $\Delta^\beta c(k_1) \Delta^{\alpha-\beta} d(k_2)$, where $k_1$ and $k_2$ lie in the interval $[k,k-\alpha]$. The conclusion follows after applying asumption (ii) for $A$ and $B$ and applying Peetre's inequality to the terms $(1 + (k_1)^2)^{p + \beta} (1 + (k_2)^2)^{q + \alpha - \beta}$. 
-	and apply asumption (ii) for $A$ and $B$. 
+	This formula is obtained writing the expression of $AB T_n$ using a symbol of $A$ and $B$ and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
+	Let $N_a$ such that $\abs{i} \geq N_a \implies a(k,i) = 0$. Let $N_b$ defined in a similar way. Then, it is easy to check that $\abs{i} \geq N_a + N_b \implies c(k,i) = 0$. It remains to check the requirement (ii). Since the sum defining $c$ only has a finite number of non-zero terms, we just have to show that for any $j \in \Z$, the function $c_{j}(k,i) \isdef a(k-j,i-j) b(k,j)$ satisfies
+	\[\forall \alpha \in \N, \forall i,k, \in \Z, \abs{\Delta_k^\alpha c_{j}(k,i)} \leq C_{i,j,\alpha} (1 + k^2)^{p + q - \alpha}.\]
+	The announced result then follows by linearity. 
+	To prove this, one can check by induction that for any $\alpha \in \N$, $\Delta^\alpha c_j(k,i)$ is of the form 
+	\[\Delta^\alpha_k c_j(k,i) = \sum_{l = 1}^L \lambda_l \Delta_k^{\beta_l}a(k_{l,1},i-j) \Delta_k^{\alpha - \beta_l} b(k_{l,2},j)\]
+	for some coefficients $\lambda_l$, where $L$ is a finite number, and where, for all $l$, $\beta_l \leq \alpha$ while $k_{l,1}$ and $k_{l,2}$ respectively lie in the interval $[k-j,k-j + \beta_l]$ and $[k,k+\alpha - \beta_l]$. Let us fix $l \in [1,L]$. We have
+	\[\abs{\Delta_k^{\beta_l} a(k_{l,1},i-j)} \leq C_{i,j,\alpha,l}(1 + k_1)^{p - \beta_l}\]
+	and by Peetre's inequality
+	\[(1+k_1)^{p - \beta} \leq C(1+k)^{p - \beta}(1 + \alpha + \abs{j})^{\abs{p - \beta}}.\]
+	The same arguments applied to $b$ finally lead to 
+	\[\abs{\Delta_k^{\beta} a(k_1,i-j)\Delta_k^{\alpha - \beta} b(k_2,j)} \leq C_{i,j,\alpha,l} (1+k)^{p + q}\]
+	which implies our claim. 
 \end{proof}
-\begin{Lem}
-	If $A \in S^{p}$ and $B \in S^q$, the $AB - BA$ is in $S^{p + q -1}$. 
+\begin{The}
+	If $A \in S^{p}$ and $B \in S^q$, then $AB - BA$ is in $S^{p + q -1}$. 
 	\label{CommutPDO}
-\end{Lem}
+\end{The}
 \begin{proof}
-	A symbol of $AB - BA$ is given by
-	\[\sigma_{AB - BA}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
+	A symbol of $C= AB - BA$ is given by
+	\[\sigma_{C}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
 	In the second sum, we change the index to $j' = i -j$, yielding 
 	\begin{eqnarray*}
-		\sigma_{AB - BA}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
+		\sigma_{C}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
 		&=& \sum_{j = -\infty}^{+\infty} \left[a(k-j,i-j) - a(k,i-j)\right]b(k,j) \\
 		&& - \sum_{j = - \infty}^{+\infty} a(k,i-j) \left[b(k - i + j') -b(k,j)\right].\\
 	\end{eqnarray*}
- 	We show that asumption (ii) holds for one of the terms $\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j)$ when $j$ is positive. The other cases are treated analogously. We can write 
+ 	We show that asumption (ii) holds for one of the terms of the first sum when $j$ is positive. The other cases are treated analogously. We can write 
 \begin{eqnarray*}
-	a(k-j,i-j) - a(k,i-j) &=& \sum_{l = 0}^{j-1} a(k-j + l,i-j) - a(k-j + l +  1,i-j)\\
-	&=& - \sum_{l = 0}^{j-1} \Delta a(k-j + l+1,i-j).
+	\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j) = - \sum_{l = 0}^{j-1} \Delta_k a(k-j + l+1,i-j)b(k,j).
 \end{eqnarray*}
 The result then follows from the same considerations as in the proof of the previous result. 
 \end{proof}
@@ -439,7 +456,7 @@ The next two lemmas enlarge the class of operators for which we can assess the o
 \begin{Lem}
 	\label{lem:multByPsiOrdre0}
 	If $\psi$ is a $C^{\infty}$ function on $[-1,1]$, then the operator
-	\[ u(t) \mapsto \psi(t) u(t)\]
+	\[ u(x) \mapsto \psi(x) u(x)\]
 	is of order $0$, and for any $s \in \R$, 
 	\[ \norm{\psi u}_{T^s} \leq C2^{\abs{s}/2}\norm{u}_{T^s} \norm{\psi}_{T^{\abs{s}+1}}.\]
 	where $C$ is independent of $\psi$ and $s$. 
@@ -454,7 +471,7 @@ The next two lemmas enlarge the class of operators for which we can assess the o
 	\end{cases}\]
 	We apply the same idea to $\psi$, and using $T_m T_n = T_{m+n} + T_{m-n}$, 
 	\[\psi u = \sum_{m,n} u'_n \psi'_m (T_{m+n} + T_{m-n}) = \sum_{m} \left(\sum_{n}u'_n(\psi'_{n + m} + \psi'_{n - m})\right) T_m\]
-	that is, by parity
+	that is,
 	\[\psi u = 2\sum_{m,n} u'_m \psi'_{m-n} T_{n}\]
 	Using Peetre's inequality, we have 
 	\[(1 + n^2)^{s/2}\abs{(\psi u)_n} \leq 2^{\abs{s}/2+1}\sum_{m}(1 + m^2)^{s/2} \abs{u'_m}  (1 + |n-m|^2)^{\abs{s/2}} \abs{\psi'_{n-m}} \]
@@ -557,7 +574,7 @@ We deduce the following well-known fact:
 	\[\lambda = \dfrac{\alpha}{\sqrt{1-x^2}}\]
 	with $\alpha \in C^{\infty}([-1,1])$.  
 	\begin{proof}
-		Let $\alpha = \sqrt{1 - x^2}\lambda$ where $\lambda$ is the solution of $S\lambda = g$ with $g \in C^{\infty}([-1,1])$. 
+		Let $\alpha = \sqrt{1 - x^2}\lambda$ where $\lambda$ is the solution of $S\lambda = g$ where $g$ is assumed to lie in $C^{\infty}([-1,1])$. 
 		\autoref{LemTinfCinf} implies that $g \in T^{\infty}$, and by equation \eqref{expansionLambda}, 
 		\[ \hat{\alpha}_n = \frac{\hat{g}_n}{s_n},\]
 		so $\alpha$ also  belongs to $T^{\infty} = C^{\infty}([-1,1])$. 
@@ -1012,7 +1029,8 @@ In this section, we show some numerical results to illustrate the efficiency of 
 	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N \approx 3700$, $L = 800 \lambda$.}
 	\label{FigureNitHelmDirichlet}
 \end{figure}
-\paragraph{Flat segment, Neumann boundary condition.} We run the same numerical comparisons, this time with the precondioning operator $\left(-(\partial_x \omega)^2 - k^2 \omega^2\right)^{-1/2}$. 
+\paragraph{Flat segment, Neumann boundary condition.} We run the same numerical comparisons, this time with the precondioning operator 
+\[\left(-(\partial_x \omega)^2 - k^2 \omega^2\right)^{-1/2}\,.\] 
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
@@ -1271,13 +1289,15 @@ We shall prove the following:
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C \norm{u}_{U^{1/2}}.\]
 	We are now going to show the estimate
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C h^{3/2} \norm{u}_{U^{2}}.\]
-	By the analog of Céa's lemma \autoref{CeaNeumann}, one has $\norm{(I-\Pi_h)u}_{U^{1/2}} \leq \norm{(I - I_h) u}_{U^{1/2}}$. By interpolation, this norm satisfies
+	By the analog of Céa's lemma \autoref{CeaNeumann}, one has 
+	\[\norm{(I-\Pi_h)u}_{U^{1/2}} \leq \norm{(I - I_h) u}_{U^{1/2}}\,.\] 
+	By interpolation, this norm satisfies
 	\[\norm{(I - I_h)u}_{U^{1/2}} \leq C \sqrt{\norm{(I - I_h)u}_{U^{0}}}\sqrt{\norm{(I - I_h)u}_{U^{1}}},\]
 	which yields, applying \autoref{U0U2,U1U2},
 	\[\norm{(I - I_h)u}_{U^{1/2}} \leq C h^{3/2} \norm{u}_{U^2}.\]
 	By interpolation, for all $s \in [1/2,2]$, we get
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C h^{s - 1/2} \norm{u}_{U^s}.\]
-	In view of \autoref{lemU12H12}, we have $\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \sim \norm{(I - \Pi_h)\beta}_{U^{1/2}}$. Moreover, since $N_\omega$ is a continuous bijection from $U^{s+1}$ to $U^s$ for all $s$, there holds
+	In view of \autoref{lemU12H12}, we have $\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \sim \norm{(I - \Pi_h)\beta}_{U^{1/2}}$. In addition, since $N_\omega$ is a continuous bijection from $U^{s+1}$ to $U^s$ for all $s$, there holds
 	\[\norm{\beta}_{U^s} = \norm{N_\omega^{-1} u_N}_{U^s} = \norm{u_N}_{U^{s-1}}.\]
 	Consequently, 
 	\[\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \leq  C\norm{(I - \Pi_h)\beta}_{U^{1/2}} \leq C h^{s - 1/2} \norm{\beta}_{U^s} \leq C h^{s - 1/2} \norm{u_N}_{U^{s-1}}.\]
@@ -1324,6 +1344,15 @@ Possible analyse pseudo-diff ? En reparler ? Lien avec Antoine et Darbas.
 \appendix
 \section{Commutation of $N_\omega$ and $(\partial_x \omega)^2 + k^2\omega^2$}
 \label{ann:commut}
+We start with two lemmas. First an elementary result:
+\begin{Lem}
+	\label{omega2continuUsTs}
+	The multiplication by $\omega^2$ defines a continuous operator from $U^s$ to $T^s$. 
+\end{Lem}
+\begin{proof}
+	This fact is a consequence of the identity $\omega^2 U_n = \frac{T_{n} - T_{n+2}}{2}$. 
+\end{proof}
+Second, we establish the following identity:
 \begin{Lem}
 	\label{dxSomega2=Somegadxomega}
 	For any $\phi$, there holds 
@@ -1331,7 +1360,7 @@ Possible analyse pseudo-diff ? En reparler ? Lien avec Antoine et Darbas.
 \end{Lem}
 \begin{proof}
 	In our context, the largest space encountered is $U^{- \infty}$ (As a consequence of \autoref{LemInjectionsContinues}) so we shall show that this identity holds in that space.
-	For any $s$, by \autoref{omega2continuUsTs}, $\omega^2$ is a continuous operator from $U^s$ to $T^s$, $S_\omega$ is continuous from $T^s$ to $T^{s+1}$ and $\partial_x$ is continuous from $T^{s+1}$ to $U^s$ by \autoref{derivations}. Therefore, the left operator is continuous from $U^s$ to $U^s$. Similarly, the right operator is continuous from $U^{s}$ to $U^s$ for all $s$. If we fix $\phi \in U^{s}$ for some $s$, \autoref{densite} ensures that there exists a sequence $\phi_N$ in $U^{\infty}$ converging to $\phi$ in $U^{s}$. It is thus sufficient to check the identity for $\phi = U_n$. For $n \geq 1$, 
+	For any $s$, $\omega^2$ is a continuous operator from $U^s$ to $T^s$, $S_\omega$ is continuous from $T^s$ to $T^{s+1}$ and $\partial_x$ is continuous from $T^{s+1}$ to $U^s$ by \autoref{derivations}. Therefore, the left operator is continuous from $U^s$ to $U^s$. Similarly, the right operator is continuous from $U^{s}$ to $U^s$ for all $s$. If we fix $\phi \in U^{s}$ for some $s$, \autoref{densite} ensures that there exists a sequence $\phi_N$ in $U^{\infty}$ converging to $\phi$ in $U^{s}$. It is thus sufficient to check the identity for $\phi = U_n$. For $n \geq 1$, 
 	\begin{eqnarray}
 		\partial_x S_\omega \omega^2 U_n &=& \partial_x S_\omega \left(\frac{T_{n} - T_{n+2}}{2}\right)\\
 		&=& \partial_x\left(\frac{T_{n}}{4n} - \frac{T_{n+2}}{4(n+2)} \right)\\
@@ -1408,7 +1437,7 @@ Adding these two inequalities and using \autoref{LemSwDeltaO3}, we get
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} =\partial_x ( S_\omega \omega^2 S_\omega ) \omega \partial_x \omega + U_2.\]
 Here again, we use the formula $\partial_x S_\omega \omega^2 = S_\omega \omega \partial_x \omega$, which yields
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} = S_\omega \omega \partial_x \omega \partial_x S_\omega \omega^2 = \left(-\frac{I_d}{4} + T_\infty\right)\omega^2 .\]
-Since $\omega^2$ is continuous from $U^s$ to $T^s$, and using the injections $T^s\subset U^s$, any operator of the form $R \omega^2$ is smoothing in the scale $U^s$ as soon as $R$ is smoothing in the scale $T^s$. Therefore, 
+Since $\omega^2$ is continuous from $U^s$ to $T^s$ by \autoref{omega2continuUsTs} and using the injections $T^s\subset U^s$, any operator of the form $R \omega^2$ is smoothing in the scale $U^s$ as soon as $R$ is smoothing in the scale $T^s$. Therefore, 
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} = -\frac{\omega^2}{4} + U_\infty.\]
 Moreover, we have
 \begin{eqnarray*}
@@ -1432,11 +1461,11 @@ Thus,
 \begin{eqnarray*}
 	S_\omega \omega^2 N_\omega + N_\omega S_\omega \omega^2 &=& \frac{\omega^2}{2} + \left(\partial_x S_\omega xS_\omega \omega^2  - S_\omega x \partial_x  S_\omega \omega^2 \right)+ U_\infty.
 \end{eqnarray*}
-We are done if we prove that the operator in parenthesis is of order $2$ in the scale $U^s$. For this, we may compute the action of each one of them on $U_n$. Using the various identities at our disposal, we obtain on the on hand for $n\geq 2$ 
+We are done if we prove that the operator in parenthesis is of order $2$ in the scale $U^s$. For this, we may compute the action of each one of them on $U_n$. Using the various identities at our disposal, we obtain on the one hand for $n\geq 2$ 
 \[\partial_x S_\omega x S_\omega \omega^2 U_n = -\frac{T_{n+2}}{8(n+2)} -\frac{T_n}{8(n+2)} +  \frac{U_{n} + U_{n-2}}{8n(n+2)}. \]
-and on the other hand
+and on the other hand for $n>0$ 
 \[S_\omega x \partial_x S_\omega \omega^2 U_n = -\frac{T_{n+2}}{8(n+2)} - \frac{T_n}{8n}.\]
-After substracting, this gives the rather surprising identity identity
+After substracting, this gives the rather surprising identity identity for $n \geq 2$
 \[\left(\partial_x S_\omega xS_\omega \omega^2  - S_\omega x \partial_x  S_\omega \omega^2 \right)U_n = \frac{U_n}{4n(n+2)}\]
 which of course proves our claim.
 
