@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: source.aux
+The style file: plain.bst
+Database file #1: ../../Biblio/biblio.bib
+Warning--I didn't find a database entry for ""
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 25 entries,
+            2118 wiz_defined-function locations,
+            662 strings with 8553 characters,
+and the built_in function-call counts, 8111 in all, are:
+= -- 820
+> -- 356
+< -- 2
++ -- 144
+- -- 114
+* -- 580
+:= -- 1361
+add.period$ -- 75
+call.type$ -- 25
+change.case$ -- 127
+chr.to.int$ -- 0
+cite$ -- 26
+duplicate$ -- 289
+empty$ -- 636
+format.name$ -- 114
+if$ -- 1664
+int.to.chr$ -- 0
+int.to.str$ -- 25
+missing$ -- 27
+newline$ -- 128
+num.names$ -- 50
+pop$ -- 113
+preamble$ -- 1
+purify$ -- 105
+quote$ -- 0
+skip$ -- 215
+stack$ -- 0
+substring$ -- 591
+swap$ -- 42
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 94
+warning$ -- 1
+while$ -- 88
+width$ -- 27
+write$ -- 269
+(There were 2 error messages)
