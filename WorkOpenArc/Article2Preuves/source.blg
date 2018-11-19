@@ -1,53 +1,59 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: source.aux
 The style file: plain.bst
 Database file #1: ../../Biblio/biblio.bib
+Repeated entry---line 1210 of file ../../Biblio/biblio.bib
+ : @article{borm2003introduction
+ :                              ,
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for ""
 Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
 while executing---line 1049 of file plain.bst
+Warning--empty year in averseng2018fast
+Warning--empty year in alouges2018new
 Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
 while executing---line 1090 of file plain.bst
 Warning--empty journal in urzua2014optimal
-You've used 25 entries,
+You've used 35 entries,
             2118 wiz_defined-function locations,
-            662 strings with 8553 characters,
-and the built_in function-call counts, 8111 in all, are:
-= -- 820
-> -- 356
-< -- 2
-+ -- 144
-- -- 114
-* -- 580
-:= -- 1361
-add.period$ -- 75
-call.type$ -- 25
-change.case$ -- 127
+            719 strings with 10203 characters,
+and the built_in function-call counts, 11185 in all, are:
+= -- 1134
+> -- 472
+< -- 3
++ -- 192
+- -- 150
+* -- 800
+:= -- 1873
+add.period$ -- 105
+call.type$ -- 35
+change.case$ -- 175
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 289
-empty$ -- 636
-format.name$ -- 114
-if$ -- 1664
+cite$ -- 38
+duplicate$ -- 405
+empty$ -- 890
+format.name$ -- 150
+if$ -- 2294
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 27
-newline$ -- 128
-num.names$ -- 50
-pop$ -- 113
+int.to.str$ -- 35
+missing$ -- 37
+newline$ -- 178
+num.names$ -- 70
+pop$ -- 154
 preamble$ -- 1
-purify$ -- 105
+purify$ -- 143
 quote$ -- 0
-skip$ -- 215
+skip$ -- 294
 stack$ -- 0
-substring$ -- 591
-swap$ -- 42
-text.length$ -- 2
+substring$ -- 822
+swap$ -- 58
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 94
-warning$ -- 1
-while$ -- 88
-width$ -- 27
-write$ -- 269
-(There were 2 error messages)
+type$ -- 134
+warning$ -- 3
+while$ -- 125
+width$ -- 37
+write$ -- 375
+(There were 3 error messages)
