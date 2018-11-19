@@ -7,124 +7,42 @@
 \maketitle
 
 \begin{abstract}
-	This work is devoted to the theoretical and numerical analysis of some new preconditioners for the Helmholtz integral equation on open curves. 
+	We introduce new analytical tools to study the first-kind integral equations on open curves. Those tools are applied to analyze two new preconditioners and study the convergence orders of a Galerkin method on weighted $L^2$ spaces.  
 \end{abstract}
 
 \section*{Introduction}
- In \cite{} \toDo{Papier à venir}, two new preconditioners were introduced for the Helmholtz integral equation outside an open curve in the plane, either with Dirichlet or Neumann boundary conditions. Those preconditioners generalize the preconditioners introduced in \cite{antoine2007generalized} in the case of smooth closed curves. In the case of an open arc, solutions of the standard integral equations have edge singularities, and one is led to introduce weighted integral operators. There is a natural analytical and numerical framework that emeges with this choice of operator, for which he literature lacks general results. 
- 
- In this work, we introduce two new analytical tools that allow to fully study the problem. On the first hand, we define in \autoref{sec:analyticalSetting} two family of interpolation scales $T^s$ and $U^s$ together with a class of operators enjoying some properties resembling pseudo-differential operators. This allows us to prove the main theorems of \cite{}. This is the object of section \autoref{sec:proof}. On the other hand, we analyze a simple Galerkin setting with piecewise polynomials based on a weighted $L^2$ space, and prove optimal rates of convergence. This analysis is presented in \autoref{sec:numerical}.
- 
- We start by introducing the problem and the notations in the first section. 
 
-\section{The scattering problem outside an open curve}
+For the resolution of the Helmholtz scattering problem, one of the most popular strategy is to use of integral equations, as it reduces drastically the size of the problem. The unknowns of the equation are functions on the boundary of the scatterer instead of the whole space outside this scatterer.  With this method, one is eventually led to solve large and dense linear systems. Since direct method are often too expensive in time and memory in this case, iterative methods like GMRES \cite{saad1986gmres} are generally used. With this method, the number of operations is $N = N_{\textup{iter}} N_{\textup{mat}}$, where $N_\textup{iter}$ is the number of iterations and $N_{\textup{mat}}$ is the complexity of a matrix-vector products. Several compression and acceleration, methods have emerged, such as FMM (see \cite{rokhlin1993diagonal,coifman1993fast} and references therein), the Hierarchical Matrix \cite{borm2003introduction}, or more recently, the Sparse Cardinal Sine Decomposition \cite{alouges2015sparse} and the Efficient Bessel Decomposition \cite{averseng2018fast}, adressing the problem of reducing the matrix-vector product complexity.
 
-Let $\Gamma$ be a smooth non-intersecting open curve in $\R^2$, and let $k \geq 0$ the wave number. We seek a solution to the problem
-\begin{equation}
-	-\Delta u - k^2 u = 0,  \text{ in } \R^2 \setminus \Gamma
-	\label{Helmholtz}
-\end{equation}
-when one considers furthermore
-\begin{itemize}
-	\item Dirichlet or Neumann boundary conditions, namely
-	\begin{equation}
-	u = u_D, \text{ on } \Gamma
-	\label{Dirichlet}
-	\end{equation}
-	or
-	\begin{equation}
-	\dfrac{\partial u}{\partial n} = u_N  \text{ on } \Gamma 
-	\label{Neumann}
-	\end{equation}
-	respectively.
-	\item Suitable decay at infinity, given by the Sommerfeld condition
-	\begin{equation}
-	\dfrac{\partial u}{\partial r} - iku = o\left(\frac{1}{\sqrt{r}}\right)
-	\label{Sommerfeld}
-	\end{equation}
-	with $r=|x|$ for $x\in \mathbb{R}^2$.
-\end{itemize}
-In the preceding equation $n$ stands for a smooth unit normal vector to $\Gamma$.
+To reduce the number of iterations, the main approach is preconditioning, which basically consists in finding an approximate inverse of the matrix of the linear system. Algebraical preconditioners exist, such as SPAI \cite{grote1997parallel}, but in many cases, they may be unsufficient to capture the physics underlying the linear system problem. An alternative approach, referred as analytical preconditioning, is to build a preconditioner at the continuous level. Say we solve an equation of the form
+\[ \mathcal{K}u = v\]
+where $\mathcal{K}$ is an operator on a Hilbert space, then an analytical preconditioner $\mathcal{L}$ is an operator such that $\mathcal{L}\mathcal{K}$ is a compact perturbation of the identity. In this case, a numerical approximation of $u$ can be obtained through the resolution of a linear system involving discrete approximations of $\mathcal{K}$ and $\mathcal{L}$, with a condition number independent of the mesh size \cite{steinbach1995efficient}.
 
-Existence and uniqueness of solutions to the previous problems are guaranteed by the following theorem.
-\begin{The}
-	(see e.g. \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}) Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) and (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) both possess a unique solution $u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen $\Gamma$ $\lambda$ is unbounded:
-	\[\lambda(x) = O\left(\frac{1}{\sqrt{d(x,\partial \Gamma)}}\right).\]
-	Near an edge of the arc, $\mu$ is locally given by
-	\[\mu(x) = C\sqrt{d(x,\partial \Gamma)} + \psi\]
-	where $\psi \in \tilde{H}^{3/2}(\Gamma)$.
-\end{The}
+Many approaches exist to produce an analytical preconditioner, among which the Calderon preconditioners \cite{Nedelec,etc}. In the case of smooth closed curves, pseudo-differential theory provides a systematic way to design such analytical preconditioners \cite{antoine2007generalized,levadoux2005proposition} \toDo{références de François}. Roughly speaking, one computes the principal symbol $k(\xi)$ of the operator $\mathcal{K}$ and chooses an operator $\mathcal{L}$ with principal symbol $\frac{1}{k(\xi)}$. For the single-layer potential on a smooth closed curve, for example, this leads to a preconditioner of the form
+\begin{equation}
+\mathcal{L} = \sqrt{-\partial_\tau^2 - k^2}
+\label{PrecondSqrtSmooth}
+\end{equation}
+where $\partial_\tau$ is the tangential derivative on the curve.
+This method only works for smooth scatterers though, since pseudo-differential calculus is only well-defined on smooth manifolds. Nevertheless, in \cite{alouges2018new}, efficient preconditioners in a very similar form as in \eqref{PrecondSqrtSmooth} have been introduced for weighted versions of the single layer potential and the hypersingular operator. For the weighted single layer potential, for example, the preconditioner has the form
+\begin{equation}
+\mathcal{L_\omega} = \sqrt{-(\omega \partial_\tau)^2 - k^2 \omega^2}
+\label{PrecondSqrtOpen}
+\end{equation}
+where $\omega$ is a simple weight function defined on the curve. For $\omega \equiv 1$, this reduces to the previous preconditioner. This proximity suggests that pseudo-differential tools could be extended to arbitrary curves with a weight accounting for the singularities. The present work is an effort in this direction. We define two scales of spaces, $T^s$ and $U^s$, with some interlacing properties, that replace the scale of Sobolev spaces $H^s$ for smooth curves. In the scale $T^s$, we define a class of operators $S^p$ enjoying some of the properties of pseudo-differential operators on smooth manifolds. Those tools are then applied to prove the theorems announced in \cite{alouges2018new}.
 
-For the definition of Sobolev spaces on smooth open curves, we follow
-\cite{mclean2000strongly} by considering any smooth closed curve $\tilde{\Gamma}$ containing $\Gamma$, and defining 
-\[H^s(\Gamma) = \enstq{U_{|\Gamma}}{ U \in H^s(\tilde{\Gamma}) }.\]
+The paper is organized as follows. We start by introducing the new analytical tools in \autoref{sec:analyticalSetting}. We define the families of spaces $T^s$ and $U^s$ and establish some properties of these spaces. We then introduce the class $S^p$ of operators on $T^s$. In \autoref{sec:proofPrecond}, we apply these tools to study the new preconditioners for the Helmholtz scattering problem outside an open curve. Finally in \autoref{sec:ordersOfConv}, we describe a Galerkin scheme with piecewise polynomial functions on a weighted $L^2$ to solve the scattering problem. We establish the optimal convergence rates for this setting. 
 
-Obviously, this definition does not depend on the particular choice of the closed curve $\tilde{\Gamma}$ containing $\Gamma$. Moreover,
-\[\tilde{H}^s(\Gamma) = \enstq{u \in H^s(\Gamma)}{\tilde{u} \in H^s(\tilde{\Gamma})}\]
-where $\tilde{u}$ denotes the extension by zero of $u$ on $\tilde{\Gamma}$.
-
-\paragraph{Single-layer potential}  
-We define the single-layer potential by
-\begin{equation}
-	\mathcal{S}_k\lambda(x) = \int_{\Gamma}G_k(x-y)\lambda(y)d\sigma(y)
-	\label{defSk}
-\end{equation}
-	where $G_k$ is the Green's function defined by 
-\begin{equation}
-	\left\{
-	\begin{aligned}
-		G_0(z) &= -\dfrac{1}{2\pi} \ln \abs{z}, && \text{ if } k= 0,\\
-		G_k(z) &= \frac{i}{4}H_0(k|z|), && \text{ if } k > 0,
-	\end{aligned} 
-	\right.
-\end{equation} 
-for $x\in \mathbb{R}^2\setminus \Gamma$. Here $H_0$ is the Hankel function of the first kind. 
-The solution $u$ of the Dirichlet problem can be computed from (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) as
-\begin{equation}
-	u = \mathcal{S}_k \lambda
-\end{equation}
-where $\lambda \in \tilde{H}^{-1/2}(\Gamma)$ is the unique solution to 
-\begin{equation}
-	S_k \lambda = u_D\,.
-	\label{Sklambda}
-\end{equation}
-Here, $S_k \isdef \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$. The operator $S_k$ maps continuously $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$.
-
-\paragraph{Double-layer and hypersingular potentials}
-Similarly, we introduce the double layer potential $\mathcal{D}_k$ by 
-\[\mathcal{D}_k \mu(x) = \int_{\Gamma} n(y) \cdot \nabla G_k(x-y) \mu(y) d\sigma(y).\]
-for any smooth function $\mu$ defined on $\gamma$.
-The normal derivative of $\mathcal{D}_k\mu$ is continuous across $\Gamma$, allowing us to define the hypersingular operator $N_k = \partial_n \mathcal{D}_k$. This operator admits the representation for $x\in \Gamma$
-\begin{equation}
-	N_k \mu = \lim_{\varepsilon \to 0^+} \int_{\Gamma} n(y) \cdot \nabla G(x + \varepsilon n(x) - y) \mu(y) d\sigma(y).
-	\label{defNk}
-\end{equation}
-The kernel of this operator has a non-integrable singularity, but numerical calculations are made possible by the following formula, valid for smooth functions $\mu$ and $\nu$ that vanish at the extremities of $\Gamma$: 
-\begin{equation}
-	\duality{N_k \mu}{\nu} = \int_{\Gamma\times \Gamma} G_k(x-y) \mu'(x) \nu'(y) - k^2 G_k(x,y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\,.
-	\label{NkenfonctiondeSk}
-\end{equation}
-It is also known that $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously, and that the solution $u$ to the Neumann problem (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) can be written as
-\begin{equation}
-	u = \mathcal{D}_k \mu
-\end{equation}
-where $\mu \in \tilde{H}^{1/2}(\Gamma)$ solves
-\begin{equation}
-	N_k \mu = u_N\,.
-	\label{Nkmu}
-\end{equation}  
-	
 	
 \section{Analytical setting}
 \label{sec:analyticalSetting}
 
-We introduce the Chebyshev polynomials of first and second kinds, respectively given by
+In this section, we will use extensively the properties of Chebyshev polynomials of first and second kinds, respectively given by
 \[T_n(x) = \cos(n \arccos(x)),\]
 and 
 \[U_n(x) = \dfrac{\sin((n+1) \arccos(x))}{\sqrt{1 - x^2}}\,\]
-for $x \in [-1,1]$. Let $\omega$ the operator $u(x) \mapsto \omega(x)u(x)$ with $\omega(x) = \sqrt{1 - x^2}$ and let $\partial_x$ the derivation operator. The Chebyshev polynomials satisfy
+for $x \in [-1,1]$ \toDo{Inclure une ref}. Let $\omega$ the operator $u(x) \mapsto \omega(x)u(x)$ with $\omega(x) = \sqrt{1 - x^2}$ and let $\partial_x$ the derivation operator. The Chebyshev polynomials satisfy
 the ordinary differential equations
-
 \begin{eqnarray*}
 	(1-x^2)T_n'' -xT_n' +n^2T_n =0\,\mbox{ and }(1-x^2)U_n'' -3xU_n' +n(n+2)U_n =0
 \end{eqnarray*}
@@ -137,6 +55,9 @@ which can be rewritten under the form
 As we shall see, the preceding equations are crucial in our analysis. 
 
 \subsection{Spaces $T^s$ and $U^s$}
+
+
+\subsubsection{Definitions}
 
 Both $T_n$ and $U_n$ are polynomials of degree $n$, and form orthogonal families respectively of the Hilbert spaces 
 $$L^2_{\frac{1}{\omega}} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}$$
@@ -209,6 +130,9 @@ The preceding analysis can be generalized to define Sobolev-like spaces.
 	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\check{u}_n^2}.\]
 	We extend as before the definition to negative indices by setting $U^{-s}$ to be the dual of $U^s$ for $s\geq 0$, this time with respect to the duality $\duality{\cdot}{\cdot}_\omega$. 
 \end{Def}
+
+\subsubsection{Basic properties}
+
 Obviously, for any real $s$, if $u \in T^s$ the sequence of polynomials 
 \[S_N(x) = \sum_{n=0}^{N} \hat{u}_n T_n(x)\]
 converges to $u$ in $T^s$. The same assertion holds for $u \in U^s$ when $T_n$ is replaced by $U_n$. Therefore
@@ -242,7 +166,7 @@ We deduce the following inclusions:
 		&=& 4\norm{r_n}^2_{l^2}.
 	\end{eqnarray*}	
 \end{proof}
-One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have the following result:
+\noindent One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have the following result:
 \begin{Lem}
 	\[T^{\infty} = C^{\infty}([-1,1])\,.\]
 	\label{LemTinfCinf}
@@ -250,11 +174,50 @@ One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have 
 \begin{proof}
 	If $u \in C^{\infty}([-1,1])$, then we can obtain by induction using integration by parts and \eqref{cheb1}, that for any $k \in \N$
 	\[\hat{u}_n = \frac{(-1)^k}{n^{2k}} \int_{-1}^{1} \dfrac{(\omega\partial_x)^{2k} u(x) T_n(x)}{\omega(x)}dx.\]
-	Noting that $(\omega \partial_x)^2 = (1-x^2)\partial_x^2 - x \partial_ x$, this proves that $C^{\infty}([-1,1]) \subset T^{\infty}$. 
+	Noting that $(\omega \partial_x)^2 = (1-x^2)\partial_x^2 - x \partial_ x$, the function $(\omega \partial_x)^{2k}u$ is $C^{\infty}$, and since $\norm{T_n}_\infty = 1$, the integral is bounded independently of $n$. Thus, the coefficients $\hat{u}_n$ have a fast decay, proving that $C^{\infty}([-1,1]) \subset T^{\infty}$. 
 	
-	To prove the converse inclusion, first notice that, by normal convergence of the series, $T^{\infty} \subset C^0([-1,1]) $. Now, let $u \in T^{\infty}$, it suffices to show that $u' \in T^{\infty}$ and apply an induction argument. Applying term by term differentiation, we obtain
+	To prove the converse inclusion, let $u \in T^{\infty}$. Then, one has 
+	\[ u(x) = \sum_{n=0} \hat{u}_n T_n(x)\]
+	where the series is normally converging. This ensures $T^{\infty} \subset C^0([-1,1])$. Now, let $u \in T^{\infty}$, it suffices to show that $u' \in T^{\infty}$ and apply an induction argument. Applying term by term differentiation, we obtain
 	\[u'(x) = \sum_{n=1}^{+\infty} n u_n U_{n-1}(x).\] 
-	Therefore, $u'$ is in $U^{\infty} = T^{\infty}$. 
+	Therefore, $u'$ is in $U^{\infty} = T^{\infty}$. This proves the result.
+\end{proof}
+\begin{Rem}
+	For $s \leq \frac{1}{2}$, the functions of $U^s$ cannot be identified to functions in $T^{-\infty}$. Indeed, let assume that this is the case. Then, there must exist a map $I$ continuous from $U^{\frac{1}{2}}$ to $T^{-\infty}$ with the property 
+	\[\forall u \in U^{\infty}, \quad Iu = u.\]
+	Now, let us consider for example the function $u$ defined by $\check{u}_n = \frac{1}{n \ln(n)}$. Note that $u$ is in $U^{1/2}$. Let $u_N = \sum_{n = 0}^{N} \check{u_n}U_n$. This is a sequence of elements of $U^{\infty}$ converging to $u$ in $U^{1/2}$. By continuity of $I$, and since $I u_N = u_N$, the sequence $(\duality{u_N}{T_0}_\frac{1}{\omega})_{N\in \N}$ must converge with limit $\duality{Iu}{T_0}$. This is not the case since 
+	\[\duality{u_N}{T_0}_\frac{1}{\omega} = \sum_{n=0}^{N} \check{u}_n\duality{U_n}{T_0}_\frac{1}{\omega} = \sum_{k = 0}^{\lfloor \frac{N}{2} \rfloor} \frac{1}{2k \ln(2k)} \]
+	is diverging.
+\end{Rem}
+Two natural derivation operators arise from our context, that give another link between $T^s$ and $U^s$. They arise from the identities 
+\begin{align}
+	\partial_x T_n &= n U_{n-1}\,, \label{der1} \\
+	\omega \partial_x \omega U_n &= -(n+1)T_{n+1}\,. \label{der2}
+\end{align}
+The first one is obtained for example from the trigonometric definition of $T_n$. This combined with $-(\omega \partial_x)^2 T_n = n^2 T_n$ gives the second identity. 
+\begin{Def}
+	\label{derivations}
+	For all real $s$, the operator $\partial_x$ can be extended into a continuous map from $T^{s+1}$ to $U^{s}$ defined as 
+	\[\forall v \in U^{\infty}, \quad \duality{\partial_x u}{v}_{\omega} \isdef -\duality{u}{\omega \partial_x \omega v}_{\frac{1}{\omega}} \,.\] 
+	In a similar fashion, the  operator $\omega \partial_x \omega$ can be extended into a continuous map from $U^{s+1}$ to $T^{s}$ defined as
+	\[\forall v \in T^{\infty}, \quad \duality{\omega \partial_x \omega u}{v}_\frac{1}{\omega} \isdef -\duality{u}{\partial_x v}_\omega.\]
+\end{Def}
+\begin{proof}
+	Using the identities \eqref{der1} and \eqref{der2}, one can check that the formulas indeed extend the usual definition of the two operators for smooth functions. We now show that the map $\partial_x$ extended this way is continuous from $T^{s+1}$ to $U^s$. The definition 
+	\[\forall v \in U^{\infty}, \duality{\partial_x u}{v} \isdef -\duality{u}{\omega \partial_x \omega v}\]
+	gives a sense to $\partial_x u$ for all $u$ in $T^{-\infty}$, as a duality $T^{-\infty} \times T^{\infty}$ product, because if $v \in U^{\infty} (= C^{\infty})$, then $\omega \partial_x \omega v = (1-x^2)v' - xv$ also lies in $C^{\infty} (= T^\infty)$. It remains to check the announced continuity. Letting $w = \partial_x u$, we have, by definition, for all $n$
+	\[\check{w}_n = \duality{w}{U_n}_{\omega} = - \duality{u}{\omega \partial_x \omega U_n}_\frac{1}{\omega} = n \duality{u}{T_{n+1}}_\frac{1}{\omega} = n\hat{u}_{n+1}\]
+	Obviously, this implies the announced continuity with
+	\[ \norm{w}_{U^s} \leq \norm{u}_{T^{s+1}}\,.\]
+	The properties of $\omega \partial_x \omega$ on $T^s$ are established in a similar way. 
+\end{proof}
+The operator $\partial_x$ is not continuous from $T^s$ to $T^{s-1}$. However, the following result holds:
+\begin{Cor}
+	\label{corDxT2T0}
+	The operator $\partial_x$ is continuous from $T^{s+2}$ to $T^s$ for all $s > -1/2 $ and from $U^{s+2}$ to $U^s$ for all $s > - 3/2$.
+\end{Cor}
+\begin{proof}
+	For the first case we use $\partial_x$ is continuous from $T^{s+2}$ to $U^{s+1}$ and then the identity is continuous from $U^{s+1}$ to $T^s$. For the second, we use the same arguments in the reverse order. 
 \end{proof}
 \begin{Lem}
 	\label{LemInjectionsContinues}
@@ -270,86 +233,46 @@ One immediate consequence is that $T^{\infty} = U^{\infty}$.  Moreover, we have 
 	\[\abs{u(x)} \leq \sqrt{\sum_{n= 0}^{+ \infty} \frac{1}{(1+ n^2)^{\frac{1}{2}+ \varepsilon}}} \norm{u}_{T^{\frac{1}{2} + \varepsilon}}.\]
 	For the second statement, we use the inclusion $U^{s} \subset T^{s-1}$ valid for $s > 1/2$, as established in \autoref{inclusionsTsUs}. 
 \end{proof}	
-\begin{Lem}
-	We have $L^2_\omega = \frac{1}{\omega}L^2_\frac{1}{\omega}$ and the pointwise multiplication by $\frac{1}{\omega}$ defines an bijective isometry from $L^2_\frac{1}{\omega}$ to $L^2_\omega$ with inverse $\omega$. 
-	\label{isometrie}
-\end{Lem}
-\begin{Lem}
-	\label{omega2continuUsTs}
-	The multiplication by $\omega^2$ defines a continuous operator from $U^s$ to $T^s$. 
-\end{Lem}
-\begin{proof}
-	This fact is a consequence of the identity $\omega^2 U_n = \frac{T_{n} - T_{n+2}}{2}$. 
-\end{proof}
-Two natural derivation operators arise from our context, that give another link between $T^s$ and $U^s$. 
-\begin{Lem}
-	\label{derivations}
-	For all real $s$, the operator $\partial_x$ can be extended into a continuous map from $T^{s+1}$ to $U^{s}$ defined as 
-	\[ \duality{\partial_x u}{v}_{\omega} \isdef -\duality{u}{\omega \partial_x \omega v}_{\frac{1}{\omega}} \quad \forall v \in U^{\infty}.\] 
-	For all real $s$, the  operator $\omega \partial_x \omega$ can be extended into a continuous operator from $U^{s+1} \to T^{s}$ as
-	\[\duality{\omega \partial_x \omega u}{v}_\frac{1}{\omega} \isdef -\duality{u}{\partial_x v}_\omega.\]
-	
-\end{Lem}
-\begin{proof}
-	The result is related to the two identites
-	\[T_n' = n U_{n-1} \quad \omega \partial_x \omega U_n = -(n+1)T_{n+1}.\]
-	The first one is obtained for example from the trigonometric definition of $T_n$. This combined with $-(\omega \partial_x)^2 T_n = n^2 T_n$ gives the second identity. Now, let $u \in T^{s+1}$ for some $s \in \R$, with 
-	\[ u = \sum_{n = 0}^{+ \infty} \hat{u}_n T_n.\]
-	When $u$ is smooth, the coefficients $\hat{u}_n$ have a fast decay and thus,  $\partial_x u$ is just given by term by term differentiation
-	\[\partial_x u = \sum_{n=0}^{+ \infty} n \hat{u}_n U_{n-1}.\]
-	If we fix $v \in U^{\infty}$, we then have
-	\[\duality{\partial_x u}{v}_\omega = \sum_{n = 0}^{+ \infty} (n+1)\hat{u}_{n+1} \check{v}_n.\]
-	Since $\omega \partial_x \omega v = -\sum_{n=0}^{+ \infty}(n+1) \check{v}_{n} T_{n+1}$, we indeed have 
-	\[\duality{\partial_x u}{v}_\omega = -\duality{u}{\omega \partial_x \omega v}_\frac{1}{\omega}.\]
-	The rhs still has a sense when $u$ is not differentiable, because if $v \in U^{\infty}$, then $v$ is $C^\infty$ and $\omega \partial_x \omega v = (1-x^2)v' - xv$ also lies in $C^{\infty} = U^\infty$. This thus provides a definition, in a weak sense, of the derivative of $u$. We just have to check that the announced continuity. For all $n$, we have $\duality{\partial_x u}{U_n}_\omega = n\hat{u}_{n-1}$
-	The definition of $\partial_x$ is thus correct. The claimed continuity  is an immediate consequence of 
-	\[\omega \partial_x \omega U_n = -(n+1) T_{n+1}.\]
-	The second assertion comes from $T_n' = nU_{n-1}$. 
-\end{proof}
-Contrary to intuition, the operator $\partial_x$ isn't continuous from $T^s$ to $T^{s-1}$. However, the following result holds:
-\begin{Cor}
-	\label{corDxT2T0}
-	The operator $\partial_x$ is continuous from $T^{s+2}$ to $T^s$ for all $s > -1/2 $ and from $U^{s+2}$ to $U^s$ for all $s > - 3/2$.
-\end{Cor}
-\begin{proof}
-	For the first case we use $\partial_x$ is continuous from $T^{s+2}$ to $U^{s+1}$ and then the identity is continuous from $U^{s+1}$ to $T^s$. For the second, we use the same arguments in the reverse order. 
-\end{proof}
+
+\subsubsection{Characterization of $T^n$ and $U^n$.}
+In this section, we provide a characterization of the spaces $T^s$ and $U^s$ in terms of $L^2$ norms of the derivatives.
 \begin{Lem}
 	\label{omegadxetdxomga}
-	The operator $\omega \partial_x$ defined on $T^{\infty}$ as 
-	\[\omega \partial_x u = \omega u'\]
-	has a continuous extension from $T^1$ to $T^0$. Similarly, the operator $\partial_x \omega$ has a continuous extension from $U^1$ to $U^0$. 
+	The operator $\omega \partial_x$ has a continuous extension from $T^1$ to $T^0$. Similarly, the operator $\partial_x \omega$ has a continuous extension from $U^1$ to $U^0$. 
 \end{Lem}
 \begin{proof}
-	For the first part, we use the fact that $\partial_x$ is continuous from $T^1$ to $U^0$, and, by \autoref{isometrie}, $\omega$ is continuous from $U^0$ to $T^0$. 
-	For the second part, we use the fact that $\omega \partial_x \omega$ is continuous from $U^1$ to $T^0$, and from the same lemma, the multiplication by $\frac{1}{\omega}$ is continuous from $T^0$ to $U^0$. 
+	Obviously, the operator $\omega$ maps $L^2_\omega = U^0$ to $L^2_\frac{1}{\omega} = T^0$. This is in fact a bijective isometry with inverse $\frac{1}{\omega}$.
+	Since $\partial_x$ is continuous from $T^1$ to $U^0$, we have the announced continuity of $\omega \partial_x$.
+	For the second part, we write 
+	\[\partial_x \omega = \frac{1}{\omega} \left(\omega \partial_x \omega\right).\]
+	Where $\omega \partial_x \omega$ is continuous from $U^1$ to $T^0$, and the multiplication by $\frac{1}{\omega}$ is continuous from $T^0$ to $U^0$. 
 \end{proof}
-We can now provide a characterization of the spaces $T^s$ and $U^s$ in terms of $L^2$ norms of the derivatives. For a function $u$ defined on $[a,b]$, we denote by $\tilde{u}$ the function defined on $[\theta_a,\theta_b] \isdef [\arccos(a),\arccos(b)]$ as
-\[ \tilde{u}(\theta) = u(\cos(\theta))\]
-and by $Vu$ the function defined as 
-\[Vu(\theta) \isdef \sin(\theta) \tilde{u}(\theta).\]
+We can now state the main result of this paragraph. For a function $u$ defined on $[-1,1]$, we denote by $Cu$ the function defined on $[0,\pi]$ by
+\[ Cu(\theta) = u(\cos(\theta))\]
+and by $Su$ the function defined as 
+\[Su(\theta) \isdef \sin(\theta) Cu(\theta).\]
 \begin{Lem}
-	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u}$ satisfying $\tilde{u}\in H^n(-\pi,\pi)$. In this case, 
-	\[ \norm{u}_{T_n}\sim \norm{\tilde{u}}_{H^n}, \abs{u}_{T^n} \sim \abs{\tilde{u}}_{H^n}.\]
-	Similarly, $u$ belongs to  $\in U^n$ if and only if $ u = \frac{1}{\sqrt{1 - x^2}} Vu  \circ  \arccos$  for some odd function $Vu$ in  $H^n(-\pi,\pi)$. In this case, 
-	\[\norm{u}_{U_n} \sim \abs{Vu}_{H^n}.\]	
+	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u} \in H^n(-\pi,\pi)$. In this case, $Cu = \tilde{u}$ and
+	\[ \norm{u}_{T_n}\sim \norm{Cu}_{H^n} \mbox{ and } \abs{u}_{T^n} \sim \abs{Cu}_{H^n}.\]
+	Similarly, $u$ belongs to  the space $U^n$ if and only if $u = \frac{1}{\sqrt{1 - x^2}} \tilde{u}  \circ  \arccos$  for some odd function $\tilde{u}$ in  $H^n(-\pi,\pi)$. In this case, $Su = \tilde{u}$ and
+	\[\norm{u}_{U_n} \sim \abs{Su}_{H^n}.\]	
 	Moreover, if $ u \in T^n$, then $(\omega \partial_x)^n u$ is in $L^2_\frac{1}{\omega}$ and 
 	\[ \abs{u}_{T^n}^2 \sim \int_{-1}^{1} \frac{((\omega \partial_x)^n u)^2}{\omega}.\]
-	\noindent If $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
+	\noindent Similarly, if $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
 	\[ \norm{u}_{U_n} = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
 	\label{thmChar}
 \end{Lem}
 \begin{proof}
 	The first two equivalences stem from the fact that 
-	\[\hat{u}_n = \frac{1}{\pi}\int_{-\pi}^{\pi} \tilde{u}(\theta) \cos(n \theta), \quad  \check{u}_n = \frac{1}{\pi} \int_{-\pi}^{\pi} Vu(\theta) \sin((n+1)\theta)d\theta,\]
+	\[\hat{u}_n = \frac{1}{\pi}\int_{-\pi}^{\pi} Cu(\theta) \cos(n \theta), \quad  \check{u}_n = \frac{1}{\pi} \int_{-\pi}^{\pi} Su(\theta) \sin((n+1)\theta)d\theta,\]
 	which can be verified by using the change of variables $x = \cos\theta$ in the definitions of $\hat{u}_n$ and $\check{u}_n$. 
 	Now, let us show that if $ u \in T^n$, then $(\omega \partial_x)^n$ is in $L^2_\frac{1}{\omega}$. The operator $(\omega \partial_x)^2$ is continuous from $T^s$ to $T^{s-2}$ for all real $s$ which implies the result if $n$ is even. If $n$ is odd, say $n = 2k + 1$, we write $(\omega \partial_x)((\omega \partial_x)^{2})^k$, and conclude using \autoref{omegadxetdxomga}.
 	The same kind of proof also shows that if $u \in U^n$, $(\partial_x \omega )^nu \in L^2_\omega$.
-	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by part and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
+	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by parts and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
 \end{proof}
-\subsection{Classes of operators on $T^s$}
-\label{subsec:classesOfOp}
-We now proceed to define a class of operators on $T^s$ that is stable under composition and enjoys some properties similar to pseudo-differential operators. However, we shall not look for asymptotic expansions of symbols, to keep matters as simple as possible. The class we define may thus be quite far from a proper definition of pseudo-differential operators. The main result we need is \autoref{CommutPDO}. To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
+
+
+\subsection{Classes of operators}
 
 \begin{Def}
 	Let $p\in \R$. If  $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$ in the scale $T^s$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. 
@@ -359,26 +282,105 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 
 \begin{Def}
 	\label{DefEquivModTp}
-	Let $A$ and $B$ to operators of order $s$ in the scale $T^s$. When the operator 
+	Let $A$ and $B$ two operators of order $s$ in the scale $T^s$. When the operator 
 	$A - B$ is of order $p \in (0,+\infty]$, we shall write 
-	\[A = B + T_p.\]
+	\[A = B + T_{p}.\]
 	When the scale is $U^s$ instead of $T^s$, we write 
-	\[A = B + U_p.\]
+	\[A = B + U_{p}.\]
 \end{Def}
 
+\label{subsec:classesOfOp}
+
+We now proceed to define a family of classes $S^p$, for $p \in \R$, that are a subset of the operators of order $p$ in the scale $T^s$, enjoying properties similar to pseudo-differential operators. The main motivation for this definition is \autoref{CommutPDO}. We do not tackle asymptotic expansions of symbols, a result we don't need for our application. Results analog to asymptotic expansion and symbolic calculus may actually be unavailable for the rudimentary class we introduce here. For this reason, we refrain from using the term "pseudo-differential operators". To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
+
+
+
+
 \begin{Def}
-	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if there exists a function $a : \N^2 \to \R$ satisfying: 
+	\label{defClassSk}
+	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if there exists a "symbol" function $a : \N \times \Z \to \R$ satisfying: 
 	\begin{itemize} 
 		\item[(i)]$	\forall k \in \Z, \quad A T_k = \displaystyle\sum_{i = -\infty}^{+\infty} a(k,i)T_{k-i}$
-		\item[(ii)]$	\forall \alpha \in \N, \forall  i,k  \in \Z, \quad  \abs{\Delta_k^\alpha a(k,i)} \leq C_{\alpha,i} (1 + k^2)^{p - \alpha}$
+		\item[(ii)]$	\forall \alpha \in \N, \forall  i,k  \in \Z, \quad  \abs{\Delta_k^\alpha a(k,i)} \leq C_{\alpha,i} (1 + k)^{-p - \alpha}$
 		\item[(iii)] There exists $N \in \N$ such that
 		\[\abs{i} \geq N \implies \forall k \in \Z, \quad a(k,i) = 0.\]  
 	\end{itemize}
-	The function $a$ is called the symbol of $A$ and is denoted by $\sigma_A$. 
+	Here $\Delta_k$ is the difference operator in the variable $k$ (denoted simply by $\Delta$ when there is only one variable), defined by
+	\[\Delta_k a(k,i) = a(k+1,i) - a(k,i),\]
+	and $\Delta^\alpha_k$ is the $\alpha$-th iterate of $\Delta_k$.
 \end{Def}
-\begin{Rem}
-	The condition (i) does not define uniquely the symbol of $A$, since $T_{-n} = T_n$. We will not tackle the question whether conditions (ii) and (iii) ensure uniqueness. The notation $\sigma_A$ thus refers to one possible symbol of $A$. The symbols can be viewed as infinite matrix with a finite band of diagonals. Condition (ii) further requires that the coefficients on each diagonal be smooth functions of $k$. 
-\end{Rem}
+Symbols can be viewed as semi-infinite matrix $(a(k,i))_{k \in \N, i \in \Z}$. The condition (ii) controls the decay of the coefficients along the horizontal lines $i = $ constant, while (iii) imposes that the non-zero coefficients lie on a horizontal band with finite width, centered around the central line $i = 0$. 
+
+An awkward feature of this definition, allowed by the convention $T_{-n} = T_n$, is that the null operator admits non-trivial symbols, and thus, the symbol of an operator $A$ is not defined uniquely. The notation $\sigma_A$ only refers to one possible symbol of $A$. It seems difficult to find a natural definition both ensuring uniqueness of the symbol and expressing the same conditions as above. 
+
+Given a symbol $a(k,i)$, is not straightforward to check that (ii) holds for this symbol. We now show that this is the case when $a(k,i)$ is a rational function of $k$. We will repeatedly use the following forms of Peetre's inequality: for any real $a,b$ and $s$, 
+\begin{equation}
+\label{Peetre1}
+	(1 + \abs{a + b})^s \leq \left(1 + \abs{a}\right)^{\abs{s}} \left(1 + \abs{b}\right)^{s}
+\end{equation} 
+and
+\begin{equation}
+\label{Peetre2}
+\left(1 + \abs{a + b}^2\right)^s \leq 2^{\abs{s}}\left(1 + \abs{a}^2\right)^{\abs{s}} \left(1 + \abs{b}^2\right)^{s}\,.
+\end{equation} 
+\begin{Lem}
+	\label{lemDeltaDerivees}
+	Let $f$ a $C^{\alpha}$ function on $[k,k+\alpha]$. Then for all $k$, 
+	\begin{equation}
+	\label{formule1}
+		\Delta^{\alpha} f(k) =  \int_{x_1 =k}^{k+1}\int_{x_2 = x_{1}}^{x_{1}+1} \cdots \int_{x_\alpha = x_{\alpha-1}}^{x_{\alpha-1}+1} f^{(\alpha)}(x_\alpha)dx_1dx_2 \cdots dx_{\alpha}
+	\end{equation}
+\end{Lem}
+\begin{proof}
+	We show by induction that for all $1 \leq \beta \leq \alpha$, 
+	\begin{equation}
+	\label{hypRec1}
+		\Delta^{\alpha} f(x) = \int_{x}^{x+1} \int_{x_{1}}^{x_{1}+1} \int_{x_{\beta-1}}^{x_{\beta-1}+1} \Delta^{\alpha - \beta} f^{(\beta)}(x_\beta)dx_1dx_2 \cdots  dx_\beta.
+	\end{equation}
+	For $\beta = 1$, we write 
+	\[\Delta^{\alpha}f(x) = \Delta^{\alpha-1}f(x+1) - \Delta^{\alpha-1}f(x),\]
+	therefore,
+	\[\Delta^{\alpha}f(x) = \int_{x}^{x+1} \frac{d}{dx_1}\left(\Delta^{\alpha-1}f\right)dx_1.\]
+	This proves the property for $\beta = 1$. 
+	Let $ 1 \leq \beta < \alpha$ and assume that \eqref{hypRec1} holds for this $\beta$. Then we write
+	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \frac{d}{dx_{\beta}}\Delta^{\alpha - \beta} f^{(\beta)}(x_{\beta+1})dx_{\beta+1}.\]
+	Of course, $\Delta$ and $\frac{d}{dx}$ commute, thus 
+	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \Delta^{\alpha - \beta} f^{(\beta+1)}(x_{\beta+1})dx_{\beta+1}.\]
+	Replacing in \eqref{hypRec1}, this proves the heredity of the property. Finally, taking $\beta = \alpha$ in \eqref{hypRec1} gives the announced result. 
+\end{proof}
+\begin{Cor}
+	\label{lemFracRat}
+	If $f$ is a rational function of degree $p$ which poles are contained in $\mathbb{C} \setminus \N$, then there exists a constant $C_\alpha$ such that for all $k \in \N$, \[\abs{\Delta^{\alpha} f(k)} \leq C_\alpha (1+k)^{p - \alpha}\,.\]
+\end{Cor}
+\begin{proof}
+	Fix a rational fraction $F$ of degree $p$, with poles in $\mathbb{C} \setminus \N$. $F$ is of the form 
+	\[F = P + R\]
+	where $P$ is zero if $p < 0$ and a polynomial of degree $p$ otherwise, and $R$ is a finite linear combination of quantities of the form 
+	\[Q_i(X) = \frac{1}{(X - x_i)^{q}}\]
+	with $x_i \in \mathbb{C} \setminus \N$ and $q \geq -p$. The claimed result is an easy consequence of the following two fact:
+	\begin{itemize}
+		\item[-] If the polynomial $P$ is of degree $p \geq 0$, there holds
+		\[\abs{\Delta^{\alpha} P}(k)  \leq C (1+k)^{p - \alpha},\]
+		\item[-] For the terms $Q_i(X) = \frac{1}{(X - x_i)^{q}},$ there holds
+		\begin{equation}
+		\label{termeQi}
+			\abs{\Delta^{\alpha} Q_i}(k)  \leq C (1+k)^{-q - \alpha}\,.
+		\end{equation}
+	\end{itemize}
+	We first treat the polynomial case. If $\alpha > p$, we have $P^{(\alpha)} = 0$, and thus, by \autoref{lemDeltaDerivees}, $\Delta^{\alpha} P(k) = 0$, and the result is obvious. If $\alpha \leq p$, there exists a constant $C$ such that
+	\[\abs{P^{(\alpha)}(x)} \leq C (1 + x)^{p - \alpha}.\]
+	We inject this in \eqref{formule1}. In the domain of integration, $x_\alpha \leq k + \alpha$, thus
+	\[\abs{\Delta^{q} P}(k) \leq C (1 + (k + \alpha))^{p - \alpha} \leq C (1 + \alpha)^{p-\alpha}(1+k)^{p - \alpha}\]
+	by Peetre's inequality \eqref{Peetre1}. This proves the claim for the polynomial term. 
+	
+	\noindent For $Q_i$, we write:
+	\[Q_i^{(\alpha)}(x) = \frac{(-1)^k p(p+1) \cdots (p+\alpha)}{(x - x_i)^{p+\alpha}}.\]
+	For $x \geq \max \left(1,2 \abs{x_i}\right)$, using Peetre's inequaliy \eqref{Peetre1}, we get
+	\[\abs{Q^{(\alpha)}(x)} \leq \frac{p(p+1) \cdots (p+\alpha)}{(1+x)^{p + \alpha}}.\]
+	We then proceed with the same arguments as for $P$ and conclude that \eqref{termeQi} holds with some constant $C_1$ for all $k  \geq k_0$ where $k_0$ is an integer greater than $\max \left(1,2 \abs{x_i}\right)$. Then \eqref{termeQi} holds for all $k$ with 
+	\[C = \max(C_1,\Delta^{\alpha} Q_i(0), \cdots, \Delta^\alpha Q_i(k_0))\,.\]
+\end{proof}
+
 \begin{Lem}
 	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
 \end{Lem}
@@ -386,47 +388,54 @@ We now proceed to define a class of operators on $T^s$ that is stable under comp
 	Since the sum in the condition (i) is finite, by linearity, showing that the operator $A$ is of order $p$ amounts to proving that the operator $A_i$ defined by
 	\[ \forall k \in \Z, \quad  A_i T_k = a(k,i) T_{k-i} \]
 	is of order $p$. We treat the case $i > 0$, the opposite case being analogous. Let $u \in T^s$ for some $s$, there holds 
-	\[ A_i u = \sum_{k = 0}^{+ \infty} a(k + i,i)\hat{u}_{k + i}T_k + \sum_{k = 0}^{i} a(i - k,i) \hat{u}_{i - k}T_k.\]
+	\[ A_i u = \sum_{k = 0}^{+ \infty} a(i+k,i)\hat{u}_{k + i}T_k + \sum_{k = 0}^{i} a(i - k,i) \hat{u}_{i - k}T_k.\]
 	Let $Vu$ and $Ru$ respectively the two terms of the rhs. Obviously, $R$ is a smoothing operator. Now, for all $k \in \N$ let
 	\[\hat{v}_k \isdef a(i + k,i) \hat{u}_{i + k}.\]
-	Applying Peetre's inequality, one has
-	\[(1 + k^2)^{n + s}\abs{\hat{v}_k}^2 \leq C \left(1 + i^2\right)^{\abs{n + s}}\left(1 + (i + k)^2\right)^{n + s} \abs{a(k + i,i)}^2 \abs{\hat{u}_{k+i}}^2.\]
+	Applying Peetre's inequality \eqref{Peetre2},
+	\[(1 + k^2)^{n + s}\abs{\hat{v}_k}^2 \leq 2^{\abs{p+s}}\left(1 + i^2\right)^{\abs{p + s}}\left(1 + (i + k)^2\right)^{p + s} \abs{a(k + i,i)}^2 \abs{\hat{u}_{k+i}}^2.\]
 	Condition (ii) with $\alpha = 0$ yields
-	\[\abs{a(k+i,i)}^2 \leq C\left(1 + (k+i)\right)^{-2n} \leq 2C \left(1 + (k+i)^2\right)^{-n}.\]
-	Therefore, $\norm{V u}_{T^{s + n}} \leq C(1 + i)^{\abs{n + s}} \norm{u}_{T^s}$ which shows that $A$ is of order $p$.
+	\[\abs{a(k+i,i)}^2 \leq C\left(1 + (k+i)\right)^{-2p} \leq 2^{\abs{p}}C \left(1 + (k+i)^2\right)^{-p}.\]
+	Therefore, $\norm{V u}_{T^{s + p}} \leq C(1 + i)^{\abs{n + s}} \norm{u}_{T^s}$ which shows that $A$ is of order $p$.
 \end{proof}
 \begin{Lem}
 	\label{LemCompo}
-	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ and $BA$ are in $S^{p + q}$, 
+	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ is in $S^{p + q}$, 
 \end{Lem}
 \begin{proof}
-	The composition of two operators $A T_k = \sum_{i = -\infty}^{+ \infty} a(k,i) T_{k-i}$ and $B T_k = \sum_{i = - \infty}^{+ \infty} b(k,i) T_{k-i}$ gives rise to an operator $C = \sum_{i = - \infty}^{+ \infty} c(k,i) T_{k-i}$ for which a symbol is given by 
+	A symbol of $AB$ is given by
 	\[c(k,i) = \sum_{j = - \infty}^{+ \infty} a(k - j, i - j) b(k,j).\]
-	This formula is obtained writing the expression of $AB T_n$ using their symbol and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
-	The number of non-zero terms in this decomposition is obviously finite, so we must simply check the requirement (ii). It is enough to show that for any $j \in \Z$, the function $c_{i,j}(k) \isdef a(k-j,i-j) b(k,j)$ satisfies
-	\[\forall \alpha \in \N, \forall i,k, \in \Z, \abs{\Delta_k^\alpha c_{i,j}} \leq C_{i,j,k} (1 + k^2)^{p + q - \alpha}.\]
-	To prove this, one can check by induction that for any two functions $c,d : \N \to \R$, $\Delta^\alpha (c d)(k)$ is a linear combination of terms of the form $\Delta^\beta c(k_1) \Delta^{\alpha-\beta} d(k_2)$, where $k_1$ and $k_2$ lie in the interval $[k,k-\alpha]$. The conclusion follows after applying asumption (ii) for $A$ and $B$ and applying Peetre's inequality to the terms $(1 + (k_1)^2)^{p + \beta} (1 + (k_2)^2)^{q + \alpha - \beta}$. 
-	and apply asumption (ii) for $A$ and $B$. 
+	This formula is obtained writing the expression of $AB T_n$ using a symbol of $A$ and $B$ and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
+	Let $N_a$ such that $\abs{i} \geq N_a \implies a(k,i) = 0$ and let $N_b$ defined in a similar way. Then, it is easy to check that $\abs{i} \geq N_a + N_b \implies c(k,i) = 0$. It remains to check the requirement (ii). Since the sum defining $c$ only has a finite number of non-zero terms, we just have to show that for any $j \in \Z$, the function $c_{j}(k,i) \isdef a(k-j,i-j) b(k,j)$ satisfies
+	\[\forall \alpha \in \N, \forall i,k, \in \Z, \quad  \abs{\Delta_k^\alpha c_{j}(k,i)} \leq C_{i,j,\alpha} (1 + k^2)^{p + q - \alpha}.\]
+	The announced result then follows by linearity. 
+	To prove this, one can check by induction that for any $\alpha \in \N$, $\Delta^\alpha c_j(k,i)$ is of the form 
+	\[\Delta^\alpha_k c_j(k,i) = \sum_{l = 1}^L \lambda_l \Delta_k^{\beta_l}a(k_{l,1},i-j) \Delta_k^{\alpha - \beta_l} b(k_{l,2},j)\]
+	for some coefficients $\lambda_l$, where $L$ is a finite number, and where, for all $l$, $\beta_l \leq \alpha$ while $k_{l,1}$ and $k_{l,2}$ respectively lie in the interval $[k-j,k-j + \beta_l]$ and $[k,k+\alpha - \beta_l]$. Let us fix $l \in [1,L]$. We have
+	\[\abs{\Delta_k^{\beta_l} a(k_{l,1},i-j)} \leq C_{i,j,\alpha,l}(1 + k_1)^{p - \beta_l}\]
+	and by Peetre's inequality
+	\[(1+k_1)^{p - \beta_l} \leq C(1+k)^{p - \beta}(1 + \alpha + \abs{j})^{\abs{p - \beta_l}}.\]
+	The same arguments applied to $b$ lead to 
+	\[\abs{\Delta_k^{\beta} a(k_1,i-j)\Delta_k^{\alpha - \beta} b(k_2,j)} \leq C_{i,j,\alpha,l} (1+k)^{p + q}\]
+	which implies our claim. 
 \end{proof}
-\begin{Lem}
-	If $A \in S^{p}$ and $B \in S^q$, the $AB - BA$ is in $S^{p + q -1}$. 
+\begin{The}
+	If $A \in S^{p}$ and $B \in S^q$, then $AB - BA$ is in $S^{p + q + 1}$. 
 	\label{CommutPDO}
-\end{Lem}
+\end{The}
 \begin{proof}
-	A symbol of $AB - BA$ is given by
-	\[\sigma_{AB - BA}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
+	A symbol of $C= AB - BA$ is given by
+	\[\sigma_{C}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
 	In the second sum, we change the index to $j' = i -j$, yielding 
 	\begin{eqnarray*}
-		\sigma_{AB - BA}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
+		\sigma_{C}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
 		&=& \sum_{j = -\infty}^{+\infty} \left[a(k-j,i-j) - a(k,i-j)\right]b(k,j) \\
 		&& - \sum_{j = - \infty}^{+\infty} a(k,i-j) \left[b(k - i + j') -b(k,j)\right].\\
 	\end{eqnarray*}
- 	We show that asumption (ii) holds for one of the terms $\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j)$ when $j$ is positive. The other cases are treated analogously. We can write 
+ 	Let us consider one of the terms of the first sum when $j$ is positive. We can write 
 \begin{eqnarray*}
-	a(k-j,i-j) - a(k,i-j) &=& \sum_{l = 0}^{j-1} a(k-j + l,i-j) - a(k-j + l +  1,i-j)\\
-	&=& - \sum_{l = 0}^{j-1} \Delta a(k-j + l+1,i-j).
+	\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j) = - \sum_{l = 0}^{j-1} \Delta_k a(k-j + l+1,i-j)b(k,j).
 \end{eqnarray*}
-The result then follows from the same considerations as in the proof of the previous result. 
+The estimation (ii) required for the symbol $\sigma_C$ can be established for this individual term from the same considerations as in the proof of the previous result. The other terms are treated in an analogous way.  
 \end{proof}
 \begin{Lem}
 	\label{lem:multPolyOrdre0}
@@ -439,7 +448,7 @@ The next two lemmas enlarge the class of operators for which we can assess the o
 \begin{Lem}
 	\label{lem:multByPsiOrdre0}
 	If $\psi$ is a $C^{\infty}$ function on $[-1,1]$, then the operator
-	\[ u(t) \mapsto \psi(t) u(t)\]
+	\[ u(x) \mapsto \psi(x) u(x)\]
 	is of order $0$, and for any $s \in \R$, 
 	\[ \norm{\psi u}_{T^s} \leq C2^{\abs{s}/2}\norm{u}_{T^s} \norm{\psi}_{T^{\abs{s}+1}}.\]
 	where $C$ is independent of $\psi$ and $s$. 
@@ -454,7 +463,7 @@ The next two lemmas enlarge the class of operators for which we can assess the o
 	\end{cases}\]
 	We apply the same idea to $\psi$, and using $T_m T_n = T_{m+n} + T_{m-n}$, 
 	\[\psi u = \sum_{m,n} u'_n \psi'_m (T_{m+n} + T_{m-n}) = \sum_{m} \left(\sum_{n}u'_n(\psi'_{n + m} + \psi'_{n - m})\right) T_m\]
-	that is, by parity
+	that is,
 	\[\psi u = 2\sum_{m,n} u'_m \psi'_{m-n} T_{n}\]
 	Using Peetre's inequality, we have 
 	\[(1 + n^2)^{s/2}\abs{(\psi u)_n} \leq 2^{\abs{s}/2+1}\sum_{m}(1 + m^2)^{s/2} \abs{u'_m}  (1 + |n-m|^2)^{\abs{s/2}} \abs{\psi'_{n-m}} \]
@@ -465,288 +474,206 @@ The next two lemmas enlarge the class of operators for which we can assess the o
 \end{proof}
 \begin{Lem}
 	\label{ordreNoyauxMultipl}
-	Let $g(x,y)$ the kernel of an integral operator of order $\alpha \in \R$ in the spaces $T^s$, that is,
-	\[G : u \mapsto \int_{-1}^{1} \frac{g(x,y) u(y)}{\omega(y)}dy\]
-	is continuous from $T^s$ to $T^{s + \alpha}$ for all $s$. Let $R(x,y)$ a $C^{\infty}$ function. Then the operator 
-	\[K : \int_{-1}^{1} \frac{g(x,y) R(x,y) u(y)}{\omega(y)}dy\]
-	is of order $\alpha$. 
+	Let $G$ an integral operator with kernel $g$, that is
+	\[G : u \mapsto \int_{-1}^{1} \frac{g(x,y) u(y)}{\omega(y)}dy\,.\]
+	We assume that $G$ is of order $p$. Let $r(x,y)$ a $C^{\infty}$ function. Then the operator 
+	\[K : \int_{-1}^{1} \frac{g(x,y) r(x,y) u(y)}{\omega(y)}dy\]
+	is of order $p$. 
 \end{Lem}
 \begin{proof}
-	Since $R$ is in $C^{\infty}$, one can show that $R$ admits the following expression:
+	Since $r$ is in $C^{\infty}$, one can show that $r$ admits the following expression:
 	\begin{equation}
-	R(x,y) = \sum_{m,n} r_{m,n} T_m(x) T_n(y)
+	r(x,y) = \sum_{m,n} r_{m,n} T_m(x) T_n(y)
 	\label{sommenormalementcv}
 	\end{equation}
 	Moreover, the regularity of $R$ ensures $r_{m,n}$ satisfies for all $s,t \in \R$, 
 	\[\sum_{m,n} (1 + m^2)^s (1 + n^2)^t\abs{r_{m,n}}^2 < +\infty.\] 
-	To prove this property, one can for example apply the operator $(\omega \partial_x)^2$ repeatedly in the two variables. The resulting function is $C^\infty$, and in particular, square integrable on $[0,1] \times [0,1]$. We then write the Parseval's identity and the result follows. We can thus write 
+	To prove this property, one can for example apply the operator $(\omega \partial_x)^2$ repeatedly in the two variables. The resulting function is $C^\infty$, and in particular, square integrable on $[0,1] \times [0,1]$. We then write the Parseval's identity and the result follows. We can write 
 	\[Ku = \sum_{m,n} r_{m,n} T_m G T_n u  \]
 	where for each $m,n$, the operator $T_m G T_n$ is defined by 
 	\[ T_m G T_n u (x)= T_m(x) \int_{-1}^{1} \dfrac{G(x,y) T_n(y)u(y)}{\omega(y)}dy.\]
-	This operator is in $L(T^s,T^{s+\alpha})$ by the previous lemma, with 	
-	\[\norm{T_m G T_n}_{T^s \to T^{s+\alpha}} \leq \norm{G}_{T^s \to T^{s + \alpha}} 2^{\abs{s} + \abs{s + \alpha}}(1 + n^2)^{\abs{s}+1}(1 + m^2)^{\abs{s+ \alpha} + 1}.\]
-	thus, the series in \eqref{sommenormalementcv} is normally convergent in $L(T^s, T^{s + \alpha})$, which proves the claim. 
+	Fix $s \in \R$, this operator is in $L(T^s,T^{s+p})$ by the previous lemma, with 	
+	\[\norm{T_m G T_n}_{T^s \to T^{s+p}} \leq \norm{G}_{T^s \to T^{s + p}} 2^{\abs{s} + \abs{s + p}}(1 + n^2)^{\abs{s}+1}(1 + m^2)^{\abs{s+ p} + 1}.\]
+	thus, the series in \eqref{sommenormalementcv} is normally convergent in $L(T^s, T^{s + p})$, which proves the claim. 
 \end{proof}
-In particular, when $g(x,y) \equiv 1$, $G$ is a smoothing operator thus
+As a consequence, since the operator $G$ with kernel $g \equiv 1$ is a smoothing operator, we have the following result:
 \begin{Cor}
 	\label{lemSmoothingOp}
-	Let $F \in C^{\infty}([-1,1]^2)$. Then
-	\[ u \mapsto \int_{-1}^{1} \frac{F(x,y)u(y)}{\omega(y)}dy\]
+	Let $r \in C^{\infty}([-1,1]^2)$. Then
+	\[ u \mapsto \int_{-1}^{1} \frac{r(x,y)u(y)}{\omega(y)}dy\]
 	is a smoothing operator. 
 \end{Cor}
 
-\section{Laplace equation on a flat segment}
 
-In this section, we restrict our attention to the case where $\Gamma$ is the open segment $(-1,1) \times \{0\}$, and $k=0$. We study the properties of the equations 
-\[S\lambda = -u_D\]
-and 
-\[N\mu = u_N\]
-and show their invertibility in a range of Sobolev-like spaces. This problem has been considered thoroughly, both
-in terms of analytical and numerical properties in the literature (see for instance \cite{jiang2004second,bruno2012second}), and it turns out that the Chebyshev polynomials of first and second kind play a very important role. However, we go further compared to the literature by 
-by constructing a functional framework close to Sobolev spaces, based on Chebyshev polynomials that
-allows us to give a complete framework for the existence and uniqueness of the solutions to the preceding equations, as well as
-new preconditioners.
+\section{Preconditioners for the Helmholtz scattering problem}
+
+In this section, we apply the analytical tools introduced in the previous section to the study of the Helmholtz scattering problems. The two main results are \autoref{} and \autoref{}. We start by introducing the notations.
 
 
-
-\subsection{Single layer equation}
-
-In this section we focus on the equation $S\lambda = g$, that is we seek $\lambda \in \tilde{H}^{-1/2}$ such that 
+\subsection{The scattering problem for an open curve}
+\label{sec:scattering}
+Let $\Gamma$ be a smooth non-intersecting open curve in $\R^2$, and let $k \geq 0$ the wave number. We seek a solution to the two problems
 \begin{equation}
--\frac{1}{2\pi}\int_{-1}^{1} \log|x-y| \lambda(y) = -g(x), \quad \forall x\in (-1,1)\,.\label{Slambda}
+-\Delta u_i - k^2 u_i = 0,  \text{ in } \R^2 \setminus \Gamma, \quad i = 1,2
+\label{Helmholtz}
+\end{equation}
+with the following additional conditions
+\begin{itemize}
+	\item[-] Dirichlet or Neumann boundary conditions, respectively
+	\begin{equation}
+	u_1 = u_D, \text{ and  } \dfrac{\partial u_2}{\partial n} = u_N \text{ on } \Gamma
+	\label{DirichletEtNeumann}
+	\end{equation}
+	\item[-] Suitable decay at infinity, given for $k > 0$ by the Sommerfeld condition
+	\begin{equation}
+	\dfrac{\partial u}{\partial r} - iku = o\left(\frac{1}{\sqrt{r}}\right)
+	\label{Sommerfeld}
+	\end{equation}
+	with $r=|x|$ for $x\in \mathbb{R}^2$.
+\end{itemize}
+When $k=0$, the radiation condition must be replaced by an appropriate decay of $u$ and $\nabla u$ at infinity, see for example \cite{wendland1990hypersingular,stephan1984augmented}, or \cite[Chap. 7]{mclean2000strongly} \toDo{Vérifier le chapitre et la page}. 
+In the preceding equation $n$ stands for a smooth unit normal vector to $\Gamma$. Existence and uniqueness results are available for those problems, but the solutions fail to be regular even with smooth data $u_D$ and $u_N$. More precisely,  let $\lambda = \left[\frac{\partial u_1}{\partial n}\right]_\Gamma$ and $\mu = \left[u_2\right]_\Gamma$ where $ \left[\cdot \right]_\Gamma$ refers to the jump of a quantity across $\Gamma$, we have the following result.
+\begin{The}
+	(see e.g. \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}) Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. Then problems (\ref{Helmholtz},\ref{DirichletEtNeumann},\ref{Sommerfeld}) both possess a unique solution $u_i \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. Near the edges of the screen $\Gamma$, $\lambda$ is unbounded:
+	\[\lambda(x)  = O\left(\frac{1}{\sqrt{d(x,\partial \Gamma)}}\right).\]
+	while $\mu$ satisfies
+	\[\mu(x) = C\sqrt{d(x,\partial \Gamma)} + \psi\]
+	where $\psi \in \tilde{H}^{3/2}(\Gamma)$.
+	\label{theScatt}
+\end{The}
+
+For the definition of Sobolev spaces on smooth open curves, we follow
+\cite{mclean2000strongly} by considering any smooth closed curve $\tilde{\Gamma}$ containing $\Gamma$, and defining 
+\[H^s(\Gamma) = \enstq{U_{|\Gamma}}{ U \in H^s(\tilde{\Gamma}) }\,.\]
+Obviously, this definition does not depend on the particular choice of the closed curve $\tilde{\Gamma}$ containing $\Gamma$. Moreover,
+\[\tilde{H}^s(\Gamma) = \enstq{u \in H^s(\Gamma)}{\tilde{u} \in H^s(\tilde{\Gamma})}\]
+where $\tilde{u}$ denotes the extension by zero of $u$ on $\tilde{\Gamma}$.
+
+\paragraph{Single-layer potential}  
+We define the single-layer potential by
+\begin{equation}
+\mathcal{S}_k\lambda(x) = \int_{\Gamma}G_k(x-y)\lambda(y)d\sigma(y)
+\label{defSk}
+\end{equation}
+where $G_k$ is the Green's function
+\begin{equation}
+\left\{
+\begin{aligned}
+G_0(z) &= -\dfrac{1}{2\pi} \ln \abs{z}, && \text{ if } k= 0,\\
+G_k(z) &= \frac{i}{4}H_0(k|z|), && \text{ if } k > 0,
+\end{aligned} 
+\right.
 \end{equation} 
-
-This equation is sometimes called ``Symm's integral equation'' and its resolution has received a lot of attention in the 1990's. Numerical methods, using both collocation and Galerkin have been presented and analyzed \cite{atkinson1991numerical,yan1988integral,yan1990cosine,sloan1992collocation,yan1989mesh}. 
-
-%The solution is connected to the exterior Dirichlet problem for the Laplace operator, but attention must be paid when the solution $\lambda$ obtained does not satisfy $\duality{1}{\lambda}_\Gamma = 0$: in this case, $\textup{SL}\lambda$ is not a bounded solution of the Dirichlet problem. See \cite{atkinson1991numerical} for a link with the logarithmic capacity of the line and how we recover the bounded solution from the solution of \eqref{Slambda}.
-
-Our analysis lies on the following formula. For a proof, see for example \cite{mason2002chebyshev} Theorem 9.2. Note that this is also the main ingredient in several connected works, such as \cite{jiang2004second} and \cite{bruno2012second}.
-
-%
-%\paragraph{Autre idée de présentation.}
-%We first start with a commutation result
-%
-%\toDo{Commencer par le truc connu. Et en fait c'est normal. Balancer ensuite la commutation. Dire que ça n'a pas été remarqué. }
-%
-%\begin{Prop}
-%	Commutation de $S_\omega$ et $(\omega \partial_x)^2$. 
-%\end{Prop}
-%Exploitation en terme de vp. Dire qu'on a deux opérateurs avec spectre discret. (L'un est compact dans $L^2_\frac{1}{\omega}$, (sans preuve pour l'instant).
-%
-\begin{Lem}
-	\[ -\frac{1}{2\pi}\int_{-1}^{1} \frac{\ln|x-y|}{\sqrt{1 - y^2}}T_n(y)dy = s_n T_n(x)\]
-	where
-	\[s_n = \begin{cases}
-	\dfrac{\ln(2)}{2} & \text{if } n=0\\
-	\dfrac{1}{2n} & \text{otherwise}.
-	\end{cases}\]
-	\label{STn}
-\end{Lem}
-
-Using the decomposition of $g$ and of the logarithmic kernel on the basis $T_n$, we see that the solution $\lambda$ to equation \eqref{Slambda} admits the following expansion 
+for $x\in \mathbb{R}^2\setminus \Gamma$. Here $H_0$ is the Hankel function of the first kind. 
+For $k > 0$, the solution $u_1$ to the Dirichlet problem admits the representation
 \begin{equation}
-\lambda(x) = \frac{1}{\sqrt{1-x^2}}\sum_{n=0}^{+ \infty} \frac{\hat{g}_n}{s_n} T_n(x).
-\label{expansionLambda}
+u_1 = \mathcal{S}_k \lambda
+\label{repr_u1}
 \end{equation}
-We deduce the following well-known fact:
-\begin{Cor}
-	\label{CorSingularity}
-	If the data $g$ is in $C^{\infty}([-1,1])$, the solution $\lambda$ to the equation 
-	\[S\lambda = g\]
-	is of the form 
-	\[\lambda = \dfrac{\alpha}{\sqrt{1-x^2}}\]
-	with $\alpha \in C^{\infty}([-1,1])$.  
-	\begin{proof}
-		Let $\alpha = \sqrt{1 - x^2}\lambda$ where $\lambda$ is the solution of $S\lambda = g$ with $g \in C^{\infty}([-1,1])$. 
-		\autoref{LemTinfCinf} implies that $g \in T^{\infty}$, and by equation \eqref{expansionLambda}, 
-		\[ \hat{\alpha}_n = \frac{\hat{g}_n}{s_n},\]
-		so $\alpha$ also  belongs to $T^{\infty} = C^{\infty}([-1,1])$. 
-	\end{proof}
-\end{Cor}
-
-
-We follow \cite{bruno2012second} by noticing that the behavior in $\frac{1}{\sqrt{1-x^2}}$ is consistent with the expected singularity near the edges and introduce the weighted single layer operator as the operator that appeared in Proposition \ref{STn}.
-\begin{Def}(See \cite{bruno2012second}) 
-	Let $S_\omega$ be the weighted single layer operator defined by
-	\[\opFromTo{S_\omega}{\alpha \in \Cinf([-1,1])}{-\dfrac{1}{2\pi}}{\int_{-1}^1\dfrac{\ln|x-y|}{\omega(y)} \alpha(y)dy}\]
-\end{Def}
-\noindent We also recall that the operator $(\omega\partial_x)^2$ is defined by \[\opFromTo{(\omega\partial_x)^2}{\alpha \in \Cinf([-1,1])}{(1-x^2)\alpha''(x) - x \alpha'(x)}.\]
-
-The action of these operators on $T^{\infty}$ is easy to analyze using \eqref{cheb1} and \autoref{STn}. By density of $T^{\infty}$ in $T^s$ for all $s$, we get:
-\begin{Prop}
-	The operator $S_\omega$ is a self-adjoint, positive definite operator, and defines a continuous bijection from $T^{s}$ to $T^{s+1}$ for all real $s$. In particular, $S_\omega$ is of order $1$ and is compact in $T^s$. 
-	Similarly, for any $s \in \R$, the operator $-(\omega \partial_x)^2$ is positive, self-adjoint, and of order $-2$. 
-\end{Prop}
-\begin{proof}
-	It suffices to remark that if $u=\sum_{n=0}^\infty \hat{u}_n T_n \in T^s$, then
-	\[S_\omega u = \frac{\ln(2)}{2} \hat{u}_0 T_0 +  \sum_{n=1}^\infty \frac{\hat{u}_n}{2n} T_n\]
-	while
-	\[-(\omega \partial_x)^2 u = \sum_{n=0}^\infty n^2\hat{u}_n T_n \,.\]
-\end{proof}
-\begin{Rem}
-	Of course, $S_\omega$ is in the class $S^1$ defined in \autoref{subsec:classesOfOp}
-\end{Rem}
-\noindent To obtain the solution of \eqref{Slambda}, we can thus solve 
+where $\lambda \in \tilde{H}^{-1/2}(\Gamma)$ is the jump of the normal derivative of $u_1$ across $\Gamma$ and is the unique solution to 
 \begin{equation}
-S_\omega \alpha = -u_D,
-\label{Somegaalpha}
+S_k \lambda = u_D\,.
+\label{Sklambda}
 \end{equation}
-and let $\lambda = \frac{\alpha}{\omega}$.  
-The next lemmas make clear the connection between the spaces $T^s$ with $s = \pm \frac{1}{2}$ and the usual Sobolev spaces. Equivalent results are proved in \cite{jerez2010boundary}. 
+Here, $S_k \isdef \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$. The operator $S_k$ maps continuously $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. When $k = 0$, the computation of $u_1$ also involves the resolution of \eqref{Sklambda} but some subtleties arise in the representation of $u_1$ \eqref{repr_u1}. On this topic, see \cite[Theorem 1.4]{stephan1984augmented}.
+
+\paragraph{Double-layer and hypersingular potentials}
+Similarly, we introduce the double layer potential $\mathcal{D}_k$ by 
+\[\mathcal{D}_k \mu(x) = \int_{\Gamma} n(y) \cdot \nabla G_k(x-y) \mu(y) d\sigma(y), \quad  x \in \R^2 \setminus \Gamma\]
+for any smooth function $\mu$ defined on $\Gamma$.
+The normal derivative of $\mathcal{D}_k\mu$ is continuous across $\Gamma$, allowing us to define the hypersingular operator $N_k = \frac{\partial}{\partial_n}\mathcal{D}_k$. This operator admits the following representation for $x\in \Gamma$
+\begin{equation}
+N_k \mu(x) = \lim_{\varepsilon \to 0^+} \int_{\Gamma} n(y) \cdot \nabla G(x + \varepsilon n(x) - y) \mu(y) d\sigma(y).
+\label{defNk}
+\end{equation}
+The kernel of this operator has a non-integrable singularity, but numerical calculations are made possible by the following formula, valid for smooth functions $\mu$ and $\nu$ that vanish at the extremities of $\Gamma$: 
+\begin{equation}
+\label{NkenfonctiondeSk}
+	\begin{split}
+		\duality{N_k \mu}{\nu} = &\int_{\Gamma\times \Gamma} G_k(x-y) \mu'(x) \nu'(y)\\
+		& - k^2 G_k(x-y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\,.
+	\end{split}
+\end{equation}
+It is also known that $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously, and that the solution $u_2$ to the Neumann problem can be written as
+\begin{equation}
+u_2 = \mathcal{D}_k \mu
+\end{equation}
+where $\mu \in \tilde{H}^{1/2}(\Gamma)$ is the jump of $u_2$ across $\Gamma$ and is the unique solution to
+\begin{equation}
+N_k \mu = u_N\,.
+\label{Nkmu}
+\end{equation}  
+
+\paragraph{Weighted layer potentials.} \autoref{theScatt} shows that even if $u_D$ and $u_N$ are smooth, the solutions $\lambda$ and $\mu$ to the corresponding integral equations have singularities. For this reason, we consider the following weighted operators. Let $\omega_\Gamma(r(x)) \isdef \frac{\abs{\Gamma}}{2} \omega(x)$ where $\abs{\Gamma}$ is the length of $\Gamma$, $\omega(x) = \sqrt{1 - x^2}$ as in the previous section, and $r : [-1,1] \to \Gamma$ is a smooth parametrisation. We define $S_{k,\omega_\Gamma} \isdef S_k \frac{1}{\omega_\Gamma}$ and $N_{k,\omega_\Gamma} \isdef N_k \omega_\Gamma$. The operator $S_{k,\omega}$ reads 
+\[S_{k,\omega_\Gamma} \alpha(x) = \int_{\Gamma} \frac{G_k(x-y) \alpha(y)}{\omega_\Gamma(y)}  dy\,.\]
+As for the hypersingular operator, the identity \eqref{NkenfonctiondeSk} can be rewritten equivalently
+\begin{equation}
+\label{NkomegaenfonctiondeSkomega}
+	\begin{split}
+		\duality{N_{k,\omega_\Gamma} \beta}{\beta'}_\omega = &\duality{S_{k,\omega_\Gamma} \left(\omega_\Gamma \partial_\tau \omega_\Gamma\right) \beta}{\left(\omega_\Gamma \partial_\tau \omega_\Gamma\right)\beta'}_\frac{1}{\omega}\\
+		& - k^2 \duality{S_{k,\omega_\Gamma} \omega_\Gamma^2\beta}{\omega_\Gamma^2 \beta'}_\frac{1}{\omega}
+	\end{split}
+\end{equation}
+Solving the integral equations \eqref{Sklambda} and \eqref{Nkmu}, is equivalent to solving
+\begin{eqnarray*}
+	S_{k,\omega_\Gamma} \alpha &=& u_D\\
+	N_{k,\omega_\Gamma} \beta &=& u_N
+\end{eqnarray*}
+and letting $\lambda = \frac{\alpha}{\omega_\Gamma}$, $\mu = \omega_\Gamma u_N$. 
+When $k = 0$, and $\Gamma$ is the flat segment, that is $r \equiv 1$, we simply write $S_{\omega}$ and $N_{\omega}$. The weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. From \cite{bruno2012second}, we know that the operators $S_{k,\omega_\Gamma}$ and $N_{k,\omega_\Gamma}$ map smooth functions to smooth functions, more precisely, they define bicontinuous maps $T^s$ to $T^{s+1}$ and $T^{s+1}$ to $T^{s}$ respectively. Moreover, $N_{k,\omega_\Gamma} S_{k,\omega_\Gamma}$ has its spectrum concentrated around $\frac{1}{4}$. This motivates the use of the pair $S_{k,\omega_\Gamma}, N_{k,\omega_\Gamma}$ as mutual preconditioners, in close analogy to the well-known Calderon relations for smooth closed curves \toDo{Inclure citation}.
+
+\subsection{Operators $S_\omega$ and $N_\omega$ on the flat segment}
+
+When the wavenumber is equal to $0$ and the curve $\Gamma$ is the flat segment $(-1,1)\times{0}$, then $\partial_\tau = \partial_x$ and $\omega_\Gamma = \omega$, and the operators $S_\omega$ and $N_\omega$ become very simple to analyze in $T^s$ and $U^s$, because they are diagonal in the basis $(T_n)_n$ and $(U_n)_n$ respectively, with explicit eigenvalues.
+
+\paragraph{Single layer potential} The operator $S_\omega$ takes the form 
+\[S_\omega \alpha(x) = \int_{-1}^{1} \frac{\ln \abs{x - y} \alpha(y)}{\sqrt{1 - y^2}}dy \,.\]
+We have the following explicit formulas, stated in \cite{alouges2018new}, but also at the core of many other related works, for example \cite{bruno2012second,jiang2004second,jerez2012explicit}. A proof can be found in \cite{mason2002chebyshev}. There holds 
+\begin{equation}
+	\label{explicitEigs}
+	S_\omega T_n = \sigma_n T_n
+\end{equation}
+where 
+\[\sigma_n = \begin{cases}
+\dfrac{\ln(2)}{2} & \text{if } n=0\\
+\dfrac{1}{2n} & \text{otherwise}.
+\end{cases}.\]
+In particular, \autoref{lemFracRat}, $S_\omega$ is in the class $S^1$. As a consequence, $S_\omega$ maps $T^{\infty}$ to itself, so the image of a smooth function is a smooth function. We can also deduce the following characterization of $T^{-1/2}$ and $T^{1/2}$, also obtained independently in \cite{jerez2012explicit} \toDo{Ou bien \cite{jerez2010boundary}, vérifier et citer le thm}.
 \begin{Lem}
 	\label{LemmaT-1/2}
-	We have $\tilde{H}^{-1/2}(-1,1) = \frac{1}{\omega}T^{-1/2}$ and for all $u \in \tilde{H}^{-1/2}(-1,1)$,
+	We have $T^{-1/2} = \omega\tilde{H}^{-1/2}(-1,1)$ and for all $u \in \tilde{H}^{-1/2}(-1,1)$,
 	\[\norm{u}_{\tilde{H}^{-1/2}} \sim \norm{\omega u}_{T^{-1/2}}.\] 
+	Moreover, $T^{1/2} = H^{1/2}(-1,1)$ and 
+	\[\norm{u}_{T^{1/2}} = \norm{u}_{H^{1/2}}\]
 \end{Lem}
-
 \begin{proof}
-	Since the logarithmic capacity of the segment is $\frac{1}{4}$, the operator $S$ is positive and bounded from below on $\tilde{H}^{-1/2}(-1,1)$, (see \cite{mclean2000strongly} chap. 8). Therefore the norm on $\tilde{H}^{-1/2}(-1,1)$ is equivalent to 
+	Since the logarithmic capacity of the segment is $\frac{1}{4}$, the (unweighted) single-layer operator $S$ is positive and bounded from below on $\tilde{H}^{-1/2}(-1,1)$, (see \cite{mclean2000strongly} chap. 8). Therefore the norm on $\tilde{H}^{-1/2}(-1,1)$ is equivalent to 
 	\[\norm{u}_{\tilde{H}^{-1/2}} \sim \sqrt{\duality{Su}{u}}.\]
-	On the other hand, it is obvious that if $\alpha\in T^{-1/2}$
-	\[ \norm{\alpha}_{T^{-1/2}} \sim \sqrt{\duality{S_\omega \alpha}{\alpha}_\omega}.\]
-	It remains to notice that for $\alpha=\omega u$, the two duality products coincide.
-\end{proof}
-
-\begin{Lem} Similarly,
-	\[H^{1/2}(-1,1) = T^{1/2}\]
-	and for $u \in H^{1/2}(-1,1)$ we have
-	\[\norm{u}_{H^{1/2}} \sim \norm{u}_{T^{1/2}}\,.\]
-	\label{LemmaT1/2}
-\end{Lem}	
-\begin{proof}
-	We know that $(H^{1/2})'(-1,1) =  \tilde{H}^{-1/2}(-1,1)$ (cf \cite{mclean1986spectral} chap. 3), and therefore
+	On the other hand, the explicit expression \eqref{explicitEigs} imply that if $\alpha\in T^{-1/2}$
+	\[ \norm{\alpha}_{T^{-1/2}} \sim \sqrt{\duality{S_\omega \alpha}{\alpha}_\frac{1}{\omega}}.\]
+	It remains to notice that, since $\alpha=\omega u$, $\duality{S_\omega \alpha}{\alpha}_\frac{1}{\omega} = \duality{Su}{u}$. This proves the first result. For the second result, we know that, $(H^{1/2}(-1,1))' =  \tilde{H}^{-1/2}(-1,1)$ (taking the dual with respect to the usual $L^2$ duality, \cite{mclean1986spectral} chap. 3), and therefore
 	\[\norm{u}_{H^{\frac{1}{2}}} = \sup_{ v\neq 0} \dfrac{\duality{u}{v}}{\norm{v}_{\tilde{H}^{-\frac{1}{2}}}}\,.\]
-	According to the previous lemma, for all $v\in \tilde{H}^{-\frac{1}{2}}$, the function $\alpha = \omega v$ is in $T^{-1/2}$, and $\norm{ v}_{\tilde{H}^{-1/2}} \sim \norm{\alpha}_{T^{-1/2}}$, while $\duality{u}{v} = \duality{u}{\alpha}_\omega$. Thus 
+	According to the previous result, for all $v\in \tilde{H}^{-\frac{1}{2}}$, the function $\alpha = \omega v$ is in $T^{-1/2}$, and $\norm{ v}_{\tilde{H}^{-1/2}} \sim \norm{\alpha}_{T^{-1/2}}$, while $\duality{u}{v} = \duality{u}{\alpha}_\omega$. Thus 
 	\[\norm{u}_{H^{1/2}} \sim \sup_{\alpha \neq 0} \dfrac{\duality{u}{\alpha}_\omega}{\norm{\alpha}_{T^{-1/2}}}\]
-	The last quantity is the $T^{1/2}$ norm of $u$ since $T^{1/2}$ is identified to the dual of $T^{-1/2}$ for $\duality{\cdot}{\cdot}_\omega$. 
-\end{proof}
-
-We are now in a position to find an expression for the inverse of $S_\omega$. An explicit inverse has already appeared in the literature. In 
-particular, in \cite{jerez2012explicit,urzua2014optimal}, explicit variational forms for this inverse operator are derived rigorously. (A similar method is also employed in the recent paper \cite{hiptmair2017closed} in $\R^3$ for the case of the unit disk.) We just state here the following formal decomposition:
-\[\dfrac{d^2}{dxdy}\log\frac{M(x,y)}{|x-y|^2} = \frac{-1+xy}{2|x-y|^2} = \sum_{n=1}^{+ \infty} n T_n(x)T_n(y)\]
-with 
-$M(x,y) = \frac{1}{2}\left((y-x)^2 + (\omega(x) + \omega(y))^2\right) $.
-
-However, using the preceding analysis, we have an alternative way of defining this exact inverse, which leads to an expression in the form of the square root of a local operator. To state the next result, we define the operator $\pi_{0}$ as the $L^2_{1/\omega}$ 
-orthogonal projector on $T_0$. Namely 
-\[\pi_0 \alpha(x)  = \frac{1}{\pi} \int_{-1}^{1}\frac{\alpha(y)}{\omega(y)}dy\,.\]
-The preceding definition can be extended to $u \in T^s$ for any $s \in \R$ by setting $\pi_0 u$ as the solution of
-\[\left\{
-\begin{array}{l}\duality{\alpha-\pi_0 \alpha}{T_0}_{\frac{1}{\omega}} = 0\,,\\
-\pi_0\alpha\in \mbox{Span}(T_0)\,,
-\end{array}
-\right.\]
-since $T_0\in T^\infty$. Of course, $\pi_0$ is continuous from $T^s$ to $T^{\infty}$ for any $s$. 
-
-\begin{The}
-	\label{TheSdx2S}
-	There holds
-	\begin{equation}
-		\label{Sdx2S}
-		S_{\omega}^2 = \frac{1}{4}\left(-(\omega\partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right)^{-1}\,.
-	\end{equation}
-\end{The}
-\begin{proof}
-	The Chebyshev polynomials $(T_n)$ are a common Hilbert basis of eigenvectors for the three operators $S_\omega$, $-(\omega \partial_x)^2$ and $\pi_0$, so it is sufficient to compute $4 S_\omega^2 \left(-(\omega\partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right) T_n$ and check that this is indeed equal to $T_n$. 
-	One has using the explicit eigenvalues for $S_\omega$. This is easily verified using the following expressions
-	\[ S_\omega T_n =\frac{1}{2n}T_n\,,\,\, \pi_0 T_n = 0 \mbox{ and } -(\omega\partial_x)^2T_n = n^2 T_n \mbox{ if } n\ne 0\,,\]
-	while
-	\[ S_\omega T_0 = \frac{\ln(2)}{2} T_0\,,\,\, \pi_0 T_0 = T_0 \mbox{ and } -(\omega\partial_x)^2T_0 = 0 \mbox{ otherwise.}\]
-\end{proof}
-
-From the preceding formula, we can extract the explicit inverse of $S_\omega$ in terms of the square root of the inner operator. 
-
-\begin{Cor}
-	The inverse of $S_\omega$ can be equivalently expressed as 
-	\begin{equation}
-	S_{\omega}^{-1} = 2\sqrt{-(\omega \partial_x)^2 + \frac{1}{\ln(2)^2}\pi_0}\,.
-	\end{equation}
-\end{Cor}
-
-The last result shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be thought as inverse operators (modulo constant terms) and that, at the very least, $\sqrt{-(\omega \partial_x)^2}$ can be used as a preconditioner for $S_\omega$. Indeed, $2\sqrt{-(\omega \partial_x)^2}S_\omega$ is a compact perturbation of identity. This makes a clear link with the approximation of the Dirichlet to Neumann map proposed in \cite{antoine2007generalized} in terms of a square root operator. The link will be even clearer when Helmholtz equation will be considered. In \autoref{TableNitTimeLaplaceDirichlet}, we compare the number of iterations for the numerical resolution of Equation \eqref{Somegaalpha} by the method detailed in \autoref{sec:numerMeth} without preconditioner, and with a preconditioner given by $M^{-1} \left[B \right] M^{-1}$ where $M$ is the mass matrix and $\left[ B \right]$ is the Galerkin matrix of the operator $\sqrt{ -(\omega \partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0}$. The right hand side in \eqref{Somegaalpha} is chosen as $u_D(x) = (x^2 + 0.001)^{-1/2}, x \in (-1,1)$.
+	The last quantity is the $T^{1/2}$ norm of $u$ since $T^{1/2}$ is identified to the dual of $T^{-1/2}$ for $\duality{\cdot}{\cdot}_\omega$.
 	
-\begin{table}[H]
-	\begin{center}
-		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
-			\hline
-			\multicolumn{1}{||c|}{ }&
-			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
-			\hline
-			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
-			\hline\hline
-			50 & 7 & 0.11 & 35 & 0.21\\
-			\hline
-			200 & 7 & 0.14 & 53 & 0.55\\
-			\hline
-			800 & 7 & 0.29 & 76 & 2.0 \\
-			\hline
-			3200 & 7 & 0.95 & 107 & 9.5\\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
-	\label{TableNitTimeLaplaceDirichlet}
-\end{table}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{../figs/PrecondDirichletLaplaceSeg.png}
-	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 1600$.}
-	\label{FigureNitLaplaceDirichlet}
-\end{figure}
-
-\subsection{Hypersingular equation} 
-
-We now turn our attention to the equation 
-
-\begin{equation}
-N\mu = g
-\label{Nmu}
-\end{equation} 
-
-Similarly to the previous section and following again the idea of \cite{bruno2012second}, we consider a rescaled version of the hypersingular operator $N_\omega \isdef N \omega$ defined by
-
-\[N_\omega \mu = \lim_{\varepsilon\to 0}\int_{-1}^{1} n(y)\cdot\nabla G(x + \varepsilon n(x) - y) \sqrt{1-y^2} dy\]
-We can get the solution to equation \eqref{Nmu} by solving 
-\begin{equation}
-N_\omega \beta = u_N,
-\label{Nomegabeta}
-\end{equation}
-and letting $\mu = \omega \beta$. 
-We now show that $N_\omega$ can also be analyzed in our functional framework, using this time the spaces $U^s$. 
-\begin{Lem}
-	\label{lemIPP}
-	For any $\beta$, $\beta'$, one has 
-	\[\duality{N_\omega \beta}{ \beta'}_\omega = \duality{S_\omega \omega \partial_x \omega \beta}{\omega \partial_x \omega \beta'}_\frac{1}{\omega}.\]
-	\begin{proof}
-		It is sufficient to show this formula for $\beta$ and $\beta'$ in $U^{\infty}$ by density. Indeed, for such $\beta, \beta'$, both sides of the identity define continuous bilinear forms on $T^{\infty}$. We use the well-known integration by part formula
-		\[\duality{N u}{v} = \duality{S\partial_x u}{\partial_x v},\]
-		valid when $u$ and $v$ vanish at the extremities of the segment (see for example \cite{bruno2012second}). 
-		For a smooth $\beta$, we thus have
-		\[ \duality{N (\omega \beta)}{ (\omega \beta')} = \duality{S \partial_x(\omega \beta)}{\partial_x (\omega \beta')}\] 
-		which obviously implies the announced identity. 
-	\end{proof}
-\end{Lem}
-\begin{Prop}
-	$N_\omega$ is a positive definite, self-adjoint operator continuous from $U^s$ to $U^{s-1}$ for all real $s$. For all $n \in \N$, we have 
-	\[N_\omega U_n = \frac{n+1}{2}U_n.\]
-	Moreover, $-(\partial_x\omega)^2$ is also positive definite of order $2$.
-	\label{NUn}
-\end{Prop}
-\begin{proof}
-	From identity $T_{n+1}' = (n+1)U_n$ and Equation $\eqref{cheb1}$ we obtain
-	\begin{equation*}
-	\omega \partial_x \omega U_n = -(n+1) T_{n+1}.
-	\end{equation*}
-	Therefore, by \autoref{lemIPP}
-	\begin{eqnarray*}
-		\duality{N_\omega U_m}{U_n}_\omega & = & (n+1)(m+1)\duality{S_\omega T_{m+1}}{T_{n+1}}_\frac{1}{\omega}\\
-		&=& \delta_{m=n} \frac{n+1}{2}.	
-	\end{eqnarray*}
-	The fact that $-(\partial_x \omega)^2$ is self-adjoint positive definite of order $2$ is a consequence of Equation \eqref{cheb2}.
 \end{proof}
-	Like before, we have the following link between $U^{-1/2}$, $U^{1/2}$ and the usual Sobolev spaces. 
+\noindent The main consequence for our purpose is the possibility to derive an explicit inverse of $S_\omega$ as the square root of a local operator. Recall that
+\[-(\omega \partial_x)^2 T_n = n^2 T_n\]
+the operator $-(\omega \partial_x)^2$ is in $S^{-2}$ and 
+\[-(\omega \partial_x)^2 S_\omega^2 = \frac{I_d}{4} + T_\infty.\]
+This shows that $\sqrt{-(\omega \partial_x)^2}$ and $S_\omega$ can be thought as inverse operators (modulo smoothing operators) and that $\sqrt{-(\omega \partial_x)^2}$ can thus be used as an efficient preconditioner for $S_\omega$. 
+
+\paragraph{Hypersingular operator}For $k = 0$ and when $\Gamma = (-1,1)\times \{0\}$, the identity \eqref{NkomegaenfonctiondeSkomega} becomes
+\[\duality{N_\omega \beta}{\beta'}_\omega = \duality{S_\omega (\omega \partial_x \omega) \beta}{ (\omega \partial_x \omega) \beta'}_\frac{1}{\omega}\] 
+Noticing that $(\omega \partial_x \omega) U_n = -(n+1) T_{n+1}$, we have for all $n \neq m$ 
+\[\duality{N_\omega U_n}{U_m}_\omega = 0 \,,\]
+so $N_\omega U_n = \nu_n U_n$ with 
+\[ \nu_n\norm{U_n}_{\omega}^2 = (n+1)^2 \sigma_{n+1} \norm{T_{n+1}}_\frac{1}{\omega}^2,\]
+that is, $\nu_n = \frac{(n+1)}{2}$.
+so $N_\omega$ is of order $-1$ in the scale $U^s$. In particular, $N_\omega$ maps smooth functions to smooth functions. As before, a characterization of $U^{s}$ for $s = \pm \frac{1}{2}$ from the previous formula:
 \begin{Lem} The following identities hold, 
-	\[\omega U^{1/2} = \tilde{H}^{1/2}(-1,1),\]
+	\[ U^{1/2} =  \frac{1}{\omega} \tilde{H}^{1/2}(-1,1),\]
 	\[ U^{-1/2} = H^{-1/2}(-1,1),\]
 	with 
 	\[\norm{\omega u}_{\tilde{H}^{1/2}} \sim \norm{u}_{U^{1/2}},\quad \norm{u}_{U^{-1/2}} \sim \norm{u}_{H^{-1/2}}.\]
@@ -754,135 +681,39 @@ We now show that $N_\omega$ can also be analyzed in our functional framework, us
 \end{Lem}
 \begin{proof} It suffices to remark that 
 	\[ \norm{\omega u}_{\tilde{H}^{1/2}} \sim \sqrt{\duality{N\omega u}{\omega u}} = \sqrt{\duality{N_\omega u}{u}_\omega} \sim \norm{u}_{U^{1/2}}\,.\]
-	The second equality follows from the same calculations that were done in Lemma \ref{LemmaT1/2},, as well as the norm equivalence. 
+	The second equality follows from the same calculations that were done in Lemma \ref{LemmaT1/2}, as well as the norm equivalence. 
 \end{proof}
-As an application of this result, one can also derive the formal expansions as in \cite{jerez2012explicit}
-\[\frac{1}{(x-y)^2} = \sum_{n=0}^{+\infty} 2(n+1)U_n(x)U_n(y)\,,\]
-that lead, by applying for $(\partial_x\omega)^{-2}$ on both sides, to the following explicit kernel for the inverse of $N_\omega$:
-\[\ln\left(\dfrac{(y-x)^2 + (\omega(x) + \omega(y))^2}{2|x-y|}\right) = \sum_{n=0}^{+\infty} \dfrac{2 U_n(x) U_n(y)}{n+1}.\]
-Here instead, we give a simple expression of the inverse of $N_\omega$ as the inverse square root of a local operator:
-\begin{The} 
-	\label{the:NeumannInverseLaplace}
-	There holds 
-	\[N_\omega^2 = -\frac{1}{4}(\partial_x \omega)^2 \,.\]
-	The inverse of $N_\omega$ is therefore 
-	\begin{equation}
-	N_\omega^{-1} = 2\sqrt{-(\partial_x \omega)^{-2}}\,.
-	\end{equation}
+Here again, we can express the inverse of $N_\omega$ in the form of the square root of a local operator. Recall that
+\[-(\partial_x \omega)^2 U_n = -(n+1)^2 U_n\]
+the operator $ -(\partial_x \omega)^2$ is of order $-2$ in the scale $U^s$ and 
+\[N_\omega^2 = -\frac{1}{4}(\partial_x \omega)^2.\]
+
+In what follows, we show that those simple identities can be generalized to non-zero wavenumber $k$ and arbitrary smooth and non-intersecting open curve $\Gamma$. 
+
+\subsection{Weighted single-layer operator on the flat segment for $k \neq 0$}
+
+In this section and the next, $\Gamma$ is the flat segment $(-1,1) \times\{0\}$. The general case is treated in \autoref{}. We first focus on the weighted single-layer operator problem with non-zero frequency, and establish the following result, announced in \cite{alouges2018new}.
+\begin{The}
+	$S_{k,\omega}$ is of order $1$ in the scale $T^s$, and
+	\[\left[-(\omega \partial_x)^2 - k^2 \omega^2\right] S_{k,\omega}^2 = \frac{I_d}{4} + T_4.\]
 \end{The}
-In \autoref{TableNitTimeLaplaceNeumann}, we compare the number of iterations for the numerical resolution of Equation \eqref{Nomegabeta} by the method detailed in \autoref{sec:numerMeth} without preconditioner, and with a preconditioner given by $M^{-1} \left[B \right] M^{-1}$ where $M$ is the mass matrix and $\left[ B \right]$ is the Galerkin matrix of the operator $\sqrt{ -( \partial_x \omega)^{-2}}$. The right hand side in \eqref{Nomegabeta} is chosen as $u_N(x) = (x^2 + 0.001)^{1/2}, x \in (-1,1)$.
-
-\begin{table}[H]
-	\begin{center}
-		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
-			\hline
-			\multicolumn{1}{||c|}{ }&
-			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
-			\hline
-			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
-			\hline\hline
-			50 & 4 & 0.05 & 50 & 0.05\\
-			\hline
-			200 & 3 & 0.05 & 200 & 0.25\\
-			\hline
-			800 & 3 & 0.06 & 799 & 3.7 \\
-			\hline
-			3200 & 3 & 0.6 & 3007 & 630\\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
-	\label{TableNitTimeLaplaceNeumann}
-\end{table}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{../figs/PrecondNeumannLaplaceSeg.png}
-	\caption{Number of iteration in the resolution of the hypersingular  integral equation with a mesh of size $N = 1600$. The importance of preconditioning in this case is more obvious than in the case of the single-layer equation.}
-	\label{FigureNitLaplaceNeumann}
-\end{figure}
-
 \begin{Rem}
-	In \cite{bruno2012second}, the main theorem is equivalent to stating that $N_\omega S_\omega$ and $S_\omega N_\omega$ are bicontinuous operators in $T^s$, with a spectrum concentrated around $\frac{1}{4}$, which can be exploited for preconditioning purposes. It is shown that $N_\omega$ is continuous from $T^s$ to $T^{s-1}$ for all $s >1$ (in fact, this remains true for $s > \frac{1}{2}$). The two main arguments involved in the proof are the explicit expression of $N_\omega T_n$ and the continuity of the adjoint of the Cesaro operator in $l^2(\N)$. The same arguments can be used to prove that $S_\omega$ is also a bicontinuous operator from $U^s$ to $U^{s+1}$ for all $s > 1/2$. 
+	The previous result also implies that
+	\[-(\omega \partial_x)^2 S_{k,\omega}^2 = \frac{I_d}{4} + R\]
+	where $R$ is of order $2$. This is also a compact perturbation of the identity. We have $R = k^2 \omega^2 S_{k,\omega}^2 + T_4$. Thus, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
 \end{Rem}
-
-
-
-\section{Helmholtz equation}
-	
-	In this section, we introduce preconditioners for the integral equations on $\Gamma = (-1,1)$ for the Helmholtz equation. Recall the definition of the single layer and hypersingular operators, $S_k$ and $N_k$, given in \eqref{defSk} and \eqref{defNk}, and the integral equations for the Dirichlet and Neumann problems, \eqref{Sklambda} and \eqref{Nkmu}. As before, let $S_{k,\omega} \isdef S_k \frac{1}{\omega}$ and $N_{k,\omega} \isdef N_k \omega$. We begin by establishing the following result:
-	
-	\begin{The}
-		\label{Commutations}
-		The following commutations hold:
-		\[S_{k,\omega} \left[-(\omega \partial_x)^2 - k^2\omega^2\right] =  \left[-(\omega \partial_x)^2 - k^2\omega^2\right]S_{k,\omega},\]
-		\[N_{k,\omega} \left[-(\partial_x \omega)^2 - k^2\omega^2\right] =  \left[-(\partial_x \omega)^2 - k^2\omega^2\right]N_{k,\omega}.\]
-		\begin{proof}
-			We start with the first commutation. Since $(\omega \partial_x)^2$ is self adjoint and symmetric, we have 
-			\[S_{k,\omega} (\omega \partial_x)^2 = \int_{-1}^{1} \frac{(\omega_y \partial_y)^2 \left[G_k(x-y)\right] u(y)}{\omega(y)},\]
-			where we use the notation $\omega_y$ and $\partial_y$ to emphasize the dependence in the variable $y$. 
-			Thus, 
-			\[S_{k,\omega} (\omega \partial_x)^2 - (\omega \partial_x)^2 S_{k,\omega} = \int_{-1}^{1} \frac{D_k(x,y)u(y)}{\omega(y)},\]
-			where $D_k(x,y) \isdef \left[(\omega_y \partial_y)^2 - (\omega_x \partial_x)^2\right] \left[G_k(x-y)\right]$. 
-			One has 
-			\[D_k(x,y) = G_k''(x-y) (\omega^2_y - \omega^2_x) + G_k'(x-y)(y + x).\]
-			Since $G_k$ is a solution of the Helmholtz equation, we have for all $(x \neq y) \in \R^2$ 
-			\[G_k'(x-y) = (y-x)(G_k''(x-y) + k^2G(x-y)),\]
-			thus
-			\[D_k(x,y) = G_k''(x-y)\left(\omega^2_y - \omega_x^2 + y^2 - x^2\right) + k^2(y^2 - x^2)G_k(x-y) . \]
-			A careful analysis shows that no Dirac mass appears in the previous formula, that is, the previous formula is an equality of two functions in $T^{-\infty}$. 
-			Note that $y^2 - x^2 = \omega_x^2 - \omega_y^2$ so the first term vanishes and we find
-			\[S_{k,\omega} (\omega \partial_x)^2 - (\omega \partial_x)^2 S_{k,\omega} =  k^2\left(\omega^2 S_{k,\omega} -S_{k,\omega} \omega^2 \right). \]
-			The proof of the second commutation is postponed to \autoref{ann:commut}. 
-		\end{proof}
-	\end{The}
-	
-	This theorem implies that the operators $S_{k,\omega}$ and $N_{k,\omega}$ share the same eigenvectors as, respectively, $\left[-(\omega \partial_x)^2 - k^2\omega^2\right]$ and $ \left[-(\partial_x \omega)^2 - k^2\omega^2\right]$. We can look for eigenfunctions of the operator $\left[ -(\omega \partial_x)^2 - k^2\omega^2\right]$, to find a diagonal basis for $S_{k,\omega}$. They are the solutions to the differential equation 
-	\[ (1-x^2) y'' - x y' - k^2 \omega^2 y = \lambda y.\]
-	Once we set $x = \cos \theta$, $\tilde{y}(\theta) = y(x)$,  $q = \frac{k^2}{4}$, $a = \lambda + 2q$, $\tilde{y}$ is a solution of the standard Mathieu equation 
-	\begin{equation}
-	\label{MatthieuEq}
-		\tilde{y}'' + (a - 2q \cos(2\theta)) \tilde{y} = 0.
-	\end{equation}
-	There are a discrete set of values $a_{2n}(q)$ for which this equation possesses an even and $2\pi$ periodic function. The corresponding solution is known as the Mathieu cosine, and usually denoted by $\textup{ce}_n$. Here, we use the notation $\textup{ce}^k_n$ to emphasize the dependency in the parameter $k = \sqrt{2q}$ of those functions. The normalization is taken as
-	\[ \int_{0}^{2\pi} \textup{ce}^k_n(\theta)^2 d\theta = \pi.\]
- 	They satisfy
-	\[ \int_{-\pi}^{\pi}\textup{ce}^k_n(\theta) \textup{ce}^k_m(\theta) = \pi \delta_{m,n}.\]
-	Any even $2\pi$ periodic function in $L^2(-\pi,\pi)$ can be expanded along the functions $\textup{ce}_n$, with the coefficients obtained by orthonormal projection. Letting 
-	\[T_{n}^k \isdef \textup{ce}^k_n(\arccos(x)),\]
-	in analogy to the zero-frequency case, we have
-	\[\left[-(\omega \partial_x)^2 - k^2\omega^2\right] T_{n}^k = \lambda_{n,k}^2 T_{n}^k.\]
-	For large $n$, using the general results from the theory of Hill's equations (see \cite[eq. 28.29.21]{NIST:DLMF}) we have the following asymptotic formula for $\lambda_{n,k}$:
-	\[ \lambda_{n,k}^2 = n^2 - \frac{k^4}{16n^2} +o \left(n^{-2}\right). \]
-	The first commutation established in \autoref{Commutations} implies that the Matthieu cosines are also the eigenfunctions of the single-layer operator. An equivalent statement is given in \cite[Thm 4.2]{betcke2014spectral}, if we allow the degenerate case $\mu = 0$. 
-	A similar analysis can be applied to the hypersingular operator. The eigenfunctions of $\left[(\partial_x \omega)^2 - k^2 \omega^2\right]$ are given by 
-	\[U_n^k \isdef \frac{\textup{se}_n^k(\arccos(x))}{\omega(x)}\]
-	where $\textup{se}_n^k$ are the so-called Matthieu sines, which also satisfy the Matthieu differential equation \eqref{MatthieuEq}, but with the condition that they must be odd $2\pi$ periodic functions. 
-	Unfortunately, the lack of knowledge about the eigenvalues of $S_{k,\omega}$ and $N_{k,\omega}$ prevents us from applying a similar analysis as that performed in the first part of this work. Instead, we will perform a perturbation analysis, much like \cite{bruno2012second}.
-	
-	\subsection{Dirichlet problem}
-	
-	In this section, we focus on the Dirichlet problem with non-zero frequency, and the corresponding integral equation 
-	\begin{equation}
-	S_k \lambda = u_D
-	\label{Sklambda2}
-	\end{equation}
-	Here again, we introduce the weighted operator $S_{k,\omega} \isdef S_k \frac{1}{\omega}$, i.e.
-	\[S_{k,\omega}\alpha : x \mapsto \int_{-1}^1 \dfrac{H_0(k|x-y|) \alpha(y)}{\omega(y)}dy.\]
-	If we let $\lambda = \dfrac{\alpha}{\omega}$, then equation \eqref{Sklambda2} is equivalent to
-	\[S_{k,\omega}\alpha = u_D.\]
-	The Hankel function can be written as 
-	\[H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F_1(z^2)\]
-	where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. Using the power series definition of $J_0$, 
-	\begin{align}
+The perturbation analysis is based on the following expansion for the Hankel:
+\[H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F_1(z^2)\]
+where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. Using the power series definition of $J_0$, this gives
+\begin{align}
 	\begin{split}
 	\frac{i}{4}H_0(k \abs{x - y}) &= \frac{-1}{2\pi}\ln |x-y| \label{decompHankel}\\ 
 	&\quad + \frac{1}{2\pi} \frac{k^2}{4} (x- y)^2 \ln |x-y|\\
 	&\quad + (x-y)^4 \ln|x-y|F_2(x,y) + F_3(x,y)
 	\end{split}
-	\end{align}
+\end{align}
 \noindent where $F_2$ and $F_3$ are $C^{\infty}$. Let us introduce the operators $O_n$ defined for $n \geq 1$ as 
-\[O_n : \alpha \mapsto -\frac{1}{2\pi}\int_{-1}^{1}(x-y)^{n-1} \ln\abs{x - y} \frac{\alpha(y)}{\omega(y)}.\]
-recall the definition of the class $S^n$ introduced in \autoref{subsec:classesOfOp}. We have the following result:
+\[O_n : \alpha \mapsto -\frac{1}{2\pi}\int_{-1}^{1}(x-y)^{n-1} \ln\abs{x - y} \frac{\alpha(y)}{\omega(y)}\,.\]
 \begin{Lem}
 	\label{orderOfOn}
 	For every $n$, $O_n$ is in the class $S^n$. 
@@ -891,6 +722,59 @@ recall the definition of the class $S^n$ introduced in \autoref{subsec:classesOf
 	This can be shown by a simple induction. $O_1$ is just $S_\omega$, which is indeed in $S^1$. Let $n \geq 2$, and assume $O_{n-1} \in S^{n-1}$. We have
 	\[ O_n = x O_{n-1} - O_{n-1} x.\]
 	As shown in \autoref{lem:multPolyOrdre0}, the multiplication by $x$ defines an operator of $S^0$. By assumption, $O_{n-1}$ is in $S^{n-1}$, thus \autoref{CommutPDO} implies that $O_{n} \in S^n$, which concludes the proof. 
+\end{proof}
+We define the operator $y$ by 
+\[y T_n = \frac{T_{n+1} - T_{n-1}}{2}\,.\]
+It is easy to check that $y$ is in $S^0$ and $y^2 = -\omega^2$. Moreover, $y$ commutes with the multiplication by $x$.   
+We show an intermediary result:
+\begin{Lem}
+	\label{resultInterm}
+	For all $n \geq 0$, there exists an operator $R_{n+2} \in S^{n+2}$ such that
+	\begin{equation}
+		x S_\omega^n - S_\omega^n x = 2 ny S_{\omega}^{n+1} + R_{n+2}\,.
+	\end{equation}
+\end{Lem}
+\begin{proof}
+	We must show that
+	\[R_{n+2} \isdef x S_\omega^n - S_\omega^n x -2ny S_\omega^{k+1} \]
+	belongs to the class $S^{n+2}$ for all $n \in \N$. For $n = 0$ this is obvious so we fix $n \geq 1$. We check the three requirements of \autoref{defClassSk}.
+	Using $x T_k = \frac{T_{k+1} + T_{k-1}}{2}$ and $S_\omega T_k = \sigma_k T_k$, we have
+	\[R_{n+2}T_k = a(k,-1) T_{k-1} + a(k,1) T_{k+1}\]
+	with 
+	\begin{eqnarray*}
+		a(k,1) &=& \frac{\sigma_k^n - \sigma_{k+1}^{n} - n \sigma_k^{n+1}}{2}\\
+		a(k,-1) &=& \frac{\sigma_k^n - \sigma_{k-1}^{n} + n \sigma_k^{n+1}}{2}
+	\end{eqnarray*}
+	The symbol $a$ thus satisfies the requirements (i) and (iii). It remains to show the estimate (ii). We do this for $a(k,1)$, the other case being similar. Of course, it suffices to establish the estimate for $k \geq 1$. In this case, we have $\sigma_k = \frac{1}{2k}$, thus 
+	\[a(k,1) = g(k+1) - g(k) - g'(k)\]
+	where 
+	\[g(x) = -\frac{1}{2\times(2x)^{n}}\,.\]
+	Applying $\Delta_k^\alpha$, on both sides and using the commutation of $\frac{d}{dx}$ and $\Delta_k$, we obtain
+	\[a(k,1) = \Delta^\alpha_k g(k+1) - \Delta_k^\alpha g(k) - (\Delta^{\alpha}_k g)'(k)\,.\]
+	This can be rewritten using Taylor's formula
+	\[a(k,1) = \int_{k}^{k+1}(k+1 - \xi) \left(\Delta^{\alpha}_k g''\right)(\xi) d\xi\,.\]
+	Using \autoref{lemDeltaDerivees} and the explicit derivatives of $g$, for $\xi \geq 1$, there holds
+	\[ \abs{\left(\Delta^{\alpha}_k g''\right)(\xi)} \leq \frac{C}{(1 + \xi)^{k + 2+ \alpha }}\]
+	and thus, for $k \geq 1$, 
+	\[\abs{\Delta_k^\alpha a(k,1)} \leq \frac{C}{(1+n)^{n+\alpha+2}}\,,\]
+	as needed. 
+\end{proof}
+\begin{Lem}
+	For all $n \geq 1$, the operator $O_n$ satisfies 
+	\begin{equation}
+		\label{announced}
+		O_n = 2^{n-1}(n-1)! y^{n-1} S_\omega^{n} + R_{n+1}
+	\end{equation}
+	where $R_{n+1} \in S^{n+1}$. 
+\end{Lem}
+\begin{proof}
+	We show this by induction. For $n=1$, the formula is obvious, with $R_{n+1} = 0$. Assume that the formula is true for $n \geq 1$. Then by definition, 
+	\[O_{n+1} = x O_n - O_n x\]
+	and using the recurrence assumption, and the commutation of $x$ and $y$:
+	\[O_{n+1} = 2^{n-1}(n-1)! y^{n-1} \left(xS_\omega^{n} - S_\omega^{n}x \right) + \left(xR_{n+1} - R_{n+1}x\right)\,. \]
+	Applying \autoref{resultInterm}, there exists an operator $R \in S^{n+2}$ such that 
+	\[O_{n+1} = 2^n n! y^{n}S_\omega^{n+1} + 2^n n! y^{n}R + \left(x R_{n+1} - R_{n+1}x\right)\,.\]
+	By \autoref{LemCompo}, the operator $2^n n! y^n R$ is in the class $S^{n+2}$, since $R \in S^{n+2}$ and $y \in S^0$. Furthermore, by \autoref{CommutPDO}, $\left(x R_{n+1} - R_{n+1}x\right)$ is in $S^{n+2}$ since $R_{n+1} \in S^{n+1}$ and $x \in S^0$. Therefore 	$R_{n+2} \isdef 2^n n! y^n R +  \left(xR_{n+1} - R_{n+1}x\right)$ is indeed in $S^{n+2}$ and the result is proved. 
 \end{proof}
 Using the notation introduced in \autoref{DefEquivModTp}, we have the following result:
 \begin{Lem}
@@ -903,24 +787,14 @@ Using the notation introduced in \autoref{DefEquivModTp}, we have the following 
 	\[R_5 : \alpha \mapsto \int_{-1}^{1} (x-y)^4 \ln|x - y|F_2(x,y)\frac{\alpha(y)}{\omega(y)}\]
 	is of order $5$. Since $O_5$ is of order $5$, this is true in view of \autoref{ordreNoyauxMultipl}.
 \end{proof}
-In particular, the operator $S_{k,\omega}$ is well defined on $T^{-\infty}$, and is of order $1$. Moreover, we see that $S_{k,\omega}$ is a compact perturbation of $S_\omega$ in $T^s$. Therefore, the product $\sqrt{(-\omega \partial_x)^2}S_{k,\omega}$ is a compact perturbation of identity. In fact, using \autoref{decompHankel}, we can see that $S_{k,\omega}(- \omega \partial_x)^2 S_{k,\omega} = \frac{I_d}{4} + K$ where K is a compact operator of order $2$. However, even if the condition number of $\sqrt{-(\omega \partial_x)^2}S_{k,\omega}$ is independent of the mesh size, numerical expermients show that it increases with $k$. It is thus desirable to include in the preconditioner a correction for the wave number, which is the object of the next result. We first give an identity which will be useful also in the treatment of the hypersingular equation.
+In particular, the operator $S_{k,\omega}$ is well defined on $T^{-\infty}$, and is of order $1$. 
 \begin{Lem}
 	\label{LemSwDeltaO3}
 	There holds
 	\[S_\omega (\omega \partial_x)^2 O_3 + O_3(\omega \partial_x)^2 S_\omega = 4S_\omega\omega^2S_\omega + T_4.\]
 \end{Lem}
 \begin{proof}
-	One has
-	\[(\omega \partial_x)^2 \left((x - y)^2\ln|x-y|\right) = 2 \omega^2(x)\ln|x-y| -2x(x-y) \ln|x-y| + P(x,y)\]
-	where $P$ is a polynomial in $x$ and $y$. Dividing by $-2\pi\omega(y)$ and integrating on both sides with respect to $y$, we get 
-	\[(\omega \partial_x)^2 O_3 = 2 \omega^2 S_\omega - 2xO_2 + R \]
-	where $R$ is a smoothing operator in view of \autoref{lemSmoothingOp}. Equalizing the adjoint operators  (with respect to the $T^0$ scalar product), we get
-	\[O_3(\omega \partial_x)^2 = 2 S_\omega\omega^2 + 2O_2x + R^*\]
-	where $R^*$ is also a smoothing operator (note that $O_1$ is self-adjoint while $O_2^* = - O_2$). This gives
-	\[S_\omega (\omega \partial_x)^2 O_3 + O_3(\omega \partial_x)^2 S_\omega = 4S_\omega \omega^2S_\omega - 2S_\omega x O_2 + 2 O_2 x S_\omega + R_\infty\]
-	where $R_\infty$ is again a smoothing operator. Now, notice that, by definition of $O_3$, 
-	\[O_2 x S_\omega - S_\omega x O_2 = \left(O_2 x S_\omega - S_\omega O_2 x\right) -  S_\omega O_3.\]
-	Since $O^3 \in S^3$ and $S_\omega \in S^1$, \autoref{LemCompo} implies that the term $S_\omega O_3$ is in $S^4$. Moreover, $O_2 x \in S^2$ and $S_\omega \in S^1$, so the commutation in parenthesis is also in $S^4$ by \autoref{CommutPDO}, which implies the announced result.
+	We have $S_\omega \in S^1$, $O_3 \in S^3$ and $(\omega \partial_x)^2 \in S^{-2}$. 
 \end{proof}
 \begin{The} There holds
 	\label{TheHelmholtz}
@@ -968,7 +842,7 @@ This result suggests $\left[-(\partial_x \omega)^2 - k^2 \omega^2 \right]^{-1/2}
 
 \subsection{Non-flat arc}
 
-In the more general case of a $C^{\infty}$ non-intersecting open curve $\Gamma$ and non-zero frequency $k$, the results of the previous sections can be extended using again compact perturbations arguments. Essentially, in the decomposition \autoref{decompHankel}, $x$ and $y$ must be replaced by $r(x)$ and $r(y)$, where the function $r$ is a smooth, constant-speed parametrisation of $\Gamma$ defined on $[-1,1]$ and satisfying $\abs{r(x) - r(y)}^2 = \frac{\abs{\Gamma}}{4} \abs{x - y}^2 + \abs{x-y}^4 G(x,y)$ where $\abs{\Gamma}$ is the length of $\Gamma$ and $G$ is a $C^{\infty}$ function on $[-1,1]$. Letting $\omega_\Gamma(x) = \abs{\Gamma} \omega(x)$, $\partial_\tau$ the tangential derivative on $\Gamma$ and $S_{k,\omega_{\Gamma}} \isdef S_k \frac{1}{\omega_\Gamma}$, we have: 
+In the more general case of a $C^{\infty}$ non-intersecting open curve $\Gamma$ and non-zero frequency $k$, the results of the previous sections can be extended using again compact perturbations arguments. Essentially, in the decomposition \autoref{decompHankel}, $x$ and $y$ must be replaced by $r(x)$ and $r(y)$, where the function $r$ is a smooth, constant-speed parametrisation of $\Gamma$ defined on $[-1,1]$ and satisfying $\abs{r(x) - r(y)}^2 = \frac{\abs{\Gamma}^2}{4} \abs{x - y}^2 + \abs{x-y}^4 G(x,y)$ where $\abs{\Gamma}$ is the length of $\Gamma$ and $G$ is a $C^{\infty}$ function on $[-1,1]$. Letting $\omega_\Gamma(x) = \abs{\Gamma} \omega(x)$, $\partial_\tau$ the tangential derivative on $\Gamma$ and $S_{k,\omega_{\Gamma}} \isdef S_k \frac{1}{\omega_\Gamma}$, we have: 
 \begin{The}
 	\label{TheHelmholtz3}
 	\[S_{k,\omega_\Gamma} \left( -(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right) S_{k,\omega_\Gamma} = \frac{I_d}{4} + T_4\]
@@ -1012,7 +886,8 @@ In this section, we show some numerical results to illustrate the efficiency of 
 	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N \approx 3700$, $L = 800 \lambda$.}
 	\label{FigureNitHelmDirichlet}
 \end{figure}
-\paragraph{Flat segment, Neumann boundary condition.} We run the same numerical comparisons, this time with the precondioning operator $\left(-(\partial_x \omega)^2 - k^2 \omega^2\right)^{-1/2}$. 
+\paragraph{Flat segment, Neumann boundary condition.} We run the same numerical comparisons, this time with the precondioning operator 
+\[\left(-(\partial_x \omega)^2 - k^2 \omega^2\right)^{-1/2}\,.\] 
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
@@ -1271,13 +1146,15 @@ We shall prove the following:
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C \norm{u}_{U^{1/2}}.\]
 	We are now going to show the estimate
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C h^{3/2} \norm{u}_{U^{2}}.\]
-	By the analog of Céa's lemma \autoref{CeaNeumann}, one has $\norm{(I-\Pi_h)u}_{U^{1/2}} \leq \norm{(I - I_h) u}_{U^{1/2}}$. By interpolation, this norm satisfies
+	By the analog of Céa's lemma \autoref{CeaNeumann}, one has 
+	\[\norm{(I-\Pi_h)u}_{U^{1/2}} \leq \norm{(I - I_h) u}_{U^{1/2}}\,.\] 
+	By interpolation, this norm satisfies
 	\[\norm{(I - I_h)u}_{U^{1/2}} \leq C \sqrt{\norm{(I - I_h)u}_{U^{0}}}\sqrt{\norm{(I - I_h)u}_{U^{1}}},\]
 	which yields, applying \autoref{U0U2,U1U2},
 	\[\norm{(I - I_h)u}_{U^{1/2}} \leq C h^{3/2} \norm{u}_{U^2}.\]
 	By interpolation, for all $s \in [1/2,2]$, we get
 	\[\norm{(I - \Pi_h)u}_{U^{1/2}} \leq C h^{s - 1/2} \norm{u}_{U^s}.\]
-	In view of \autoref{lemU12H12}, we have $\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \sim \norm{(I - \Pi_h)\beta}_{U^{1/2}}$. Moreover, since $N_\omega$ is a continuous bijection from $U^{s+1}$ to $U^s$ for all $s$, there holds
+	In view of \autoref{lemU12H12}, we have $\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \sim \norm{(I - \Pi_h)\beta}_{U^{1/2}}$. In addition, since $N_\omega$ is a continuous bijection from $U^{s+1}$ to $U^s$ for all $s$, there holds
 	\[\norm{\beta}_{U^s} = \norm{N_\omega^{-1} u_N}_{U^s} = \norm{u_N}_{U^{s-1}}.\]
 	Consequently, 
 	\[\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \leq  C\norm{(I - \Pi_h)\beta}_{U^{1/2}} \leq C h^{s - 1/2} \norm{\beta}_{U^s} \leq C h^{s - 1/2} \norm{u_N}_{U^{s-1}}.\]
@@ -1324,6 +1201,15 @@ Possible analyse pseudo-diff ? En reparler ? Lien avec Antoine et Darbas.
 \appendix
 \section{Commutation of $N_\omega$ and $(\partial_x \omega)^2 + k^2\omega^2$}
 \label{ann:commut}
+We start with two lemmas. First an elementary result:
+\begin{Lem}
+	\label{omega2continuUsTs}
+	The multiplication by $\omega^2$ defines a continuous operator from $U^s$ to $T^s$. 
+\end{Lem}
+\begin{proof}
+	This fact is a consequence of the identity $\omega^2 U_n = \frac{T_{n} - T_{n+2}}{2}$. 
+\end{proof}
+Second, we establish the following identity:
 \begin{Lem}
 	\label{dxSomega2=Somegadxomega}
 	For any $\phi$, there holds 
@@ -1331,7 +1217,7 @@ Possible analyse pseudo-diff ? En reparler ? Lien avec Antoine et Darbas.
 \end{Lem}
 \begin{proof}
 	In our context, the largest space encountered is $U^{- \infty}$ (As a consequence of \autoref{LemInjectionsContinues}) so we shall show that this identity holds in that space.
-	For any $s$, by \autoref{omega2continuUsTs}, $\omega^2$ is a continuous operator from $U^s$ to $T^s$, $S_\omega$ is continuous from $T^s$ to $T^{s+1}$ and $\partial_x$ is continuous from $T^{s+1}$ to $U^s$ by \autoref{derivations}. Therefore, the left operator is continuous from $U^s$ to $U^s$. Similarly, the right operator is continuous from $U^{s}$ to $U^s$ for all $s$. If we fix $\phi \in U^{s}$ for some $s$, \autoref{densite} ensures that there exists a sequence $\phi_N$ in $U^{\infty}$ converging to $\phi$ in $U^{s}$. It is thus sufficient to check the identity for $\phi = U_n$. For $n \geq 1$, 
+	For any $s$, $\omega^2$ is a continuous operator from $U^s$ to $T^s$, $S_\omega$ is continuous from $T^s$ to $T^{s+1}$ and $\partial_x$ is continuous from $T^{s+1}$ to $U^s$ by \autoref{derivations}. Therefore, the left operator is continuous from $U^s$ to $U^s$. Similarly, the right operator is continuous from $U^{s}$ to $U^s$ for all $s$. If we fix $\phi \in U^{s}$ for some $s$, \autoref{densite} ensures that there exists a sequence $\phi_N$ in $U^{\infty}$ converging to $\phi$ in $U^{s}$. It is thus sufficient to check the identity for $\phi = U_n$. For $n \geq 1$, 
 	\begin{eqnarray}
 		\partial_x S_\omega \omega^2 U_n &=& \partial_x S_\omega \left(\frac{T_{n} - T_{n+2}}{2}\right)\\
 		&=& \partial_x\left(\frac{T_{n}}{4n} - \frac{T_{n+2}}{4(n+2)} \right)\\
@@ -1408,7 +1294,7 @@ Adding these two inequalities and using \autoref{LemSwDeltaO3}, we get
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} =\partial_x ( S_\omega \omega^2 S_\omega ) \omega \partial_x \omega + U_2.\]
 Here again, we use the formula $\partial_x S_\omega \omega^2 = S_\omega \omega \partial_x \omega$, which yields
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} = S_\omega \omega \partial_x \omega \partial_x S_\omega \omega^2 = \left(-\frac{I_d}{4} + T_\infty\right)\omega^2 .\]
-Since $\omega^2$ is continuous from $U^s$ to $T^s$, and using the injections $T^s\subset U^s$, any operator of the form $R \omega^2$ is smoothing in the scale $U^s$ as soon as $R$ is smoothing in the scale $T^s$. Therefore, 
+Since $\omega^2$ is continuous from $U^s$ to $T^s$ by \autoref{omega2continuUsTs} and using the injections $T^s\subset U^s$, any operator of the form $R \omega^2$ is smoothing in the scale $U^s$ as soon as $R$ is smoothing in the scale $T^s$. Therefore, 
 \[\frac{L_1 N_\omega + N_\omega L_1}{4} = -\frac{\omega^2}{4} + U_\infty.\]
 Moreover, we have
 \begin{eqnarray*}
@@ -1432,11 +1318,11 @@ Thus,
 \begin{eqnarray*}
 	S_\omega \omega^2 N_\omega + N_\omega S_\omega \omega^2 &=& \frac{\omega^2}{2} + \left(\partial_x S_\omega xS_\omega \omega^2  - S_\omega x \partial_x  S_\omega \omega^2 \right)+ U_\infty.
 \end{eqnarray*}
-We are done if we prove that the operator in parenthesis is of order $2$ in the scale $U^s$. For this, we may compute the action of each one of them on $U_n$. Using the various identities at our disposal, we obtain on the on hand for $n\geq 2$ 
+We are done if we prove that the operator in parenthesis is of order $2$ in the scale $U^s$. For this, we may compute the action of each one of them on $U_n$. Using the various identities at our disposal, we obtain on the one hand for $n\geq 2$ 
 \[\partial_x S_\omega x S_\omega \omega^2 U_n = -\frac{T_{n+2}}{8(n+2)} -\frac{T_n}{8(n+2)} +  \frac{U_{n} + U_{n-2}}{8n(n+2)}. \]
-and on the other hand
+and on the other hand for $n>0$ 
 \[S_\omega x \partial_x S_\omega \omega^2 U_n = -\frac{T_{n+2}}{8(n+2)} - \frac{T_n}{8n}.\]
-After substracting, this gives the rather surprising identity identity
+After substracting, this gives the rather surprising identity identity for $n \geq 2$
 \[\left(\partial_x S_\omega xS_\omega \omega^2  - S_\omega x \partial_x  S_\omega \omega^2 \right)U_n = \frac{U_n}{4n(n+2)}\]
 which of course proves our claim.
 
@@ -1524,3 +1410,337 @@ Un article (peut-être juste sur arxiv ?) sur les espaces $T^s$ et $U^s$, qui do
 \end{document}
 
 
+%
+%\section{Laplace equation on a flat segment}
+%
+%In this section, we restrict our attention to the case where $\Gamma$ is the open segment $(-1,1) \times \{0\}$, and $k=0$. We study the properties of the equations 
+%\[S\lambda = -u_D\]
+%and 
+%\[N\mu = u_N\]
+%and show their invertibility in a range of Sobolev-like spaces. This problem has been considered thoroughly, both
+%in terms of analytical and numerical properties in the literature (see for instance \cite{jiang2004second,bruno2012second}), and it turns out that the Chebyshev polynomials of first and second kind play a very important role. However, we go further compared to the literature by 
+%by constructing a functional framework close to Sobolev spaces, based on Chebyshev polynomials that
+%allows us to give a complete framework for the existence and uniqueness of the solutions to the preceding equations, as well as
+%new preconditioners.
+%
+%
+%
+%\subsection{Single layer equation}
+%
+%In this section we focus on the equation $S\lambda = g$, that is we seek $\lambda \in \tilde{H}^{-1/2}$ such that 
+%\begin{equation}
+%-\frac{1}{2\pi}\int_{-1}^{1} \log|x-y| \lambda(y) = -g(x), \quad \forall x\in (-1,1)\,.\label{Slambda}
+%\end{equation} 
+%
+%This equation is sometimes called ``Symm's integral equation'' and its resolution has received a lot of attention in the 1990's. Numerical methods, using both collocation and Galerkin have been presented and analyzed \cite{atkinson1991numerical,yan1988integral,yan1990cosine,sloan1992collocation,yan1989mesh}. 
+%
+%%The solution is connected to the exterior Dirichlet problem for the Laplace operator, but attention must be paid when the solution $\lambda$ obtained does not satisfy $\duality{1}{\lambda}_\Gamma = 0$: in this case, $\textup{SL}\lambda$ is not a bounded solution of the Dirichlet problem. See \cite{atkinson1991numerical} for a link with the logarithmic capacity of the line and how we recover the bounded solution from the solution of \eqref{Slambda}.
+%
+%
+%%
+%%\paragraph{Autre idée de présentation.}
+%%We first start with a commutation result
+%%
+%%\toDo{Commencer par le truc connu. Et en fait c'est normal. Balancer ensuite la commutation. Dire que ça n'a pas été remarqué. }
+%%
+%%\begin{Prop}
+%%	Commutation de $S_\omega$ et $(\omega \partial_x)^2$. 
+%%\end{Prop}
+%%Exploitation en terme de vp. Dire qu'on a deux opérateurs avec spectre discret. (L'un est compact dans $L^2_\frac{1}{\omega}$, (sans preuve pour l'instant).
+%%
+%\begin{Lem}
+%	\[ -\frac{1}{2\pi}\int_{-1}^{1} \frac{\ln|x-y|}{\sqrt{1 - y^2}}T_n(y)dy = s_n T_n(x)\]
+%	where
+%	
+%	\label{STn}
+%\end{Lem}
+%
+%Using the decomposition of $g$ and of the logarithmic kernel on the basis $T_n$, we see that the solution $\lambda$ to equation \eqref{Slambda} admits the following expansion 
+%\begin{equation}
+%\lambda(x) = \frac{1}{\sqrt{1-x^2}}\sum_{n=0}^{+ \infty} \frac{\hat{g}_n}{s_n} T_n(x).
+%\label{expansionLambda}
+%\end{equation}
+%We deduce the following well-known fact:
+%\begin{Cor}
+%	\label{CorSingularity}
+%	If the data $g$ is in $C^{\infty}([-1,1])$, the solution $\lambda$ to the equation 
+%	\[S\lambda = g\]
+%	is of the form 
+%	\[\lambda = \dfrac{\alpha}{\sqrt{1-x^2}}\]
+%	with $\alpha \in C^{\infty}([-1,1])$.  
+%	\begin{proof}
+%		Let $\alpha = \sqrt{1 - x^2}\lambda$ where $\lambda$ is the solution of $S\lambda = g$ where $g$ is assumed to lie in $C^{\infty}([-1,1])$. 
+%		\autoref{LemTinfCinf} implies that $g \in T^{\infty}$, and by equation \eqref{expansionLambda}, 
+%		\[ \hat{\alpha}_n = \frac{\hat{g}_n}{s_n},\]
+%		so $\alpha$ also  belongs to $T^{\infty} = C^{\infty}([-1,1])$. 
+%	\end{proof}
+%\end{Cor}
+%
+%
+%We follow \cite{bruno2012second} by noticing that the behavior in $\frac{1}{\sqrt{1-x^2}}$ is consistent with the expected singularity near the edges and introduce the weighted single layer operator as the operator that appeared in Proposition \ref{STn}.
+%\begin{Def}(See \cite{bruno2012second}) 
+%	Let $S_\omega$ be the weighted single layer operator defined by
+%	\[\opFromTo{S_\omega}{\alpha \in \Cinf([-1,1])}{-\dfrac{1}{2\pi}}{\int_{-1}^1\dfrac{\ln|x-y|}{\omega(y)} \alpha(y)dy}\]
+%\end{Def}
+%\noindent We also recall that the operator $(\omega\partial_x)^2$ is defined by \[\opFromTo{(\omega\partial_x)^2}{\alpha \in \Cinf([-1,1])}{(1-x^2)\alpha''(x) - x \alpha'(x)}.\]
+%
+%The action of these operators on $T^{\infty}$ is easy to analyze using \eqref{cheb1} and \autoref{STn}. By density of $T^{\infty}$ in $T^s$ for all $s$, we get:
+%\begin{Prop}
+%	The operator $S_\omega$ is a self-adjoint, positive definite operator, and defines a continuous bijection from $T^{s}$ to $T^{s+1}$ for all real $s$. In particular, $S_\omega$ is of order $1$ and is compact in $T^s$. 
+%	Similarly, for any $s \in \R$, the operator $-(\omega \partial_x)^2$ is positive, self-adjoint, and of order $-2$. 
+%\end{Prop}
+%\begin{proof}
+%	It suffices to remark that if $u=\sum_{n=0}^\infty \hat{u}_n T_n \in T^s$, then
+%	\[S_\omega u = \frac{\ln(2)}{2} \hat{u}_0 T_0 +  \sum_{n=1}^\infty \frac{\hat{u}_n}{2n} T_n\]
+%	while
+%	\[-(\omega \partial_x)^2 u = \sum_{n=0}^\infty n^2\hat{u}_n T_n \,.\]
+%\end{proof}
+%\begin{Rem}
+%	Of course, $S_\omega$ is in the class $S^1$ defined in \autoref{subsec:classesOfOp}
+%\end{Rem}
+%\noindent To obtain the solution of \eqref{Slambda}, we can thus solve 
+%\begin{equation}
+%S_\omega \alpha = -u_D,
+%\label{Somegaalpha}
+%\end{equation}
+%and let $\lambda = \frac{\alpha}{\omega}$.  
+%The next lemmas make clear the connection between the spaces $T^s$ with $s = \pm \frac{1}{2}$ and the usual Sobolev spaces. Equivalent results are proved in \cite{jerez2010boundary}. 
+%
+%
+%\begin{Lem} Similarly,
+%	\[H^{1/2}(-1,1) = T^{1/2}\]
+%	and for $u \in H^{1/2}(-1,1)$ we have
+%	\[\norm{u}_{H^{1/2}} \sim \norm{u}_{T^{1/2}}\,.\]
+%	\label{LemmaT1/2}
+%\end{Lem}	
+%\begin{proof}
+%	 
+%\end{proof}
+%
+%We are now in a position to find an expression for the inverse of $S_\omega$. An explicit inverse has already appeared in the literature. In 
+%particular, in \cite{jerez2012explicit,urzua2014optimal}, explicit variational forms for this inverse operator are derived rigorously. (A similar method is also employed in the recent paper \cite{hiptmair2017closed} in $\R^3$ for the case of the unit disk.) We just state here the following formal decomposition:
+%\[\dfrac{d^2}{dxdy}\log\frac{M(x,y)}{|x-y|^2} = \frac{-1+xy}{2|x-y|^2} = \sum_{n=1}^{+ \infty} n T_n(x)T_n(y)\]
+%with 
+%$M(x,y) = \frac{1}{2}\left((y-x)^2 + (\omega(x) + \omega(y))^2\right) $.
+%
+%However, using the preceding analysis, we have an alternative way of defining this exact inverse, which leads to an expression in the form of the square root of a local operator. To state the next result, we define the operator $\pi_{0}$ as the $L^2_{1/\omega}$ 
+%orthogonal projector on $T_0$. Namely 
+%\[\pi_0 \alpha(x)  = \frac{1}{\pi} \int_{-1}^{1}\frac{\alpha(y)}{\omega(y)}dy\,.\]
+%The preceding definition can be extended to $u \in T^s$ for any $s \in \R$ by setting $\pi_0 u$ as the solution of
+%\[\left\{
+%\begin{array}{l}\duality{\alpha-\pi_0 \alpha}{T_0}_{\frac{1}{\omega}} = 0\,,\\
+%\pi_0\alpha\in \mbox{Span}(T_0)\,,
+%\end{array}
+%\right.\]
+%since $T_0\in T^\infty$. Of course, $\pi_0$ is continuous from $T^s$ to $T^{\infty}$ for any $s$. 
+%
+%\begin{The}
+%	\label{TheSdx2S}
+%	There holds
+%	\begin{equation}
+%		\label{Sdx2S}
+%		S_{\omega}^2 = \frac{1}{4}\left(-(\omega\partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right)^{-1}\,.
+%	\end{equation}
+%\end{The}
+%\begin{proof}
+%	The Chebyshev polynomials $(T_n)$ are a common Hilbert basis of eigenvectors for the three operators $S_\omega$, $-(\omega \partial_x)^2$ and $\pi_0$, so it is sufficient to compute $4 S_\omega^2 \left(-(\omega\partial_x)^2 + \frac{1}{\ln(2)^2} \pi_0 \right) T_n$ and check that this is indeed equal to $T_n$. 
+%	One has using the explicit eigenvalues for $S_\omega$. This is easily verified using the following expressions
+%	\[ S_\omega T_n =\frac{1}{2n}T_n\,,\,\, \pi_0 T_n = 0 \mbox{ and } -(\omega\partial_x)^2T_n = n^2 T_n \mbox{ if } n\ne 0\,,\]
+%	while
+%	\[ S_\omega T_0 = \frac{\ln(2)}{2} T_0\,,\,\, \pi_0 T_0 = T_0 \mbox{ and } -(\omega\partial_x)^2T_0 = 0 \mbox{ otherwise.}\]
+%\end{proof}
+%
+%From the preceding formula, we can extract the explicit inverse of $S_\omega$ in terms of the square root of the inner operator. 
+%
+%\begin{Cor}
+%	The inverse of $S_\omega$ can be equivalently expressed as 
+%	\begin{equation}
+%	S_{\omega}^{-1} = 2\sqrt{-(\omega \partial_x)^2 + \frac{1}{\ln(2)^2}\pi_0}\,.
+%	\end{equation}
+%\end{Cor}
+%
+%
+%	
+%\begin{table}[H]
+%	\begin{center}
+%		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
+%			\hline
+%			\multicolumn{1}{||c|}{ }&
+%			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
+%			\hline
+%			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+%			\hline\hline
+%			50 & 7 & 0.11 & 35 & 0.21\\
+%			\hline
+%			200 & 7 & 0.14 & 53 & 0.55\\
+%			\hline
+%			800 & 7 & 0.29 & 76 & 2.0 \\
+%			\hline
+%			3200 & 7 & 0.95 & 107 & 9.5\\
+%			\hline
+%		\end{tabular}
+%	\end{center}
+%	\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
+%	\label{TableNitTimeLaplaceDirichlet}
+%\end{table}
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.7]{../figs/PrecondDirichletLaplaceSeg.png}
+%	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 1600$.}
+%	\label{FigureNitLaplaceDirichlet}
+%\end{figure}
+%
+%\subsection{Hypersingular equation} 
+%
+%We now turn our attention to the equation 
+%
+%\begin{equation}
+%N\mu = g
+%\label{Nmu}
+%\end{equation} 
+%
+%Similarly to the previous section and following again the idea of \cite{bruno2012second}, we consider a rescaled version of the hypersingular operator $N_\omega \isdef N \omega$ defined by
+%
+%\[N_\omega \mu = \lim_{\varepsilon\to 0}\int_{-1}^{1} n(y)\cdot\nabla G(x + \varepsilon n(x) - y) \sqrt{1-y^2} dy\]
+%We can get the solution to equation \eqref{Nmu} by solving 
+%\begin{equation}
+%N_\omega \beta = u_N,
+%\label{Nomegabeta}
+%\end{equation}
+%and letting $\mu = \omega \beta$. 
+%We now show that $N_\omega$ can also be analyzed in our functional framework, using this time the spaces $U^s$. 
+%\begin{Lem}
+%	\label{lemIPP}
+%	For any $\beta$, $\beta'$, one has 
+%	\[\duality{N_\omega \beta}{ \beta'}_\omega = \duality{S_\omega \omega \partial_x \omega \beta}{\omega \partial_x \omega \beta'}_\frac{1}{\omega}.\]
+%	\begin{proof}
+%		It is sufficient to show this formula for $\beta$ and $\beta'$ in $U^{\infty}$ by density. Indeed, for such $\beta, \beta'$, both sides of the identity define continuous bilinear forms on $T^{\infty}$. We use the well-known integration by part formula
+%		\[\duality{N u}{v} = \duality{S\partial_x u}{\partial_x v},\]
+%		valid when $u$ and $v$ vanish at the extremities of the segment (see for example \cite{bruno2012second}). 
+%		For a smooth $\beta$, we thus have
+%		\[ \duality{N (\omega \beta)}{ (\omega \beta')} = \duality{S \partial_x(\omega \beta)}{\partial_x (\omega \beta')}\] 
+%		which obviously implies the announced identity. 
+%	\end{proof}
+%\end{Lem}
+%\begin{Prop}
+%	$N_\omega$ is a positive definite, self-adjoint operator continuous from $U^s$ to $U^{s-1}$ for all real $s$. For all $n \in \N$, we have 
+%	\[N_\omega U_n = \frac{n+1}{2}U_n.\]
+%	Moreover, $-(\partial_x\omega)^2$ is also positive definite of order $2$.
+%	\label{NUn}
+%\end{Prop}
+%\begin{proof}
+%	From identity $T_{n+1}' = (n+1)U_n$ and Equation $\eqref{cheb1}$ we obtain
+%	\begin{equation*}
+%	\omega \partial_x \omega U_n = -(n+1) T_{n+1}.
+%	\end{equation*}
+%	Therefore, by \autoref{lemIPP}
+%	\begin{eqnarray*}
+%		\duality{N_\omega U_m}{U_n}_\omega & = & (n+1)(m+1)\duality{S_\omega T_{m+1}}{T_{n+1}}_\frac{1}{\omega}\\
+%		&=& \delta_{m=n} \frac{n+1}{2}.	
+%	\end{eqnarray*}
+%	The fact that $-(\partial_x \omega)^2$ is self-adjoint positive definite of order $2$ is a consequence of Equation \eqref{cheb2}.
+%\end{proof}
+%	Like before, we have the following link between $U^{-1/2}$, $U^{1/2}$ and the usual Sobolev spaces. 
+%
+%As an application of this result, one can also derive the formal expansions as in \cite{jerez2012explicit}
+%\[\frac{1}{(x-y)^2} = \sum_{n=0}^{+\infty} 2(n+1)U_n(x)U_n(y)\,,\]
+%that lead, by applying for $(\partial_x\omega)^{-2}$ on both sides, to the following explicit kernel for the inverse of $N_\omega$:
+%\[\ln\left(\dfrac{(y-x)^2 + (\omega(x) + \omega(y))^2}{2|x-y|}\right) = \sum_{n=0}^{+\infty} \dfrac{2 U_n(x) U_n(y)}{n+1}.\]
+%Here instead, we give a simple expression of the inverse of $N_\omega$ as the inverse square root of a local operator:
+%\begin{The} 
+%	\label{the:NeumannInverseLaplace}
+%	There holds 
+%	\[N_\omega^2 = -\frac{1}{4}(\partial_x \omega)^2 \,.\]
+%	The inverse of $N_\omega$ is therefore 
+%	\begin{equation}
+%	N_\omega^{-1} = 2\sqrt{-(\partial_x \omega)^{-2}}\,.
+%	\end{equation}
+%\end{The}
+%In \autoref{TableNitTimeLaplaceNeumann}, we compare the number of iterations for the numerical resolution of Equation \eqref{Nomegabeta} by the method detailed in \autoref{sec:numerMeth} without preconditioner, and with a preconditioner given by $M^{-1} \left[B \right] M^{-1}$ where $M$ is the mass matrix and $\left[ B \right]$ is the Galerkin matrix of the operator $\sqrt{ -( \partial_x \omega)^{-2}}$. The right hand side in \eqref{Nomegabeta} is chosen as $u_N(x) = (x^2 + 0.001)^{1/2}, x \in (-1,1)$.
+%
+%\begin{table}[H]
+%	\begin{center}
+%		\begin{tabular}{|| m{4em} | m{4em} | m{4em} | m{4em} | m{4em}||} 
+%			\hline
+%			\multicolumn{1}{||c|}{ }&
+%			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c||}{without Prec.}\\
+%			\hline
+%			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+%			\hline\hline
+%			50 & 4 & 0.05 & 50 & 0.05\\
+%			\hline
+%			200 & 3 & 0.05 & 200 & 0.25\\
+%			\hline
+%			800 & 3 & 0.06 & 799 & 3.7 \\
+%			\hline
+%			3200 & 3 & 0.6 & 3007 & 630\\
+%			\hline
+%		\end{tabular}
+%	\end{center}
+%	\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
+%	\label{TableNitTimeLaplaceNeumann}
+%\end{table}
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.7]{../figs/PrecondNeumannLaplaceSeg.png}
+%	\caption{Number of iteration in the resolution of the hypersingular  integral equation with a mesh of size $N = 1600$. The importance of preconditioning in this case is more obvious than in the case of the single-layer equation.}
+%	\label{FigureNitLaplaceNeumann}
+%\end{figure}
+%
+%\begin{Rem}
+%	In \cite{bruno2012second}, the main theorem is equivalent to stating that $N_\omega S_\omega$ and $S_\omega N_\omega$ are bicontinuous operators in $T^s$, with a spectrum concentrated around $\frac{1}{4}$, which can be exploited for preconditioning purposes. It is shown that $N_\omega$ is continuous from $T^s$ to $T^{s-1}$ for all $s >1$ (in fact, this remains true for $s > \frac{1}{2}$). The two main arguments involved in the proof are the explicit expression of $N_\omega T_n$ and the continuity of the adjoint of the Cesaro operator in $l^2(\N)$. The same arguments can be used to prove that $S_\omega$ is also a bicontinuous operator from $U^s$ to $U^{s+1}$ for all $s > 1/2$. 
+%\end{Rem}
+
+
+
+%\section{Helmholtz equation}
+
+%	In this section, we introduce preconditioners for the integral equations on $\Gamma = (-1,1)$ for the Helmholtz equation. Recall the definition of the single layer and hypersingular operators, $S_k$ and $N_k$, given in \eqref{defSk} and \eqref{defNk}, and the integral equations for the Dirichlet and Neumann problems, \eqref{Sklambda} and \eqref{Nkmu}. As before, let $S_{k,\omega} \isdef S_k \frac{1}{\omega}$ and $N_{k,\omega} \isdef N_k \omega$. We begin by establishing the following result:
+%	
+%	\begin{The}
+%		\label{Commutations}
+%		The following commutations hold:
+%		\[S_{k,\omega} \left[-(\omega \partial_x)^2 - k^2\omega^2\right] =  \left[-(\omega \partial_x)^2 - k^2\omega^2\right]S_{k,\omega},\]
+%		\[N_{k,\omega} \left[-(\partial_x \omega)^2 - k^2\omega^2\right] =  \left[-(\partial_x \omega)^2 - k^2\omega^2\right]N_{k,\omega}.\]
+%		\begin{proof}
+%			We start with the first commutation. Since $(\omega \partial_x)^2$ is self adjoint and symmetric, we have 
+%			\[S_{k,\omega} (\omega \partial_x)^2 = \int_{-1}^{1} \frac{(\omega_y \partial_y)^2 \left[G_k(x-y)\right] u(y)}{\omega(y)},\]
+%			where we use the notation $\omega_y$ and $\partial_y$ to emphasize the dependence in the variable $y$. 
+%			Thus, 
+%			\[S_{k,\omega} (\omega \partial_x)^2 - (\omega \partial_x)^2 S_{k,\omega} = \int_{-1}^{1} \frac{D_k(x,y)u(y)}{\omega(y)},\]
+%			where $D_k(x,y) \isdef \left[(\omega_y \partial_y)^2 - (\omega_x \partial_x)^2\right] \left[G_k(x-y)\right]$. 
+%			One has 
+%			\[D_k(x,y) = G_k''(x-y) (\omega^2_y - \omega^2_x) + G_k'(x-y)(y + x).\]
+%			Since $G_k$ is a solution of the Helmholtz equation, we have for all $(x \neq y) \in \R^2$ 
+%			\[G_k'(x-y) = (y-x)(G_k''(x-y) + k^2G(x-y)),\]
+%			thus
+%			\[D_k(x,y) = G_k''(x-y)\left(\omega^2_y - \omega_x^2 + y^2 - x^2\right) + k^2(y^2 - x^2)G_k(x-y) . \]
+%			A careful analysis shows that no Dirac mass appears in the previous formula, that is, the previous formula is an equality of two functions in $T^{-\infty}$. 
+%			Note that $y^2 - x^2 = \omega_x^2 - \omega_y^2$ so the first term vanishes and we find
+%			\[S_{k,\omega} (\omega \partial_x)^2 - (\omega \partial_x)^2 S_{k,\omega} =  k^2\left(\omega^2 S_{k,\omega} -S_{k,\omega} \omega^2 \right). \]
+%			The proof of the second commutation is postponed to \autoref{ann:commut}. 
+%		\end{proof}
+%	\end{The}
+%	
+%	This theorem implies that the operators $S_{k,\omega}$ and $N_{k,\omega}$ share the same eigenvectors as, respectively, $\left[-(\omega \partial_x)^2 - k^2\omega^2\right]$ and $ \left[-(\partial_x \omega)^2 - k^2\omega^2\right]$. We can look for eigenfunctions of the operator $\left[ -(\omega \partial_x)^2 - k^2\omega^2\right]$, to find a diagonal basis for $S_{k,\omega}$. They are the solutions to the differential equation 
+%	\[ (1-x^2) y'' - x y' - k^2 \omega^2 y = \lambda y.\]
+%	Once we set $x = \cos \theta$, $\tilde{y}(\theta) = y(x)$,  $q = \frac{k^2}{4}$, $a = \lambda + 2q$, $\tilde{y}$ is a solution of the standard Mathieu equation 
+%	\begin{equation}
+%	\label{MatthieuEq}
+%		\tilde{y}'' + (a - 2q \cos(2\theta)) \tilde{y} = 0.
+%	\end{equation}
+%	There are a discrete set of values $a_{2n}(q)$ for which this equation possesses an even and $2\pi$ periodic function. The corresponding solution is known as the Mathieu cosine, and usually denoted by $\textup{ce}_n$. Here, we use the notation $\textup{ce}^k_n$ to emphasize the dependency in the parameter $k = \sqrt{2q}$ of those functions. The normalization is taken as
+%	\[ \int_{0}^{2\pi} \textup{ce}^k_n(\theta)^2 d\theta = \pi.\]
+% 	They satisfy
+%	\[ \int_{-\pi}^{\pi}\textup{ce}^k_n(\theta) \textup{ce}^k_m(\theta) = \pi \delta_{m,n}.\]
+%	Any even $2\pi$ periodic function in $L^2(-\pi,\pi)$ can be expanded along the functions $\textup{ce}_n$, with the coefficients obtained by orthonormal projection. Letting 
+%	\[T_{n}^k \isdef \textup{ce}^k_n(\arccos(x)),\]
+%	in analogy to the zero-frequency case, we have
+%	\[\left[-(\omega \partial_x)^2 - k^2\omega^2\right] T_{n}^k = \lambda_{n,k}^2 T_{n}^k.\]
+%	For large $n$, using the general results from the theory of Hill's equations (see \cite[eq. 28.29.21]{NIST:DLMF}) we have the following asymptotic formula for $\lambda_{n,k}$:
+%	\[ \lambda_{n,k}^2 = n^2 - \frac{k^4}{16n^2} +o \left(n^{-2}\right). \]
+%	The first commutation established in \autoref{Commutations} implies that the Matthieu cosines are also the eigenfunctions of the single-layer operator. An equivalent statement is given in \cite[Thm 4.2]{betcke2014spectral}, if we allow the degenerate case $\mu = 0$. 
+%	A similar analysis can be applied to the hypersingular operator. The eigenfunctions of $\left[(\partial_x \omega)^2 - k^2 \omega^2\right]$ are given by 
+%	\[U_n^k \isdef \frac{\textup{se}_n^k(\arccos(x))}{\omega(x)}\]
+%	where $\textup{se}_n^k$ are the so-called Matthieu sines, which also satisfy the Matthieu differential equation \eqref{MatthieuEq}, but with the condition that they must be odd $2\pi$ periodic functions. 
+%	Unfortunately, the lack of knowledge about the eigenvalues of $S_{k,\omega}$ and $N_{k,\omega}$ prevents us from applying a similar analysis as that performed in the first part of this work. Instead, we will perform a perturbation analysis, much like \cite{bruno2012second}.

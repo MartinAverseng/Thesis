@@ -1,82 +1,57 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: draft_v3.aux
 The style file: plain.bst
-I couldn't open database file /home/martin/Thesis/Biblio/biblio.bib
----line 197 of file draft_v3.aux
- : \bibdata{/home/martin/Thesis/Biblio/biblio
- :                                           }
-I'm skipping whatever remains of this command
-I found no database files---while reading file draft_v3.aux
-Warning--I didn't find a database entry for "christiansen2002preconditioner"
-Warning--I didn't find a database entry for "levadoux2005proposition"
-Warning--I didn't find a database entry for "antoine2007generalized"
-Warning--I didn't find a database entry for "mclean1997preconditioning"
+Database file #1: /home/martin/Thesis/Biblio/biblio.bib
+Repeated entry---line 1165 of file /home/martin/Thesis/Biblio/biblio.bib
+ : @article{mclean1997preconditioning
+ :                                   ,
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for ""
-Warning--I didn't find a database entry for "bruno2012second"
-Warning--I didn't find a database entry for "jerez2012explicit"
-Warning--I didn't find a database entry for "hiptmair2017closed"
-Warning--I didn't find a database entry for "saad1986gmres"
-Warning--I didn't find a database entry for "stephan1984augmented"
-Warning--I didn't find a database entry for "wendland1990hypersingular"
-Warning--I didn't find a database entry for "monch1996numerical"
-Warning--I didn't find a database entry for "mclean2000strongly"
-Warning--I didn't find a database entry for "atkinson1991numerical"
-Warning--I didn't find a database entry for "yan1988integral"
-Warning--I didn't find a database entry for "yan1990cosine"
-Warning--I didn't find a database entry for "jiang2004second"
-Warning--I didn't find a database entry for "sloan1992collocation"
-Warning--I didn't find a database entry for "yan1989mesh"
-Warning--I didn't find a database entry for "mason2002chebyshev"
-Warning--I didn't find a database entry for "jerez2010boundary"
-Warning--I didn't find a database entry for "mclean1986spectral"
-Warning--I didn't find a database entry for "urzua2014optimal"
-Warning--I didn't find a database entry for "NIST:DLMF"
-Warning--I didn't find a database entry for "betcke2014spectral"
-Warning--I didn't find a database entry for "sauter2011boundary"
-Warning--I didn't find a database entry for "postell1990h"
-Warning--I didn't find a database entry for "costabel1988convergence"
-Warning--I didn't find a database entry for "steinbach1998construction"
-Warning--I didn't find a database entry for "hale2008computing"
-You've used 0 entries,
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+Warning--empty journal in urzua2014optimal
+You've used 29 entries,
             2118 wiz_defined-function locations,
-            527 strings with 4561 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+            686 strings with 9298 characters,
+and the built_in function-call counts, 9429 in all, are:
+= -- 959
+> -- 402
+< -- 2
++ -- 164
+- -- 128
+* -- 682
+:= -- 1577
+add.period$ -- 87
+call.type$ -- 29
+change.case$ -- 146
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 30
+duplicate$ -- 333
+empty$ -- 746
+format.name$ -- 128
+if$ -- 1933
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 29
+missing$ -- 31
+newline$ -- 148
+num.names$ -- 58
+pop$ -- 124
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 120
 quote$ -- 0
-skip$ -- 1
+skip$ -- 246
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 719
+swap$ -- 46
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There were 2 error messages)
+type$ -- 110
+warning$ -- 1
+while$ -- 104
+width$ -- 31
+write$ -- 313
+(There were 3 error messages)

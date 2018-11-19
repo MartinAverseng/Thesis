@@ -1,5 +1,11 @@
 \begin{thebibliography}{10}
 
+\bibitem{alouges2015sparse}
+Fran{\c{c}}ois Alouges and Matthieu Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
 \bibitem{antoine2007generalized}
 Xavier Antoine and Marion Darbas.
 \newblock Generalized combined field integral equations for the iterative
@@ -13,11 +19,28 @@ Kendall~E Atkinson and Ian~H Sloan.
   equations on smooth open arcs.
 \newblock {\em mathematics of computation}, 56(193):119--139, 1991.
 
+\bibitem{averseng2018fast}
+Martin Averseng.
+\newblock Fast discrete convolution in r 2.
+\newblock {\em arXiv preprint :}.
+
+\bibitem{alouges2018new}
+Martin Averseng.
+\newblock New preconditioners for the first kind integral equations on open
+  curves.
+\newblock {\em arXiv preprint :}.
+
 \bibitem{betcke2014spectral}
 T~Betcke, J~Phillips, and EA~Spence.
 \newblock Spectral decompositions and nonnormality of boundary integral
   operators in acoustic scattering.
 \newblock {\em IMA Journal of Numerical Analysis}, 34(2):700--731, 2014.
+
+\bibitem{borm2003introduction}
+S.~B{\"o}rm, L.~Grasedyck, and W.~Hackbusch.
+\newblock Introduction to hierarchical matrices with applications.
+\newblock {\em Engineering analysis with boundary elements}, 27(5):405--422,
+  2003.
 
 \bibitem{bruno2012second}
 Oscar~P Bruno and St{\'e}phane~K Lintner.
@@ -25,11 +48,22 @@ Oscar~P Bruno and St{\'e}phane~K Lintner.
   open arcs.
 \newblock {\em Radio Science}, 47(6), 2012.
 
+\bibitem{coifman1993fast}
+R.~Coifman, V.~Rokhlin, and S.~Wandzura.
+\newblock The fast multipole method for the wave equation: A pedestrian
+  prescription.
+\newblock {\em IEEE Antennas and Propagation Magazine}, 35(3):7--12, 1993.
+
 \bibitem{costabel1988convergence}
 Martin Costabel, Vince~J Ervin, and Ernst~P Stephan.
 \newblock On the convergence of collocation methods for symm’s integral
   equation on open curves.
 \newblock {\em Mathematics of computation}, 51(183):167--179, 1988.
+
+\bibitem{grote1997parallel}
+Marcus~J Grote and Thomas Huckle.
+\newblock Parallel preconditioning with sparse approximate inverses.
+\newblock {\em SIAM Journal on Scientific Computing}, 18(3):838--853, 1997.
 
 \bibitem{hale2008computing}
 Nicholas Hale, Nicholas~J Higham, and Lloyd~N Trefethen.
@@ -61,6 +95,13 @@ Shidong Jiang and Vladimir Rokhlin.
 \newblock Second kind integral equations for the classical potential theory on
   open surfaces ii.
 \newblock {\em Journal of Computational Physics}, 195(1):1--16, 2004.
+
+\bibitem{levadoux2005proposition}
+David~P Levadoux.
+\newblock Proposition de pr{\'e}conditionneurs pseudo-diff{\'e}rentiels pour
+  l'{\'e}quation cfie de l'{\'e}lectromagn{\'e}tisme.
+\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
+  39(1):147--155, 2005.
 
 \bibitem{mason2002chebyshev}
 John~C Mason and David~C Handscomb.
@@ -97,6 +138,19 @@ FV~Postell and Ernst~P Stephan.
 \newblock {\em Computer Methods in Applied Mechanics and Engineering},
   83(1):69--89, 1990.
 
+\bibitem{rokhlin1993diagonal}
+V.~Rokhlin.
+\newblock Diagonal forms of translation operators for the helmholtz equation in
+  three dimensions.
+\newblock {\em Applied and Computational Harmonic Analysis}, 1(1):82--93, 1993.
+
+\bibitem{saad1986gmres}
+Youcef Saad and Martin~H Schultz.
+\newblock Gmres: A generalized minimal residual algorithm for solving
+  nonsymmetric linear systems.
+\newblock {\em SIAM Journal on scientific and statistical computing},
+  7(3):856--869, 1986.
+
 \bibitem{sauter2011boundary}
 Stefan~A Sauter and Christoph Schwab.
 \newblock Boundary element methods.
@@ -107,6 +161,13 @@ Ian~H Sloan and EP~Stephan.
 \newblock Collocation with chebyshev polynomials for symm's integral equation
   on an interval.
 \newblock {\em The ANZIAM Journal}, 34(2):199--211, 1992.
+
+\bibitem{steinbach1995efficient}
+O~Steinbach and WL~Wendland.
+\newblock Efficient preconditioners for boundary element methods and their use
+  in domain decomposition methods.
+\newblock In {\em Domain Decomposition Methods in Sciences and Engineering: 8th
+  International Conference}, pages 3--18, 1995.
 
 \bibitem{steinbach1998construction}
 Olaf Steinbach and Wolfgang~L Wendland.
