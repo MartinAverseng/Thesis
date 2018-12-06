@@ -185,9 +185,13 @@ classdef RadialQuadrature
             err = quad - trueVal;
         end
         function[quad,err] = evalDer(this,r)
-            quad = coeff2der(this.alpha0,this.rho,r).';
-            trueVal = this.kernel.der(r);
-            err = quad - trueVal;
+            quad = coeff2der(this.alpha0,this.rho,r);
+            quad = quad(:);
+            if nargout >=2
+                trueVal = this.kernel.der(r);
+                trueVal = trueVal(:);
+                err = quad - trueVal;
+            end
         end
     end
     methods (Static)

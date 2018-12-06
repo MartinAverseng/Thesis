@@ -1,5 +1,5 @@
-This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: source.aux
 The style file: plain.bst
 Database file #1: ../../Biblio/biblio.bib
@@ -7,53 +7,49 @@ Repeated entry---line 1210 of file ../../Biblio/biblio.bib
  : @article{borm2003introduction
  :                              ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for ""
-Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
-while executing---line 1049 of file plain.bst
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "etc"
 Warning--empty year in averseng2018fast
 Warning--empty year in alouges2018new
-Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
-while executing---line 1090 of file plain.bst
-Warning--empty journal in urzua2014optimal
-You've used 35 entries,
+You've used 29 entries,
             2118 wiz_defined-function locations,
-            719 strings with 10203 characters,
-and the built_in function-call counts, 11185 in all, are:
-= -- 1134
-> -- 472
+            687 strings with 9047 characters,
+and the built_in function-call counts, 9222 in all, are:
+= -- 946
+> -- 354
 < -- 3
-+ -- 192
-- -- 150
-* -- 800
-:= -- 1873
-add.period$ -- 105
-call.type$ -- 35
-change.case$ -- 175
++ -- 146
+- -- 110
+* -- 655
+:= -- 1531
+add.period$ -- 87
+call.type$ -- 29
+change.case$ -- 138
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 405
-empty$ -- 890
-format.name$ -- 150
-if$ -- 2294
+cite$ -- 31
+duplicate$ -- 345
+empty$ -- 753
+format.name$ -- 110
+if$ -- 1903
 int.to.chr$ -- 0
-int.to.str$ -- 35
-missing$ -- 37
-newline$ -- 178
-num.names$ -- 70
-pop$ -- 154
+int.to.str$ -- 29
+missing$ -- 32
+newline$ -- 148
+num.names$ -- 58
+pop$ -- 118
 preamble$ -- 1
-purify$ -- 143
+purify$ -- 112
 quote$ -- 0
-skip$ -- 294
+skip$ -- 246
 stack$ -- 0
-substring$ -- 822
-swap$ -- 58
+substring$ -- 717
+swap$ -- 53
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 134
-warning$ -- 3
-while$ -- 125
-width$ -- 37
-write$ -- 375
-(There were 3 error messages)
+type$ -- 110
+warning$ -- 2
+while$ -- 107
+width$ -- 31
+write$ -- 314
+(There was 1 error message)

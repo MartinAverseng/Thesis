@@ -712,7 +712,7 @@ where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ i
 	&\quad + (x-y)^4 \ln|x-y|F_2(x,y) + F_3(x,y)
 	\end{split}
 \end{align}
-\noindent where $F_2$ and $F_3$ are $C^{\infty}$. Let us introduce the operators $O_n$ defined for $n \geq 1$ as 
+\noindent where $F_2$ and $F_3$ are $C^{\infty}$. Let us study the operators $O_n$ defined for $n \geq 1$ as 
 \[O_n : \alpha \mapsto -\frac{1}{2\pi}\int_{-1}^{1}(x-y)^{n-1} \ln\abs{x - y} \frac{\alpha(y)}{\omega(y)}\,.\]
 \begin{Lem}
 	\label{orderOfOn}
@@ -723,58 +723,75 @@ where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ i
 	\[ O_n = x O_{n-1} - O_{n-1} x.\]
 	As shown in \autoref{lem:multPolyOrdre0}, the multiplication by $x$ defines an operator of $S^0$. By assumption, $O_{n-1}$ is in $S^{n-1}$, thus \autoref{CommutPDO} implies that $O_{n} \in S^n$, which concludes the proof. 
 \end{proof}
-We define the operator $y$ by 
+We define a new operator $y$ defined for $n \geq 1$ by 
 \[y T_n = \frac{T_{n+1} - T_{n-1}}{2}\,.\]
-It is easy to check that $y$ is in $S^0$ and $y^2 = -\omega^2$. Moreover, $y$ commutes with the multiplication by $x$.   
+and $y T_0 = 0$. 
+It is easy to check that $y$ is in $S^0$ and $y^2 = -\omega^2 + T_\infty$. Moreover, $y$ commutes with the multiplication by $x$, and the adjoint of $y$ (in the $L^2_\frac{1}{\omega}$ duality) is $-y$. Since, for $n\geq 0$, $(x+y)T_n = T_{n+1}$ and $(x-y)T_n = T_{n-1}$, we see that any operator in $A \in S^p$ can be expressed as 
+\[ A u = \sum_{n = 0}^{+ \infty} a(x,y,n) \hat{u}_n T_n(x)\]
+where for each $n$, $(x,y) \mapsto a(x,y,n)$ is a polynomial in $x$ and $y$. \toDo{A déplacer probablement.}
 We show an intermediary result:
 \begin{Lem}
 	\label{resultInterm}
-	For all $n \geq 0$, there exists an operator $R_{n+2} \in S^{n+2}$ such that
+	For all $n \geq 0$, there exists an operator $R_{n+3} \in S^{n+3}$ such that
 	\begin{equation}
-		x S_\omega^n - S_\omega^n x = 2 ny S_{\omega}^{n+1} + R_{n+2}\,.
+		x S_\omega^n - S_\omega^n x = 2 ny S_{\omega}^{n+1} - 2n(n+1) x S_\omega^{n+2} + R_{n+3}\,.
 	\end{equation}
 \end{Lem}
 \begin{proof}
 	We must show that
-	\[R_{n+2} \isdef x S_\omega^n - S_\omega^n x -2ny S_\omega^{k+1} \]
-	belongs to the class $S^{n+2}$ for all $n \in \N$. For $n = 0$ this is obvious so we fix $n \geq 1$. We check the three requirements of \autoref{defClassSk}.
+	\[R_{n+2} \isdef x S_\omega^n - S_\omega^n x -2ny S_\omega^{k+1} + 2n(n+1)x S_\omega^{n+2} \]
+	belongs to the class $S^{n+3}$ for all $n \in \N$. For $n = 0$ this is obvious. Let us fix $n \geq 1$. We check the three requirements of \autoref{defClassSk}.
 	Using $x T_k = \frac{T_{k+1} + T_{k-1}}{2}$ and $S_\omega T_k = \sigma_k T_k$, we have
 	\[R_{n+2}T_k = a(k,-1) T_{k-1} + a(k,1) T_{k+1}\]
 	with 
 	\begin{eqnarray*}
-		a(k,1) &=& \frac{\sigma_k^n - \sigma_{k+1}^{n} - n \sigma_k^{n+1}}{2}\\
-		a(k,-1) &=& \frac{\sigma_k^n - \sigma_{k-1}^{n} + n \sigma_k^{n+1}}{2}
+		a(k,1) &=& \frac{\sigma_k^n - \sigma_{k+1}^{n} - 2n \sigma_k^{n+1} + 2n(n+1)\sigma_k^{n+2}}{2}\\
+		a(k,-1) &=& \frac{\sigma_k^n - \sigma_{k-1}^{n} + 2n \sigma_k^{n+1} + 2n(n+1) \sigma_{k}^{n+2}}{2}
 	\end{eqnarray*}
 	The symbol $a$ thus satisfies the requirements (i) and (iii). It remains to show the estimate (ii). We do this for $a(k,1)$, the other case being similar. Of course, it suffices to establish the estimate for $k \geq 1$. In this case, we have $\sigma_k = \frac{1}{2k}$, thus 
-	\[a(k,1) = g(k+1) - g(k) - g'(k)\]
+	\[a(k,1) = g(k+1) - g(k) - g'(k) - \frac{g''(k)}{2}\]
 	where 
 	\[g(x) = -\frac{1}{2\times(2x)^{n}}\,.\]
 	Applying $\Delta_k^\alpha$, on both sides and using the commutation of $\frac{d}{dx}$ and $\Delta_k$, we obtain
-	\[a(k,1) = \Delta^\alpha_k g(k+1) - \Delta_k^\alpha g(k) - (\Delta^{\alpha}_k g)'(k)\,.\]
+	\[a(k,1) = \Delta^\alpha_k g(k+1) - \Delta_k^\alpha g(k) - (\Delta^{\alpha}_k g)'(k) - \frac{\left(\Delta_k^\alpha g\right)''(k)}{2}\,.\]
 	This can be rewritten using Taylor's formula
-	\[a(k,1) = \int_{k}^{k+1}(k+1 - \xi) \left(\Delta^{\alpha}_k g''\right)(\xi) d\xi\,.\]
+	\[a(k,1) = \int_{k}^{k+1}\frac{(k+1 - \xi)^2}{2} \left(\Delta^{\alpha}_k g^{(3)}\right)(\xi) d\xi\,.\]
 	Using \autoref{lemDeltaDerivees} and the explicit derivatives of $g$, for $\xi \geq 1$, there holds
-	\[ \abs{\left(\Delta^{\alpha}_k g''\right)(\xi)} \leq \frac{C}{(1 + \xi)^{k + 2+ \alpha }}\]
+	\[ \abs{\left(\Delta^{\alpha}_k g^{(3)}\right)(\xi)} \leq \frac{C}{(1 + \xi)^{k + 3+ \alpha }}\]
 	and thus, for $k \geq 1$, 
-	\[\abs{\Delta_k^\alpha a(k,1)} \leq \frac{C}{(1+n)^{n+\alpha+2}}\,,\]
+	\[\abs{\Delta_k^\alpha a(k,1)} \leq \frac{C}{(1+n)^{n+\alpha+3}}\,,\]
 	as needed. 
 \end{proof}
+With the same method, we obtain:
+\begin{Lem}
+	For all $n \in \N$, 
+	\[y S_\omega^n  - S_\omega^ny = 2nxS_\omega^{n+1} - 2n(n+1)y S_\omega^{n+2} + R_n+2\,.\]
+	with $R_{n+2} \in S^{n+2}$.
+\end{Lem}
 \begin{Lem}
 	For all $n \geq 1$, the operator $O_n$ satisfies 
 	\begin{equation}
 		\label{announced}
-		O_n = 2^{n-1}(n-1)! y^{n-1} S_\omega^{n} + R_{n+1}
+		O_n = 2^{n-1}(n-1)! y^{n-1} S_\omega^{n} + 2^n (n-1) n! xy^{n-1} S_\omega^{n+1} + R_{n+2}
 	\end{equation}
-	where $R_{n+1} \in S^{n+1}$. 
+	where $R_{n+2} \in S^{n+2}$. 
 \end{Lem}
 \begin{proof}
-	We show this by induction. For $n=1$, the formula is obvious, with $R_{n+1} = 0$. Assume that the formula is true for $n \geq 1$. Then by definition, 
+	We show this by induction. For $n=1$, the formula is obvious, with $R_{n+2} = 0$. Assume that the formula is true for $n \geq 1$. Then by definition, 
 	\[O_{n+1} = x O_n - O_n x\]
-	and using the recurrence assumption, and the commutation of $x$ and $y$:
-	\[O_{n+1} = 2^{n-1}(n-1)! y^{n-1} \left(xS_\omega^{n} - S_\omega^{n}x \right) + \left(xR_{n+1} - R_{n+1}x\right)\,. \]
-	Applying \autoref{resultInterm}, there exists an operator $R \in S^{n+2}$ such that 
-	\[O_{n+1} = 2^n n! y^{n}S_\omega^{n+1} + 2^n n! y^{n}R + \left(x R_{n+1} - R_{n+1}x\right)\,.\]
-	By \autoref{LemCompo}, the operator $2^n n! y^n R$ is in the class $S^{n+2}$, since $R \in S^{n+2}$ and $y \in S^0$. Furthermore, by \autoref{CommutPDO}, $\left(x R_{n+1} - R_{n+1}x\right)$ is in $S^{n+2}$ since $R_{n+1} \in S^{n+1}$ and $x \in S^0$. Therefore 	$R_{n+2} \isdef 2^n n! y^n R +  \left(xR_{n+1} - R_{n+1}x\right)$ is indeed in $S^{n+2}$ and the result is proved. 
+	and using the commutation of $x$ and $y$:
+	\[\begin{split}
+	O_{n+1} =& 2^{n-1}(n-1)! y^{n-1} \left(xS_\omega^{n} - S_\omega^{n}x \right)\\
+	& + 2^n (n-1) n! xy^{n-1}\left(xS_\omega^{n+1} - S_\omega^{n+1}x\right) \\
+	& + \left(xR_{n+2} - R_{n+2}x\right)\,. 
+	\end{split}\]
+	The operator on the last line is in $S^{n+3}$ by \autoref{CommutPDO}. By \autoref{resultInterm}, there exists an operator $R_{n+3} \in S^{n+3}$ such that 
+	\[\begin{split}
+	O_{n+1} = \quad & 2^{n-1}(n-1)! y^{n-1} \left(2ny S_\omega^{n+1} - 2n(n+1)x S_\omega^{n+2}\right)\\
+	& + 2^n (n-1) n! xy^{n-1}\left( 2(n+1)y S_\omega^{n+2} \right) \\
+	& + R_{n+3}\,. 
+	\end{split}\]
+	And we obtain the expected formula for $O_{n+1}$. 
 \end{proof}
 Using the notation introduced in \autoref{DefEquivModTp}, we have the following result:
 \begin{Lem}

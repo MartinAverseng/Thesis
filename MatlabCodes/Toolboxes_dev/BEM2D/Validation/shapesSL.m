@@ -1,9 +1,9 @@
-%% Test case on the some shape with edges.
+%% Test case on some shape with edges.
 
 
 Main;
-addpath(genpath('/home/martin/Thesis/MatlabCodes/DarbasBrunoEtCie/'))
-nn = 400;
+addpath(genpath(fullfile('../../DarbasBrunoEtCie/')))
+nn = 1000;
 curve = unitSegment;
 l = length(curve);
 k = nn*2*pi/l;
@@ -15,17 +15,17 @@ k = nn*2*pi/l;
 % [curve,incWave] = spirale(k);
 % [curve,incWave] = Scurve(k);
 % [curve,incWave] = Vcurve(k);
-figure
-plot(curve);
+% figure
+% plot(curve);
 
 
-N = fix(25*nn);
+N = fix(20*nn);
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
     'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);
 M = Vh.Mass.concretePart;
 [L,U,P,Q] = lu(M);
-invM = @(u)(Q*(U\(L \(P*u))));
+invM = @(u)(M\u);%@(u)(Q*(U\(L \(P*u))));
 Wh =  weightedFEspace(meshAdapt,'P1','sqrt(1-t^2)',3);
 % dM = (Vh.omega_dx_omega)'*AbstractMatrix.spdiag(Vh.W)*(Vh.omega_dx_omega);
 % dM = dM.concretePart;
@@ -44,7 +44,7 @@ sqrtDarbasK1 = @(x)(padePrecondDarbas(x,Np,theta,keps,M,K1));
 % plot((dM - k^2*omega2)*u);
 % hold on
 % plot(real(sqrtDarbasK1(M\sqrtDarbasK1(u))));
-Op_opt = {'tol',1e-3,'a_factor',8};
+Op_opt = {'tol',1e-3,'a_factor',2};
 Sw = singleLayer(Vh,...
     'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
 % 

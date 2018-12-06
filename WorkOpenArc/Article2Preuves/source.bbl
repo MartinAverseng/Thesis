@@ -30,12 +30,6 @@ Martin Averseng.
   curves.
 \newblock {\em arXiv preprint :}.
 
-\bibitem{betcke2014spectral}
-T~Betcke, J~Phillips, and EA~Spence.
-\newblock Spectral decompositions and nonnormality of boundary integral
-  operators in acoustic scattering.
-\newblock {\em IMA Journal of Numerical Analysis}, 34(2):700--731, 2014.
-
 \bibitem{borm2003introduction}
 S.~B{\"o}rm, L.~Grasedyck, and W.~Hackbusch.
 \newblock Introduction to hierarchical matrices with applications.
@@ -70,12 +64,6 @@ Nicholas Hale, Nicholas~J Higham, and Lloyd~N Trefethen.
 \newblock Computing a\^{}$\alpha$,$\backslash$log(a), and related matrix
   functions by contour integrals.
 \newblock {\em SIAM Journal on Numerical Analysis}, 46(5):2505--2523, 2008.
-
-\bibitem{hiptmair2017closed}
-Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
-\newblock Closed-form exact inverses of the weakly singular and hypersingular
-  operators on disks.
-\newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
 
 \bibitem{jerez2010boundary}
 C~Jerez-Hanckes and J-C N{\'e}d{\'e}lec.
@@ -125,12 +113,6 @@ Lars M{\"o}nch.
 \newblock {\em Journal of computational and applied mathematics},
   71(2):343--356, 1996.
 
-\bibitem{NIST:DLMF}
-F.~W.~J. Olver, A.~B. Olde~Daalhuis, D.~W. Lozier, B.~I. Schneider, R.~F.
-  Boisvert, C.~W. Clark, B.~R. Miller, and B.~V. Saunders.
-\newblock {\it NIST Digital Library of Mathematical Functions}.
-\newblock http://dlmf.nist.gov/, Release 1.0.16 of 2017-09-18.
-
 \bibitem{postell1990h}
 FV~Postell and Ernst~P Stephan.
 \newblock On the h-, p-and hp versions of the boundary element
@@ -155,12 +137,6 @@ Youcef Saad and Martin~H Schultz.
 Stefan~A Sauter and Christoph Schwab.
 \newblock Boundary element methods.
 \newblock {\em Boundary Element Methods}, pages 183--287, 2011.
-
-\bibitem{sloan1992collocation}
-Ian~H Sloan and EP~Stephan.
-\newblock Collocation with chebyshev polynomials for symm's integral equation
-  on an interval.
-\newblock {\em The ANZIAM Journal}, 34(2):199--211, 1992.
 
 \bibitem{steinbach1995efficient}
 O~Steinbach and WL~Wendland.
@@ -187,18 +163,6 @@ Ernst~P Stephan and Wolfgang~L Wendland.
   and crack problems.
 \newblock {\em Archive for Rational Mechanics and Analysis}, 112(4):363--390,
   1990.
-
-\bibitem{urzua2014optimal}
-Carolina~Alejandra Urz{\'u}a~Torres et~al.
-\newblock Optimal preconditioners for solving two-dimensional fractures and
-  screens using boundary elements.
-\newblock 2014.
-
-\bibitem{yan1989mesh}
-Yeli Yan and Ian~H Sloan.
-\newblock Mesh grading for integral equations of the first kind with
-  logarithmic kernel.
-\newblock {\em SIAM journal on numerical analysis}, 26(3):574--587, 1989.
 
 \bibitem{yan1988integral}
 Yeli Yan, Ian~H Sloan, et~al.
