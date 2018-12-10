@@ -7,53 +7,49 @@ Repeated entry---line 1210 of file ../../Biblio/biblio.bib
  : @article{borm2003introduction
  :                              ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for ""
-Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
-while executing---line 1049 of file plain.bst
+Warning--I didn't find a database entry for "Nedelec"
+Warning--I didn't find a database entry for "etc"
 Warning--empty year in averseng2018fast
 Warning--empty year in alouges2018new
-Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
-while executing---line 1090 of file plain.bst
-Warning--empty journal in urzua2014optimal
-You've used 35 entries,
+You've used 30 entries,
             2118 wiz_defined-function locations,
-            719 strings with 10203 characters,
-and the built_in function-call counts, 11185 in all, are:
-= -- 1134
-> -- 472
+            694 strings with 9231 characters,
+and the built_in function-call counts, 9523 in all, are:
+= -- 978
+> -- 367
 < -- 3
-+ -- 192
-- -- 150
-* -- 800
-:= -- 1873
-add.period$ -- 105
-call.type$ -- 35
-change.case$ -- 175
++ -- 151
+- -- 114
+* -- 675
+:= -- 1583
+add.period$ -- 90
+call.type$ -- 30
+change.case$ -- 143
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 405
-empty$ -- 890
-format.name$ -- 150
-if$ -- 2294
+cite$ -- 32
+duplicate$ -- 356
+empty$ -- 776
+format.name$ -- 114
+if$ -- 1964
 int.to.chr$ -- 0
-int.to.str$ -- 35
-missing$ -- 37
-newline$ -- 178
-num.names$ -- 70
-pop$ -- 154
+int.to.str$ -- 30
+missing$ -- 33
+newline$ -- 153
+num.names$ -- 60
+pop$ -- 121
 preamble$ -- 1
-purify$ -- 143
+purify$ -- 116
 quote$ -- 0
-skip$ -- 294
+skip$ -- 254
 stack$ -- 0
-substring$ -- 822
-swap$ -- 58
+substring$ -- 738
+swap$ -- 54
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 134
-warning$ -- 3
-while$ -- 125
-width$ -- 37
-write$ -- 375
-(There were 3 error messages)
+type$ -- 114
+warning$ -- 2
+while$ -- 111
+width$ -- 32
+write$ -- 325
+(There was 1 error message)
