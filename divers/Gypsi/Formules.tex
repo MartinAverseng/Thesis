@@ -1,0 +1,59 @@
+\documentclass[utf8]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[pdftex]{graphicx}
+\title{Inegral equations in 2D}
+\newtheorem{The}{Théorème}
+\begin{document}
+\maketitle
+The single-layer at frequency $k$ has the following expression:
+\[S_k \phi(x) = \int_{\Gamma} G_k(y-x) \phi(y)d\sigma(y)\]
+with	
+\[G_k(x) = \begin{cases}
+\frac{-1}{2\pi} \ln | x | & \text{ if } k = 0\\
+\frac{i}{4}H_0^{(1)}(k |x|) & \text{ otherwise }
+\end{cases}\]
+where $H_0^{(1)}$ is the Hankel function of order $0$ defined by 
+\[H_0^{(1)}(r) = J_0(r) + i Y_0(r) \,.\]
+The double layer is defined by 
+\[D_k \phi(x) = \int_{\Gamma} n(y) \cdot \nabla_y G_k(y-x) \phi(y) d\sigma(y)\,.\]
+The hypersingular operator admits the representation:
+\begin{equation}
+\begin{split}
+\langle{N_k \mu},{\nu}\rangle = &\int_{\Gamma\times \Gamma} G_k(x-y) \mu'(x) \nu'(y)\\
+&- k^2 G_k(x,y) \mu(x) \nu(y) n(x) \cdot n(y) d\sigma(x) d\sigma(y)\,.
+\end{split}
+\label{NkenfonctiondeSk}
+\end{equation}
+where $\mu'$ is the tangential derivative of $\mu$.
+
+For the regularization of $S_k$, our aim is to write the semi analytic integration of $S_k$ as
+\[\int_{\Gamma} G_k(y-x) \phi(y)dy = \tilde{\int}_\Gamma G_k(y_x) \phi(y) dy + \left( \int - \tilde{\int} \right) G_k(y-x) \phi(y)dy\,.\]
+If we note $R = \tilde{\int}_\Gamma - \int_\Gamma$ the regularization operator, we thus have 
+\[\begin{split}
+\int_{\Gamma} G_k(y-x) \phi(y)dy =& \tilde{\int}_\Gamma G_k(y_x) \phi(y) dy + R\left[\left(G_k(y-x) - G_0(y-x) \right)\phi(y)\right] \\
+& + R \left( G_0(y-x) \phi(y)\right)
+\end{split}\]
+Here, we use the fact that $G_k  - G_0$ is a smooth function (it is $C^1$) so that  \[R\left[\left(G_k(y-x) - G_0(y-x) \right)\phi(y)\right] \approx 0\,.\]
+We must thus ensure that the arbitrary values $C_k$ and $C_0$ assigned respectively to the elementary kernels $r \mapsto H_0^{(1)}(kr)$ and $r \mapsto \log(r)$ implemented in Gypsilab are such that 
+\[G_k(0) - G_0(0) = \lim_{r \to 0} G_k(r) - G_0(r)\,.\]
+that is
+\begin{equation}
+\label{valeurDeCk}
+	\frac{i}{4}C_k - \frac{1}{2\pi} C_0 = \lim_{r \to 0} G_k(r) - G_0(r)\,.
+\end{equation}
+For $C_0$, we make the arbitrary choice 
+\[C_0 := 0.\]
+We must now choose the value of $C_k$ accordingly. To evaluate the limit of the right hand side, we can write \cite[Eq. 10.8.2]{NIST:DLMF}
+\[Y_0(r) = \frac{2}{\pi} \left( \ln \frac{r}{2} + \gamma \right)J_0(r) + r^2 F(r)\]
+where $\gamma$ is the Euler constant. This gives
+\[\lim_{r \to 0} G_k - G_0 = -\frac{1}{2\pi} \left(\ln \frac{k}{2} + \gamma\right) + \frac{i}{4}\,.\]
+This means we have to set 
+\[C_k = 1 + \frac{2i}{\pi} \left(\ln\frac{k}{2} + \gamma\right)\,.\]
+
+\bibliographystyle{plain}
+\bibliography{../../Biblio/biblio}
+
+\end{document}
