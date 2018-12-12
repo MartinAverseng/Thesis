@@ -122,7 +122,7 @@ The preceding analysis can be generalized to define Sobolev-like spaces.
 	For $s < t$, the inclusion $T^s \subset T^t$ is compact.
 \end{Def}
 \begin{Rem}
-	The spaces $T^n$ correspond, up to a variable change, to the spaces $H^n_e$ defined in \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} among other works, that is, the restriction of the usual Sobolev space $H^n$ to even periodic functions, as stated in \autoref{thmChar}.
+	The spaces $T^n$ correspond, up to a variable change, to the spaces $H^n_e$ defined in \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} among other works, that is, the restriction of the usual Sobolev space $H^n$ to even periodic functions, as stated in \autoref{thmChar}. In what follows, $H^s_p(0,T)$ denotes the space of $T$-periodic functions in $H^s(\R)$, and $H^s_e(0,T)$ is the set of even functions if $H^s_p(0,T)$. 
 \end{Rem}
 \noindent In a similar fashion, we define the following spaces:
 \begin{Def}
@@ -259,7 +259,7 @@ We can now state the main result of this paragraph. For a function $u$ defined o
 and by $Su$ the function defined as 
 \[Su(\theta) \isdef \sin(\theta) Cu(\theta).\]
 \begin{Lem}
-	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u} \in H^n(-\pi,\pi)$. In this case, $Cu = \tilde{u}$ and
+	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some even function $\tilde{u} \in H^n_p(-\pi,\pi)$. In this case, $Cu = \tilde{u}$ and
 	\[ \norm{u}_{T_n}\sim \norm{Cu}_{H^n} \mbox{ and } \abs{u}_{T^n} \sim \abs{Cu}_{H^n}.\]
 	Similarly, $u$ belongs to  the space $U^n$ if and only if $u = \frac{1}{\sqrt{1 - x^2}} \tilde{u}  \circ  \arccos$  for some odd function $\tilde{u}$ in  $H^n(-\pi,\pi)$. In this case, $Su = \tilde{u}$ and
 	\[\norm{u}_{U_n} \sim \abs{Su}_{H^n}.\]	
@@ -279,11 +279,36 @@ and by $Su$ the function defined as
 \end{proof}
 
 
-\subsection{Pseudo-differential operators on the segment}
+\subsection{Periodic Pseudo-differential operators}
 
-\subsubsection{Algebra of operators}
+On the family of spaces $H^s_p(0,T)$, a class of periodic pseudo-differential operators has been introduced in \cite{thrunen1998symbol}, with symbolic calculus. A periodic pseudo-differential operator on $H^s_p(0,T)$ of order $p$ is an operator of the form 
+\[A : u \in H^s_p(0,T) \mapsto \sum_{n \in \Z} \sigma_A(t,n) \hat{u}_n e^{\frac{2in\pi t}{T} }\,.\]
+for a symbol $\sigma_A \in C^{\infty}(\mathbb{T}_T \times \R)$ satisfying 
+\[\forall j,k \in \N, \exists C_{j,k} >0 : \quad \abs{\partial_t^j \partial_\xi^k \sigma_A(t,\xi)} \leq C_{j,k}(1 + \abs{\xi})^{p - k}\,.\]
+Here, $\hat{u}_n = \frac{1}{T}\int_{0}^{T}u(t) e^{-i\frac{2n\pi t}{T}}dt$ are the usual Fourier coefficients of $u$ and $\partial_t \isdef \frac{1}{iT}\frac{\partial}{\partial t}$, $\partial_\xi \isdef \frac{1}{iT}\frac{\partial}{\partial \xi}$. 
+The class of symbols that satisfy this condition is denoted by $\Sigma^p$, and $\Sigma^{-\infty} \isdef \Cup_{p \in \Z} \Sigma^p$. The operator corresponding to a symbol $\sigma$ is denoted by $\textit{Op}(\sigma)$ and thus, the set of periodic pseudo-differential operators is $\textit{Op}(\Sigma^p)$. 
 
-We shall now introduce a class of pseudo-differential operators on the open segment. Essentially, they are, up to a change of variables, the periodic pseudo-differential operators on the torus $\mathbb{T}_{2\pi}$ that preserve the space of even functions, that is, that map $H^n_e(0,2\pi)$ to itself. A particular property of these pseudo-differential operators is that their symbol is not defined uniquely. We show that a symbolic is still available within this restricted class. 
+The symbol is not unique but is determined uniquely at the integer values of $\xi$ by 
+\[\sigma_A(t,n) =  e^{-\frac{2in\pi t}{T}}A(e^{\frac{2in\pi t}{T}})\,.\]
+As shown in \cite{thrunen1998symbol}, $A \in \textit{Op}(\Sigma^p)$ if and only if those values satisfy 
+\[\forall j,k \in \N, \exists C_{j,k} > 0 : \abs{\partial_t^j \Delta_n^k \sigma_A(t,n)} \leq C_{j,k}(1 + \abs{n})^{p - k}\,.\] 
+An operator in $\textit{Op}(\Sigma^p)$ maps continuously $H_p^s(0,T)$ to $H_p^{s + p}$ for all $s \in \R$. The composition of two operators in $\textit{Op}(\sigma^p)$ and $\textit{Op}(\sigma^q)$ gives rise to an operator in $\textit{Op}(\sigma^{p+q})$. 
+If two symbols $a$ and $b$ in $\Sigma^{- \infty}$ satisfy $a - b  \in \Sigma^{p}$, we write $a = b + \Sigma^p$ and if $A = \textit{Op}(a)$ and $B = \textit{Op}(b)$, we write $A = B + R_p$. Let $a \in \Sigma^{- \infty}$. If there exists a sequence of reals $(p_j)_{j \in \N}$ such that $p_j < p_{j+1}$ and a sequence of symbols $a_j \in \Sigma^{p_j}$ such that for all $N$, 
+\[a = \sum_{i = 0}^{N}a_i + \Sigma^{p_j + 1}\,,\]
+we then write 
+\[a = \sum_{i = 0}^{+ \infty} a_j \,.\]
+This is called an asymptotic expansion of the symbol $a$. 
+Consider an integral operator $K$ of the form 
+\[K : u \mapsto \frac{1}{T}\int_{0}^T a(t,s) \kappa(t-s) u(s) ds.\]
+where $a$ is $T$-periodic and $C^{\infty}$ in both arguments and $\kappa$ is a $T$-periodic distribution. Assume that the Fourier coefficients $\hat{\kappa}(n)$ of $\kappa$ can be prolonged to a function $\hat{\kappa}(\xi)$ on $\R$ such that
+\[\forall k \in \N,  \exists C_k > 0: \quad \abs{\partial^k_\xi \hat{\kappa}(\xi)} \leq C_k (1 + \abs{\xi})^{\alpha - k}\,.\]
+for some $\alpha$. Then $K$ is in $\textit{Op}(\Sigma^\alpha)$ with a symbol satisfying the asymptotic expansion
+\[\sigma_K(\xi, t) = \sum_{j = 0}^{+ \infty} \frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \hat{\kappa}(\xi) \partial_s^ja(t,s)_{|s = t}\,.\]
+
+
+\subsubsection{Classes of operators}
+
+We shall now introduce a class of pseudo-differential operators on the open segment. Essentially, they are, up to a change of variables, the periodic pseudo-differential operators on the torus $\mathbb{T}_{1} = \mathbb{R} / \Z$ that preserve the space of 1-periodic even functions, that is, that map $H^n_e(0,1)$ to itself. A particular property of these pseudo-differential operators is that their symbol is not defined uniquely. We show that a symbolic calculus is still available within this restricted class. 
 
 \begin{Def}
 	Let $p\in \R$. If  $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$ in the scale $T^s$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. 
@@ -306,28 +331,28 @@ To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$.
 
 
 \begin{Def}
-	An operator $A \in \mathcal{L}(T^{-\infty})$ belongs to the class $S^{-\infty}$ if there exists a symbol $\sigma_A : \N \times \Z$ of $A$ such that, for all $n \in \N$,
+	An operator $A \in \mathcal{L}(T^{-\infty})$ belongs to the class $S^{-\infty}$ if there exists a "discrete symbol" $\sigma_A : \N \times \Z$ of $A$ such that, for all $n \in \N$,
 	\[AT_n = \sum_{i \in \Z} \sigma_A(n,i) T_{n-i}\,,\]
 	with furthermore the property that there exists an integer $N$ for which 
 	\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
 \end{Def}
-A single operator $A$ admits infinitely many symbols as shown by the following example. Given $n_0$, the symbol $\sigma$ defined by 
+A single operator $A$ admits infinitely many discrete symbols as shown by the following example. Given $n_0$, let $\sigma$ the symbol defined by 
 \[ \sigma(n,i) = \begin{cases}
 0 & \text{ if } n \neq n_0, i \neq 0 \text{ or } i \neq 2n_0\\
 1 & \text{ if } n = n_0 \text{ and } i = 0\\
 -1 & \text{ if } n = n_0 \text{ and } i = 2 n_0\,.
 \end{cases}\]
-represents the null operator. Nevertheless, the next result ensures that two symbols of the same operator agree for $n$ large enough. 
+Then, $\sigma$ is a non-trivial discrete symbol of the null operator. Nevertheless, the next result ensures that two symbols of the same operator agree for $n$ large enough. 
 \begin{Lem}
 	\label{NonUniqueness}
-	Let $\sigma$ a symbol of the null operator. Then there exists an integer $N$ such that 
+	Let $\sigma$ a discrete symbol of the null operator. Then there exists an integer $N$ such that 
 	\[n \geq N \implies \forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
 	\begin{proof}
-		Let $N$ an integer such that 
+		 By definition of $S^{-\infty}$, there exists an integer $N$ such that 
 		\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
 		Let $n \geq N$, we can write 
 		\[0 = \sum_{i = -N+1}^{N-1} \sigma(n,i) T_{n-i} \,.\]
-		Two Chebyshev polynomials of the same order do not arise in the summation since $\forall i \in [-N +1,N-1]$, $n - i \geq 1$. Using orthogonal projection against each $T_{n-i}$ yields 
+		Two Chebyshev polynomials of the same order do not arise in the summation since $\forall i \in [-N +1,N-1]$, $n - i \geq 1$. Orthogonal projection against each $T_{n-i}$ thus yields 
 		\[\forall i \in [-N+1,N-1], \quad \sigma(n,i) = 0\,,\]
 		and by definition of $N$,
 		\[\forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
@@ -341,11 +366,11 @@ An alternative definition is given as follows
 	\[AT_n(x) = a_1(n,x)T_n(x) + a_2(n,x) \omega^2 U_{n-1}(x),\]
 	while 
 	\[A T_0(x) = a_1(0,x) T_0 \,.\]
- 	We say that $(a_1,a_2)$ is a couple of symbol of $A$. 
+ 	We say that $(a_1,a_2)$ is a couple of semi-discrete symbols of $A$. 
 \end{Def}
-Let us prove the equivalence betwwen the two definitions
+Let us prove the equivalence betwwen the two definitions.
 \begin{proof}
-	We prove that the first definition implies the second one. The calculations can also be made in the reverse order to prove the converse. Let $A\in S^{-\infty}$ and let $\sigma_A$ a symbol of $A$. For $(n,i) \in \N \times \Z$, let 
+	We prove that the first definition implies the second one. The calculations can also be made in the reverse order to prove the converse. Let $A\in S^{-\infty}$ and let $\sigma_A$ a discrete symbol of $A$. For $(n,i) \in \N \times \Z$, let 
 	\[f_A(n,i) = \frac{\sigma_A(n,i) + \sigma_A(n,-i)}{2}\,,\]
 	\[g_A(n,i) = \frac{\sigma_A(n,i) - \sigma_A(n,-i)}{2}\,.\]
 	We then have
@@ -363,17 +388,26 @@ Let us prove the equivalence betwwen the two definitions
 	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
 	There exists $N$ such that for each $n$, $f_A(n,i)$ and $g_A(n,i)$ are null for $ \abs{i} \geq N$. This implies that $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are polynomials of degree at most $N$. 
 \end{proof}
-As before, there are non-trivial symbols for the null operator. For example, fix $n_0$ and take $a_1(x,n) = a_2(x,n) = 0$ for $n \neq n_0$, while 
+As before, there are non-trivial couple of semi-discrete symbols for the null operator. For example, let $a_1$ and $a_2$ be defined as follows. Fix $n_0$ and take $a_1(x,n) = a_2(x,n) = 0$ for $n \neq n_0$, while 
 \[a_1(n_0,x) = -\omega^2 U_{n_0-1}(x) \,,\] 
 \[a_2(n_0,x) = T_{n_0}(x)\,. \]
-Nevertheless, two couple of symbols agree for $n$ large enough:
+Nevertheless, two couple of semi-discrete symbols of the same operator agree for $n$ large enough:
 \begin{Lem}
 	\label{NonUniqueness2}
-	Let $(a_1,a_2)$ a couple of symbols for the null operator. Then there exists $N$ such that $n \geq N$ implies $a_1(n,x) = a_2(n,x) = 0$. 
+	Let $(a_1,a_2)$ a couple of semi-discrete symbols for the null operator. Then there exists $N$ such that $n \geq N$ implies $a_1(n,x) = a_2(n,x) = 0$. 
 \end{Lem}
-\toDo{Preuve utilisant le degré des polynômes et les racines de $T_n$ et $U_{n-1}$}
+\begin{proof}
+	By definition, there exists an integer $N$ such that for all $n$, $a_1(n,\cdot)$ is a polynomial of order less than $N$. Fix $n \geq N$. We have 
+	\[0 = a_1(n,x) T_n(x) + a_2(n,x)\omega^2 U_{n-1}(x)\]
+	and let $(z_i)$ the $(n+1)$ distinct roots of $\omega^2 U_{n-1}$. Note that $T_n(z_i)$ is non-zero for all $i$, thus, for 
+	\[\forall 1 \leq i \leq n+1, \quad a_1(n,z_i) = 0 \,.\]
+	Thus, $a_1(n,\cdot)$ has $n+1$ distinct roots while being a polynomial of order less than $n$. Therefore, $a_1(n,\cdot) = 0$. This in turn implies that $a_2(n,\cdot) = 0$. 
+\end{proof}
+As $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are required to be polynomials, it is in fact possible to ensure uniqueness of the couple by Euclidean division. We may for example ask that $a_1(n,x)$ has a degree less than $n$. If there exists an admissible couple, then we can change $a_1$ such that this condition be satisfied by writing 
+\[a_1(n,\cdot) = b_1(n,\cdot) + Q(x)\omega^2 U_{n-1}(x)\]
+where $b_1(n,\cdot)$ has a degree less than $n$. Then, letting $b_2(n,x) = a_2(n,x) + Q(x)$, we have exhibited such a couple. Of course, with this condition, the null operator only has trivial semi-discrete symbols, by the same arguments as in the proof of the previous lemma. In practice, this uniqueness condition does no seem to bear any special interest. 
 
-Notice that the action of $A$ on a function $u$ is given in terms of a couple of symbols $(a_1, a_2)$ by 
+Notice that the action of $A$ on a function $u$ is given in terms of a couple of semi-discrete symbols $(a_1, a_2)$ by 
 \[Au(x) = \sum_{n = 0}^{+ \infty} a_1(n,x) \hat{u}_n T_n(x) + \omega^2 \sum_{n = 1}^{+ \infty} a_2(n,x) \hat{u}_n U_{n-1}(x)\, .\]
 Letting $x = \cos(\theta)$ we have 
 \[\begin{split}
@@ -382,17 +416,23 @@ Au (\cos(\theta)) =  &\sum_{n = 0}^{+ \infty} a_1(n,\cos(\theta)) \hat{u}_n \cos
 \end{split}\]
 Let $\tilde{A}$ the operator defined on $H^n_e(0,1)$ by  
 \[\tilde{A} f (t) = A u (\cos(2\pi t))\]
-where $f(\theta) = u(\cos(2\pi t))$. By a simple variable change, the Fourier coefficients of $f$ are, up to a constant, exactly the Fourier-Chebyshev coefficients of $u$ thus 
+where $f(\theta) = u(\cos(2\pi t))$. The Fourier coefficients of $f$ defined by 
+\[\hat{f}_n = \int_{0}^{1}e^{-2i \pi t \cdot n} f(t) dt\]
+satisfy $\hat{f}_n = \frac{\hat{u}_n}{2}$ 
+for $n \neq 0$, and $\hat{f}_0 = \hat{u}_0$. Thus
 \[\begin{split}
-\tilde{A}f (t) =  &\sum_{n = 0}^{+ \infty} a_1(n,\cos(2\pi t)) \hat{f}_n \cos(2n \pi t)\\ 
-&+ \sum_{n = 1}^{+ \infty} \sin(2 \pi t) a_2(n,\cos(2 \pi t)) \hat{f}_n \sin(2n \pi t)\,.
+\tilde{A}f (t) =  a(0,x) \hat{f}_0 + &2\sum_{n = 1}^{+ \infty} a_1(n,\cos(2\pi t)) \hat{f}_n \cos(2n \pi t)\\ 
++&2\sum_{n = 1}^{+ \infty} \sin(2 \pi t) a_2(n,\cos(2 \pi t)) \hat{f}_n \sin(2n \pi t)\,.
 \end{split}\,.\]
-This coincides with a discrete pseudo-differential operator, as defined in \cite{thrunen1998symbol}, with a symbol $\sigma_A$ equal to
-\[\sigma_A(n,t) = \frac{a_1(\abs{n},\cos(2\pi t))}{2} + \text{sign}(n) i \sin(2\pi t)\frac{a_2(\abs{n},\cos(2\pi t))}{2}\,.\]
+This coincides with a discrete pseudo-differential operator, as defined in \cite{thrunen1998symbol}, with a symbol $\sigma_A$ equal, for $n \neq 0$, to
+\[\sigma_A(n,t) = a_1(\abs{n},\cos(2\pi t)) + i \text{sign}(n) \sin(2\pi t)a_2(\abs{n},\cos(2\pi t))\,.\]
+and for $n= 0$ to
+\[\sigma_A(0,t) = a_1(0,\cos(2\pi t))\,.\]
+Contrary to \cite{thrunen1998symbol}, the resulting symbol $\sigma_A$ is restricted to the class of trigonometric polynomials of bounded degree in the second variable as would result here of our hypothesis for $a_1$ and $a_2$. We need this assumption in order to have a form of uniqueness in our symbols, but consequently, this prevents us from directly applying the results of the previous work. We thus need to prove that our class is still an algebra. 
 
 \begin{Def}
 	\label{defClassSk2}
-	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if one of its symbols $\sigma_A$ satisfies:  \begin{equation}
+	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if one of its discrete symbols $\sigma_A$ satisfies:  \begin{equation}
 		\label{Condition2}
 		\forall (\alpha,i) \in \N \times \Z \,,\exists C_{i,k} >0 : \forall k  \in \Z, \quad  \abs{\Delta_k^\alpha \sigma_A(k,i)} \leq C_{\alpha,i} (1 + k)^{-p - \alpha}\,.
 	\end{equation}
@@ -401,21 +441,21 @@ This coincides with a discrete pseudo-differential operator, as defined in \cite
 	and $\Delta^\alpha_k$ is the $\alpha$-th iterate of $\Delta_k$.
 \end{Def}
 By \autoref{NonUniqueness}, if $A \in S^p$, then any symbol of $A$ satisfies the previous condition. 
-We state an equivalent definition using this time a couple of symbols.
-\begin{Prop}
+We state an equivalent definition using this time a couple of semi-discrete symbols.
+\begin{Lem}
 	The following conditions are equivalent:
 	\begin{itemize}
 		\item[-] $A \in S^p$
-		\item[-] There exists a couple of symbols $(a_1,a_2)$ of $A$ such that, for $i = 1,2$,
+		\item[-] There exists a couple of semi-discrete symbols $(a_1,a_2)$ of $A$ such that, for $i = 1,2$,
 		\begin{equation}
 		\label{Condition2bis}
 		\forall (\alpha,x) \in \N\,,\exists C_{\alpha} >0 : \forall (k,x)  \in \Z\times[-1,1], \quad  \abs{\Delta_k^\alpha a_i(k,x)} \leq C_{\alpha} (1 + k)^{-p - \alpha}\,.
 		\end{equation}
 	\end{itemize}
-If one of those conditions hold, then the condition \eqref{Condition2bis} holds for any couple of symbols of $A$. 
-\end{Prop}
+If one of those conditions hold, then the condition \eqref{Condition2bis} holds for any couple of semi-discrete symbols of $A$. 
+\end{Lem}
 \begin{proof}
-	Given a symbol $\sigma_A$ of $A$, $A$ admits the couple of symbols $(a_1,a_2)$ given by 
+	Given a discrete symbol $\sigma_A$ of $A$, $A$ admits the couple of semi-discrete symbols $(a_1,a_2)$ given by 
 	\[a_1(n,x) = f_A(n,0) + 2\sum_{i = 1}^{+\infty}f_A(n,i) T_i(x)\,,\]
 	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
 	with $f_A$ and $g_A$ defined as
@@ -425,7 +465,7 @@ If one of those conditions hold, then the condition \eqref{Condition2bis} holds 
 	\[\Delta_k^\alpha a_1(k,x) = \Delta_k^\alpha \sigma_A(n,0) + \sum_{i = 1}^{+\infty}\left(\Delta_k^\alpha \sigma_A(n,i)+\Delta_k^\alpha \sigma_A(n,-i) \right) T_i(x)\,.\]
 	We now apply condition \eqref{Condition2} to each term in the sum and with triangular inequality, 
 	\[\abs{\Delta^\alpha_na_1(k,x)} \leq C_\alpha (1 + k)^{-p-\alpha}\]
-	with $C_\alpha = \sum_{i = 0}^{+ \infty}C_{\alpha,i}$, where $C_{\alpha,i}$ are the constant from condition \eqref{Condition2} (recall the sum is actually finite). The same kind of computations gives a similar estimate for $a_2$ and the direct implication is proved. Conversely, let $(a_1,a_2)$ a couple of symbols of $A$ satisfying the condition \eqref{Condition2bis}. Then, reversing the computations, $A$ admits the symbol $\sigma_A$ defined for $n \in \N$ and $i \in \Z$ by
+	with $C_\alpha = \sum_{i = 0}^{+ \infty}C_{\alpha,i}$, where $C_{\alpha,i}$ are the constant from condition \eqref{Condition2} (recall the sum is actually finite). The same kind of computations gives a similar estimate for $a_2$ and the direct implication is proved. Conversely, let $(a_1,a_2)$ a couple of semi-discrete symbols of $A$ satisfying the condition \eqref{Condition2bis}. Then, reversing the computations, $A$ admits the discrete symbol $\sigma_A$ defined for $n \in \N$ and $i \in \Z$ by
 	\begin{equation}
 		\sigma_A(n,i) = f_A(n,\abs{i}) + \text{ sign} (i) g_A(n,\abs{i})
 		\label{combiner}
@@ -445,9 +485,26 @@ If one of those conditions hold, then the condition \eqref{Condition2bis} holds 
 	with $C_i = \frac{1}{\norm{T_i}}_\frac{1}{\omega}$. Similar estimates can be shown in the same way for $i = 0$ and also for $g_A$. We finally combine them with \eqref{combiner} to conclude for the reverse implication. 
 	The last statement is obvious in view of \autoref{NonUniqueness2}. 
 \end{proof}
+An interpolation procedure gives the following result:
+\begin{Lem}
+	The following propositions are equivalent:
+	\begin{itemize}
+		\item[-] $A \in S^p$
+		\item[-] There exists a couple of functions $(\nu_1(\xi,x),\nu_2(\xi,x))$ defined for $(\xi,x) \in \R^+ \times [-1,1]$, and an integer $N$ such that $a_1$ and $a_2$ are $C^{\infty}$ in $\xi$ and $(\nu_{1|\N \times[-1,1]},\nu_{2|\N \times[-1,1]})$ is a couple of symbols for $A$, with furthermore the property
+		\[\forall \alpha, \exists C_\alpha > 0 : \forall (\xi,x) \in \R+ \times [-1,1], \quad \abs{\partial_\xi^\alpha \nu_i(x,\xi)} \leq C_\alpha (1 + \xi)^{-p - \alpha}\,.\]
+	\end{itemize}
+	We call $(\nu_1,\nu_2)$ a couple of continuous symbols of $A$. 
+\end{Lem}
+\begin{proof}
+	\toDo{Utiliser la procédure d'interpolation du papier PDO discrets.}
+\end{proof}
 
 
-Given a symbol $\sigma(n,i)$, is not straightforward to check that the condition \eqref{Condition2} holds for this symbol. We now show that this is the case when $a(n,i)$ is a rational function of $n$. We will repeatedly make use the following forms of Peetre's inequality: for any real $a,b$ and $s$, 
+\subsubsection{Symbols that are rational functions of $n$.}
+
+\toDo{Il va peut-être falloir enlever cette section à cause de l'équivalence du lemme précédent.}
+
+Given a discrete symbol $\sigma(n,i)$, is not straightforward to check that the condition \eqref{Condition2} holds for this symbol. We now show that this is the case when $\sigma(n,i)$ is a rational function of $n$. We will repeatedly make use the following forms of Peetre's inequality: for any real $a,b$ and $s$, 
 \begin{equation}
 \label{Peetre1}
 	(1 + \abs{a + b})^s \leq \left(1 + \abs{a}\right)^{\abs{s}} \left(1 + \abs{b}\right)^{s}
@@ -515,6 +572,7 @@ and
 	\[C = \max(C_1,\Delta^{\alpha} Q_i(0), \cdots, \Delta^\alpha Q_i(k_0))\,.\]
 \end{proof}
 
+\subsubsection{Algebraic properties of $S^p$}
 \begin{Lem}
 	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
 \end{Lem}
@@ -573,23 +631,24 @@ The estimation (ii) required for the symbol $\sigma_C$ can be established for th
 \end{proof}
 \subsubsection{Symbolic calculus}
 
-For a couple of symbols $a_1,a_2$, let $H$ the operator defined by 
-\[H(a_1,a_2) = (-\partial_x a_2,\omega \partial_x \omega a_1)\]
-and let the multiplication of couples of symbols vbe defined by 
-\[(a_1,a_2) \times (b_1,b_2) = (a_1b_1 - \omega^2 a_2b_2, a_1b_2 + a_2 b_1)\]
+For a couple of (semi-discrete or continuous) symbols $a_1,a_2$, let $H$ the operator defined by 
+\[H(a_1,a_2) = (-\omega \partial_x \omega a_2, \partial_x a_1)\]
+and let the multiplication of couples of symbols be defined by 
+\[(a_1,a_2) \times (b_1,b_2) = (a_1b_1 - \omega^2 a_2b_2, a_1b_2 + a_2 b_1)\,.\]
+
+Let $\nu = (\nu_1,\nu_2)$ a couple of continuous symbols of an operator in $S^p$. For all $\alpha \in \N$, we write $\partial_n^\alpha \nu \isdef (\partial_\xi^\alpha \nu_1, \partial_\xi^\alpha \nu_2)$. This is of course a couple of continuous symbols for an operator in $S^{p + \alpha}$. 
 \begin{Lem}
 	Let $(a_1,a_2)$ and $(b_1,b_2)$ two couple of symbols of two operators $A \in S^p$ and $B \in S^q$. Then $H(a_1,a_2)$ is a couple of symbols for an operator in $S^p$ and $(a_1,a_2) \times (b_1,b_2)$ is a couple of symbols for an operator in $S^{p+q}$. 
 \end{Lem}
-
-\toDo{Asymptotic expansion}
-\toDo{Fourier Interpolation}
+\toDo{Preuve pédestre de ça.}
+\toDo{Definition of Asymptotic expansion}
 
 \begin{The}
-	Let $A \in S^p$ and $B \in S^q$ with respective couple of symbols $a = (a_1,a_2)$ and $b = (b_1,b_2)$. Then a couple of symbols $c = (c_1,c_2)$ of $C = AB$ is given by 
-	\[c = \sum_{k = 0}^{+ \infty} \partial_n^k a \times H^k(b) \]
+	Let $A \in S^p$ and $B \in S^q$ with respctive couples of continuous symbols $a = (a_1,a_2)$ and $b = (b_1,b_2)$. Then a couple of continuous symbols $c = (c_1,c_2)$ of $C = AB$ is given by 
+	\[c = \sum_{\alpha = 0}^{+ \infty} \frac{1}{\alpha!}\partial_\xi^\alpha a \times H^k(b) \]
 \end{The}
 \begin{proof}
-	\toDo{Appliquer les résultats connus pour les opérateurs discrets.}
+	\toDo{Appliquer les résultats connus pour les opérateurs discrets, ou simplement reproduire la preuve qui est tout simple ici.}
 \end{proof}
 
 \begin{Lem}
