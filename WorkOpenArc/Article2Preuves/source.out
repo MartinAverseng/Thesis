@@ -3,20 +3,17 @@
 \BOOKMARK [3][-]{subsubsection.1.1.1}{Definitions}{subsection.1.1}% 3
 \BOOKMARK [3][-]{subsubsection.1.1.2}{Basic properties}{subsection.1.1}% 4
 \BOOKMARK [3][-]{subsubsection.1.1.3}{Characterization of Tn and Un.}{subsection.1.1}% 5
-\BOOKMARK [2][-]{subsection.1.2}{Periodic Pseudo-differential operators}{section.1}% 6
-\BOOKMARK [3][-]{subsubsection.1.2.1}{Classes of operators}{subsection.1.2}% 7
-\BOOKMARK [3][-]{subsubsection.1.2.2}{Symbols that are rational functions of n.}{subsection.1.2}% 8
-\BOOKMARK [3][-]{subsubsection.1.2.3}{Algebraic properties of Sp}{subsection.1.2}% 9
-\BOOKMARK [3][-]{subsubsection.1.2.4}{Symbolic calculus}{subsection.1.2}% 10
-\BOOKMARK [1][-]{section.2}{Preconditioners for the Helmholtz scattering problem}{}% 11
-\BOOKMARK [2][-]{subsection.2.1}{The scattering problem for an open curve}{section.2}% 12
-\BOOKMARK [2][-]{subsection.2.2}{Operators S and N on the flat segment}{section.2}% 13
-\BOOKMARK [2][-]{subsection.2.3}{Weighted single-layer operator on the flat segment for k =0}{section.2}% 14
-\BOOKMARK [2][-]{subsection.2.4}{Neumann problem}{section.2}% 15
-\BOOKMARK [2][-]{subsection.2.5}{Non-flat arc}{section.2}% 16
-\BOOKMARK [1][-]{section.3}{Galerkin analysis}{}% 17
-\BOOKMARK [2][-]{subsubsection.3.0.1}{Dirichlet problem}{section.3}% 18
-\BOOKMARK [3][-]{subsubsection.3.0.2}{Neumann problem}{subsubsection.3.0.1}% 19
-\BOOKMARK [1][-]{section.4}{Conclusion}{}% 20
-\BOOKMARK [1][-]{section.5}{Proof of Theorem 6}{}% 21
-\BOOKMARK [1][-]{section.6}{Suggestion de d\351coupage}{}% 22
+\BOOKMARK [2][-]{subsection.1.2}{Periodic pseudo-differential operators}{section.1}% 6
+\BOOKMARK [2][-]{subsection.1.3}{Pseudo-differential operators on Ts.}{section.1}% 7
+\BOOKMARK [1][-]{section.2}{Application to preconditioning for the Helmholtz scattering problem}{}% 8
+\BOOKMARK [2][-]{subsection.2.1}{The scattering problem for an open curve}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.2}{Operators S and N on the flat segment}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{Weighted single-layer operator on the flat segment for k =0}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.4}{Neumann problem}{section.2}% 12
+\BOOKMARK [2][-]{subsection.2.5}{Non-flat arc}{section.2}% 13
+\BOOKMARK [1][-]{section.3}{Galerkin analysis}{}% 14
+\BOOKMARK [2][-]{subsubsection.3.0.1}{Dirichlet problem}{section.3}% 15
+\BOOKMARK [3][-]{subsubsection.3.0.2}{Neumann problem}{subsubsection.3.0.1}% 16
+\BOOKMARK [1][-]{section.4}{Conclusion}{}% 17
+\BOOKMARK [1][-]{section.5}{Proof of Theorem 4}{}% 18
+\BOOKMARK [1][-]{section.6}{Suggestion de d\351coupage}{}% 19

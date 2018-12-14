@@ -7,10 +7,12 @@
 \maketitle
 
 \begin{abstract}
-	We introduce new analytical tools to study the first-kind integral equations on open curves. Those tools are applied to analyze two new preconditioners and study the convergence orders of a Galerkin method on weighted $L^2$ spaces.  
+	We apply pseudo-differential operators theory to the first-kind integral equations on open curves, allowing us to analyze two new preconditioners and study the convergence orders of a Galerkin method on weighted $L^2$ spaces.  
 \end{abstract}
 
 \section*{Introduction}
+
+\toDo{Ne pas lire l'intro, à changer.}
 
 For the resolution of the Helmholtz scattering problem, one of the most popular strategy is to use of integral equations, as it reduces drastically the size of the problem. The unknowns of the equation are functions on the boundary of the scatterer instead of the whole space outside this scatterer.  With this method, one is eventually led to solve large and dense linear systems. Since direct method are often too expensive in time and memory in this case, iterative methods like GMRES \cite{saad1986gmres} are generally used. With this method, the number of operations is $N = N_{\textup{iter}} N_{\textup{mat}}$, where $N_\textup{iter}$ is the number of iterations and $N_{\textup{mat}}$ is the complexity of a matrix-vector products. Several compression and acceleration, methods have emerged, such as FMM (see \cite{rokhlin1993diagonal,coifman1993fast} and references therein), the Hierarchical Matrix \cite{borm2003introduction}, or more recently, the Sparse Cardinal Sine Decomposition \cite{alouges2015sparse} and the Efficient Bessel Decomposition \cite{averseng2018fast}, adressing the problem of reducing the matrix-vector product complexity.
 
@@ -279,447 +281,522 @@ and by $Su$ the function defined as
 \end{proof}
 
 
-\subsection{Periodic Pseudo-differential operators}
+\subsection{Periodic pseudo-differential operators}
 
-On the family of spaces $H^s_p(0,T)$, a class of periodic pseudo-differential operators has been introduced in \cite{thrunen1998symbol}, with symbolic calculus. A periodic pseudo-differential operator on $H^s_p(0,T)$ of order $p$ is an operator of the form 
+On the family of spaces $H^s_p(0,T)$, a class of periodic pseudo-differential operators (PPDO) has been introduced in \cite{thrunen1998symbol}, with symbolic calculus. A PPDO on $H^s_p(0,T)$ of order $p$ is an operator of the form 
 \[A : u \in H^s_p(0,T) \mapsto \sum_{n \in \Z} \sigma_A(t,n) \hat{u}_n e^{\frac{2in\pi t}{T} }\,.\]
 for a symbol $\sigma_A \in C^{\infty}(\mathbb{T}_T \times \R)$ satisfying 
-\[\forall j,k \in \N, \exists C_{j,k} >0 : \quad \abs{\partial_t^j \partial_\xi^k \sigma_A(t,\xi)} \leq C_{j,k}(1 + \abs{\xi})^{p - k}\,.\]
-Here, $\hat{u}_n = \frac{1}{T}\int_{0}^{T}u(t) e^{-i\frac{2n\pi t}{T}}dt$ are the usual Fourier coefficients of $u$ and $\partial_t \isdef \frac{1}{iT}\frac{\partial}{\partial t}$, $\partial_\xi \isdef \frac{1}{iT}\frac{\partial}{\partial \xi}$. 
-The class of symbols that satisfy this condition is denoted by $\Sigma^p$, and $\Sigma^{-\infty} \isdef \Cup_{p \in \Z} \Sigma^p$. The operator corresponding to a symbol $\sigma$ is denoted by $\textit{Op}(\sigma)$ and thus, the set of periodic pseudo-differential operators is $\textit{Op}(\Sigma^p)$. 
+\begin{equation}
+\label{SymbolsCond}
+	\forall j,k \in \N, \exists C_{j,k} >0 : \quad \abs{\partial_t^j \partial_\xi^k \sigma_A(t,\xi)} \leq C_{j,k}(1 + \abs{\xi})^{p - k}\,.
+\end{equation}
+Here, $\hat{u}_n = \frac{1}{T}\int_{0}^{T}u(t) e^{-i\frac{2n\pi t}{T}}dt$ are the usual Fourier coefficients of $u$ and 
+$${\partial_t \isdef \frac{T}{2i\pi}\frac{\partial}{\partial t}}, \quad  \partial_\xi \isdef \frac{T}{2i\pi}\frac{\partial}{\partial \xi},$$ 
+with for $j \geq 1$, $\partial_t^{j+1} = \partial_t \partial_t^j$, and $\partial_\xi^{j+1} = \partial_\xi \partial_\xi^j$. 
+The class of symbols that satisfy \eqref{SymbolsCond} is denoted by $\Sigma^p$, and $\Sigma^{-\infty} \isdef \cup_{p \in \Z} \Sigma^p$. The operator corresponding to a symbol $\sigma$ is denoted by $\textit{Op}(\sigma)$ and the set of PPDO of order $p$ is denoted by $\textit{Op}(\Sigma^p)$. 
 
 The symbol is not unique but is determined uniquely at the integer values of $\xi$ by 
-\[\sigma_A(t,n) =  e^{-\frac{2in\pi t}{T}}A(e^{\frac{2in\pi t}{T}})\,.\]
+\begin{equation}
+	\label{symbolUniqueDetermine}
+	\sigma_A(t,n) =  e^{-\frac{2in\pi t}{T}}A(e^{\frac{2in\pi t}{T}})\,.
+\end{equation}
 As shown in \cite{thrunen1998symbol}, $A \in \textit{Op}(\Sigma^p)$ if and only if those values satisfy 
-\[\forall j,k \in \N, \exists C_{j,k} > 0 : \abs{\partial_t^j \Delta_n^k \sigma_A(t,n)} \leq C_{j,k}(1 + \abs{n})^{p - k}\,.\] 
-An operator in $\textit{Op}(\Sigma^p)$ maps continuously $H_p^s(0,T)$ to $H_p^{s + p}$ for all $s \in \R$. The composition of two operators in $\textit{Op}(\sigma^p)$ and $\textit{Op}(\sigma^q)$ gives rise to an operator in $\textit{Op}(\sigma^{p+q})$. 
+\[\forall j,k \in \N, \exists C_{j,k} > 0 : \abs{\partial_t^j \Delta_n^k \sigma_A(t,n)} \leq C_{j,k}(1 + \abs{n})^{p - k}\,,\] 
+Where $\Delta_n \phi(t,n) = \phi(t,n+1) - \phi(t,n)$ and for $k \geq 1$, $\Delta^{k+1}\phi = \Delta (\Delta^k \phi)$.
+An operator in $\textit{Op}(\Sigma^p)$ maps continuously $H_p^s(0,T)$ to $H_p^{s + p}(0,T)$ for all $s \in \R$. The composition of two operators in $\textit{Op}(\Sigma^p)$ and $\textit{Op}(\Sigma^q)$ gives rise to an operator in $\textit{Op}(\Sigma^{p+q})$. 
 If two symbols $a$ and $b$ in $\Sigma^{- \infty}$ satisfy $a - b  \in \Sigma^{p}$, we write $a = b + \Sigma^p$ and if $A = \textit{Op}(a)$ and $B = \textit{Op}(b)$, we write $A = B + R_p$. Let $a \in \Sigma^{- \infty}$. If there exists a sequence of reals $(p_j)_{j \in \N}$ such that $p_j < p_{j+1}$ and a sequence of symbols $a_j \in \Sigma^{p_j}$ such that for all $N$, 
 \[a = \sum_{i = 0}^{N}a_i + \Sigma^{p_j + 1}\,,\]
 we then write 
 \[a = \sum_{i = 0}^{+ \infty} a_j \,.\]
-This is called an asymptotic expansion of the symbol $a$. 
-Consider an integral operator $K$ of the form 
-\[K : u \mapsto \frac{1}{T}\int_{0}^T a(t,s) \kappa(t-s) u(s) ds.\]
-where $a$ is $T$-periodic and $C^{\infty}$ in both arguments and $\kappa$ is a $T$-periodic distribution. Assume that the Fourier coefficients $\hat{\kappa}(n)$ of $\kappa$ can be prolonged to a function $\hat{\kappa}(\xi)$ on $\R$ such that
-\[\forall k \in \N,  \exists C_k > 0: \quad \abs{\partial^k_\xi \hat{\kappa}(\xi)} \leq C_k (1 + \abs{\xi})^{\alpha - k}\,.\]
-for some $\alpha$. Then $K$ is in $\textit{Op}(\Sigma^\alpha)$ with a symbol satisfying the asymptotic expansion
-\[\sigma_K(\xi, t) = \sum_{j = 0}^{+ \infty} \frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \hat{\kappa}(\xi) \partial_s^ja(t,s)_{|s = t}\,.\]
+This is called an asymptotic expansion of the symbol $a$. The composition of two periodic pseudi-differential operators $A$ and $B$ with symbols $\sigma_A$ and $\sigma_B$ has a symbol $\sigma_C$ with the following asymptotic expansion
+\begin{equation}
+	\label{a_diese_b}
+	\sigma_C(t,\xi) = \sum_{j = 0}^{+\infty}\frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \sigma_A(t,\xi) \partial_t^j \sigma_B(t,\xi)\,.
+\end{equation}
+We will use the following result, see \cite{thrunen1998symbol}:.
+\begin{The}
+	\label{thrunen}
+	Consider an integral operator $K$ of the form 
+	\[K : u \mapsto \frac{1}{T}\int_{0}^T a(t,s) \kappa(t-s) u(s) ds.\]
+	where $a$ is $T$-periodic and $C^{\infty}$ in both arguments and $\kappa$ is a $T$-periodic distribution. Assume that the Fourier coefficients $\hat{\kappa}(n)$ of $\kappa$ can be prolonged to a function $\hat{\kappa}(\xi)$ on $\R$ such that
+	\[\forall k \in \N,  \exists C_k > 0: \quad \abs{\partial^k_\xi \hat{\kappa}(\xi)} \leq C_k (1 + \abs{\xi})^{\alpha - k}\,.\]
+	for some $\alpha$. Then $K$ is in $\textit{Op}(\Sigma^\alpha)$ with a symbol satisfying the asymptotic expansion
+	\[\sigma_K(\xi, t) = \sum_{j = 0}^{+ \infty} \frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \hat{\kappa}(\xi) \partial_s^ja(t,s)_{|s = t}\,.\]
+\end{The}
+In particular, taking $\kappa = 1$, for all functions $a \in C^{\infty}(\mathbb{T}_T^2)$
+\[Ku = \frac{1}{T}\int_{0}^{T} a(t,s) u(s) ds\]
+is in $Op\left(\Sigma^{-\infty}\right)$.
 
+\subsection{Pseudo-differential operators on $T^s$.}
 
-\subsubsection{Classes of operators}
-
-We shall now introduce a class of pseudo-differential operators on the open segment. Essentially, they are, up to a change of variables, the periodic pseudo-differential operators on the torus $\mathbb{T}_{1} = \mathbb{R} / \Z$ that preserve the space of 1-periodic even functions, that is, that map $H^n_e(0,1)$ to itself. A particular property of these pseudo-differential operators is that their symbol is not defined uniquely. We show that a symbolic calculus is still available within this restricted class. 
-
-\begin{Def}
-	Let $p\in \R$. If  $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$ in the scale $T^s$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. 
-	
-	An operator $A : U^{\infty} \to U^{-\infty}$ which maps continuously $U^s$ to $U^{s+p}$ for all real $s$ is said to be of order $p$ in the scale $U^s$. When the family ($U^s$ or $T^s$) is clear from the context, we simply say that $A$ is of order $p$. 
-\end{Def}
-
-\begin{Def}
-	\label{DefEquivModTp}
-	Let $A$ and $B$ two operators of order $s$ in the scale $T^s$. When the operator 
-	$A - B$ is of order $p \in (0,+\infty]$, we shall write 
-	\[A = B + T_{p}.\]
-	When the scale is $U^s$ instead of $T^s$, we write 
-	\[A = B + U_{p}.\]
-\end{Def}
-
-\label{subsec:classesOfOp}
-
-To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
-
-
-\begin{Def}
-	An operator $A \in \mathcal{L}(T^{-\infty})$ belongs to the class $S^{-\infty}$ if there exists a "discrete symbol" $\sigma_A : \N \times \Z$ of $A$ such that, for all $n \in \N$,
-	\[AT_n = \sum_{i \in \Z} \sigma_A(n,i) T_{n-i}\,,\]
-	with furthermore the property that there exists an integer $N$ for which 
-	\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
-\end{Def}
-A single operator $A$ admits infinitely many discrete symbols as shown by the following example. Given $n_0$, let $\sigma$ the symbol defined by 
-\[ \sigma(n,i) = \begin{cases}
-0 & \text{ if } n \neq n_0, i \neq 0 \text{ or } i \neq 2n_0\\
-1 & \text{ if } n = n_0 \text{ and } i = 0\\
--1 & \text{ if } n = n_0 \text{ and } i = 2 n_0\,.
-\end{cases}\]
-Then, $\sigma$ is a non-trivial discrete symbol of the null operator. Nevertheless, the next result ensures that two symbols of the same operator agree for $n$ large enough. 
 \begin{Lem}
-	\label{NonUniqueness}
-	Let $\sigma$ a discrete symbol of the null operator. Then there exists an integer $N$ such that 
-	\[n \geq N \implies \forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
-	\begin{proof}
-		 By definition of $S^{-\infty}$, there exists an integer $N$ such that 
-		\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
-		Let $n \geq N$, we can write 
-		\[0 = \sum_{i = -N+1}^{N-1} \sigma(n,i) T_{n-i} \,.\]
-		Two Chebyshev polynomials of the same order do not arise in the summation since $\forall i \in [-N +1,N-1]$, $n - i \geq 1$. Orthogonal projection against each $T_{n-i}$ thus yields 
-		\[\forall i \in [-N+1,N-1], \quad \sigma(n,i) = 0\,,\]
-		and by definition of $N$,
-		\[\forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
-		This has been shown for all $n \geq N$ so the claim is proved. 
-	\end{proof}
-\end{Lem}
-
-An alternative definition is given as follows 
-\begin{Def}
-	An operator $A$ belongs to $S^{-\infty}$ if there exists two functions $a_1, a_2 : \R \times \N \to \R$ and an integer $N$ such that for all $n$, $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are polynomials of order at most $N$, and such that, for $n \geq 1$, 
-	\[AT_n(x) = a_1(n,x)T_n(x) + a_2(n,x) \omega^2 U_{n-1}(x),\]
-	while 
-	\[A T_0(x) = a_1(0,x) T_0 \,.\]
- 	We say that $(a_1,a_2)$ is a couple of semi-discrete symbols of $A$. 
-\end{Def}
-Let us prove the equivalence betwwen the two definitions.
-\begin{proof}
-	We prove that the first definition implies the second one. The calculations can also be made in the reverse order to prove the converse. Let $A\in S^{-\infty}$ and let $\sigma_A$ a discrete symbol of $A$. For $(n,i) \in \N \times \Z$, let 
-	\[f_A(n,i) = \frac{\sigma_A(n,i) + \sigma_A(n,-i)}{2}\,,\]
-	\[g_A(n,i) = \frac{\sigma_A(n,i) - \sigma_A(n,-i)}{2}\,.\]
-	We then have
-	\[\begin{split}
-	AT_n = f_A(n,0) T_n &+ \sum_{i = 1}^{+\infty} f_A(n,i) \left(T_{n+i} + T_{n-i}\right)\\
-	& + \sum_{i = 1}^{+\infty} g_A(n,i) \left(T_{n-i} - T_{n+i}\right)\,.
-	\end{split}\]
-	We use the trigonometric identities
-	\[T_iT_n = \frac{T_{n+i} + T_{n-i}}{2}\,.\]
-	\[\omega^2U_{i-1}U_{n-1} = \frac{T_{n-i} - T_{n+i}}{2}\,,\]
-	to get
-	\[AT_n = a_1(n,x) T_n + \omega^2 a_2(n,x) U_{n-1}\]
+	\label{TransportPPDO}
+	Let $A$ a PPDO that stabilizes the set of smooth real even functions. Then $A$ coincides on this set with an the operator $B$ with symbol given by 
+	\[\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}\,.\]
+	Moreover, $\sigma_B$ admits the following decomposition:
+	\[ \sigma_B(n,\theta) = a_1(n,\cos\theta) + i \sin(\theta)a_2(n,\cos\theta) \]
 	with 
-	\[a_1(n,x) = f_A(n,0) + 2\sum_{i = 1}^{+\infty}f_A(n,i) T_i(x)\,,\]
-	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
-	There exists $N$ such that for each $n$, $f_A(n,i)$ and $g_A(n,i)$ are null for $ \abs{i} \geq N$. This implies that $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are polynomials of degree at most $N$. 
-\end{proof}
-As before, there are non-trivial couple of semi-discrete symbols for the null operator. For example, let $a_1$ and $a_2$ be defined as follows. Fix $n_0$ and take $a_1(x,n) = a_2(x,n) = 0$ for $n \neq n_0$, while 
-\[a_1(n_0,x) = -\omega^2 U_{n_0-1}(x) \,,\] 
-\[a_2(n_0,x) = T_{n_0}(x)\,. \]
-Nevertheless, two couple of semi-discrete symbols of the same operator agree for $n$ large enough:
-\begin{Lem}
-	\label{NonUniqueness2}
-	Let $(a_1,a_2)$ a couple of semi-discrete symbols for the null operator. Then there exists $N$ such that $n \geq N$ implies $a_1(n,x) = a_2(n,x) = 0$. 
+	\[a_1(n,x) = \frac{\sigma_B(n,\arccos(x)) + \sigma_B(-n,\arccos(x))}{2}\]
+	\[a_2(n,x) = \frac{\sigma_B(n,\arccos(x)) - \sigma_B(-n,\arccos(x))}{2i\sqrt{1-x^2}}\] 
+	and $a_1$ and $a_2$ are real and $\Cinf$. 
 \end{Lem}
 \begin{proof}
-	By definition, there exists an integer $N$ such that for all $n$, $a_1(n,\cdot)$ is a polynomial of order less than $N$. Fix $n \geq N$. We have 
-	\[0 = a_1(n,x) T_n(x) + a_2(n,x)\omega^2 U_{n-1}(x)\]
-	and let $(z_i)$ the $(n+1)$ distinct roots of $\omega^2 U_{n-1}$. Note that $T_n(z_i)$ is non-zero for all $i$, thus, for 
-	\[\forall 1 \leq i \leq n+1, \quad a_1(n,z_i) = 0 \,.\]
-	Thus, $a_1(n,\cdot)$ has $n+1$ distinct roots while being a polynomial of order less than $n$. Therefore, $a_1(n,\cdot) = 0$. This in turn implies that $a_2(n,\cdot) = 0$. 
+Since $A$ stabilizes the set of real even functions, for all even function $u$ we have 
+\[Au(\theta) = Bu(\theta) \isdef \frac{Au(\theta) + Au(-\theta)}{2}\,.\]
+We have
+\[Bu(\theta) = \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,\theta) \hat{u}_n e^{in\theta} + \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,-\theta)\hat{u}_n e^{-in\theta}\,,\]
+so the symbol of $B$ is $\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}$. In particular, it satisfies the following symmetry:
+\[\sigma_B(-n,-\theta) = \sigma_B(n,\theta)\,.\] 
+We write $\sigma_B(n,\theta) = f_B(n,\theta) + g_B(n,\theta)$ where $f_B(n,\theta) = \frac{\sigma_B(n,\theta) + \sigma_B(-n,\theta)}{2}$ and $g_B(n,\theta) = \frac{\sigma_B(n,\theta) - \sigma_B(-n,\theta)}{2}$. Notice that $f_B$ (resp. $g_B$) is even (resp. odd) in both $\theta$ and $n$. For a real even function $u$ we have $\hat{u}_n = \hat{u}_{-n}$, thus 
+\[Bu(\theta) = f_B(0,\theta) \hat{u}_0 + 2\sum_{n = 1}^{+ \infty}f_B(n,\theta)\hat{u}_n\cos(n\theta) + 2i \sum_{n =1}^{+\infty} g_B(n,\theta)\hat{u}_n\sin(n\theta)\,.\]
+Since $Bu$ must be real and since $\hat{u}_n$ is real, we find that $f_B$ is a real and $g_B$ is imaginary. The functions $a_1$ and $a_2$ defined in the lemma satisfy
+\[a_1(n,x) = f_B(n, \arccos,x),\quad a_2(n,x) = \frac{g_B(n,\arccos(x))}{i\sqrt{1-x^2}}\,.\]
+so they are both real. By \autoref{thmChar}, they lie in $T^\infty$ since $f_B$ (resp. $g_B$) is a smooth even (resp. odd) function and  $f_B(n,\theta) = a_1(n,\cos\theta)$, while $g_B(n,\theta) = i \sin \theta a_2(n,\cos\theta)$. Thus 
+\[\sigma_B(n,\theta) = a_1(n,\cos\theta) + i \sin\theta a_2(n,\cos\theta)\,. \]
 \end{proof}
-As $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are required to be polynomials, it is in fact possible to ensure uniqueness of the couple by Euclidean division. We may for example ask that $a_1(n,x)$ has a degree less than $n$. If there exists an admissible couple, then we can change $a_1$ such that this condition be satisfied by writing 
-\[a_1(n,\cdot) = b_1(n,\cdot) + Q(x)\omega^2 U_{n-1}(x)\]
-where $b_1(n,\cdot)$ has a degree less than $n$. Then, letting $b_2(n,x) = a_2(n,x) + Q(x)$, we have exhibited such a couple. Of course, with this condition, the null operator only has trivial semi-discrete symbols, by the same arguments as in the proof of the previous lemma. In practice, this uniqueness condition does no seem to bear any special interest. 
 
-Notice that the action of $A$ on a function $u$ is given in terms of a couple of semi-discrete symbols $(a_1, a_2)$ by 
-\[Au(x) = \sum_{n = 0}^{+ \infty} a_1(n,x) \hat{u}_n T_n(x) + \omega^2 \sum_{n = 1}^{+ \infty} a_2(n,x) \hat{u}_n U_{n-1}(x)\, .\]
-Letting $x = \cos(\theta)$ we have 
-\[\begin{split}
-Au (\cos(\theta)) =  &\sum_{n = 0}^{+ \infty} a_1(n,\cos(\theta)) \hat{u}_n \cos(n\theta)\\ 
-&+ \sum_{n = 1}^{+ \infty} \sin(\theta) a_2(n,\cos(\theta)) \hat{u}_n \sin(n\theta)\,.
-\end{split}\]
-Let $\tilde{A}$ the operator defined on $H^n_e(0,1)$ by  
-\[\tilde{A} f (t) = A u (\cos(2\pi t))\]
-where $f(\theta) = u(\cos(2\pi t))$. The Fourier coefficients of $f$ defined by 
-\[\hat{f}_n = \int_{0}^{1}e^{-2i \pi t \cdot n} f(t) dt\]
-satisfy $\hat{f}_n = \frac{\hat{u}_n}{2}$ 
-for $n \neq 0$, and $\hat{f}_0 = \hat{u}_0$. Thus
-\[\begin{split}
-\tilde{A}f (t) =  a(0,x) \hat{f}_0 + &2\sum_{n = 1}^{+ \infty} a_1(n,\cos(2\pi t)) \hat{f}_n \cos(2n \pi t)\\ 
-+&2\sum_{n = 1}^{+ \infty} \sin(2 \pi t) a_2(n,\cos(2 \pi t)) \hat{f}_n \sin(2n \pi t)\,.
-\end{split}\,.\]
-This coincides with a discrete pseudo-differential operator, as defined in \cite{thrunen1998symbol}, with a symbol $\sigma_A$ equal, for $n \neq 0$, to
-\[\sigma_A(n,t) = a_1(\abs{n},\cos(2\pi t)) + i \text{sign}(n) \sin(2\pi t)a_2(\abs{n},\cos(2\pi t))\,.\]
-and for $n= 0$ to
-\[\sigma_A(0,t) = a_1(0,\cos(2\pi t))\,.\]
-Contrary to \cite{thrunen1998symbol}, the resulting symbol $\sigma_A$ is restricted to the class of trigonometric polynomials of bounded degree in the second variable as would result here of our hypothesis for $a_1$ and $a_2$. We need this assumption in order to have a form of uniqueness in our symbols, but consequently, this prevents us from directly applying the results of the previous work. We thus need to prove that our class is still an algebra. 
-
-\begin{Def}
-	\label{defClassSk2}
-	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if one of its discrete symbols $\sigma_A$ satisfies:  \begin{equation}
-		\label{Condition2}
-		\forall (\alpha,i) \in \N \times \Z \,,\exists C_{i,k} >0 : \forall k  \in \Z, \quad  \abs{\Delta_k^\alpha \sigma_A(k,i)} \leq C_{\alpha,i} (1 + k)^{-p - \alpha}\,.
-	\end{equation}
-	Here $\Delta_k$ is the difference operator in the variable $k$ (denoted simply by $\Delta$ when there is only one variable), defined by
-	\[\Delta_k a(k,i) = a(k+1,i) - a(k,i),\]
-	and $\Delta^\alpha_k$ is the $\alpha$-th iterate of $\Delta_k$.
-\end{Def}
-By \autoref{NonUniqueness}, if $A \in S^p$, then any symbol of $A$ satisfies the previous condition. 
-We state an equivalent definition using this time a couple of semi-discrete symbols.
+We use this result to transport the notion of periodic pseudo-differential operators by the change of variable $x = \cos\theta$. Let $A$ an operator on $T^{-\infty}$, such that there exists a couple of smooth functions $a_1$ and $a_2$ in $\Cinf([-1,1]\times \N)$ such that for all $n \in \N$,
+\[AT_n = a_1(x,n) T_n - \omega^2 a_2(x,n) U_{n-1}\,.\]
+Such a (non-unique) couple of functions is called a pair of symbols of $A$. For $n\in \Z$ and $\theta \in [0,2\pi]$, define the symbol $\tilde{\sigma}(a_1,a_2)$ by
+\[\tilde{\sigma}(a_1,a_2)(\theta,n) = a_1(\cos\theta,\abs{n}) + i \sin\theta\,\text{sign}(n) a_2(\cos\theta,\abs{n})\,.\]
+We say that $(a_1,a_2) \in S^p$ if $\tilde{\sigma}(a_1,a_2) \in \Sigma^p$, and $S^{-\infty} \isdef \cup_{p \in \Z} S^p$. The operator defined by a pair of symbols $(a_1,a_2)$ is denoted by $\textit{Op}(a_1,a_2)$ and the set of pseudo-differential operatos of order $p$ in $T^{-\infty}$  by $\textit{Op}(S^p)$. 
+Then, we have the following properties of $\textit{Op}(S^p)$:
 \begin{Lem}
-	The following conditions are equivalent:
-	\begin{itemize}
-		\item[-] $A \in S^p$
-		\item[-] There exists a couple of semi-discrete symbols $(a_1,a_2)$ of $A$ such that, for $i = 1,2$,
-		\begin{equation}
-		\label{Condition2bis}
-		\forall (\alpha,x) \in \N\,,\exists C_{\alpha} >0 : \forall (k,x)  \in \Z\times[-1,1], \quad  \abs{\Delta_k^\alpha a_i(k,x)} \leq C_{\alpha} (1 + k)^{-p - \alpha}\,.
-		\end{equation}
-	\end{itemize}
-If one of those conditions hold, then the condition \eqref{Condition2bis} holds for any couple of semi-discrete symbols of $A$. 
+	If $A \in \textit{Op}(S^p)$, then letting $\tilde{A} \isdef \textit{Op}(\tilde{\sigma}_A)$, for $u \in T^s$, we have 
+	\[C(Au) = \tilde{A} (Cu)\,,\]
+	where we recall that for any function $v$ in $T^s$, $Cv(\theta) = v(\cos(\theta))$. 
+	Reciprocally, if $A$ is a linear operator that maps $T^\infty$ to itself such that
+	$CA = \tilde{A}C$ where $\tilde{A}$ is a PPDO of order $p$, then $A$ is in $\textit{Op}(S^p)$ and if $\sigma_{\tilde{A}}$ is the symbol of $\tilde{A}$, the $A = \textit{Op}(a_1,a_2)$ with the functions $a_1$ and $a_2$ of \autoref{TransportPPDO}.
 \end{Lem}
 \begin{proof}
-	Given a discrete symbol $\sigma_A$ of $A$, $A$ admits the couple of semi-discrete symbols $(a_1,a_2)$ given by 
-	\[a_1(n,x) = f_A(n,0) + 2\sum_{i = 1}^{+\infty}f_A(n,i) T_i(x)\,,\]
-	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
-	with $f_A$ and $g_A$ defined as
-	\[f_A(n,i) = \frac{\sigma_A(n,i) + \sigma_A(n,-i)}{2}\,,\]
-	\[g_A(n,i) = \frac{\sigma_A(n,i) - \sigma_A(n,-i)}{2}\,.\]
-	We have by linearity
-	\[\Delta_k^\alpha a_1(k,x) = \Delta_k^\alpha \sigma_A(n,0) + \sum_{i = 1}^{+\infty}\left(\Delta_k^\alpha \sigma_A(n,i)+\Delta_k^\alpha \sigma_A(n,-i) \right) T_i(x)\,.\]
-	We now apply condition \eqref{Condition2} to each term in the sum and with triangular inequality, 
-	\[\abs{\Delta^\alpha_na_1(k,x)} \leq C_\alpha (1 + k)^{-p-\alpha}\]
-	with $C_\alpha = \sum_{i = 0}^{+ \infty}C_{\alpha,i}$, where $C_{\alpha,i}$ are the constant from condition \eqref{Condition2} (recall the sum is actually finite). The same kind of computations gives a similar estimate for $a_2$ and the direct implication is proved. Conversely, let $(a_1,a_2)$ a couple of semi-discrete symbols of $A$ satisfying the condition \eqref{Condition2bis}. Then, reversing the computations, $A$ admits the discrete symbol $\sigma_A$ defined for $n \in \N$ and $i \in \Z$ by
-	\begin{equation}
-		\sigma_A(n,i) = f_A(n,\abs{i}) + \text{ sign} (i) g_A(n,\abs{i})
-		\label{combiner}
-	\end{equation}
-	with, for $i \in \N$, (by orthonormal projection),
-	\[f_A(n,i) = \begin{cases}\frac{1}{2 \norm{T_i}^2_\frac{1}{\omega}}\duality{a_1(n,x)}{T_i}_\frac{1}{\omega}& \text{ if } i \neq 0\\
-	\frac{1}{ \norm{T_0}^2_\frac{1}{\omega}}\duality{a_1(n,x)}{T_0}_\frac{1}{\omega} & \text{ if } i = 0\,.
-	\end{cases}\]
-	and 
-	\[g_A(n,i) = \begin{cases}\frac{1}{2 \norm{U_{i-1}}^2_{\omega}}\duality{a_2(n,x)}{U_{i-1}}_{\omega}& \text{ if } i \neq 0\\
-	0 & \text{ if } i = 0\,.
-	\end{cases}\]
-	Fix $i \in \N^*$. We have for all $k$, by linearity,
-	\[\Delta_k^\alpha f_A(k,i) = \frac{1}{2 \norm{T_i}^2_\frac{1}{\omega}}\duality{\Delta^\alpha_k a_1(k,x)}{T_i}_\frac{1}{\omega}\,.\]
-	Using Cauchy-Schwarz inequality and assumption \eqref{Condition2bis} for $a_1$, we get 
-	\[\abs{\Delta_k^\alpha f_A(k,i)} \leq C_{i}C_\alpha(1+k)^{-p - \alpha}\,,\]
-	with $C_i = \frac{1}{\norm{T_i}}_\frac{1}{\omega}$. Similar estimates can be shown in the same way for $i = 0$ and also for $g_A$. We finally combine them with \eqref{combiner} to conclude for the reverse implication. 
-	The last statement is obvious in view of \autoref{NonUniqueness2}. 
+	For the direct result, by linearity, it suffices to show the equality for $u = T_n$ for some $n \in \N$. In this case, we have $Cu(\theta) = T_n(\cos(\theta)) = \cos(n\theta)$. 
+	\[\tilde{A}\left(Cu\right)(\theta) = \frac{\tilde{A}e^{in\theta}+\tilde{A}e^{-in\theta}}{2}\,\]
+	which gives, by definition of $\tilde{A}$ and using the determination of the symbol \eqref{symbolUniqueDetermine}, 
+	\[\tilde{A}\left(Cu\right)(\theta) = \tilde{\sigma}_A(\theta,n)e^{in\theta} + \tilde{\sigma}_A(\theta,-n)e^{-in\theta}\,.\]
+	By definition of $\tilde{\sigma}_A$, this gives 
+	\[\tilde{A}\left(Cu\right)(\theta) = a_1(\cos\theta,n)\cos(n\theta) - \sin\theta a_2(\cos\theta,n)\sin(n\theta).\]
+	Using the identities $\cos(n\theta) = T_n(\cos\theta)$ and $\sin(n\theta) = \sin\theta U_{n-1}(\cos\theta)$ we obtain
+	\[\tilde{A}\left(Cu\right)(\theta) = a_1(\cos\theta,n)T_n(\cos\theta) - (1-\cos^2 \theta) a_2(\cos\theta,n) U_{n-1}(\cos\theta)\,,\]
+	as claimed. 
+	For the converse result, assume that $CA = \tilde{A}C$ where $\tilde{A}$ is a PPDO of order $p$. Then $\tilde{A}$ stabilizes the set of smooth real even functions since $CAu(\theta) = Au(\cos\theta)$ is real and even and $A$ maps smooth functions to smooth functions. Let $B$, $a_1$ and $a_2$ be defined as in \autoref{TransportPPDO} for the operator $\tilde{A}$. Using the same calculations as before, we find 
+	\[A(T_n)(\cos \theta) = a_1(n,\cos\theta) T_n(\cos\theta) -\omega^2 a_2(n,\cos\theta) U_{n-1}(\cos\theta)\,,\]
+	that is $A = \textit{Op}(a_1,a_2)$. Since $\sigma_B \in \Sigma^p$, we get $(a_1,a_2) \in S^p$ as claimed. 
 \end{proof}
-An interpolation procedure gives the following result:
-\begin{Lem}
-	The following propositions are equivalent:
-	\begin{itemize}
-		\item[-] $A \in S^p$
-		\item[-] There exists a couple of functions $(\nu_1(\xi,x),\nu_2(\xi,x))$ defined for $(\xi,x) \in \R^+ \times [-1,1]$, and an integer $N$ such that $a_1$ and $a_2$ are $C^{\infty}$ in $\xi$ and $(\nu_{1|\N \times[-1,1]},\nu_{2|\N \times[-1,1]})$ is a couple of symbols for $A$, with furthermore the property
-		\[\forall \alpha, \exists C_\alpha > 0 : \forall (\xi,x) \in \R+ \times [-1,1], \quad \abs{\partial_\xi^\alpha \nu_i(x,\xi)} \leq C_\alpha (1 + \xi)^{-p - \alpha}\,.\]
-	\end{itemize}
-	We call $(\nu_1,\nu_2)$ a couple of continuous symbols of $A$. 
-\end{Lem}
-\begin{proof}
-	\toDo{Utiliser la procédure d'interpolation du papier PDO discrets.}
-\end{proof}
+%
+%\subsubsection{Classes of operators}
+%
+%We shall now introduce a class of pseudo-differential operators on the open segment. Essentially, they are, up to a change of variables, the periodic pseudo-differential operators on the torus $\mathbb{T}_{1} = \mathbb{R} / \Z$ that preserve the space of 1-periodic even functions, that is, that map $H^n_e(0,1)$ to itself. A particular property of these pseudo-differential operators is that their symbol is not defined uniquely. We show that a symbolic calculus is still available within this restricted class. 
+%
+%\begin{Def}
+%	Let $p\in \R$. If  $A : T^{\infty} \to T^{-\infty}$ can be extended into a continuous operator from $T^{s}$ to $T^{s + p}$ for any $s \in \R$, we shall say that it is of order $p$ in the scale $T^s$. When an operator is of order $p$ for all $p \in \N$, we call it a smoothing operator. 
+%	
+%	An operator $A : U^{\infty} \to U^{-\infty}$ which maps continuously $U^s$ to $U^{s+p}$ for all real $s$ is said to be of order $p$ in the scale $U^s$. When the family ($U^s$ or $T^s$) is clear from the context, we simply say that $A$ is of order $p$. 
+%\end{Def}
+%
+%\begin{Def}
+%	\label{DefEquivModTp}
+%	Let $A$ and $B$ two operators of order $s$ in the scale $T^s$. When the operator 
+%	$A - B$ is of order $p \in (0,+\infty]$, we shall write 
+%	\[A = B + T_{p}.\]
+%	When the scale is $U^s$ instead of $T^s$, we write 
+%	\[A = B + U_{p}.\]
+%\end{Def}
+%
+%\label{subsec:classesOfOp}
+%
+%To ease the computations, we define $T_n = T_{\abs{n}}$ for $n \in \Z$. 
+%
+%
+%\begin{Def}
+%	An operator $A \in \mathcal{L}(T^{-\infty})$ belongs to the class $S^{-\infty}$ if there exists a "discrete symbol" $\sigma_A : \N \times \Z$ of $A$ such that, for all $n \in \N$,
+%	\[AT_n = \sum_{i \in \Z} \sigma_A(n,i) T_{n-i}\,,\]
+%	with furthermore the property that there exists an integer $N$ for which 
+%	\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
+%\end{Def}
+%A single operator $A$ admits infinitely many discrete symbols as shown by the following example. Given $n_0$, let $\sigma$ the symbol defined by 
+%\[ \sigma(n,i) = \begin{cases}
+%0 & \text{ if } n \neq n_0, i \neq 0 \text{ or } i \neq 2n_0\\
+%1 & \text{ if } n = n_0 \text{ and } i = 0\\
+%-1 & \text{ if } n = n_0 \text{ and } i = 2 n_0\,.
+%\end{cases}\]
+%Then, $\sigma$ is a non-trivial discrete symbol of the null operator. Nevertheless, the next result ensures that two symbols of the same operator agree for $n$ large enough. 
+%\begin{Lem}
+%	\label{NonUniqueness}
+%	Let $\sigma$ a discrete symbol of the null operator. Then there exists an integer $N$ such that 
+%	\[n \geq N \implies \forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
+%	\begin{proof}
+%		 By definition of $S^{-\infty}$, there exists an integer $N$ such that 
+%		\[ \abs{i} \geq N \implies \forall n \in \N, \quad \sigma_A(n,i) = 0\,.\]
+%		Let $n \geq N$, we can write 
+%		\[0 = \sum_{i = -N+1}^{N-1} \sigma(n,i) T_{n-i} \,.\]
+%		Two Chebyshev polynomials of the same order do not arise in the summation since $\forall i \in [-N +1,N-1]$, $n - i \geq 1$. Orthogonal projection against each $T_{n-i}$ thus yields 
+%		\[\forall i \in [-N+1,N-1], \quad \sigma(n,i) = 0\,,\]
+%		and by definition of $N$,
+%		\[\forall i \in \Z, \quad \sigma(n,i) = 0\,.\]
+%		This has been shown for all $n \geq N$ so the claim is proved. 
+%	\end{proof}
+%\end{Lem}
+%
+%An alternative definition is given as follows 
+%\begin{Def}
+%	An operator $A$ belongs to $S^{-\infty}$ if there exists two functions $a_1, a_2 : \R \times \N \to \R$ and an integer $N$ such that for all $n$, $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are polynomials of order at most $N$, and such that, for $n \geq 1$, 
+%	\[AT_n(x) = a_1(n,x)T_n(x) + a_2(n,x) \omega^2 U_{n-1}(x),\]
+%	while 
+%	\[A T_0(x) = a_1(0,x) T_0 \,.\]
+% 	We say that $(a_1,a_2)$ is a couple of semi-discrete symbols of $A$. 
+%\end{Def}
+%Let us prove the equivalence betwwen the two definitions.
+%\begin{proof}
+%	We prove that the first definition implies the second one. The calculations can also be made in the reverse order to prove the converse. Let $A\in S^{-\infty}$ and let $\sigma_A$ a discrete symbol of $A$. For $(n,i) \in \N \times \Z$, let 
+%	\[f_A(n,i) = \frac{\sigma_A(n,i) + \sigma_A(n,-i)}{2}\,,\]
+%	\[g_A(n,i) = \frac{\sigma_A(n,i) - \sigma_A(n,-i)}{2}\,.\]
+%	We then have
+%	\[\begin{split}
+%	AT_n = f_A(n,0) T_n &+ \sum_{i = 1}^{+\infty} f_A(n,i) \left(T_{n+i} + T_{n-i}\right)\\
+%	& + \sum_{i = 1}^{+\infty} g_A(n,i) \left(T_{n-i} - T_{n+i}\right)\,.
+%	\end{split}\]
+%	We use the trigonometric identities
+%	\[T_iT_n = \frac{T_{n+i} + T_{n-i}}{2}\,.\]
+%	\[\omega^2U_{i-1}U_{n-1} = \frac{T_{n-i} - T_{n+i}}{2}\,,\]
+%	to get
+%	\[AT_n = a_1(n,x) T_n + \omega^2 a_2(n,x) U_{n-1}\]
+%	with 
+%	\[a_1(n,x) = f_A(n,0) + 2\sum_{i = 1}^{+\infty}f_A(n,i) T_i(x)\,,\]
+%	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
+%	There exists $N$ such that for each $n$, $f_A(n,i)$ and $g_A(n,i)$ are null for $ \abs{i} \geq N$. This implies that $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are polynomials of degree at most $N$. 
+%\end{proof}
+%As before, there are non-trivial couple of semi-discrete symbols for the null operator. For example, let $a_1$ and $a_2$ be defined as follows. Fix $n_0$ and take $a_1(x,n) = a_2(x,n) = 0$ for $n \neq n_0$, while 
+%\[a_1(n_0,x) = -\omega^2 U_{n_0-1}(x) \,,\] 
+%\[a_2(n_0,x) = T_{n_0}(x)\,. \]
+%Nevertheless, two couple of semi-discrete symbols of the same operator agree for $n$ large enough:
+%\begin{Lem}
+%	\label{NonUniqueness2}
+%	Let $(a_1,a_2)$ a couple of semi-discrete symbols for the null operator. Then there exists $N$ such that $n \geq N$ implies $a_1(n,x) = a_2(n,x) = 0$. 
+%\end{Lem}
+%\begin{proof}
+%	By definition, there exists an integer $N$ such that for all $n$, $a_1(n,\cdot)$ is a polynomial of order less than $N$. Fix $n \geq N$. We have 
+%	\[0 = a_1(n,x) T_n(x) + a_2(n,x)\omega^2 U_{n-1}(x)\]
+%	and let $(z_i)$ the $(n+1)$ distinct roots of $\omega^2 U_{n-1}$. Note that $T_n(z_i)$ is non-zero for all $i$, thus, for 
+%	\[\forall 1 \leq i \leq n+1, \quad a_1(n,z_i) = 0 \,.\]
+%	Thus, $a_1(n,\cdot)$ has $n+1$ distinct roots while being a polynomial of order less than $n$. Therefore, $a_1(n,\cdot) = 0$. This in turn implies that $a_2(n,\cdot) = 0$. 
+%\end{proof}
+%As $a_1(n,\cdot)$ and $a_2(n,\cdot)$ are required to be polynomials, it is in fact possible to ensure uniqueness of the couple by Euclidean division. We may for example ask that $a_1(n,x)$ has a degree less than $n$. If there exists an admissible couple, then we can change $a_1$ such that this condition be satisfied by writing 
+%\[a_1(n,\cdot) = b_1(n,\cdot) + Q(x)\omega^2 U_{n-1}(x)\]
+%where $b_1(n,\cdot)$ has a degree less than $n$. Then, letting $b_2(n,x) = a_2(n,x) + Q(x)$, we have exhibited such a couple. Of course, with this condition, the null operator only has trivial semi-discrete symbols, by the same arguments as in the proof of the previous lemma. In practice, this uniqueness condition does no seem to bear any special interest. 
+%
+%Notice that the action of $A$ on a function $u$ is given in terms of a couple of semi-discrete symbols $(a_1, a_2)$ by 
+%\[Au(x) = \sum_{n = 0}^{+ \infty} a_1(n,x) \hat{u}_n T_n(x) + \omega^2 \sum_{n = 1}^{+ \infty} a_2(n,x) \hat{u}_n U_{n-1}(x)\, .\]
+%Letting $x = \cos(\theta)$ we have 
+%\[\begin{split}
+%Au (\cos(\theta)) =  &\sum_{n = 0}^{+ \infty} a_1(n,\cos(\theta)) \hat{u}_n \cos(n\theta)\\ 
+%&+ \sum_{n = 1}^{+ \infty} \sin(\theta) a_2(n,\cos(\theta)) \hat{u}_n \sin(n\theta)\,.
+%\end{split}\]
+%Let $\tilde{A}$ the operator defined on $H^n_e(0,1)$ by  
+%\[\tilde{A} f (t) = A u (\cos(2\pi t))\]
+%where $f(\theta) = u(\cos(2\pi t))$. The Fourier coefficients of $f$ defined by 
+%\[\hat{f}_n = \int_{0}^{1}e^{-2i \pi t \cdot n} f(t) dt\]
+%satisfy $\hat{f}_n = \frac{\hat{u}_n}{2}$ 
+%for $n \neq 0$, and $\hat{f}_0 = \hat{u}_0$. Thus
+%\[\begin{split}
+%\tilde{A}f (t) =  a(0,x) \hat{f}_0 + &2\sum_{n = 1}^{+ \infty} a_1(n,\cos(2\pi t)) \hat{f}_n \cos(2n \pi t)\\ 
+%+&2\sum_{n = 1}^{+ \infty} \sin(2 \pi t) a_2(n,\cos(2 \pi t)) \hat{f}_n \sin(2n \pi t)\,.
+%\end{split}\,.\]
+%This coincides with a discrete pseudo-differential operator, as defined in \cite{thrunen1998symbol}, with a symbol $\sigma_A$ equal, for $n \neq 0$, to
+%\[\sigma_A(n,t) = a_1(\abs{n},\cos(2\pi t)) + i \text{sign}(n) \sin(2\pi t)a_2(\abs{n},\cos(2\pi t))\,.\]
+%and for $n= 0$ to
+%\[\sigma_A(0,t) = a_1(0,\cos(2\pi t))\,.\]
+%Contrary to \cite{thrunen1998symbol}, the resulting symbol $\sigma_A$ is restricted to the class of trigonometric polynomials of bounded degree in the second variable as would result here of our hypothesis for $a_1$ and $a_2$. We need this assumption in order to have a form of uniqueness in our symbols, but consequently, this prevents us from directly applying the results of the previous work. We thus need to prove that our class is still an algebra. 
+%
+%\begin{Def}
+%	\label{defClassSk2}
+%	For any real $p$, an operator $A$ belongs to the class $S^{p}$ if one of its discrete symbols $\sigma_A$ satisfies:  \begin{equation}
+%		\label{Condition2}
+%		\forall (\alpha,i) \in \N \times \Z \,,\exists C_{i,k} >0 : \forall k  \in \Z, \quad  \abs{\Delta_k^\alpha \sigma_A(k,i)} \leq C_{\alpha,i} (1 + k)^{-p - \alpha}\,.
+%	\end{equation}
+%	Here $\Delta_k$ is the difference operator in the variable $k$ (denoted simply by $\Delta$ when there is only one variable), defined by
+%	\[\Delta_k a(k,i) = a(k+1,i) - a(k,i),\]
+%	and $\Delta^\alpha_k$ is the $\alpha$-th iterate of $\Delta_k$.
+%\end{Def}
+%By \autoref{NonUniqueness}, if $A \in S^p$, then any symbol of $A$ satisfies the previous condition. 
+%We state an equivalent definition using this time a couple of semi-discrete symbols.
+%\begin{Lem}
+%	The following conditions are equivalent:
+%	\begin{itemize}
+%		\item[-] $A \in S^p$
+%		\item[-] There exists a couple of semi-discrete symbols $(a_1,a_2)$ of $A$ such that, for $i = 1,2$,
+%		\begin{equation}
+%		\label{Condition2bis}
+%		\forall (\alpha,x) \in \N\,,\exists C_{\alpha} >0 : \forall (k,x)  \in \Z\times[-1,1], \quad  \abs{\Delta_k^\alpha a_i(k,x)} \leq C_{\alpha} (1 + k)^{-p - \alpha}\,.
+%		\end{equation}
+%	\end{itemize}
+%If one of those conditions hold, then the condition \eqref{Condition2bis} holds for any couple of semi-discrete symbols of $A$. 
+%\end{Lem}
+%\begin{proof}
+%	Given a discrete symbol $\sigma_A$ of $A$, $A$ admits the couple of semi-discrete symbols $(a_1,a_2)$ given by 
+%	\[a_1(n,x) = f_A(n,0) + 2\sum_{i = 1}^{+\infty}f_A(n,i) T_i(x)\,,\]
+%	\[a_2(n,x) = 2\sum_{i = 1}^{+\infty}g_A(n,i) U_{i-1 }(x)\,.\]
+%	with $f_A$ and $g_A$ defined as
+%	\[f_A(n,i) = \frac{\sigma_A(n,i) + \sigma_A(n,-i)}{2}\,,\]
+%	\[g_A(n,i) = \frac{\sigma_A(n,i) - \sigma_A(n,-i)}{2}\,.\]
+%	We have by linearity
+%	\[\Delta_k^\alpha a_1(k,x) = \Delta_k^\alpha \sigma_A(n,0) + \sum_{i = 1}^{+\infty}\left(\Delta_k^\alpha \sigma_A(n,i)+\Delta_k^\alpha \sigma_A(n,-i) \right) T_i(x)\,.\]
+%	We now apply condition \eqref{Condition2} to each term in the sum and with triangular inequality, 
+%	\[\abs{\Delta^\alpha_na_1(k,x)} \leq C_\alpha (1 + k)^{-p-\alpha}\]
+%	with $C_\alpha = \sum_{i = 0}^{+ \infty}C_{\alpha,i}$, where $C_{\alpha,i}$ are the constant from condition \eqref{Condition2} (recall the sum is actually finite). The same kind of computations gives a similar estimate for $a_2$ and the direct implication is proved. Conversely, let $(a_1,a_2)$ a couple of semi-discrete symbols of $A$ satisfying the condition \eqref{Condition2bis}. Then, reversing the computations, $A$ admits the discrete symbol $\sigma_A$ defined for $n \in \N$ and $i \in \Z$ by
+%	\begin{equation}
+%		\sigma_A(n,i) = f_A(n,\abs{i}) + \text{ sign} (i) g_A(n,\abs{i})
+%		\label{combiner}
+%	\end{equation}
+%	with, for $i \in \N$, (by orthonormal projection),
+%	\[f_A(n,i) = \begin{cases}\frac{1}{2 \norm{T_i}^2_\frac{1}{\omega}}\duality{a_1(n,x)}{T_i}_\frac{1}{\omega}& \text{ if } i \neq 0\\
+%	\frac{1}{ \norm{T_0}^2_\frac{1}{\omega}}\duality{a_1(n,x)}{T_0}_\frac{1}{\omega} & \text{ if } i = 0\,.
+%	\end{cases}\]
+%	and 
+%	\[g_A(n,i) = \begin{cases}\frac{1}{2 \norm{U_{i-1}}^2_{\omega}}\duality{a_2(n,x)}{U_{i-1}}_{\omega}& \text{ if } i \neq 0\\
+%	0 & \text{ if } i = 0\,.
+%	\end{cases}\]
+%	Fix $i \in \N^*$. We have for all $k$, by linearity,
+%	\[\Delta_k^\alpha f_A(k,i) = \frac{1}{2 \norm{T_i}^2_\frac{1}{\omega}}\duality{\Delta^\alpha_k a_1(k,x)}{T_i}_\frac{1}{\omega}\,.\]
+%	Using Cauchy-Schwarz inequality and assumption \eqref{Condition2bis} for $a_1$, we get 
+%	\[\abs{\Delta_k^\alpha f_A(k,i)} \leq C_{i}C_\alpha(1+k)^{-p - \alpha}\,,\]
+%	with $C_i = \frac{1}{\norm{T_i}}_\frac{1}{\omega}$. Similar estimates can be shown in the same way for $i = 0$ and also for $g_A$. We finally combine them with \eqref{combiner} to conclude for the reverse implication. 
+%	The last statement is obvious in view of \autoref{NonUniqueness2}. 
+%\end{proof}
+%An interpolation procedure gives the following result:
+%\begin{Lem}
+%	The following propositions are equivalent:
+%	\begin{itemize}
+%		\item[-] $A \in S^p$
+%		\item[-] There exists a couple of functions $(\nu_1(\xi,x),\nu_2(\xi,x))$ defined for $(\xi,x) \in \R^+ \times [-1,1]$, and an integer $N$ such that $a_1$ and $a_2$ are $C^{\infty}$ in $\xi$ and $(\nu_{1|\N \times[-1,1]},\nu_{2|\N \times[-1,1]})$ is a couple of symbols for $A$, with furthermore the property
+%		\[\forall \alpha, \exists C_\alpha > 0 : \forall (\xi,x) \in \R+ \times [-1,1], \quad \abs{\partial_\xi^\alpha \nu_i(x,\xi)} \leq C_\alpha (1 + \xi)^{-p - \alpha}\,.\]
+%	\end{itemize}
+%	We call $(\nu_1,\nu_2)$ a couple of continuous symbols of $A$. 
+%\end{Lem}
+%\begin{proof}
+%	\toDo{Utiliser la procédure d'interpolation du papier PDO discrets.}
+%\end{proof}
+%
+%
+%\subsubsection{Symbols that are rational functions of $n$.}
+%
+%\toDo{Il va peut-être falloir enlever cette section à cause de l'équivalence du lemme précédent.}
+%
+%Given a discrete symbol $\sigma(n,i)$, is not straightforward to check that the condition \eqref{Condition2} holds for this symbol. We now show that this is the case when $\sigma(n,i)$ is a rational function of $n$. We will repeatedly make use the following forms of Peetre's inequality: for any real $a,b$ and $s$, 
+%\begin{equation}
+%\label{Peetre1}
+%	(1 + \abs{a + b})^s \leq \left(1 + \abs{a}\right)^{\abs{s}} \left(1 + \abs{b}\right)^{s}
+%\end{equation} 
+%and
+%\begin{equation}
+%\label{Peetre2}
+%\left(1 + \abs{a + b}^2\right)^s \leq 2^{\abs{s}}\left(1 + \abs{a}^2\right)^{\abs{s}} \left(1 + \abs{b}^2\right)^{s}\,.
+%\end{equation} 
+%\begin{Lem}
+%	\label{lemDeltaDerivees}
+%	Let $f$ a $C^{\alpha}$ function on $[k,k+\alpha]$. Then for all $k$, 
+%	\begin{equation}
+%	\label{formule1}
+%		\Delta^{\alpha} f(k) =  \int_{x_1 =k}^{k+1}\int_{x_2 = x_{1}}^{x_{1}+1} \cdots \int_{x_\alpha = x_{\alpha-1}}^{x_{\alpha-1}+1} f^{(\alpha)}(x_\alpha)dx_1dx_2 \cdots dx_{\alpha}
+%	\end{equation}
+%\end{Lem}
+%\begin{proof}
+%	We show by induction that for all $1 \leq \beta \leq \alpha$, 
+%	\begin{equation}
+%	\label{hypRec1}
+%		\Delta^{\alpha} f(x) = \int_{x}^{x+1} \int_{x_{1}}^{x_{1}+1} \int_{x_{\beta-1}}^{x_{\beta-1}+1} \Delta^{\alpha - \beta} f^{(\beta)}(x_\beta)dx_1dx_2 \cdots  dx_\beta.
+%	\end{equation}
+%	For $\beta = 1$, we write 
+%	\[\Delta^{\alpha}f(x) = \Delta^{\alpha-1}f(x+1) - \Delta^{\alpha-1}f(x),\]
+%	therefore,
+%	\[\Delta^{\alpha}f(x) = \int_{x}^{x+1} \frac{d}{dx_1}\left(\Delta^{\alpha-1}f\right)dx_1.\]
+%	This proves the property for $\beta = 1$. 
+%	Let $ 1 \leq \beta < \alpha$ and assume that \eqref{hypRec1} holds for this $\beta$. Then we write
+%	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \frac{d}{dx_{\beta}}\Delta^{\alpha - \beta} f^{(\beta)}(x_{\beta+1})dx_{\beta+1}.\]
+%	Of course, $\Delta$ and $\frac{d}{dx}$ commute, thus 
+%	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \Delta^{\alpha - \beta} f^{(\beta+1)}(x_{\beta+1})dx_{\beta+1}.\]
+%	Replacing in \eqref{hypRec1}, this proves the heredity of the property. Finally, taking $\beta = \alpha$ in \eqref{hypRec1} gives the announced result. 
+%\end{proof}
+%\begin{Cor}
+%	\label{lemFracRat}
+%	If $f$ is a rational function of degree $p$ which poles are contained in $\mathbb{C} \setminus \N$, then there exists a constant $C_\alpha$ such that for all $k \in \N$, \[\abs{\Delta^{\alpha} f(k)} \leq C_\alpha (1+k)^{p - \alpha}\,.\]
+%\end{Cor}
+%\begin{proof}
+%	Fix a rational fraction $F$ of degree $p$, with poles in $\mathbb{C} \setminus \N$. $F$ is of the form 
+%	\[F = P + R\]
+%	where $P$ is zero if $p < 0$ and a polynomial of degree $p$ otherwise, and $R$ is a finite linear combination of quantities of the form 
+%	\[Q_i(X) = \frac{1}{(X - x_i)^{q}}\]
+%	with $x_i \in \mathbb{C} \setminus \N$ and $q \geq -p$. The claimed result is an easy consequence of the following two fact:
+%	\begin{itemize}
+%		\item[-] If the polynomial $P$ is of degree $p \geq 0$, there holds
+%		\[\abs{\Delta^{\alpha} P}(k)  \leq C (1+k)^{p - \alpha},\]
+%		\item[-] For the terms $Q_i(X) = \frac{1}{(X - x_i)^{q}},$ there holds
+%		\begin{equation}
+%		\label{termeQi}
+%			\abs{\Delta^{\alpha} Q_i}(k)  \leq C (1+k)^{-q - \alpha}\,.
+%		\end{equation}
+%	\end{itemize}
+%	We first treat the polynomial case. If $\alpha > p$, we have $P^{(\alpha)} = 0$, and thus, by \autoref{lemDeltaDerivees}, $\Delta^{\alpha} P(k) = 0$, and the result is obvious. If $\alpha \leq p$, there exists a constant $C$ such that
+%	\[\abs{P^{(\alpha)}(x)} \leq C (1 + x)^{p - \alpha}.\]
+%	We inject this in \eqref{formule1}. In the domain of integration, $x_\alpha \leq k + \alpha$, thus
+%	\[\abs{\Delta^{q} P}(k) \leq C (1 + (k + \alpha))^{p - \alpha} \leq C (1 + \alpha)^{p-\alpha}(1+k)^{p - \alpha}\]
+%	by Peetre's inequality \eqref{Peetre1}. This proves the claim for the polynomial term. 
+%	
+%	\noindent For $Q_i$, we write:
+%	\[Q_i^{(\alpha)}(x) = \frac{(-1)^k p(p+1) \cdots (p+\alpha)}{(x - x_i)^{p+\alpha}}.\]
+%	For $x \geq \max \left(1,2 \abs{x_i}\right)$, using Peetre's inequaliy \eqref{Peetre1}, we get
+%	\[\abs{Q^{(\alpha)}(x)} \leq \frac{p(p+1) \cdots (p+\alpha)}{(1+x)^{p + \alpha}}.\]
+%	We then proceed with the same arguments as for $P$ and conclude that \eqref{termeQi} holds with some constant $C_1$ for all $k  \geq k_0$ where $k_0$ is an integer greater than $\max \left(1,2 \abs{x_i}\right)$. Then \eqref{termeQi} holds for all $k$ with 
+%	\[C = \max(C_1,\Delta^{\alpha} Q_i(0), \cdots, \Delta^\alpha Q_i(k_0))\,.\]
+%\end{proof}
+%
+%\subsubsection{Algebraic properties of $S^p$}
+%\begin{Lem}
+%	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
+%\end{Lem}
+%\begin{proof}
+%	Since the sum in the condition (i) is finite, by linearity, showing that the operator $A$ is of order $p$ amounts to proving that the operator $A_i$ defined by
+%	\[ \forall k \in \Z, \quad  A_i T_k = a(k,i) T_{k-i} \]
+%	is of order $p$. We treat the case $i > 0$, the opposite case being analogous. Let $u \in T^s$ for some $s$, there holds 
+%	\[ A_i u = \sum_{k = 0}^{+ \infty} a(i+k,i)\hat{u}_{k + i}T_k + \sum_{k = 0}^{i} a(i - k,i) \hat{u}_{i - k}T_k.\]
+%	Let $Vu$ and $Ru$ respectively the two terms of the rhs. Obviously, $R$ is a smoothing operator. Now, for all $k \in \N$ let
+%	\[\hat{v}_k \isdef a(i + k,i) \hat{u}_{i + k}.\]
+%	Applying Peetre's inequality \eqref{Peetre2},
+%	\[(1 + k^2)^{n + s}\abs{\hat{v}_k}^2 \leq 2^{\abs{p+s}}\left(1 + i^2\right)^{\abs{p + s}}\left(1 + (i + k)^2\right)^{p + s} \abs{a(k + i,i)}^2 \abs{\hat{u}_{k+i}}^2.\]
+%	Condition (ii) with $\alpha = 0$ yields
+%	\[\abs{a(k+i,i)}^2 \leq C\left(1 + (k+i)\right)^{-2p} \leq 2^{\abs{p}}C \left(1 + (k+i)^2\right)^{-p}.\]
+%	Therefore, $\norm{V u}_{T^{s + p}} \leq C(1 + i)^{\abs{n + s}} \norm{u}_{T^s}$ which shows that $A$ is of order $p$.
+%\end{proof}
+%\begin{Lem}
+%	\label{LemCompo}
+%	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ is in $S^{p + q}$, 
+%\end{Lem}
+%\begin{proof}
+%	A symbol of $AB$ is given by
+%	\[c(k,i) = \sum_{j = - \infty}^{+ \infty} a(k - j, i - j) b(k,j).\]
+%	This formula is obtained writing the expression of $AB T_n$ using a symbol of $A$ and $B$ and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
+%	Let $N_a$ such that $\abs{i} \geq N_a \implies a(k,i) = 0$ and let $N_b$ defined in a similar way. Then, it is easy to check that $\abs{i} \geq N_a + N_b \implies c(k,i) = 0$. It remains to check the requirement (ii). Since the sum defining $c$ only has a finite number of non-zero terms, we just have to show that for any $j \in \Z$, the function $c_{j}(k,i) \isdef a(k-j,i-j) b(k,j)$ satisfies
+%	\[\forall \alpha \in \N, \forall i,k, \in \Z, \quad  \abs{\Delta_k^\alpha c_{j}(k,i)} \leq C_{i,j,\alpha} (1 + k^2)^{p + q - \alpha}.\]
+%	The announced result then follows by linearity. 
+%	To prove this, one can check by induction that for any $\alpha \in \N$, $\Delta^\alpha c_j(k,i)$ is of the form 
+%	\[\Delta^\alpha_k c_j(k,i) = \sum_{l = 1}^L \lambda_l \Delta_k^{\beta_l}a(k_{l,1},i-j) \Delta_k^{\alpha - \beta_l} b(k_{l,2},j)\]
+%	for some coefficients $\lambda_l$, where $L$ is a finite number, and where, for all $l$, $\beta_l \leq \alpha$ while $k_{l,1}$ and $k_{l,2}$ respectively lie in the interval $[k-j,k-j + \beta_l]$ and $[k,k+\alpha - \beta_l]$. Let us fix $l \in [1,L]$. We have
+%	\[\abs{\Delta_k^{\beta_l} a(k_{l,1},i-j)} \leq C_{i,j,\alpha,l}(1 + k_1)^{p - \beta_l}\]
+%	and by Peetre's inequality
+%	\[(1+k_1)^{p - \beta_l} \leq C(1+k)^{p - \beta}(1 + \alpha + \abs{j})^{\abs{p - \beta_l}}.\]
+%	The same arguments applied to $b$ lead to 
+%	\[\abs{\Delta_k^{\beta} a(k_1,i-j)\Delta_k^{\alpha - \beta} b(k_2,j)} \leq C_{i,j,\alpha,l} (1+k)^{p + q}\]
+%	which implies our claim. 
+%\end{proof}
+%\begin{The}
+%	If $A \in S^{p}$ and $B \in S^q$, then $AB - BA$ is in $S^{p + q + 1}$. 
+%	\label{CommutPDO}
+%\end{The}
+%\begin{proof}
+%	A symbol of $C= AB - BA$ is given by
+%	\[\sigma_{C}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
+%	In the second sum, we change the index to $j' = i -j$, yielding 
+%	\begin{eqnarray*}
+%		\sigma_{C}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
+%		&=& \sum_{j = -\infty}^{+\infty} \left[a(k-j,i-j) - a(k,i-j)\right]b(k,j) \\
+%		&& - \sum_{j = - \infty}^{+\infty} a(k,i-j) \left[b(k - i + j') -b(k,j)\right].\\
+%	\end{eqnarray*}
+% 	Let us consider one of the terms of the first sum when $j$ is positive. We can write 
+%\begin{eqnarray*}
+%	\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j) = - \sum_{l = 0}^{j-1} \Delta_k a(k-j + l+1,i-j)b(k,j).
+%\end{eqnarray*}
+%The estimation (ii) required for the symbol $\sigma_C$ can be established for this individual term from the same considerations as in the proof of the previous result. The other terms are treated in an analogous way.  
+%\end{proof}
+%\subsubsection{Symbolic calculus}
+%
+%For a couple of (semi-discrete or continuous) symbols $a_1,a_2$, let $H$ the operator defined by 
+%\[H(a_1,a_2) = (-\omega \partial_x \omega a_2, \partial_x a_1)\]
+%and let the multiplication of couples of symbols be defined by 
+%\[(a_1,a_2) \times (b_1,b_2) = (a_1b_1 - \omega^2 a_2b_2, a_1b_2 + a_2 b_1)\,.\]
+%
+%Let $\nu = (\nu_1,\nu_2)$ a couple of continuous symbols of an operator in $S^p$. For all $\alpha \in \N$, we write $\partial_n^\alpha \nu \isdef (\partial_\xi^\alpha \nu_1, \partial_\xi^\alpha \nu_2)$. This is of course a couple of continuous symbols for an operator in $S^{p + \alpha}$. 
+%\begin{Lem}
+%	Let $(a_1,a_2)$ and $(b_1,b_2)$ two couple of symbols of two operators $A \in S^p$ and $B \in S^q$. Then $H(a_1,a_2)$ is a couple of symbols for an operator in $S^p$ and $(a_1,a_2) \times (b_1,b_2)$ is a couple of symbols for an operator in $S^{p+q}$. 
+%\end{Lem}
+%\toDo{Preuve pédestre de ça.}
+%\toDo{Definition of Asymptotic expansion}
+%
+%\begin{The}
+%	Let $A \in S^p$ and $B \in S^q$ with respctive couples of continuous symbols $a = (a_1,a_2)$ and $b = (b_1,b_2)$. Then a couple of continuous symbols $c = (c_1,c_2)$ of $C = AB$ is given by 
+%	\[c = \sum_{\alpha = 0}^{+ \infty} \frac{1}{\alpha!}\partial_\xi^\alpha a \times H^k(b) \]
+%\end{The}
+%\begin{proof}
+%	\toDo{Appliquer les résultats connus pour les opérateurs discrets, ou simplement reproduire la preuve qui est tout simple ici.}
+%\end{proof}
+%
+%\begin{Lem}
+%	\label{lem:multPolyOrdre0}
+%	If $P$ is a polynomial, the multiplication by $P$ defines an operator of $S^0$. 
+%\end{Lem}
+%\begin{proof}
+%	For all $n$, we have $xT_n = \frac{T_{n+1} + T_{n-1}}{2}$, thus $x$ is in the class $S^0$. By \autoref{LemCompo}, the same is true for $x^n$ for any $n$, and by linearity, for any polynomial. 
+%\end{proof}
+%The next two lemmas enlarge the class of operators for which we can assess the order. \autoref{ordreNoyauxMultipl} allows us to treat a rather general class of operators and will allow us to evaluate the order of the remainders in Taylor expansions of the kernels. 
+%\begin{Lem}
+%	\label{lem:multByPsiOrdre0}
+%	If $\psi$ is a $C^{\infty}$ function on $[-1,1]$, then the operator
+%	\[ u(x) \mapsto \psi(x) u(x)\]
+%	is of order $0$, and for any $s \in \R$, 
+%	\[ \norm{\psi u}_{T^s} \leq C2^{\abs{s}/2}\norm{u}_{T^s} \norm{\psi}_{T^{\abs{s}+1}}.\]
+%	where $C$ is independent of $\psi$ and $s$. 
+%\end{Lem}
+%\begin{proof}
+%	Let $u \in T^s$, we rewrite $u$ as 
+%	\[ u = \sum_{n = -\infty}^{+ \infty}u_n'T_n\]
+%	where for $n< 0$ we define $T_{n} = T_{\abs{n}}$, and with 
+%	\[u_n' = \begin{cases}
+%	u_0 & \text{ if } n = 0\\
+%	\frac{u_{\abs{n}}}{2} & \text{ otherwise.}
+%	\end{cases}\]
+%	We apply the same idea to $\psi$, and using $T_m T_n = T_{m+n} + T_{m-n}$, 
+%	\[\psi u = \sum_{m,n} u'_n \psi'_m (T_{m+n} + T_{m-n}) = \sum_{m} \left(\sum_{n}u'_n(\psi'_{n + m} + \psi'_{n - m})\right) T_m\]
+%	that is,
+%	\[\psi u = 2\sum_{m,n} u'_m \psi'_{m-n} T_{n}\]
+%	Using Peetre's inequality, we have 
+%	\[(1 + n^2)^{s/2}\abs{(\psi u)_n} \leq 2^{\abs{s}/2+1}\sum_{m}(1 + m^2)^{s/2} \abs{u'_m}  (1 + |n-m|^2)^{\abs{s/2}} \abs{\psi'_{n-m}} \]
+%	and by Young's inequality with $r = 2, p = 2, q = 1$, 
+%	\[\norm{\psi u}_s^2 \leq 2^{\abs{s}+2}\norm{u}_s^2 \sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}/2}\abs{\psi'_m} \]		
+%	The last sum is finite because $\psi \in T^{\infty}$ and
+%	\[\sum_{m=-\infty}^{\infty}(1 + m^2)^{\abs{s}/2} \abs{\psi'_m} \leq \left(\sum_{m = -\infty}^{+ \infty} \frac{1}{1 + m^2} \right)\sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}+1}\abs{\psi'}_m^2.\]
+%\end{proof}
+%\begin{Lem}
+%	\label{ordreNoyauxMultipl}
+%	Let $G$ an integral operator with kernel $g$, that is
+%	\[G : u \mapsto \int_{-1}^{1} \frac{g(x,y) u(y)}{\omega(y)}dy\,.\]
+%	We assume that $G$ is of order $p$. Let $r(x,y)$ a $C^{\infty}$ function. Then the operator 
+%	\[K : \int_{-1}^{1} \frac{g(x,y) r(x,y) u(y)}{\omega(y)}dy\]
+%	is of order $p$. 
+%\end{Lem}
+%\begin{proof}
+%	Since $r$ is in $C^{\infty}$, one can show that $r$ admits the following expression:
+%	\begin{equation}
+%	r(x,y) = \sum_{m,n} r_{m,n} T_m(x) T_n(y)
+%	\label{sommenormalementcv}
+%	\end{equation}
+%	Moreover, the regularity of $R$ ensures $r_{m,n}$ satisfies for all $s,t \in \R$, 
+%	\[\sum_{m,n} (1 + m^2)^s (1 + n^2)^t\abs{r_{m,n}}^2 < +\infty.\] 
+%	To prove this property, one can for example apply the operator $(\omega \partial_x)^2$ repeatedly in the two variables. The resulting function is $C^\infty$, and in particular, square integrable on $[0,1] \times [0,1]$. We then write the Parseval's identity and the result follows. We can write 
+%	\[Ku = \sum_{m,n} r_{m,n} T_m G T_n u  \]
+%	where for each $m,n$, the operator $T_m G T_n$ is defined by 
+%	\[ T_m G T_n u (x)= T_m(x) \int_{-1}^{1} \dfrac{G(x,y) T_n(y)u(y)}{\omega(y)}dy.\]
+%	Fix $s \in \R$, this operator is in $L(T^s,T^{s+p})$ by the previous lemma, with 	
+%	\[\norm{T_m G T_n}_{T^s \to T^{s+p}} \leq \norm{G}_{T^s \to T^{s + p}} 2^{\abs{s} + \abs{s + p}}(1 + n^2)^{\abs{s}+1}(1 + m^2)^{\abs{s+ p} + 1}.\]
+%	thus, the series in \eqref{sommenormalementcv} is normally convergent in $L(T^s, T^{s + p})$, which proves the claim. 
+%\end{proof}
+%As a consequence, since the operator $G$ with kernel $g \equiv 1$ is a smoothing operator, we have the following result:
+%\begin{Cor}
+%	\label{lemSmoothingOp}
+%	Let $r \in C^{\infty}([-1,1]^2)$. Then
+%	\[ u \mapsto \int_{-1}^{1} \frac{r(x,y)u(y)}{\omega(y)}dy\]
+%	is a smoothing operator. 
+%\end{Cor}
 
 
-\subsubsection{Symbols that are rational functions of $n$.}
-
-\toDo{Il va peut-être falloir enlever cette section à cause de l'équivalence du lemme précédent.}
-
-Given a discrete symbol $\sigma(n,i)$, is not straightforward to check that the condition \eqref{Condition2} holds for this symbol. We now show that this is the case when $\sigma(n,i)$ is a rational function of $n$. We will repeatedly make use the following forms of Peetre's inequality: for any real $a,b$ and $s$, 
-\begin{equation}
-\label{Peetre1}
-	(1 + \abs{a + b})^s \leq \left(1 + \abs{a}\right)^{\abs{s}} \left(1 + \abs{b}\right)^{s}
-\end{equation} 
-and
-\begin{equation}
-\label{Peetre2}
-\left(1 + \abs{a + b}^2\right)^s \leq 2^{\abs{s}}\left(1 + \abs{a}^2\right)^{\abs{s}} \left(1 + \abs{b}^2\right)^{s}\,.
-\end{equation} 
-\begin{Lem}
-	\label{lemDeltaDerivees}
-	Let $f$ a $C^{\alpha}$ function on $[k,k+\alpha]$. Then for all $k$, 
-	\begin{equation}
-	\label{formule1}
-		\Delta^{\alpha} f(k) =  \int_{x_1 =k}^{k+1}\int_{x_2 = x_{1}}^{x_{1}+1} \cdots \int_{x_\alpha = x_{\alpha-1}}^{x_{\alpha-1}+1} f^{(\alpha)}(x_\alpha)dx_1dx_2 \cdots dx_{\alpha}
-	\end{equation}
-\end{Lem}
-\begin{proof}
-	We show by induction that for all $1 \leq \beta \leq \alpha$, 
-	\begin{equation}
-	\label{hypRec1}
-		\Delta^{\alpha} f(x) = \int_{x}^{x+1} \int_{x_{1}}^{x_{1}+1} \int_{x_{\beta-1}}^{x_{\beta-1}+1} \Delta^{\alpha - \beta} f^{(\beta)}(x_\beta)dx_1dx_2 \cdots  dx_\beta.
-	\end{equation}
-	For $\beta = 1$, we write 
-	\[\Delta^{\alpha}f(x) = \Delta^{\alpha-1}f(x+1) - \Delta^{\alpha-1}f(x),\]
-	therefore,
-	\[\Delta^{\alpha}f(x) = \int_{x}^{x+1} \frac{d}{dx_1}\left(\Delta^{\alpha-1}f\right)dx_1.\]
-	This proves the property for $\beta = 1$. 
-	Let $ 1 \leq \beta < \alpha$ and assume that \eqref{hypRec1} holds for this $\beta$. Then we write
-	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \frac{d}{dx_{\beta}}\Delta^{\alpha - \beta} f^{(\beta)}(x_{\beta+1})dx_{\beta+1}.\]
-	Of course, $\Delta$ and $\frac{d}{dx}$ commute, thus 
-	\[\Delta^{\alpha - \beta} f^{\beta}(x_\beta) = \int_{x_\beta}^{x_\beta+1} \Delta^{\alpha - \beta} f^{(\beta+1)}(x_{\beta+1})dx_{\beta+1}.\]
-	Replacing in \eqref{hypRec1}, this proves the heredity of the property. Finally, taking $\beta = \alpha$ in \eqref{hypRec1} gives the announced result. 
-\end{proof}
-\begin{Cor}
-	\label{lemFracRat}
-	If $f$ is a rational function of degree $p$ which poles are contained in $\mathbb{C} \setminus \N$, then there exists a constant $C_\alpha$ such that for all $k \in \N$, \[\abs{\Delta^{\alpha} f(k)} \leq C_\alpha (1+k)^{p - \alpha}\,.\]
-\end{Cor}
-\begin{proof}
-	Fix a rational fraction $F$ of degree $p$, with poles in $\mathbb{C} \setminus \N$. $F$ is of the form 
-	\[F = P + R\]
-	where $P$ is zero if $p < 0$ and a polynomial of degree $p$ otherwise, and $R$ is a finite linear combination of quantities of the form 
-	\[Q_i(X) = \frac{1}{(X - x_i)^{q}}\]
-	with $x_i \in \mathbb{C} \setminus \N$ and $q \geq -p$. The claimed result is an easy consequence of the following two fact:
-	\begin{itemize}
-		\item[-] If the polynomial $P$ is of degree $p \geq 0$, there holds
-		\[\abs{\Delta^{\alpha} P}(k)  \leq C (1+k)^{p - \alpha},\]
-		\item[-] For the terms $Q_i(X) = \frac{1}{(X - x_i)^{q}},$ there holds
-		\begin{equation}
-		\label{termeQi}
-			\abs{\Delta^{\alpha} Q_i}(k)  \leq C (1+k)^{-q - \alpha}\,.
-		\end{equation}
-	\end{itemize}
-	We first treat the polynomial case. If $\alpha > p$, we have $P^{(\alpha)} = 0$, and thus, by \autoref{lemDeltaDerivees}, $\Delta^{\alpha} P(k) = 0$, and the result is obvious. If $\alpha \leq p$, there exists a constant $C$ such that
-	\[\abs{P^{(\alpha)}(x)} \leq C (1 + x)^{p - \alpha}.\]
-	We inject this in \eqref{formule1}. In the domain of integration, $x_\alpha \leq k + \alpha$, thus
-	\[\abs{\Delta^{q} P}(k) \leq C (1 + (k + \alpha))^{p - \alpha} \leq C (1 + \alpha)^{p-\alpha}(1+k)^{p - \alpha}\]
-	by Peetre's inequality \eqref{Peetre1}. This proves the claim for the polynomial term. 
-	
-	\noindent For $Q_i$, we write:
-	\[Q_i^{(\alpha)}(x) = \frac{(-1)^k p(p+1) \cdots (p+\alpha)}{(x - x_i)^{p+\alpha}}.\]
-	For $x \geq \max \left(1,2 \abs{x_i}\right)$, using Peetre's inequaliy \eqref{Peetre1}, we get
-	\[\abs{Q^{(\alpha)}(x)} \leq \frac{p(p+1) \cdots (p+\alpha)}{(1+x)^{p + \alpha}}.\]
-	We then proceed with the same arguments as for $P$ and conclude that \eqref{termeQi} holds with some constant $C_1$ for all $k  \geq k_0$ where $k_0$ is an integer greater than $\max \left(1,2 \abs{x_i}\right)$. Then \eqref{termeQi} holds for all $k$ with 
-	\[C = \max(C_1,\Delta^{\alpha} Q_i(0), \cdots, \Delta^\alpha Q_i(k_0))\,.\]
-\end{proof}
-
-\subsubsection{Algebraic properties of $S^p$}
-\begin{Lem}
-	If $A\in S^p$, then $A$ is of order $p$ in the scale $T^s$. 
-\end{Lem}
-\begin{proof}
-	Since the sum in the condition (i) is finite, by linearity, showing that the operator $A$ is of order $p$ amounts to proving that the operator $A_i$ defined by
-	\[ \forall k \in \Z, \quad  A_i T_k = a(k,i) T_{k-i} \]
-	is of order $p$. We treat the case $i > 0$, the opposite case being analogous. Let $u \in T^s$ for some $s$, there holds 
-	\[ A_i u = \sum_{k = 0}^{+ \infty} a(i+k,i)\hat{u}_{k + i}T_k + \sum_{k = 0}^{i} a(i - k,i) \hat{u}_{i - k}T_k.\]
-	Let $Vu$ and $Ru$ respectively the two terms of the rhs. Obviously, $R$ is a smoothing operator. Now, for all $k \in \N$ let
-	\[\hat{v}_k \isdef a(i + k,i) \hat{u}_{i + k}.\]
-	Applying Peetre's inequality \eqref{Peetre2},
-	\[(1 + k^2)^{n + s}\abs{\hat{v}_k}^2 \leq 2^{\abs{p+s}}\left(1 + i^2\right)^{\abs{p + s}}\left(1 + (i + k)^2\right)^{p + s} \abs{a(k + i,i)}^2 \abs{\hat{u}_{k+i}}^2.\]
-	Condition (ii) with $\alpha = 0$ yields
-	\[\abs{a(k+i,i)}^2 \leq C\left(1 + (k+i)\right)^{-2p} \leq 2^{\abs{p}}C \left(1 + (k+i)^2\right)^{-p}.\]
-	Therefore, $\norm{V u}_{T^{s + p}} \leq C(1 + i)^{\abs{n + s}} \norm{u}_{T^s}$ which shows that $A$ is of order $p$.
-\end{proof}
-\begin{Lem}
-	\label{LemCompo}
-	If $A \in S^{p}$, $B \in S^{q}$, then $AB$ is in $S^{p + q}$, 
-\end{Lem}
-\begin{proof}
-	A symbol of $AB$ is given by
-	\[c(k,i) = \sum_{j = - \infty}^{+ \infty} a(k - j, i - j) b(k,j).\]
-	This formula is obtained writing the expression of $AB T_n$ using a symbol of $A$ and $B$ and using the identity $T_i T_j = T_{i + j} + T_{i -j}$. 
-	Let $N_a$ such that $\abs{i} \geq N_a \implies a(k,i) = 0$ and let $N_b$ defined in a similar way. Then, it is easy to check that $\abs{i} \geq N_a + N_b \implies c(k,i) = 0$. It remains to check the requirement (ii). Since the sum defining $c$ only has a finite number of non-zero terms, we just have to show that for any $j \in \Z$, the function $c_{j}(k,i) \isdef a(k-j,i-j) b(k,j)$ satisfies
-	\[\forall \alpha \in \N, \forall i,k, \in \Z, \quad  \abs{\Delta_k^\alpha c_{j}(k,i)} \leq C_{i,j,\alpha} (1 + k^2)^{p + q - \alpha}.\]
-	The announced result then follows by linearity. 
-	To prove this, one can check by induction that for any $\alpha \in \N$, $\Delta^\alpha c_j(k,i)$ is of the form 
-	\[\Delta^\alpha_k c_j(k,i) = \sum_{l = 1}^L \lambda_l \Delta_k^{\beta_l}a(k_{l,1},i-j) \Delta_k^{\alpha - \beta_l} b(k_{l,2},j)\]
-	for some coefficients $\lambda_l$, where $L$ is a finite number, and where, for all $l$, $\beta_l \leq \alpha$ while $k_{l,1}$ and $k_{l,2}$ respectively lie in the interval $[k-j,k-j + \beta_l]$ and $[k,k+\alpha - \beta_l]$. Let us fix $l \in [1,L]$. We have
-	\[\abs{\Delta_k^{\beta_l} a(k_{l,1},i-j)} \leq C_{i,j,\alpha,l}(1 + k_1)^{p - \beta_l}\]
-	and by Peetre's inequality
-	\[(1+k_1)^{p - \beta_l} \leq C(1+k)^{p - \beta}(1 + \alpha + \abs{j})^{\abs{p - \beta_l}}.\]
-	The same arguments applied to $b$ lead to 
-	\[\abs{\Delta_k^{\beta} a(k_1,i-j)\Delta_k^{\alpha - \beta} b(k_2,j)} \leq C_{i,j,\alpha,l} (1+k)^{p + q}\]
-	which implies our claim. 
-\end{proof}
-\begin{The}
-	If $A \in S^{p}$ and $B \in S^q$, then $AB - BA$ is in $S^{p + q + 1}$. 
-	\label{CommutPDO}
-\end{The}
-\begin{proof}
-	A symbol of $C= AB - BA$ is given by
-	\[\sigma_{C}(k,i) = \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-j,i-j) a(k,j).\]
-	In the second sum, we change the index to $j' = i -j$, yielding 
-	\begin{eqnarray*}
-		\sigma_{C}(k,i) &=& \sum_{j = -\infty}^{+\infty} a(k-j,i-j)b(k,j) - \sum_{j = - \infty}^{+\infty} b(k-i +j',j') a(k,i-j').\\
-		&=& \sum_{j = -\infty}^{+\infty} \left[a(k-j,i-j) - a(k,i-j)\right]b(k,j) \\
-		&& - \sum_{j = - \infty}^{+\infty} a(k,i-j) \left[b(k - i + j') -b(k,j)\right].\\
-	\end{eqnarray*}
- 	Let us consider one of the terms of the first sum when $j$ is positive. We can write 
-\begin{eqnarray*}
-	\left[ a(k-j,i-j) - a(k,i-j)\right]b(k,j) = - \sum_{l = 0}^{j-1} \Delta_k a(k-j + l+1,i-j)b(k,j).
-\end{eqnarray*}
-The estimation (ii) required for the symbol $\sigma_C$ can be established for this individual term from the same considerations as in the proof of the previous result. The other terms are treated in an analogous way.  
-\end{proof}
-\subsubsection{Symbolic calculus}
-
-For a couple of (semi-discrete or continuous) symbols $a_1,a_2$, let $H$ the operator defined by 
-\[H(a_1,a_2) = (-\omega \partial_x \omega a_2, \partial_x a_1)\]
-and let the multiplication of couples of symbols be defined by 
-\[(a_1,a_2) \times (b_1,b_2) = (a_1b_1 - \omega^2 a_2b_2, a_1b_2 + a_2 b_1)\,.\]
-
-Let $\nu = (\nu_1,\nu_2)$ a couple of continuous symbols of an operator in $S^p$. For all $\alpha \in \N$, we write $\partial_n^\alpha \nu \isdef (\partial_\xi^\alpha \nu_1, \partial_\xi^\alpha \nu_2)$. This is of course a couple of continuous symbols for an operator in $S^{p + \alpha}$. 
-\begin{Lem}
-	Let $(a_1,a_2)$ and $(b_1,b_2)$ two couple of symbols of two operators $A \in S^p$ and $B \in S^q$. Then $H(a_1,a_2)$ is a couple of symbols for an operator in $S^p$ and $(a_1,a_2) \times (b_1,b_2)$ is a couple of symbols for an operator in $S^{p+q}$. 
-\end{Lem}
-\toDo{Preuve pédestre de ça.}
-\toDo{Definition of Asymptotic expansion}
-
-\begin{The}
-	Let $A \in S^p$ and $B \in S^q$ with respctive couples of continuous symbols $a = (a_1,a_2)$ and $b = (b_1,b_2)$. Then a couple of continuous symbols $c = (c_1,c_2)$ of $C = AB$ is given by 
-	\[c = \sum_{\alpha = 0}^{+ \infty} \frac{1}{\alpha!}\partial_\xi^\alpha a \times H^k(b) \]
-\end{The}
-\begin{proof}
-	\toDo{Appliquer les résultats connus pour les opérateurs discrets, ou simplement reproduire la preuve qui est tout simple ici.}
-\end{proof}
-
-\begin{Lem}
-	\label{lem:multPolyOrdre0}
-	If $P$ is a polynomial, the multiplication by $P$ defines an operator of $S^0$. 
-\end{Lem}
-\begin{proof}
-	For all $n$, we have $xT_n = \frac{T_{n+1} + T_{n-1}}{2}$, thus $x$ is in the class $S^0$. By \autoref{LemCompo}, the same is true for $x^n$ for any $n$, and by linearity, for any polynomial. 
-\end{proof}
-The next two lemmas enlarge the class of operators for which we can assess the order. \autoref{ordreNoyauxMultipl} allows us to treat a rather general class of operators and will allow us to evaluate the order of the remainders in Taylor expansions of the kernels. 
-\begin{Lem}
-	\label{lem:multByPsiOrdre0}
-	If $\psi$ is a $C^{\infty}$ function on $[-1,1]$, then the operator
-	\[ u(x) \mapsto \psi(x) u(x)\]
-	is of order $0$, and for any $s \in \R$, 
-	\[ \norm{\psi u}_{T^s} \leq C2^{\abs{s}/2}\norm{u}_{T^s} \norm{\psi}_{T^{\abs{s}+1}}.\]
-	where $C$ is independent of $\psi$ and $s$. 
-\end{Lem}
-\begin{proof}
-	Let $u \in T^s$, we rewrite $u$ as 
-	\[ u = \sum_{n = -\infty}^{+ \infty}u_n'T_n\]
-	where for $n< 0$ we define $T_{n} = T_{\abs{n}}$, and with 
-	\[u_n' = \begin{cases}
-	u_0 & \text{ if } n = 0\\
-	\frac{u_{\abs{n}}}{2} & \text{ otherwise.}
-	\end{cases}\]
-	We apply the same idea to $\psi$, and using $T_m T_n = T_{m+n} + T_{m-n}$, 
-	\[\psi u = \sum_{m,n} u'_n \psi'_m (T_{m+n} + T_{m-n}) = \sum_{m} \left(\sum_{n}u'_n(\psi'_{n + m} + \psi'_{n - m})\right) T_m\]
-	that is,
-	\[\psi u = 2\sum_{m,n} u'_m \psi'_{m-n} T_{n}\]
-	Using Peetre's inequality, we have 
-	\[(1 + n^2)^{s/2}\abs{(\psi u)_n} \leq 2^{\abs{s}/2+1}\sum_{m}(1 + m^2)^{s/2} \abs{u'_m}  (1 + |n-m|^2)^{\abs{s/2}} \abs{\psi'_{n-m}} \]
-	and by Young's inequality with $r = 2, p = 2, q = 1$, 
-	\[\norm{\psi u}_s^2 \leq 2^{\abs{s}+2}\norm{u}_s^2 \sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}/2}\abs{\psi'_m} \]		
-	The last sum is finite because $\psi \in T^{\infty}$ and
-	\[\sum_{m=-\infty}^{\infty}(1 + m^2)^{\abs{s}/2} \abs{\psi'_m} \leq \left(\sum_{m = -\infty}^{+ \infty} \frac{1}{1 + m^2} \right)\sum_{m=-\infty}^{+\infty} (1 + m^2)^{\abs{s}+1}\abs{\psi'}_m^2.\]
-\end{proof}
-\begin{Lem}
-	\label{ordreNoyauxMultipl}
-	Let $G$ an integral operator with kernel $g$, that is
-	\[G : u \mapsto \int_{-1}^{1} \frac{g(x,y) u(y)}{\omega(y)}dy\,.\]
-	We assume that $G$ is of order $p$. Let $r(x,y)$ a $C^{\infty}$ function. Then the operator 
-	\[K : \int_{-1}^{1} \frac{g(x,y) r(x,y) u(y)}{\omega(y)}dy\]
-	is of order $p$. 
-\end{Lem}
-\begin{proof}
-	Since $r$ is in $C^{\infty}$, one can show that $r$ admits the following expression:
-	\begin{equation}
-	r(x,y) = \sum_{m,n} r_{m,n} T_m(x) T_n(y)
-	\label{sommenormalementcv}
-	\end{equation}
-	Moreover, the regularity of $R$ ensures $r_{m,n}$ satisfies for all $s,t \in \R$, 
-	\[\sum_{m,n} (1 + m^2)^s (1 + n^2)^t\abs{r_{m,n}}^2 < +\infty.\] 
-	To prove this property, one can for example apply the operator $(\omega \partial_x)^2$ repeatedly in the two variables. The resulting function is $C^\infty$, and in particular, square integrable on $[0,1] \times [0,1]$. We then write the Parseval's identity and the result follows. We can write 
-	\[Ku = \sum_{m,n} r_{m,n} T_m G T_n u  \]
-	where for each $m,n$, the operator $T_m G T_n$ is defined by 
-	\[ T_m G T_n u (x)= T_m(x) \int_{-1}^{1} \dfrac{G(x,y) T_n(y)u(y)}{\omega(y)}dy.\]
-	Fix $s \in \R$, this operator is in $L(T^s,T^{s+p})$ by the previous lemma, with 	
-	\[\norm{T_m G T_n}_{T^s \to T^{s+p}} \leq \norm{G}_{T^s \to T^{s + p}} 2^{\abs{s} + \abs{s + p}}(1 + n^2)^{\abs{s}+1}(1 + m^2)^{\abs{s+ p} + 1}.\]
-	thus, the series in \eqref{sommenormalementcv} is normally convergent in $L(T^s, T^{s + p})$, which proves the claim. 
-\end{proof}
-As a consequence, since the operator $G$ with kernel $g \equiv 1$ is a smoothing operator, we have the following result:
-\begin{Cor}
-	\label{lemSmoothingOp}
-	Let $r \in C^{\infty}([-1,1]^2)$. Then
-	\[ u \mapsto \int_{-1}^{1} \frac{r(x,y)u(y)}{\omega(y)}dy\]
-	is a smoothing operator. 
-\end{Cor}
-
-
-\section{Preconditioners for the Helmholtz scattering problem}
+\section{Application to preconditioning for the Helmholtz scattering problem}
 
 In this section, we apply the analytical tools introduced in the previous section to the study of the Helmholtz scattering problems. The two main results are \autoref{} and \autoref{}. We start by introducing the notations.
 
@@ -789,7 +866,7 @@ where $\lambda \in \tilde{H}^{-1/2}(\Gamma)$ is the jump of the normal derivativ
 S_k \lambda = u_D\,.
 \label{Sklambda}
 \end{equation}
-Here, $S_k \isdef \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$. The operator $S_k$ maps continuously $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. When $k = 0$, the computation of $u_1$ also involves the resolution of \eqref{Sklambda} but some subtleties arise in the representation of $u_1$ \eqref{repr_u1}. On this topic, see \cite[Theorem 1.4]{stephan1984augmented}.
+Here, $S_k \isdef \gamma \mathcal{S}_k$ where $\gamma$ is the trace operator on $\Gamma$. The operator $S_k$ maps continuously $\tilde{H}^{-1/2}(\Gamma)$ to $H^{1/2}(\Gamma)$. When $k = 0$, the computation of $u_1$ also involves the resolution of \eqref{Sklambda} but some subtleties arise in the representation of $u_1$ by \eqref{repr_u1}. On this topic, see \cite[Theorem 1.4]{stephan1984augmented}.
 
 \paragraph{Double-layer and hypersingular potentials}
 Similarly, we introduce the double layer potential $\mathcal{D}_k$ by 
@@ -834,15 +911,15 @@ Solving the integral equations \eqref{Sklambda} and \eqref{Nkmu}, is equivalent 
 	N_{k,\omega_\Gamma} \beta &=& u_N
 \end{eqnarray*}
 and letting $\lambda = \frac{\alpha}{\omega_\Gamma}$, $\mu = \omega_\Gamma u_N$. 
-When $k = 0$, and $\Gamma$ is the flat segment, that is $r \equiv 1$, we simply write $S_{\omega}$ and $N_{\omega}$. The weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. From \cite{bruno2012second}, we know that the operators $S_{k,\omega_\Gamma}$ and $N_{k,\omega_\Gamma}$ map smooth functions to smooth functions, more precisely, they define bicontinuous maps $T^s$ to $T^{s+1}$ and $T^{s+1}$ to $T^{s}$ respectively. Moreover, $N_{k,\omega_\Gamma} S_{k,\omega_\Gamma}$ has its spectrum concentrated around $\frac{1}{4}$. This motivates the use of the pair $S_{k,\omega_\Gamma}, N_{k,\omega_\Gamma}$ as mutual preconditioners, in close analogy to the well-known Calderon relations for smooth closed curves \toDo{Inclure citation}.
+When $k = 0$, and $\Gamma$ is the flat segment, that is $r \equiv 1$, we simply write $S_{\omega}$ and $N_{\omega}$. The weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. From \cite{bruno2012second}, we know that the operators $S_{k,\omega_\Gamma}$ and $N_{k,\omega_\Gamma}$ map smooth functions to smooth functions, more precisely, they define bicontinuous maps $T^s$ to $T^{s+1}$ and $T^{s+1}$ to $T^{s}$ respectively. Moreover, $N_{k,\omega_\Gamma} S_{k,\omega_\Gamma}$ has its spectrum concentrated around $\frac{1}{4}$. This motivates the use of the pair $S_{k,\omega_\Gamma}, N_{k,\omega_\Gamma}$ as mutual preconditioners, in close analogy to the well-known Calderon relations for smooth closed curves \toDo{Inclure citation de Claderon closed curve}.
 
 \subsection{Operators $S_\omega$ and $N_\omega$ on the flat segment}
 
-When the wavenumber is equal to $0$ and the curve $\Gamma$ is the flat segment $(-1,1)\times{0}$, then $\partial_\tau = \partial_x$ and $\omega_\Gamma = \omega$, and the operators $S_\omega$ and $N_\omega$ become very simple to analyze in $T^s$ and $U^s$, because they are diagonal in the basis $(T_n)_n$ and $(U_n)_n$ respectively, with explicit eigenvalues.
+In this section, the wavenumber is equal to $0$ and the curve $\Gamma$ is the flat segment $(-1,1)\times{0}$. In this case, $\partial_\tau = \partial_x$ and $\omega_\Gamma = \omega$. 
 
 \paragraph{Single layer potential} The operator $S_\omega$ takes the form 
 \[S_\omega \alpha(x) = \int_{-1}^{1} \frac{\ln \abs{x - y} \alpha(y)}{\sqrt{1 - y^2}}dy \,.\]
-We have the following explicit formulas, stated in \cite{alouges2018new}, but also at the core of many other related works, for example \cite{bruno2012second,jiang2004second,jerez2012explicit}. A proof can be found in \cite{mason2002chebyshev}. There holds 
+There holds 
 \begin{equation}
 	\label{explicitEigs}
 	S_\omega T_n = \sigma_n T_n
@@ -852,7 +929,7 @@ where
 \dfrac{\ln(2)}{2} & \text{if } n=0\\
 \dfrac{1}{2n} & \text{otherwise}.
 \end{cases}.\]
-In particular, \autoref{lemFracRat}, $S_\omega$ is in the class $S^1$. As a consequence, $S_\omega$ maps $T^{\infty}$ to itself, so the image of a smooth function is a smooth function. We can also deduce the following characterization of $T^{-1/2}$ and $T^{1/2}$, also obtained independently in \cite{jerez2012explicit} \toDo{Ou bien \cite{jerez2010boundary}, vérifier et citer le thm}.
+In particular $S_\omega$ is in the class $S^{-1}$. As a consequence, $S_\omega$ maps $T^{\infty}$ to itself, so the image of a smooth function is a smooth function. We can also deduce the following characterization of $T^{-1/2}$ and $T^{1/2}$, also obtained independently in \cite{jerez2012explicit} \toDo{Ou bien \cite{jerez2010boundary}, vérifier et citer le thm}.
 \begin{Lem}
 	\label{LemmaT-1/2}
 	We have $T^{-1/2} = \omega\tilde{H}^{-1/2}(-1,1)$ and for all $u \in \tilde{H}^{-1/2}(-1,1)$,
@@ -885,7 +962,7 @@ Noticing that $(\omega \partial_x \omega) U_n = -(n+1) T_{n+1}$, we have for all
 so $N_\omega U_n = \nu_n U_n$ with 
 \[ \nu_n\norm{U_n}_{\omega}^2 = (n+1)^2 \sigma_{n+1} \norm{T_{n+1}}_\frac{1}{\omega}^2,\]
 that is, $\nu_n = \frac{(n+1)}{2}$.
-so $N_\omega$ is of order $-1$ in the scale $U^s$. In particular, $N_\omega$ maps smooth functions to smooth functions. As before, a characterization of $U^{s}$ for $s = \pm \frac{1}{2}$ from the previous formula:
+so $N_\omega$ maps $U^s$ to $U^{s-1}$ for all $s \in \R$. In particular, $N_\omega$ maps smooth functions to smooth functions. As before, we obtain a characterization of $U^{s}$ for $s = \pm \frac{1}{2}$ from the previous formula:
 \begin{Lem} The following identities hold, 
 	\[ U^{1/2} =  \frac{1}{\omega} \tilde{H}^{1/2}(-1,1),\]
 	\[ U^{-1/2} = H^{-1/2}(-1,1),\]
@@ -895,11 +972,11 @@ so $N_\omega$ is of order $-1$ in the scale $U^s$. In particular, $N_\omega$ map
 \end{Lem}
 \begin{proof} It suffices to remark that 
 	\[ \norm{\omega u}_{\tilde{H}^{1/2}} \sim \sqrt{\duality{N\omega u}{\omega u}} = \sqrt{\duality{N_\omega u}{u}_\omega} \sim \norm{u}_{U^{1/2}}\,.\]
-	The second equality follows from the same calculations that were done in Lemma \ref{LemmaT1/2}, as well as the norm equivalence. 
+	The second equality follows from the same calculations that were done in Lemma \ref{LemmaT-1/2}, as well as the norm equivalence. 
 \end{proof}
 Here again, we can express the inverse of $N_\omega$ in the form of the square root of a local operator. Recall that
-\[-(\partial_x \omega)^2 U_n = -(n+1)^2 U_n\]
-the operator $ -(\partial_x \omega)^2$ is of order $-2$ in the scale $U^s$ and 
+\[-(\partial_x \omega)^2 U_n = -(n+1)^2 U_n\,,\]
+thus,
 \[N_\omega^2 = -\frac{1}{4}(\partial_x \omega)^2.\]
 
 In what follows, we show that those simple identities can be generalized to non-zero wavenumber $k$ and arbitrary smooth and non-intersecting open curve $\Gamma$. 
@@ -908,156 +985,187 @@ In what follows, we show that those simple identities can be generalized to non-
 
 In this section and the next, $\Gamma$ is the flat segment $(-1,1) \times\{0\}$. The general case is treated in \autoref{}. We first focus on the weighted single-layer operator problem with non-zero frequency, and establish the following result, announced in \cite{alouges2018new}.
 \begin{The}
-	$S_{k,\omega}$ is of order $1$ in the scale $T^s$, and
-	\[\left[-(\omega \partial_x)^2 - k^2 \omega^2\right] S_{k,\omega}^2 = \frac{I_d}{4} + T_4.\]
+	$S_{k,\omega}$ is in $S^1$ and
+	\[\left[-(\omega \partial_x)^2 - k^2 \omega^2\right] S_{k,\omega}^2 = \frac{I_d}{4} + S^4.\]
 \end{The}
 \begin{Rem}
 	The previous result also implies that
 	\[-(\omega \partial_x)^2 S_{k,\omega}^2 = \frac{I_d}{4} + R\]
-	where $R$ is of order $2$. This is also a compact perturbation of the identity. We have $R = k^2 \omega^2 S_{k,\omega}^2 + T_4$. Thus, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
+	where $R$ is in $S^2$. This is also a compact perturbation of the identity. We have $R = k^2 \omega^2 S_{k,\omega}^2 + R^4$. Thus, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
 \end{Rem}
-The perturbation analysis is based on the following expansion for the Hankel:
-\[H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F_1(z^2)\]
-where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. Using the power series definition of $J_0$, this gives
-\begin{align}
-	\begin{split}
-	\frac{i}{4}H_0(k \abs{x - y}) &= \frac{-1}{2\pi}\ln |x-y| \label{decompHankel}\\ 
-	&\quad + \frac{1}{2\pi} \frac{k^2}{4} (x- y)^2 \ln |x-y|\\
-	&\quad + (x-y)^4 \ln|x-y|F_2(x,y) + F_3(x,y)
-	\end{split}
-\end{align}
-\noindent where $F_2$ and $F_3$ are $C^{\infty}$. Let us study the operators $O_n$ defined for $n \geq 1$ as 
-\[O_n : \alpha \mapsto -\frac{1}{2\pi}\int_{-1}^{1}(x-y)^{n-1} \ln\abs{x - y} \frac{\alpha(y)}{\omega(y)}\,.\]
-\begin{Lem}
-	\label{orderOfOn}
-	For every $n$, $O_n$ is in the class $S^n$. 
-\end{Lem}
-\begin{proof}
-	This can be shown by a simple induction. $O_1$ is just $S_\omega$, which is indeed in $S^1$. Let $n \geq 2$, and assume $O_{n-1} \in S^{n-1}$. We have
-	\[ O_n = x O_{n-1} - O_{n-1} x.\]
-	As shown in \autoref{lem:multPolyOrdre0}, the multiplication by $x$ defines an operator of $S^0$. By assumption, $O_{n-1}$ is in $S^{n-1}$, thus \autoref{CommutPDO} implies that $O_{n} \in S^n$, which concludes the proof. 
-\end{proof}
-We define a new operator $y$ defined for $n \geq 1$ by 
-\[y T_n = \frac{T_{n+1} - T_{n-1}}{2}\,.\]
-and $y T_0 = 0$. 
-It is easy to check that $y$ is in $S^0$ and $y^2 = -\omega^2 + T_\infty$. Moreover, $y$ commutes with the multiplication by $x$, and the adjoint of $y$ (in the $L^2_\frac{1}{\omega}$ duality) is $-y$. Since, for $n\geq 0$, $(x+y)T_n = T_{n+1}$ and $(x-y)T_n = T_{n-1}$, we see that any operator in $A \in S^p$ can be expressed as 
-\[ A u = \sum_{n = 0}^{+ \infty} a(x,y,n) \hat{u}_n T_n(x)\]
-where for each $n$, $(x,y) \mapsto a(x,y,n)$ is a polynomial in $x$ and $y$. \toDo{A déplacer probablement.}
-We show an intermediary result:
-\begin{Lem}
-	\label{resultInterm}
-	For all $n \geq 0$, there exists an operator $R_{n+3} \in S^{n+3}$ such that
-	\begin{equation}
-		x S_\omega^n - S_\omega^n x = 2 ny S_{\omega}^{n+1} - 2n(n+1) x S_\omega^{n+2} + R_{n+3}\,.
-	\end{equation}
-\end{Lem}
-\begin{proof}
-	We must show that
-	\[R_{n+2} \isdef x S_\omega^n - S_\omega^n x -2ny S_\omega^{k+1} + 2n(n+1)x S_\omega^{n+2} \]
-	belongs to the class $S^{n+3}$ for all $n \in \N$. For $n = 0$ this is obvious. Let us fix $n \geq 1$. We check the three requirements of \autoref{defClassSk}.
-	Using $x T_k = \frac{T_{k+1} + T_{k-1}}{2}$ and $S_\omega T_k = \sigma_k T_k$, we have
-	\[R_{n+2}T_k = a(k,-1) T_{k-1} + a(k,1) T_{k+1}\]
-	with 
-	\begin{eqnarray*}
-		a(k,1) &=& \frac{\sigma_k^n - \sigma_{k+1}^{n} - 2n \sigma_k^{n+1} + 2n(n+1)\sigma_k^{n+2}}{2}\\
-		a(k,-1) &=& \frac{\sigma_k^n - \sigma_{k-1}^{n} + 2n \sigma_k^{n+1} + 2n(n+1) \sigma_{k}^{n+2}}{2}
-	\end{eqnarray*}
-	The symbol $a$ thus satisfies the requirements (i) and (iii). It remains to show the estimate (ii). We do this for $a(k,1)$, the other case being similar. Of course, it suffices to establish the estimate for $k \geq 1$. In this case, we have $\sigma_k = \frac{1}{2k}$, thus 
-	\[a(k,1) = g(k+1) - g(k) - g'(k) - \frac{g''(k)}{2}\]
-	where 
-	\[g(x) = -\frac{1}{2\times(2x)^{n}}\,.\]
-	Applying $\Delta_k^\alpha$, on both sides and using the commutation of $\frac{d}{dx}$ and $\Delta_k$, we obtain
-	\[a(k,1) = \Delta^\alpha_k g(k+1) - \Delta_k^\alpha g(k) - (\Delta^{\alpha}_k g)'(k) - \frac{\left(\Delta_k^\alpha g\right)''(k)}{2}\,.\]
-	This can be rewritten using Taylor's formula
-	\[a(k,1) = \int_{k}^{k+1}\frac{(k+1 - \xi)^2}{2} \left(\Delta^{\alpha}_k g^{(3)}\right)(\xi) d\xi\,.\]
-	Using \autoref{lemDeltaDerivees} and the explicit derivatives of $g$, for $\xi \geq 1$, there holds
-	\[ \abs{\left(\Delta^{\alpha}_k g^{(3)}\right)(\xi)} \leq \frac{C}{(1 + \xi)^{k + 3+ \alpha }}\]
-	and thus, for $k \geq 1$, 
-	\[\abs{\Delta_k^\alpha a(k,1)} \leq \frac{C}{(1+n)^{n+\alpha+3}}\,,\]
-	as needed. 
-\end{proof}
-With the same method, we obtain:
-\begin{Lem}
-	For all $n \in \N$, 
-	\[y S_\omega^n  - S_\omega^ny = 2nxS_\omega^{n+1} - 2n(n+1)y S_\omega^{n+2} + R_n+2\,.\]
-	with $R_{n+2} \in S^{n+2}$.
-\end{Lem}
-\begin{Lem}
-	For all $n \geq 1$, the operator $O_n$ satisfies 
-	\begin{equation}
-		\label{announced}
-		O_n = 2^{n-1}(n-1)! y^{n-1} S_\omega^{n} + 2^n (n-1) n! xy^{n-1} S_\omega^{n+1} + R_{n+2}
-	\end{equation}
-	where $R_{n+2} \in S^{n+2}$. 
-\end{Lem}
-\begin{proof}
-	We show this by induction. For $n=1$, the formula is obvious, with $R_{n+2} = 0$. Assume that the formula is true for $n \geq 1$. Then by definition, 
-	\[O_{n+1} = x O_n - O_n x\]
-	and using the commutation of $x$ and $y$:
-	\[\begin{split}
-	O_{n+1} =& 2^{n-1}(n-1)! y^{n-1} \left(xS_\omega^{n} - S_\omega^{n}x \right)\\
-	& + 2^n (n-1) n! xy^{n-1}\left(xS_\omega^{n+1} - S_\omega^{n+1}x\right) \\
-	& + \left(xR_{n+2} - R_{n+2}x\right)\,. 
-	\end{split}\]
-	The operator on the last line is in $S^{n+3}$ by \autoref{CommutPDO}. By \autoref{resultInterm}, there exists an operator $R_{n+3} \in S^{n+3}$ such that 
-	\[\begin{split}
-	O_{n+1} = \quad & 2^{n-1}(n-1)! y^{n-1} \left(2ny S_\omega^{n+1} - 2n(n+1)x S_\omega^{n+2}\right)\\
-	& + 2^n (n-1) n! xy^{n-1}\left( 2(n+1)y S_\omega^{n+2} \right) \\
-	& + R_{n+3}\,. 
-	\end{split}\]
-	And we obtain the expected formula for $O_{n+1}$. 
-\end{proof}
-Using the notation introduced in \autoref{DefEquivModTp}, we have the following result:
-\begin{Lem}
-	The operator $S_{k,\omega}$ admits the following expansion 
-	\[ S_{k, \omega} = S_\omega - \frac{k^2}{4} O_3 +  T_5.\]
-	\label{developpementHankel}
-\end{Lem}
-\begin{proof}
-	From equation \eqref{decompHankel}, it suffices to show that the operator 
-	\[R_5 : \alpha \mapsto \int_{-1}^{1} (x-y)^4 \ln|x - y|F_2(x,y)\frac{\alpha(y)}{\omega(y)}\]
-	is of order $5$. Since $O_5$ is of order $5$, this is true in view of \autoref{ordreNoyauxMultipl}.
-\end{proof}
-In particular, the operator $S_{k,\omega}$ is well defined on $T^{-\infty}$, and is of order $1$. 
-\begin{Lem}
-	\label{LemSwDeltaO3}
-	There holds
-	\[S_\omega (\omega \partial_x)^2 O_3 + O_3(\omega \partial_x)^2 S_\omega = 4S_\omega\omega^2S_\omega + T_4.\]
-\end{Lem}
-\begin{proof}
-	We have $S_\omega \in S^1$, $O_3 \in S^3$ and $(\omega \partial_x)^2 \in S^{-2}$. 
-\end{proof}
-\begin{The} There holds
-	\label{TheHelmholtz}
-	\[\left[-(\omega \partial_x)^2 - k^2\omega^2\right]S_{k,\omega}^2 = \frac{I_d}{4} + T_4.\]
-	\begin{proof}
-		Using the expansion of \autoref{developpementHankel}, we can write 
-		\begin{eqnarray*}
-			-S_{k,\omega}(\omega \partial_x)^2 S_{k,\omega} &=& -S_\omega (\omega \partial_x)^2 S_\omega \\
-			&& + \frac{k^2}{4}\left(S_\omega (\omega \partial_x)^2 O_3 + O_3 (\omega \partial_x)^2 S_\omega\right) + T_4
-		\end{eqnarray*}
-		By \autoref{TheSdx2S}, the first term is $\frac{Id}{4} + T_\infty$ and by \autoref{LemSwDeltaO3} the second term is $k^2 \omega^2 + T_ 4$
-		Finally, using \autoref{developpementHankel}, on can check that
-		\[S_\omega \omega^2 S_\omega =  S_{k,\omega} \omega^2 S_{k,\omega} + T_4\]
-		We have thus proved 
-		\[-S_{k,\omega} (\omega \partial_x)^2 S_{k,\omega} = \frac{I_d}{4} + k^2S_{k,\omega} \omega^2 S_{k,\omega} + T_4.\]
-		If we substract the term $k^2 S_{k,\omega} \omega^2 S_{k,\omega}$ of each side, and use the first commutation proved in \autoref{Commutations}, we finally get 
-		\[ \left[-(\omega \partial_x)^2 - k^2 \omega^2\right]S_{k,\omega}^2  = \frac{I_d}{4} + T_4,\]
-		and the result is proved. 
-	\end{proof}
-\end{The}
-Recall that $\lambda_{n,k}^2$ are the eigenvalues of $-(\omega \partial_x) - k^2\omega^2$. Let $s_{n,k}$ the eigenvalues of $S_{k,\omega}$ on the basis of Mathieu cosines, that is
-\[S_{k,\omega}T_{n}^k = s_{n,k}T_n^k.\]
-The previous theorem has the following consequence:
-\begin{Cor}
-	One has
-	\[s_{n,k} \lambda_{n,k} = \frac{1}{4} + r_{n,k}\]
-	where $r_{n,k}$ satisfies 
-	\[\sum_{n = 0}^{+ \infty}(1 + n^2)^4 \abs{r_{n,k}}^2  < + \infty\]
-\end{Cor}
+The perturbation analysis hinges on the following property of the Hankel function:
+\begin{equation}
+\label{decompHankel}
+	H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F(z^2)
+\end{equation}
+where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. Recall
+\[S_{k,\omega} u(x) = \int_{-1}^1 H_0(k|x - y|)\frac{u(y)}{\omega(y)}dy\,.\]
+Using the change of variables $x = \cos\theta$, $y = \cos \theta'$, we get 
+\[ S_{k,\omega} u(\cos \theta) = \int_{0}^\pi H_0(k \abs{\cos \theta - \cos \theta'}) Cu(\theta) d\theta\,.\]
+We can rewrite this using \eqref{decompHankel}:
+\[\begin{split}
+S_{k,\omega} u(\cos \theta) = &\frac{-1}{2\pi}\int_{0}^\pi \ln \abs{\cos \theta - \cos \theta'} J_0(k \abs{\cos \theta - \cos \theta'})Cu(\theta) d\theta \\
+&+ \int_{0}^\pi F_k(\cos\theta,\cos\theta') Cu(\theta) d\theta'
+\end{split}\]
+where $F_k$ is $C^\infty$.
+By parity, the second integral is equal to 
+\[\frac{1}{2} \int_{-\pi}^{\pi} F_k(\cos\theta,\cos\theta') Cu(\theta) d\theta.\]
+By \autoref{thrunen}, this is of the form $RCu$ where $R$ is in $\textit{Op}(\Sigma^{-\infty})$. For the first integral, we make the following classical manipulations. We first write $\cos \theta - \cos\theta' = - 2 \sin \frac{\theta + \theta'}{2}\sin \frac{\theta - \theta'}{2}$. Thus $\ln\abs{\cos \theta - \cos\theta'}= \ln \abs{\sqrt{2} \sin \frac{\theta + \theta'}{2}} + \ln \abs{\sqrt{2}\sin \frac{\theta - \theta'}{2}}.$ Using the change of variables $\theta \to - \theta$, we get 
+\[C\left(S_{k,\omega}u\right)(\theta) = \frac{-1}{2\pi} \int_{-\pi}^\pi \ln \abs{\sqrt{2} \sin \frac{\theta - \theta'}{2}}J_0(k\abs{\cos\theta - \cos \theta'})Cu(\theta')d\theta' + RCu\,.\]
+Let $\kappa \isdef t \mapsto -\frac{1}{2\pi}\ln \abs{\sqrt{2} \sin \frac{t}{2}}$. It is well-known that $\hat{\kappa}(n) = \frac{1}{2n}$ for $n \neq 0$. We may prolonge this by $\kappa(\xi) = \frac{1}{2\xi}$ away from $\xi = 0$. Let $a(t,s) = J_0(k\abs{\cos\theta - \cos \theta'})$, which is a smooth function. Applying \autoref{thrunen}, the operator
+\[\tilde{S}_k u \mapsto \int_{-\pi}^\pi \kappa(t-s) a(t,s)u(s)ds\]
+is in $\textit{Op}(\Sigma^{-1})$ with its symbol satisfying, for $\xi > 0$,
+\[\sigma_{\tilde{S}_k}(t,\xi) = \frac{1}{2\xi} + \frac{\sin^2 t}{4\xi^3} + 3i\frac{k^2 \sin t \cos t}{4\xi^4}  + \frac{4k^2(4\sin^2t - 3 \cos^2t) + 3k^4\sin^4 t}{16 \xi^5} + \Sigma^6\,.\]
+Since $CS_{k,\omega} = \tilde{S}_{k}C$, we have $CS_{k,\omega}^2 = \tilde{S}_{k}CS_{k,\omega} = \tilde{S}_{k}^2C$. Applying symbolic calculus, the symbol of $\sigma_2$ of $\tilde{S}_k^2$ satisfies
+\[\sigma_2 = \frac{1}{4\xi^2} + k^2\frac{\sin^2 t}{4 \xi^4} + i k^2 \frac{\sin t \cos t}{\xi^5} + k^2 \frac{13\sin^2 t - 11 \cos^2 t}{8\xi^6} + k^4\frac{ \sin^4(t)}{4\xi^6} + \Sigma^7\,.\]
+We can now notice that for $u \in T^s$, we have \[C\left[-(\omega \partial_x)^2 - k^2 \omega^2\right] u  = \left[-\frac{\partial^2}{\partial \theta^2} - k^2 \sin^2\theta\right]Cu.\]
+Thus 
+\[C\left[-(\omega \partial_x)^2 - k^2 \omega^2 \right]S_{k,\omega}^2 = \left[-\frac{\partial^2}{\partial \theta^2} - k^2 \sin^2\theta\right] \tilde{S}_k^2 C\]
+Of course, $\frac{-\partial^2}{\partial \theta^2} - k^2 \sin^2$ is a PPDO with symbol $\sigma_\Delta(\theta,\xi) = \xi^2 - k^2 \sin^2(\theta)$. We apply again symbolic calculus to find the symbol $\sigma_3$ of $\left[-\frac{\partial^2}{\partial \theta^2} - k^2 \sin^2\theta\right] \tilde{S}_k^2$. We find
+\[\sigma_3 = \frac{1}{4} + \frac{k^2}{8\xi^4} + \Sigma^6\,.\]
+Using maple, we find that the order $5$ and $7$ terms are null and 
+\[\sigma_3 = \frac{1}{4} + \frac{k^2}{8 \xi^4} + \frac{2k^4 \sin^2(\theta) + k^2}{8\xi^6} + \Sigma^8\,.\]
 
-The results of this section prompt us to use $\sqrt{-(\omega \partial_x)^2 - k^2\omega^2}$ as a preconditioner for $S_{k,\omega}$. 
-\toDo{Problème d'inversibilité possible pour certaines valeurs de $k$. Je n'arrive pas à l'écarter.}
+%Using the power series definition of $J_0$, this gives
+%\begin{align}
+%	\begin{split}
+%	\frac{i}{4}H_0(k \abs{x - y}) &= \frac{-1}{2\pi}\ln |x-y| \label{decompHankel}\\ 
+%	&\quad + \frac{1}{2\pi} \frac{k^2}{4} (x- y)^2 \ln |x-y|\\
+%	&\quad + (x-y)^4 \ln|x-y|F_2(x,y) + F_3(x,y)
+%	\end{split}
+%\end{align}
+%\noindent where $F_2$ and $F_3$ are $C^{\infty}$. Let us study the operators $O_n$ defined for $n \geq 1$ as 
+%\[O_n : \alpha \mapsto -\frac{1}{2\pi}\int_{-1}^{1}(x-y)^{n-1} \ln\abs{x - y} \frac{\alpha(y)}{\omega(y)}\,.\]
+%\begin{Lem}
+%	\label{orderOfOn}
+%	For every $n$, $O_n$ is in the class $S^n$. 
+%\end{Lem}
+%\begin{proof}
+%	This can be shown by a simple induction. $O_1$ is just $S_\omega$, which is indeed in $S^1$. Let $n \geq 2$, and assume $O_{n-1} \in S^{n-1}$. We have
+%	\[ O_n = x O_{n-1} - O_{n-1} x.\]
+%	As shown in \autoref{lem:multPolyOrdre0}, the multiplication by $x$ defines an operator of $S^0$. By assumption, $O_{n-1}$ is in $S^{n-1}$, thus \autoref{CommutPDO} implies that $O_{n} \in S^n$, which concludes the proof. 
+%\end{proof}
+%We define a new operator $y$ defined for $n \geq 1$ by 
+%\[y T_n = \frac{T_{n+1} - T_{n-1}}{2}\,.\]
+%and $y T_0 = 0$. 
+%It is easy to check that $y$ is in $S^0$ and $y^2 = -\omega^2 + T_\infty$. Moreover, $y$ commutes with the multiplication by $x$, and the adjoint of $y$ (in the $L^2_\frac{1}{\omega}$ duality) is $-y$. Since, for $n\geq 0$, $(x+y)T_n = T_{n+1}$ and $(x-y)T_n = T_{n-1}$, we see that any operator in $A \in S^p$ can be expressed as 
+%\[ A u = \sum_{n = 0}^{+ \infty} a(x,y,n) \hat{u}_n T_n(x)\]
+%where for each $n$, $(x,y) \mapsto a(x,y,n)$ is a polynomial in $x$ and $y$. \toDo{A déplacer probablement.}
+%We show an intermediary result:
+%\begin{Lem}
+%	\label{resultInterm}
+%	For all $n \geq 0$, there exists an operator $R_{n+3} \in S^{n+3}$ such that
+%	\begin{equation}
+%		x S_\omega^n - S_\omega^n x = 2 ny S_{\omega}^{n+1} - 2n(n+1) x S_\omega^{n+2} + R_{n+3}\,.
+%	\end{equation}
+%\end{Lem}
+%\begin{proof}
+%	We must show that
+%	\[R_{n+2} \isdef x S_\omega^n - S_\omega^n x -2ny S_\omega^{k+1} + 2n(n+1)x S_\omega^{n+2} \]
+%	belongs to the class $S^{n+3}$ for all $n \in \N$. For $n = 0$ this is obvious. Let us fix $n \geq 1$. We check the three requirements of \autoref{defClassSk}.
+%	Using $x T_k = \frac{T_{k+1} + T_{k-1}}{2}$ and $S_\omega T_k = \sigma_k T_k$, we have
+%	\[R_{n+2}T_k = a(k,-1) T_{k-1} + a(k,1) T_{k+1}\]
+%	with 
+%	\begin{eqnarray*}
+%		a(k,1) &=& \frac{\sigma_k^n - \sigma_{k+1}^{n} - 2n \sigma_k^{n+1} + 2n(n+1)\sigma_k^{n+2}}{2}\\
+%		a(k,-1) &=& \frac{\sigma_k^n - \sigma_{k-1}^{n} + 2n \sigma_k^{n+1} + 2n(n+1) \sigma_{k}^{n+2}}{2}
+%	\end{eqnarray*}
+%	The symbol $a$ thus satisfies the requirements (i) and (iii). It remains to show the estimate (ii). We do this for $a(k,1)$, the other case being similar. Of course, it suffices to establish the estimate for $k \geq 1$. In this case, we have $\sigma_k = \frac{1}{2k}$, thus 
+%	\[a(k,1) = g(k+1) - g(k) - g'(k) - \frac{g''(k)}{2}\]
+%	where 
+%	\[g(x) = -\frac{1}{2\times(2x)^{n}}\,.\]
+%	Applying $\Delta_k^\alpha$, on both sides and using the commutation of $\frac{d}{dx}$ and $\Delta_k$, we obtain
+%	\[a(k,1) = \Delta^\alpha_k g(k+1) - \Delta_k^\alpha g(k) - (\Delta^{\alpha}_k g)'(k) - \frac{\left(\Delta_k^\alpha g\right)''(k)}{2}\,.\]
+%	This can be rewritten using Taylor's formula
+%	\[a(k,1) = \int_{k}^{k+1}\frac{(k+1 - \xi)^2}{2} \left(\Delta^{\alpha}_k g^{(3)}\right)(\xi) d\xi\,.\]
+%	Using \autoref{lemDeltaDerivees} and the explicit derivatives of $g$, for $\xi \geq 1$, there holds
+%	\[ \abs{\left(\Delta^{\alpha}_k g^{(3)}\right)(\xi)} \leq \frac{C}{(1 + \xi)^{k + 3+ \alpha }}\]
+%	and thus, for $k \geq 1$, 
+%	\[\abs{\Delta_k^\alpha a(k,1)} \leq \frac{C}{(1+n)^{n+\alpha+3}}\,,\]
+%	as needed. 
+%\end{proof}
+%With the same method, we obtain:
+%\begin{Lem}
+%	For all $n \in \N$, 
+%	\[y S_\omega^n  - S_\omega^ny = 2nxS_\omega^{n+1} - 2n(n+1)y S_\omega^{n+2} + R_n+2\,.\]
+%	with $R_{n+2} \in S^{n+2}$.
+%\end{Lem}
+%\begin{Lem}
+%	For all $n \geq 1$, the operator $O_n$ satisfies 
+%	\begin{equation}
+%		\label{announced}
+%		O_n = 2^{n-1}(n-1)! y^{n-1} S_\omega^{n} + 2^n (n-1) n! xy^{n-1} S_\omega^{n+1} + R_{n+2}
+%	\end{equation}
+%	where $R_{n+2} \in S^{n+2}$. 
+%\end{Lem}
+%\begin{proof}
+%	We show this by induction. For $n=1$, the formula is obvious, with $R_{n+2} = 0$. Assume that the formula is true for $n \geq 1$. Then by definition, 
+%	\[O_{n+1} = x O_n - O_n x\]
+%	and using the commutation of $x$ and $y$:
+%	\[\begin{split}
+%	O_{n+1} =& 2^{n-1}(n-1)! y^{n-1} \left(xS_\omega^{n} - S_\omega^{n}x \right)\\
+%	& + 2^n (n-1) n! xy^{n-1}\left(xS_\omega^{n+1} - S_\omega^{n+1}x\right) \\
+%	& + \left(xR_{n+2} - R_{n+2}x\right)\,. 
+%	\end{split}\]
+%	The operator on the last line is in $S^{n+3}$ by \autoref{CommutPDO}. By \autoref{resultInterm}, there exists an operator $R_{n+3} \in S^{n+3}$ such that 
+%	\[\begin{split}
+%	O_{n+1} = \quad & 2^{n-1}(n-1)! y^{n-1} \left(2ny S_\omega^{n+1} - 2n(n+1)x S_\omega^{n+2}\right)\\
+%	& + 2^n (n-1) n! xy^{n-1}\left( 2(n+1)y S_\omega^{n+2} \right) \\
+%	& + R_{n+3}\,. 
+%	\end{split}\]
+%	And we obtain the expected formula for $O_{n+1}$. 
+%\end{proof}
+%Using the notation introduced in \autoref{DefEquivModTp}, we have the following result:
+%\begin{Lem}
+%	The operator $S_{k,\omega}$ admits the following expansion 
+%	\[ S_{k, \omega} = S_\omega - \frac{k^2}{4} O_3 +  T_5.\]
+%	\label{developpementHankel}
+%\end{Lem}
+%\begin{proof}
+%	From equation \eqref{decompHankel}, it suffices to show that the operator 
+%	\[R_5 : \alpha \mapsto \int_{-1}^{1} (x-y)^4 \ln|x - y|F_2(x,y)\frac{\alpha(y)}{\omega(y)}\]
+%	is of order $5$. Since $O_5$ is of order $5$, this is true in view of \autoref{ordreNoyauxMultipl}.
+%\end{proof}
+%In particular, the operator $S_{k,\omega}$ is well defined on $T^{-\infty}$, and is of order $1$. 
+%\begin{Lem}
+%	\label{LemSwDeltaO3}
+%	There holds
+%	\[S_\omega (\omega \partial_x)^2 O_3 + O_3(\omega \partial_x)^2 S_\omega = 4S_\omega\omega^2S_\omega + T_4.\]
+%\end{Lem}
+%\begin{proof}
+%	We have $S_\omega \in S^1$, $O_3 \in S^3$ and $(\omega \partial_x)^2 \in S^{-2}$. 
+%\end{proof}
+%\begin{The} There holds
+%	\label{TheHelmholtz}
+%	\[\left[-(\omega \partial_x)^2 - k^2\omega^2\right]S_{k,\omega}^2 = \frac{I_d}{4} + T_4.\]
+%	\begin{proof}
+%		Using the expansion of \autoref{developpementHankel}, we can write 
+%		\begin{eqnarray*}
+%			-S_{k,\omega}(\omega \partial_x)^2 S_{k,\omega} &=& -S_\omega (\omega \partial_x)^2 S_\omega \\
+%			&& + \frac{k^2}{4}\left(S_\omega (\omega \partial_x)^2 O_3 + O_3 (\omega \partial_x)^2 S_\omega\right) + T_4
+%		\end{eqnarray*}
+%		By \autoref{TheSdx2S}, the first term is $\frac{Id}{4} + T_\infty$ and by \autoref{LemSwDeltaO3} the second term is $k^2 \omega^2 + T_ 4$
+%		Finally, using \autoref{developpementHankel}, on can check that
+%		\[S_\omega \omega^2 S_\omega =  S_{k,\omega} \omega^2 S_{k,\omega} + T_4\]
+%		We have thus proved 
+%		\[-S_{k,\omega} (\omega \partial_x)^2 S_{k,\omega} = \frac{I_d}{4} + k^2S_{k,\omega} \omega^2 S_{k,\omega} + T_4.\]
+%		If we substract the term $k^2 S_{k,\omega} \omega^2 S_{k,\omega}$ of each side, and use the first commutation proved in \autoref{Commutations}, we finally get 
+%		\[ \left[-(\omega \partial_x)^2 - k^2 \omega^2\right]S_{k,\omega}^2  = \frac{I_d}{4} + T_4,\]
+%		and the result is proved. 
+%	\end{proof}
+%\end{The}
+%Recall that $\lambda_{n,k}^2$ are the eigenvalues of $-(\omega \partial_x) - k^2\omega^2$. Let $s_{n,k}$ the eigenvalues of $S_{k,\omega}$ on the basis of Mathieu cosines, that is
+%\[S_{k,\omega}T_{n}^k = s_{n,k}T_n^k.\]
+%The previous theorem has the following consequence:
+%\begin{Cor}
+%	One has
+%	\[s_{n,k} \lambda_{n,k} = \frac{1}{4} + r_{n,k}\]
+%	where $r_{n,k}$ satisfies 
+%	\[\sum_{n = 0}^{+ \infty}(1 + n^2)^4 \abs{r_{n,k}}^2  < + \infty\]
+%\end{Cor}
+%
+%The results of this section prompt us to use $\sqrt{-(\omega \partial_x)^2 - k^2\omega^2}$ as a preconditioner for $S_{k,\omega}$. 
+%\toDo{Problème d'inversibilité possible pour certaines valeurs de $k$. Je n'arrive pas à l'écarter.}
 
 
 
@@ -1068,22 +1176,20 @@ Similarly, if we define $N_{k,\omega} \isdef N_k \omega$, we have
 	\label{the:ParametrixNkomega}
 	\[N_{k,\omega}^2 = \left[-(\partial_x \omega)^2 - k^2 \omega^2\right] + U_2. \]
 \end{The}
-This result suggests $\left[-(\partial_x \omega)^2 - k^2 \omega^2 \right]^{-1/2}$ as a candidate preconditioner for $N_{k,\omega}$. \toDo{Problème d'inversibilité idem.} The proof is reported to \autoref{ParametrixNkomega}. 
+This result suggests $\left[-(\partial_x \omega)^2 - k^2 \omega^2 \right]^{-1/2}$ as a candidate preconditioner for $N_{k,\omega}$.
 
 
 \subsection{Non-flat arc}
 
-In the more general case of a $C^{\infty}$ non-intersecting open curve $\Gamma$ and non-zero frequency $k$, the results of the previous sections can be extended using again compact perturbations arguments. Essentially, in the decomposition \autoref{decompHankel}, $x$ and $y$ must be replaced by $r(x)$ and $r(y)$, where the function $r$ is a smooth, constant-speed parametrisation of $\Gamma$ defined on $[-1,1]$ and satisfying $\abs{r(x) - r(y)}^2 = \frac{\abs{\Gamma}^2}{4} \abs{x - y}^2 + \abs{x-y}^4 G(x,y)$ where $\abs{\Gamma}$ is the length of $\Gamma$ and $G$ is a $C^{\infty}$ function on $[-1,1]$. Letting $\omega_\Gamma(x) = \abs{\Gamma} \omega(x)$, $\partial_\tau$ the tangential derivative on $\Gamma$ and $S_{k,\omega_{\Gamma}} \isdef S_k \frac{1}{\omega_\Gamma}$, we have: 
+In the more general case of a $C^{\infty}$ non-intersecting open curve $\Gamma$ and non-zero frequency $k$, the results of the previous sections can be extended using again compact perturbations arguments. Essentially, in the decomposition \autoref{decompHankel}, $x$ and $y$ must be replaced by $r(x)$ and $r(y)$, where the function $r$ is a smooth, constant-speed parametrisation of $\Gamma$ defined on $[-1,1]$ and satisfying $\abs{r(x) - r(y)}^2 = \frac{\abs{\Gamma}^2}{4} \abs{x - y}^2 + \abs{x-y}^4 G(x,y)$ where $\abs{\Gamma}$ is the length of $\Gamma$ and $G$ is a $C^{\infty}$ function on $[-1,1]$. Let $\omega_\Gamma(x) = \abs{\Gamma} \omega(x)$, $\partial_\tau$ the tangential derivative on $\Gamma$ and $S_{k,\omega_{\Gamma}} \isdef S_k \frac{1}{\omega_\Gamma}$.
 \begin{The}
 	\label{TheHelmholtz3}
-	\[S_{k,\omega_\Gamma} \left( -(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right) S_{k,\omega_\Gamma} = \frac{I_d}{4} + T_4\]
-\end{The}
-\begin{The}
-	\label{TheHelmholtz4}
+	One has $S_{k,\omega_\Gamma} \in S^{-1}$ and
+	\[\left( -(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right) S_{k,\omega_\Gamma}^2= \frac{I_d}{4} + S^4\]
+	Similarly, 
 	\[N_{k,\omega_\Gamma}^2 =  -(\partial_\tau \omega_\Gamma)^2 - k^2\omega_\Gamma^2 + U_2.\]
-	where $R_2$ is of order $2$ in the scale $U^s$. 
+	where $U_2$ maps $U^s$ to $U^{s+2}$ for all $s \in \R$. 
 \end{The}
-\noindent The proofs of those facts are omitted. 
 
 \section{Galerkin analysis}
 
