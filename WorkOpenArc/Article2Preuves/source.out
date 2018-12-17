@@ -8,7 +8,7 @@
 \BOOKMARK [1][-]{section.2}{Application to preconditioning for the Helmholtz scattering problem}{}% 8
 \BOOKMARK [2][-]{subsection.2.1}{The scattering problem for an open curve}{section.2}% 9
 \BOOKMARK [2][-]{subsection.2.2}{Operators S and N on the flat segment}{section.2}% 10
-\BOOKMARK [2][-]{subsection.2.3}{Weighted single-layer operator on the flat segment for k =0}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.3}{Non-flat arc and non-zero frequency}{section.2}% 11
 \BOOKMARK [2][-]{subsection.2.4}{Neumann problem}{section.2}% 12
 \BOOKMARK [2][-]{subsection.2.5}{Non-flat arc}{section.2}% 13
 \BOOKMARK [1][-]{section.3}{Galerkin analysis}{}% 14
