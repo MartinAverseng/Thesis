@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.26)  17 DEC 2018 15:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.26)  18 DEC 2018 14:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1324,140 +1324,198 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 229.
 
-[7] [8] [9]
+[7]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 317.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 317.
+(hyperref)                removing `math shift' on input line 265.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 317.
+(hyperref)                removing `superscript' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Gamma' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Gamma' on input line 265.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 265.
+
+[8] [9]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 332.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 332.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Gamma' on input line 332.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 332.
 
 [10] [11]
-Overfull \hbox (19.73285pt too wide) in paragraph at lines 792--792
+
+LaTeX Warning: Reference `TransportPPDO' on page 12 undefined on input line 381
+.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 394.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `superscript' on input line 394.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\Gamma' on input line 394.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 394.
+
+[12]
+Overfull \hbox (19.73285pt too wide) in paragraph at lines 841--841
 []\OT1/lmr/bx/n/14.4 Application to pre-con-di-tion-ing for the Helmholtz
  []
 
 
-LaTeX Warning: Reference `' on page 12 undefined on input line 794.
+LaTeX Warning: Reference `' on page 13 undefined on input line 843.
 
 
-LaTeX Warning: Reference `' on page 12 undefined on input line 794.
+LaTeX Warning: Reference `' on page 13 undefined on input line 843.
 
-[12] [13] [14] [15]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 959.
-
+[13] [14] [15] [16]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 959.
+(hyperref)                removing `math shift' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 959.
+(hyperref)                removing `subscript' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 959.
+(hyperref)                removing `\omega' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 959.
+(hyperref)                removing `math shift' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 959.
+(hyperref)                removing `math shift' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\omega' on input line 959.
+(hyperref)                removing `subscript' on input line 1008.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 959.
-
-[16] [17] [18] [19] [20]
-
-LaTeX Warning: Reference `Slambda' on page 21 undefined on input line 1254.
+(hyperref)                removing `\omega' on input line 1008.
 
 
-LaTeX Warning: Reference `Nmu' on page 21 undefined on input line 1254.
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 1008.
+
+[17] [18] [19] [20] [21]
+
+LaTeX Warning: Reference `Slambda' on page 22 undefined on input line 1303.
+
+
+LaTeX Warning: Reference `Nmu' on page 22 undefined on input line 1303.
 
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 1262.
+(hyperref)                than one, level fixed on input line 1311.
 
 
-LaTeX Warning: Reference `Slambda' on page 21 undefined on input line 1264.
+LaTeX Warning: Reference `Slambda' on page 22 undefined on input line 1313.
 
 
-LaTeX Warning: Reference `Somegaalpha' on page 21 undefined on input line 1264.
+LaTeX Warning: Reference `Somegaalpha' on page 22 undefined on input line 1313.
 
 
-[21]
+[22]
 
-LaTeX Warning: Reference `STn' on page 22 undefined on input line 1279.
+LaTeX Warning: Reference `STn' on page 23 undefined on input line 1328.
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 1288.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 1337.
 (/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [22] [23]
+) [23] [24]
 
-LaTeX Warning: Reference `Nmu' on page 24 undefined on input line 1361.
-
-
-LaTeX Warning: Reference `Nomegabeta' on page 24 undefined on input line 1361.
-
-[24] [25]
-
-LaTeX Warning: Reference `lemU12H12' on page 26 undefined on input line 1437.
-
-[26]
-
-LaTeX Warning: Reference `orderOfOn' on page 27 undefined on input line 1453.
+LaTeX Warning: Reference `Nmu' on page 25 undefined on input line 1410.
 
 
-LaTeX Warning: Reference `developpementHankel' on page 27 undefined on input li
-ne 1454.
+LaTeX Warning: Reference `Nomegabeta' on page 25 undefined on input line 1410.
 
+[25] [26]
 
-LaTeX Warning: Reference `LemSwDeltaO3' on page 27 undefined on input line 1466
-.
-
-
-LaTeX Warning: Reference `omega2continuUsTs' on page 27 undefined on input line
- 1470.
+LaTeX Warning: Reference `lemU12H12' on page 27 undefined on input line 1486.
 
 [27]
 
-LaTeX Warning: Reference `dxSomega2=Somegadxomega' on page 28 undefined on inpu
-t line 1477.
+LaTeX Warning: Reference `orderOfOn' on page 28 undefined on input line 1502.
 
-[28] (./source.bbl [29] [30]) [31]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1583.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1583.
+
+LaTeX Warning: Reference `developpementHankel' on page 28 undefined on input li
+ne 1503.
+
+
+LaTeX Warning: Reference `LemSwDeltaO3' on page 28 undefined on input line 1515
+.
+
+
+LaTeX Warning: Reference `omega2continuUsTs' on page 28 undefined on input line
+ 1519.
+
+[28]
+
+LaTeX Warning: Reference `dxSomega2=Somegadxomega' on page 29 undefined on inpu
+t line 1526.
+
+[29] (./source.bbl [30] [31]) [32]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1632.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1632.
  (./source.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1583.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1583.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1632.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1632.
 
 Package rerunfilecheck Info: File `source.out' has not changed.
-(rerunfilecheck)             Checksum: 18369827007D6A4B075BFF1FDC5DD0F2;1381.
+(rerunfilecheck)             Checksum: C6539CE0A495C636E0E8301EBC76E535;1547.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1583.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1632.
  ) 
 Here is how much of TeX's memory you used:
- 28692 strings out of 494924
- 662946 string characters out of 6179707
- 874595 words of memory out of 5000000
- 31314 multiletter control sequences out of 15000+600000
+ 28705 strings out of 494924
+ 663079 string characters out of 6179707
+ 873595 words of memory out of 5000000
+ 31318 multiletter control sequences out of 15000+600000
  62695 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  64i,17n,84p,1223b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1482,10 +1540,10 @@ ype1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></us
 r/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fo
 nts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on source.pdf (31 pages, 502437 bytes).
+Output written on source.pdf (32 pages, 509378 bytes).
 PDF statistics:
- 567 PDF objects out of 1000 (max. 8388607)
- 501 compressed objects within 6 object streams
- 157 named destinations out of 1000 (max. 500000)
- 165 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 586 PDF objects out of 1000 (max. 8388607)
+ 519 compressed objects within 6 object streams
+ 166 named destinations out of 1000 (max. 500000)
+ 181 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -251,7 +251,7 @@ and by $Su$ the function defined as
 	Moreover, if $ u \in T^n$, then $(\omega \partial_x)^n u$ is in $L^2_\frac{1}{\omega}$ and 
 	\[ \abs{u}_{T^n}^2 \sim \int_{-1}^{1} \frac{((\omega \partial_x)^n u)^2}{\omega}.\]
 	\noindent Similarly, if $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
-	\[ \norm{u}_{U_n} = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
+	\[ \norm{u}_{U_n}^2 = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
 	\label{thmChar}
 \end{Lem}
 \begin{proof}
@@ -262,7 +262,22 @@ and by $Su$ the function defined as
 	The same kind of proof also shows that if $u \in U^n$, $(\partial_x \omega )^nu \in L^2_\omega$.
 	The rest of the proof can be performed by computing the quantities for functions in $C^{\infty}([-1,1])$, performing integrations by parts and concluding with the density of $T^{\infty}$ in $T^s$ and $U^s$. 
 \end{proof}
+\subsection{Spaces $T^s(\Gamma)$ and $U^s(\Gamma)$}
 
+Let $\Gamma$ an smooth open curve in $\mathbb{R}^2$ parametrized by a smooth $C^\infty$ diffeomorphism $r : [-1,1] \to \Gamma$. We choose $r$ such that $\abs{r'(x)} = \frac{\abs{\Gamma}}{2}$ for all $x$, where $\abs{\Gamma}$ is the length of $\Gamma$. For $u : [-1,1] \to \R$, let $R$ the operator defined by $Ru(x) = u(r(x))$. The tangential derivative on $\Gamma$ is defined as $\partial_\tau = \frac{2}{\abs{\Gamma}}R\partial_x R^{-1}$. Moreover, let $\omega_\Gamma \isdef \frac{\abs{\Gamma}}{2} R^{-1}  \omega(x) R$. The previous results can be generalized to this context:
+
+\begin{Def}
+	We say that a function $u : \Gamma \to \mathbb{C}$ belongs to $T^s(\Gamma)$ if the function $R^{-1}u$ belongs to $T^s$. Similarly, we say that $u \in U^s(\Gamma)$ if $R^{-1}u \in U^s$. 
+\end{Def}
+
+\begin{The} For all $s \in \R$, $T^s(\Gamma)$ and $U^s(\Gamma)$ are Hilbert spaces for the scalar products 
+\[\duality{u}{v}_{T^s(\Gamma)} = \duality{R^{-1}u}{R^{-1}v}_{T^s}\,,\]
+\[\duality{u}{v}_{U^s(\Gamma)} = \duality{R^{-1}u}{R^{-1}v}_{U^s}\,.\]
+For $s < t$, the injections $T^s(\Gamma) \subset T^t(\Gamma)$ and $U^s(\Gamma) \subset U^t(\Gamma)$ are compact. For $n \in \N$, an equivalent scalar product on $T^n$ and $U^n$ is 
+\[\duality{u}{v}_{T^n} = \int_{\Gamma} \frac{u(x)v(x) + (\omega_\Gamma \partial_\tau)^n u(x) (\omega_\Gamma \partial_\tau)^n v(x)}{\omega_\Gamma(x)}d\sigma(x)\,,\]
+\[\duality{u}{v}_{U^n} = \int_{\Gamma}(\partial_\tau\omega_\Gamma )^n u(x) (\partial_\tau\omega_\Gamma \partial)^n v(x)\omega_\Gamma(x)d\sigma(x)\,,\]
+For all $s \in \R$, $T^s(\Gamma) \subset U^s(\Gamma)$ and for all $s > \frac{1}{2}$, $U^s(\Gamma) \subset T^{s+1}(\Gamma)$. For $s > \frac{1}{2}$, $T^s(\Gamma) \subset C^0(\Gamma)$ and $U^{s+1} \subset C^0(\Gamma)$. Moreover, $T^\infty(\Gamma) = U^\infty(\Gamma) = C^\infty(\Gamma)$. 
+\end{The}
 
 \subsection{Periodic pseudo-differential operators}
 
@@ -314,46 +329,44 @@ We will use the following result, see \cite{thrunen1998symbol}:
 \[Ku = \frac{1}{T}\int_{0}^{T} a(t,s) u(s) ds\]
 is in $Op\left(\Sigma^{-\infty}\right)$.
 
-\subsection{Pseudo-differential operators on $T^s$.}
+\subsection{Pseudo-differential operators on $T^s(\Gamma)$}
 
 \begin{Lem}
-	\label{TransportPPDO}
-	Let $A$ a PPDO that stabilizes the set of smooth real even functions. Then $A$ coincides on this set with the operator $B$ with symbol given by 
-	\[\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}\,.\]
+	\label{TransportPPDO_T}
+	Let $A$ a PPDO that stabilizes the set of smooth even functions. Then $A$ coincides on this set with the operator $B$ with symbol given by 
+	\[\sigma_B(\theta,n) = \frac{\sigma_A(\theta,n) + \sigma_A(-\theta,-n)}{2}\,.\]
 	Moreover, $\sigma_B$ admits the following decomposition:
 	\[ \sigma_B(n,\theta) = a_1(n,\cos\theta) + i \sin(\theta)a_2(n,\cos\theta) \]
 	with 
-	\[a_1(n,x) = \frac{\sigma_B(n,\arccos(x)) + \sigma_B(-n,\arccos(x))}{2}\]
-	\[a_2(n,x) = \frac{\sigma_B(n,\arccos(x)) - \sigma_B(-n,\arccos(x))}{2i\sqrt{1-x^2}}\] 
-	and $a_1$ and $a_2$ are real and $\Cinf$. 
+	\[a_1(x,n) = \frac{\sigma_B(\arccos(x),n) + \sigma_B(\arccos(x),-n)}{2}\]
+	\[a_2(x,n) = \frac{\sigma_B(\arccos(x),n) - \sigma_B(\arccos(x),-n)}{2i\sqrt{1-x^2}}\] 
+	and $a_1$ and $a_2$ are $\Cinf$. 
 \end{Lem}
 \begin{proof}
-Since $A$ stabilizes the set of real even functions, for all even function $u$ we have 
-\[Au(\theta) = Bu(\theta) \isdef \frac{Au(\theta) + Au(-\theta)}{2}\,.\]
-We have
-\[Bu(\theta) = \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,\theta) \hat{u}_n e^{in\theta} + \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,-\theta)\hat{u}_n e^{-in\theta}\,,\]
-so the symbol of $B$ is $\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}$. In particular, it satisfies the following symmetry:
+Since $A$ stabilizes the set of even functions, for all even function $u$ we have 
+\[Au(\theta) = \frac{Au(\theta) + Au(-\theta)}{2}\,.\]
+Thus
+\[Au(\theta) = \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,\theta) \hat{u}_n e^{in\theta} + \frac{1}{2}\sum_{n \in \Z} \sigma_A(n,-\theta)\hat{u}_n e^{-in\theta}\,.\]
+Since $u$ is even, $\hat{u}_n = \hat{u}_{-n}$, therefore, $Au(\theta) = Bu(\theta)$ where $B$ is the operator with symbol $\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}$. In particular, it satisfies the following symmetry:
 \[\sigma_B(-n,-\theta) = \sigma_B(n,\theta)\,.\] 
-We write $\sigma_B(n,\theta) = f_B(n,\theta) + g_B(n,\theta)$ where $f_B(n,\theta) = \frac{\sigma_B(n,\theta) + \sigma_B(-n,\theta)}{2}$ and $g_B(n,\theta) = \frac{\sigma_B(n,\theta) - \sigma_B(-n,\theta)}{2}$. Notice that $f_B$ (resp. $g_B$) is even (resp. odd) in both $\theta$ and $n$. For a real even function $u$ we have $\hat{u}_n = \hat{u}_{-n}$, thus 
-\[Bu(\theta) = f_B(0,\theta) \hat{u}_0 + 2\sum_{n = 1}^{+ \infty}f_B(n,\theta)\hat{u}_n\cos(n\theta) + 2i \sum_{n =1}^{+\infty} g_B(n,\theta)\hat{u}_n\sin(n\theta)\,.\]
-Since $Bu$ must be real and since $\hat{u}_n$ is real, we find that $f_B$ is a real and $g_B$ is imaginary. The functions $a_1$ and $a_2$ defined in the lemma satisfy
+We write $\sigma_B(n,\theta) = f_B(n,\theta) + g_B(n,\theta)$ where $f_B(n,\theta) = \frac{\sigma_B(n,\theta) + \sigma_B(-n,\theta)}{2}$ and $g_B(n,\theta) = \frac{\sigma_B(n,\theta) - \sigma_B(-n,\theta)}{2}$. Notice that $f_B$ (resp. $g_B$) is even (resp. odd) in both $\theta$ and $n$.
+The functions $a_1$ and $a_2$ defined in the lemma satisfy
 \[a_1(n,x) = f_B(n, \arccos,x),\quad a_2(n,x) = \frac{g_B(n,\arccos(x))}{i\sqrt{1-x^2}}\,.\]
-so they are both real. By \autoref{thmChar}, they lie in $T^\infty$ since $f_B$ (resp. $g_B$) is a smooth even (resp. odd) function and  $f_B(n,\theta) = a_1(n,\cos\theta)$, while $g_B(n,\theta) = i \sin \theta a_2(n,\cos\theta)$. Thus 
+By \autoref{thmChar}, they lie in $T^\infty$ since $f_B$ (resp. $g_B$) is a smooth even (resp. odd) function and  $f_B(n,\theta) = a_1(n,\cos\theta)$, while $g_B(n,\theta) = i \sin \theta a_2(n,\cos\theta)$. Thus 
 \[\sigma_B(n,\theta) = a_1(n,\cos\theta) + i \sin\theta a_2(n,\cos\theta)\,. \]
 \end{proof}
-
-We use this result to transport the notion of periodic pseudo-differential operators by the change of variable $x = \cos\theta$. Let $A$ an operator on $T^{-\infty}$, assume that there exists a couple of smooth functions $a_1$ and $a_2$ in $\Cinf([-1,1]\times \N)$ such that for all $n \in \N$,
+We use those results to transport the notion of periodic pseudo-differential operators by the change of variable $x = \cos\theta$. Let $A$ an operator on $T^{-\infty}$, assume that there exists a couple of smooth functions $a_1$ and $a_2$ in $\Cinf([-1,1]\times \N)$ such that for all $n \in \N$,
 \[AT_n = a_1(x,n) T_n - \omega^2 a_2(x,n) U_{n-1}\,.\]
 Such a (non-unique) couple of functions is called a pair of symbols of $A$. For $n\in \Z$ and $\theta \in [0,2\pi]$, define the symbol $\tilde{\sigma}(a_1,a_2)$ by
 \[\tilde{\sigma}(a_1,a_2)(\theta,n) = a_1(\cos\theta,\abs{n}) + i \sin\theta\,\text{sign}(n) a_2(\cos\theta,\abs{n})\,.\]
-We say that $(a_1,a_2) \in S^p$ if $\tilde{\sigma}(a_1,a_2) \in \Sigma^p$, and $S^{-\infty} \isdef \cup_{p \in \Z} S^p$. The operator defined by a pair of symbols $(a_1,a_2)$ is denoted by $\textit{Op}(a_1,a_2)$ and the set of pseudo-differential operatos of order $p$ in $T^{-\infty}$  by $\textit{Op}(S^p)$. 
-Then, we have the following properties of $\textit{Op}(S^p)$:
+We say that $(a_1,a_2) \in S^\alpha_T$ if $\tilde{\sigma}(a_1,a_2) \in \Sigma^\alpha$, and $S^{-\infty}_T \isdef \cup_{p \in \Z} S^p_T$. The operator defined by a pair of symbols $(a_1,a_2)$ is denoted by $\textit{Op}_T(a_1,a_2)$ and the set of pseudo-differential operatos of order $p$ in $T^{-\infty}$ by $\textit{Op}(S^\alpha_T)$. 
+Then, we have the following properties of $\textit{Op}(S^\alpha_T)$:
 \begin{Lem}
 	If $A \in \textit{Op}(S^p)$, then letting $\tilde{A} \isdef \textit{Op}(\tilde{\sigma}_A)$, for $u \in T^s$, we have 
 	\[C(Au) = \tilde{A} (Cu)\,,\]
 	where we recall that for any function $v$ in $T^s$, $Cv(\theta) = v(\cos(\theta))$. 
 	Reciprocally, if $A$ is a linear operator that maps $T^\infty$ to itself such that
-	$CA = \tilde{A}C$ where $\tilde{A}$ is a PPDO of order $p$, then $A$ is in $\textit{Op}(S^p)$ and if $\sigma_{\tilde{A}}$ is the symbol of $\tilde{A}$, the $A = \textit{Op}(a_1,a_2)$ with the functions $a_1$ and $a_2$ of \autoref{TransportPPDO}.
+	$CA = \tilde{A}C$ where $\tilde{A}$ is a PPDO of order $p$, then $A$ is in $\textit{Op}(S^p)$ and if $\sigma_{\tilde{A}}$ is the symbol of $\tilde{A}$, then $A = \textit{Op}(a_1,a_2)$ with the functions $a_1$ and $a_2$ of \autoref{TransportPPDO_T}.
 \end{Lem}
 \begin{proof}
 	For the direct result, by linearity, it suffices to show the equality for $u = T_n$ for some $n \in \N$. In this case, we have $Cu(\theta) = T_n(\cos(\theta)) = \cos(n\theta)$. 
@@ -370,11 +383,47 @@ Then, we have the following properties of $\textit{Op}(S^p)$:
 	that is $A = \textit{Op}(a_1,a_2)$. Since $\sigma_B \in \Sigma^p$, we get $(a_1,a_2) \in S^p$ as claimed. 
 \end{proof}
 \begin{Def}
-	Let $A$ and $B$ in $\textit{Op}(S^{-\infty})$. If $A - B \in \textit{Op}(S^\alpha)$, we write 
-	\[A = B + T_\alpha \,.\]
-	Furthermore, if $A$ and $B$ are such that $A - B$ is continuous from $U^s$ to $U^{s- \alpha}$ for all $s \in \R$, we write 
-	\[A = B + U_\alpha\,.\]
+	Let $A : T^{-\infty}(\Gamma) \to T^{-\infty}(\Gamma)$. We say that $A$ is a pseudo-differential operator if $R A R^{-1} \in Op(S^{-\infty}_T)$. Moreover, if $R A R^{-1} \in Op(S^{\alpha}_T)$, we say that $A$ is a pseudo-differential operator of order $\alpha$. The set of pseudo-differential operators of order $\alpha$ on $\Gamma$ is denoted by $S^{\alpha}_T(\Gamma)$.  
 \end{Def}
+
+\begin{Def}
+	Let $A$ and $B$ in $\textit{Op}(S^{-\infty}_T(\Gamma))$. If $A - B \in \textit{Op}(S^\alpha_T(\Gamma))$, we write 
+	\[A = B + T_\alpha \,.\]
+\end{Def}
+
+\subsection{Pseudo-differential operators on $U^s(\Gamma)$}
+
+We may define similarly a class of pseudo-differential operators on the spaces $U^s(\Gamma)$. One can show the following result:
+\begin{Lem}
+	\label{TransportPPDO_U}
+	Let $A$ a PPDO that stabilizes the set of smooth odd functions. Then $A$ coincides on this set with the operator $B$ with symbol given by 
+	\[\sigma_B(n,\theta) = \frac{\sigma_A(n,\theta) + \sigma_A(-n,-\theta)}{2}\,.\]
+	Moreover, $\sigma_B$ admits the following decomposition
+	\[\sigma_B(n,\theta) = i a_1(\cos\theta,n) + \sin\theta a_2(\cos\theta,n)\]
+	with
+	\[a_1(x,n) = \frac{\sigma_B(n,\arccos(x)) + \sigma_B(-n,\arccos(x))}{2i}\]
+	\[a_2(n,x) = \frac{\sigma_B(n,\arccos(x)) - \sigma_B(-n,\arccos(x))}{2\sqrt{1-x^2}}\] 
+	and $a_1$ and $a_2$ are $\Cinf$. 
+\end{Lem}
+Let $A$ an operator on $U^{-\infty}$, assume that there exists a couple of smooth functions $a_1$ and $a_2$ in $\Cinf([-1,1]\times \N)$ such that for all $n \in \N$,
+\[AU_n = a_1(x,n) U_n + a_2(x,n) T_{n+1}\,.\]
+Such a (non-unique) couple of functions is called a pair of symbols of $A$. For $n\in \Z$ and $\theta \in [0,2\pi]$, define the symbol $\tilde{\sigma}(a_1,a_2)$ by
+\[\tilde{\sigma}(a_1,a_2)(\theta,n) = i a_1(\cos\theta,\abs{n}) + \sin\theta\,\text{sign}(n) a_2(\cos\theta,\abs{n})\,.\]
+We say that $(a_1,a_2) \in S^\alpha_U$ if $\tilde{\sigma}(a_1,a_2) \in \Sigma^\alpha$, and $S^{-\infty}_U \isdef \cup_{p \in \Z} S^p_U$. The operator defined by a pair of symbols $(a_1,a_2)$ is denoted by $\textit{Op}_U(a_1,a_2)$ and the set of pseudo-differential operatos of order $p$ in $T^{-\infty}$  by $\textit{Op}(S^\alpha_U)$. 
+\begin{Lem}
+	If $A \in \textit{Op}(S^\alpha_U)$, then letting $\tilde{A} \isdef \textit{Op}(\tilde{\sigma}_A)$, for $u \in U^s$, we have 
+	\[S(Au) = \tilde{A} (Su)\,,\]
+	where we recall that for any function $v$ in $U^s$, $Sv(\theta) = \sin\theta v(\cos(\theta))$. 
+	Reciprocally, if $A$ is a linear operator that maps $U^\infty$ to itself such that
+	$SA = \tilde{A}S$ where $\tilde{A}$ is a PPDO of order $\alpha$, then $A$ is in $\textit{Op}(S^\alpha_U)$ and if $\sigma_{\tilde{A}}$ is the symbol of $\tilde{A}$, then $A = \textit{Op}_U(a_1,a_2)$ with the functions $a_1$ and $a_2$ of \autoref{TransportPPDO_U}.
+\end{Lem}
+
+\begin{The}
+	Let $A \in \textit{Op}(S^\alpha_T)$. Then $-\partial_x A \omega \partial_x \omega \in \textit{Op}(S^{\alpha-2}_U)$, and there exists $B \in S^{\alpha + 2}_U$ such that $A = -\omega \partial_x \omega B \partial_x$.
+	Similarly, let $A \in \textit{Op}(S^\alpha_T)$. Then $-\omega \partial_x \omega A \partial_x  \in \textit{Op}(S^{\alpha-2}_T)$, and there exists $B \in S^{\alpha + 2}_T$ such that $A = -\partial_x B \omega \partial_x \omega + T^\infty$.
+\end{The}
+
+
 %
 %\subsubsection{Classes of operators}
 %
