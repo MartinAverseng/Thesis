@@ -901,8 +901,14 @@ For $u,v \in L^2(\Gamma)$,
 \begin{Def}
 	The weighted layer potentials $S_{k,\omega_\Gamma}$ and $N_{k,\omega_\Gamma}$ are defined as follows:
 	\[S_{k,\omega_\Gamma} \isdef S_k \frac{1}{\omega_\Gamma}, \quad N_{k,\omega_\Gamma} \isdef  N_{k}\omega_\Gamma\,.\]
-	We also define the rescaled parametric representations $S_{k,\omega}$ and $N_{k,\omega}$ from $[-1,1]$ to $\mathbb{C}$ by $S_{k,\omega} \isdef \frac{2}{\abs{\Gamma}} R S_{k,\omega_\Gamma}R^{-1}$ and $N_{k,\omega} \isdef \frac{\abs{\Gamma}}{2} R N_{k,\omega_\Gamma} R^{-1}$. 
 \end{Def}
+Solving the integral equations \eqref{Sklambda} and \eqref{Nkmu}, is equivalent to solving
+\begin{eqnarray*}
+	S_{k,\omega_\Gamma} \alpha &=& u_D\\
+	N_{k,\omega_\Gamma} \beta &=& u_N
+\end{eqnarray*}
+and letting $\lambda = \frac{\alpha}{\omega_\Gamma}$, $\mu = \omega_\Gamma u_N$. Those weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. 
+We also define the rescaled parametric representations $S_{k,\omega}$ and $N_{k,\omega}$ from $[-1,1]$ to $\mathbb{C}$ by $S_{k,\omega} \isdef \frac{2}{\abs{\Gamma}} R S_{k,\omega_\Gamma}R^{-1}$ and $N_{k,\omega} \isdef \frac{\abs{\Gamma}}{2} R N_{k,\omega_\Gamma} R^{-1}$. 
 \begin{Lem}
 	The operator $N_{k,\omega}$ satisfies, for all $\beta, \beta' \in C^\infty([-1,1])$
 	\[\begin{split}
@@ -948,13 +954,6 @@ For $u,v \in L^2(\Gamma)$,
 	\[I_1 = \frac{\abs{\Gamma}^2}{2}\duality{S_{k,\omega}(\omega\partial_x \omega) \beta}{\omega \partial_x \omega \beta'}_\frac{1}{\omega}\,,\]
 	and the identity is proved. 
 \end{proof}
-Solving the integral equations \eqref{Sklambda} and \eqref{Nkmu}, is equivalent to solving
-\begin{eqnarray*}
-	S_{k,\omega} \alpha &=& u_D\\
-	N_{k,\omega} \beta &=& u_N
-\end{eqnarray*}
-and letting $\lambda = \frac{\alpha}{\omega_\Gamma}$, $\mu = \omega_\Gamma u_N$. 
-When $k = 0$, and $\Gamma$ is the flat segment, that is $r \equiv 1$, we simply write $S_{\omega}$ and $N_{\omega}$. The weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. From \cite{bruno2012second}, we know that the operators $S_{k,\omega}$ and $N_{k,\omega}$ map smooth functions to smooth functions, more precisely, for $s > 0$, they define bicontinuous maps $T^s$ to $T^{s+1}$ and $T^{s+1}$ to $T^{s}$ respectively. Moreover, $N_{k,\omega_\Gamma} S_{k,\omega_\Gamma}$ has its spectrum concentrated around $\frac{1}{4}$. This motivates the use of the pair $S_{k,\omega_\Gamma}, N_{k,\omega_\Gamma}$ as mutual preconditioners, in close analogy to the well-known Calderon relations for smooth closed curves \toDo{Inclure citation de Claderon closed curve}.
 
 \subsection{Operators $S_\omega$ and $N_\omega$ on the flat segment}
 
@@ -972,9 +971,9 @@ where
 \dfrac{\ln(2)}{2} & \text{if } n=0\\
 \dfrac{1}{2n} & \text{otherwise}.
 \end{cases}.\]
-In particular $S_\omega$ is in the class $S^{-1}$. As a consequence, $S_\omega$ maps $T^{\infty}$ to itself, so the image of a smooth function is a smooth function. This gives the possibility to derive an explicit inverse of $S_\omega$ as the square root of a local operator, as a prelude to the main theorem \autoref{TheSkomega}. Recall that
+In particular $S_\omega$ is in the class $\textit{Op}(S^{-1}_T)$. As a consequence, $S_\omega$ maps $T^{\infty}$ to itself, so the image of a smooth function is a smooth function. This gives the possibility to derive an explicit inverse of $S_\omega$ as the square root of a local operator, as a prelude to the main theorem \autoref{TheSkomega}. Recall that
 \[-(\omega \partial_x)^2 T_n = n^2 T_n\]
-the operator $-(\omega \partial_x)^2$ is in $S^{-2}$ and 
+the operator $-(\omega \partial_x)^2$ is thus in $\textit{Op}(S^{2}_T)$ and 
 \begin{equation}
 \label{prelude1}
 	-(\omega \partial_x)^2 S_\omega^2 = \frac{I_d}{4} + T_\infty.
@@ -1039,34 +1038,36 @@ We first focus on the weighted single-layer operator problem with non-zero frequ
 \begin{The}
 	\label{TheSkomega}
 	$S_{k,\omega}$ is in $S^1$ and
-	\[\left[-(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right] \left(S_k \frac{1}{\omega_\Gamma}\right)^2 = \frac{I_d}{4} + T_4.\]
+	\[\left[-(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right] S_{k,\omega_\Gamma}^2 = \frac{I_d}{4} + T_4.\]
 \end{The}
 \begin{Rem}
 	The previous result also implies that
 	\[-(\omega_\Gamma \partial_\tau)^2 S_{k,\omega_\Gamma}^2 = \frac{I_d}{4} + R\]
-	where $R$ is in $\textit{Op}(S^2)$. This is also a compact perturbation of the identity. Nevertheless, we have $R = k^2 \omega_\Gamma^2 S_{k,\omega_\Gamma}^2 + T_4$ and therefore, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term in the preconditioner leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
+	where $R$ is in $\textit{Op}(S^2_T(\Gamma))$. This is also a compact perturbation of the identity. Nevertheless, we have $R = k^2 \omega_\Gamma^2 S_{k,\omega_\Gamma}^2 + T_4$ and therefore, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term in the preconditioner leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
 \end{Rem}
 \begin{proof}
 	Our perturbation analysis hinges on the following property of the Hankel function:
 	\begin{equation}
 	\label{decompHankel}
-	H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F(z^2)
+	H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F_1(z^2)
 	\end{equation}
 	where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. One has
-	\[S_{k,\omega} u(r(x)) = \int_{-1}^1 H_0(k|r(x) - r(y)|)\frac{u(y)}{\omega(y)}dy\,.\]
+	\[\left(S_{k,\omega} u\right)(x) = \int_{-1}^1 H_0(k|r(x) - r(y)|)\frac{u(y)}{\omega(y)}dy\,.\]
 	Using the change of variables $x = \cos\theta$, $y = \cos \theta'$, we get 
-	\[ S_{k,\omega} u(\cos \theta) = \int_{0}^\pi H_0(k \abs{\cos \theta - \cos \theta'}) Cu(\theta) d\theta\,.\]
-	We can rewrite this using \eqref{decompHankel}:
+	\[ S_{k,\omega} u(\cos \theta) = \int_{0}^\pi H_0(k \abs{r(\cos \theta) - r(\cos \theta')}) u(\cos(\theta)) d\theta\,.\]
+	We can rewrite this using \eqref{decompHankel}
 	\[\begin{split}
-	S_{k,\omega} u(\cos \theta) = &\frac{-1}{2\pi}\int_{0}^\pi \ln \abs{\cos \theta - \cos \theta'} J_0(k \abs{\cos \theta - \cos \theta'})Cu(\theta) d\theta \\
+	S_{k,\omega} u(\cos \theta) = &\frac{-1}{2\pi}\int_{0}^\pi \ln \abs{\cos \theta - \cos \theta'} J_0(k \abs{r(\cos \theta) - r(\cos \theta')})Cu(\theta) d\theta \\
 	&+ \int_{0}^\pi F_k(\cos\theta,\cos\theta') Cu(\theta) d\theta'
 	\end{split}\]
-	where $F_k$ is $C^\infty$.
+	where 
+	\[F_2(x,y) = \ln \frac{\abs{r(x)-r(y)}}{\abs{x-y}} + F_1(k^2(x - y)^2)\,\]
+	is a $C^\infty$ function. 
 	By parity, the second integral is equal to 
-	\[\frac{1}{2} \int_{-\pi}^{\pi} F_k(\cos\theta,\cos\theta') Cu(\theta) d\theta.\]
+	\[\frac{1}{2} \int_{-\pi}^{\pi} F_2(\cos\theta,\cos\theta') Cu(\theta) d\theta.\]
 	By \autoref{thrunen}, this is of the form $RCu$ where $R$ is in $\textit{Op}(\Sigma^{-\infty})$. For the first integral, we make the following classical manipulations. We first write $\cos \theta - \cos\theta' = - 2 \sin \frac{\theta + \theta'}{2}\sin \frac{\theta - \theta'}{2}$. Thus $\ln\abs{\cos \theta - \cos\theta'}= \ln \abs{\sqrt{2} \sin \frac{\theta + \theta'}{2}} + \ln \abs{\sqrt{2}\sin \frac{\theta - \theta'}{2}}.$ Using the change of variables $\theta \to - \theta$, we get 
 	\[C\left(S_{k,\omega}u\right)(\theta) = \frac{-1}{2\pi} \int_{-\pi}^\pi \ln \abs{\sqrt{2} \sin \frac{\theta - \theta'}{2}}J_0(k\abs{\cos\theta - \cos \theta'})Cu(\theta')d\theta' + RCu\,.\]
-	Let $\kappa \isdef t \mapsto -\frac{1}{2\pi}\ln \abs{\sqrt{2} \sin \frac{t}{2}}$. It is well-known that $\hat{\kappa}(n) = \frac{1}{2n}$ for $n \neq 0$. We may prolonge this by $\kappa(\xi) = \frac{1}{2\xi}$ away from $\xi = 0$. Let $a(t,s) = J_0(k\abs{\cos\theta - \cos \theta'})$, which is a smooth function. Applying \autoref{thrunen}, the operator
+	Let $\kappa \isdef t \mapsto -\frac{1}{2\pi}\ln \abs{\sqrt{2} \sin \frac{t}{2}}$. It is well-known that $\hat{\kappa}(n) = \frac{1}{2n}$ for $n \neq 0$. We may prolonge this by $\kappa(\xi) = \frac{1}{2\xi}$ away from $\xi = 0$. Let $a(t,s) = J_0(k\abs{r(\cos t ) - r(\cos s)})$, which is a smooth function. Applying \autoref{thrunen}, the operator
 	\[\tilde{S}_k u \mapsto \int_{-\pi}^\pi \kappa(t-s) a(t,s)u(s)ds\]
 	is in $\textit{Op}(\Sigma^{-1})$ with its symbol satisfying, for $\xi > 0$,
 	\[\sigma_{\tilde{S}_k}(t,\xi) = \frac{1}{2\xi} + \frac{\sin^2 t}{4\xi^3} + 3i\frac{k^2 \sin t \cos t}{4\xi^4}  + \frac{4k^2(4\sin^2t - 3 \cos^2t) + 3k^4\sin^4 t}{16 \xi^5} + \Sigma^6\,.\]
