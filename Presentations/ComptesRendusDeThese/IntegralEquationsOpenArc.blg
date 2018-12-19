@@ -1,46 +1,59 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: IntegralEquationsOpenArc.aux
 The style file: plain.bst
-Database file #1: ../Biblio/biblio.bib
-You've used 7 entries,
+I couldn't open database file ../Biblio/biblio.bib
+---line 43 of file IntegralEquationsOpenArc.aux
+ : \bibdata{../Biblio/biblio
+ :                          }
+I'm skipping whatever remains of this command
+I found no database files---while reading file IntegralEquationsOpenArc.aux
+Warning--I didn't find a database entry for "stephan1984augmented"
+Warning--I didn't find a database entry for "wilcox1975scattering"
+Warning--I didn't find a database entry for "mclean2000strongly"
+Warning--I didn't find a database entry for "bruno2012second"
+Warning--I didn't find a database entry for "yan1988integral"
+Warning--I didn't find a database entry for "yan1990cosine"
+Warning--I didn't find a database entry for "jerez2010boundary"
+You've used 0 entries,
             2118 wiz_defined-function locations,
-            543 strings with 5221 characters,
-and the built_in function-call counts, 2045 in all, are:
-= -- 201
-> -- 78
-< -- 2
-+ -- 32
-- -- 24
-* -- 124
-:= -- 347
-add.period$ -- 21
-call.type$ -- 7
-change.case$ -- 29
+            504 strings with 4155 characters,
+and the built_in function-call counts, 18 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 88
-empty$ -- 171
-format.name$ -- 24
-if$ -- 429
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
 int.to.chr$ -- 0
-int.to.str$ -- 7
-missing$ -- 10
-newline$ -- 38
-num.names$ -- 14
-pop$ -- 37
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
 preamble$ -- 1
-purify$ -- 25
+purify$ -- 0
 quote$ -- 0
-skip$ -- 64
+skip$ -- 1
 stack$ -- 0
-substring$ -- 118
-swap$ -- 17
-text.length$ -- 2
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 22
+type$ -- 0
 warning$ -- 0
-while$ -- 21
-width$ -- 8
-write$ -- 77
+while$ -- 0
+width$ -- 0
+write$ -- 2
+(There were 2 error messages)
