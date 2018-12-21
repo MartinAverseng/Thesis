@@ -19,7 +19,7 @@ The Chebyshev polynomials of first and second kinds are respectively given by
 \[T_n(x) = \cos(n \arccos(x)),\]
 and 
 \[U_n(x) = \dfrac{\sin((n+1) \arccos(x))}{\sqrt{1 - x^2}}\,\]
-for $x \in [-1,1]$ \cite{}. They satisfy
+for $x \in [-1,1]$ \toDo{Inclure citation}. They satisfy
 the ordinary differential equations
 \begin{eqnarray}
 	(1-x^2)T_n'' -xT_n' +n^2T_n &=& 0\\\label{preCheb1}
@@ -30,7 +30,7 @@ Let $\omega$ the operator $u(x) \mapsto \omega(x)u(x)$ with $\omega(x) = \sqrt{1
 	-(\omega\partial_x)^2 T_n &=& n^2T_n\,, \label{cheb1}\\
 	-(\partial_x\omega)^2 U_n &=& (n+1)^2U_n\, .\label{cheb2}
 \end{eqnarray}
-Notice that by $(\partial_x\omega) f$ we mean $(\omega f)'$. 
+Notice that by $\partial_x\omega$ we do not mean $\omega'(x)$ but the operator \[f \mapsto (\omega f)'\]
 
 \subsection{Spaces $T^s$ and $U^s$}
 
@@ -38,13 +38,13 @@ Notice that by $(\partial_x\omega) f$ we mean $(\omega f)'$.
 \subsubsection{Definitions}
 
 Both $T_n$ and $U_n$ are polynomials of degree $n$, and form orthogonal families respectively of the Hilbert spaces 
-$$L^2_{\frac{1}{\omega}} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}$$
+$$L^2_{\frac{1}{\omega}} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{\abs{u(x)}^2}{\sqrt{1 - x^2} }dx< + \infty}$$
 and 
-$$L^2_{\omega} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} {f^2(x)}{\sqrt{1 - x^2} }dx< + \infty}.$$
-We denote by $\duality{\cdot}{\cdot}_\frac{1}{\omega}$ and $\duality{\cdot}{\cdot}_\omega$ the inner products in $L^2_{\frac{1}{\omega}}$ and $L^2_{\omega}$ respectively.
+$$L^2_{\omega} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} {\abs{u(x)}^2}{\sqrt{1 - x^2} }dx< + \infty}.$$
+We denote by $\inner{\cdot}{\cdot}_\frac{1}{\omega}$ and $\inner{\cdot}{\cdot}_\omega$ the inner products in $L^2_{\frac{1}{\omega}}$ and $L^2_{\omega}$ respectively.
 The Chebyshev polynomials satisfy
 \begin{equation}
-	\duality{T_n}{T_m}_\frac{1}{\omega} = \left\{
+	\inner{T_n}{T_m}_\frac{1}{\omega} = \left\{
 	\begin{array}{l}
 	0 \mbox{ if } n\ne m\\
 	\pi \mbox{ if } m=n=0\\
@@ -54,7 +54,7 @@ The Chebyshev polynomials satisfy
 \end{equation}
 and
 \begin{equation}
-	\duality{U_n}{U_m}_{\omega} = \left\{
+	\inner{U_n}{U_m}_{\omega} = \left\{
 	\begin{array}{l}
 	0 \mbox{ if } n\ne m\\
 	\pi/2 \mbox{ otherwise}
@@ -73,41 +73,66 @@ where the Fourier-Chebyshev coefficients $\hat{u}_n$ are given by
 \dfrac{1}{\pi}\displaystyle\int_{-1}^{1} \dfrac{u(x)}{\sqrt{1-x^2}}dx & \text{ otherwise,}\\
 \end{cases}\]
 and satisfy the Parseval equality
-\[ \int_{-1}^{1} \frac{u^2(x)}{\sqrt{1-x^2}} dx =  \frac{\pi \hat{u}_0^2}{2} + \pi\sum_{n=1}^{+\infty}\hat{u}_n^2\,.\]
-When $u$ is furthermore a smooth function, the series \eqref{FCseries} converges uniformly to $u$. Similarly, any 
+\[ \int_{-1}^{1} \frac{\abs{u(x)}^ 2}{\sqrt{1-x^2}} dx =  \pi \abs{\hat{u}_0}^2 + \frac{\pi}{2}\sum_{n=1}^{+\infty}\abs{\hat{u}_n}^2\,.\]
+When $u$ is furthermore a smooth function, on can check that the series \eqref{FCseries} converges uniformly to $u$. Similarly, any 
 function $v\in L^2_{\omega}$ can be decomposed along the $U_n$ as
 \[ v(x) = \sum_{n=0}^{+\infty} \check{v}_n U_n(x)\]
 where the coefficients $\check{v}_n$ are given by 
 \[ \check{v}_n \isdef 
 \dfrac{2}{\pi}\displaystyle\int_{-1}^{1} v(x) U_n(x)\sqrt{1-x^2}dx  \]
 with the Parseval identity
-\[ \int_{-1}^{1} v^2(x)\sqrt{1-x^2} dx =  \frac{\pi}{2} \sum_{n=0}^{+\infty}\check{v}_n^2\,.\]
+\[ \int_{-1}^{1} \abs{v(x)}^2\sqrt{1-x^2} dx =  \frac{\pi}{2} \sum_{n=0}^{+\infty}\abs{\check{v}_n}^2\,.\]
 The preceding analysis can be generalized to define Sobolev-like spaces. 
 \begin{Def}
 	For all $s \geq 0$, we may define 
 	\[T^s = \enstq{ u \in L^2_\frac{1}{\omega}}{ \sum_{n=0}^{+\infty}(1+n^2)^s \hat{u}_n^2 < + \infty}.\]
-	This is a Hilbert space for the scalar product
-	\[\duality{u}{v}_{T^s} = \frac{\pi}{2}\hat{u}_0 \hat{v}_0 + \pi\sum_{n=1}^{+\infty}(1+n^2)^s\hat{u}_n \hat{v}_n.\]
+	This is a Hilbert space for the inner product
+	\[(u,v)_{T^s} = \pi\hat{u}_0 \overline{\hat{v}}_0 + \frac{\pi}{2}\sum_{n=1}^{+\infty}(1+n^2)^s\hat{u}_n \overline{\hat{v}}_n.\]
 	We also define a semi-norm 
-	\[\abs{u}_{T^s} \isdef \sum_{n = 1}^{+ \infty}n^{2s} \abs{\hat{u}_n}^2.\]
-	We denote by $T^{\infty}$ the Fr\'echet space $T^{\infty} \isdef \displaystyle\cap_{s \in \R} T^s$, and by $T^{-\infty}$ the set of continuous linear forms on $T^{\infty}$. For $l \in T^{-\infty}$, we note $\hat{l}_n = l(T_n)$, so that for $u \in T^{\infty}$, 
-	\[l(u) = \frac{\pi}{2}\hat{l}_0 \hat{u}_0 + \pi \sum_{n=1}^{+\infty} \hat{l}_n \hat{u}_n\,.\] 
-	
-	We choose to identify the dual of $L^2_\frac{1}{\omega}$ to itself using the previous bilinear form.  With this identification, any element of $T^s$ with $s \geq 0$ can also be seen as an element of $T^{-\infty}$.  
+	\[\abs{u}_{T^s} \isdef \frac{\pi}{2}\sum_{n = 1}^{+ \infty}n^{2s} \abs{\hat{u}_n}^2.\]
+	We denote by $T^{\infty}$ the Fr\'echet space $T^{\infty} \isdef \displaystyle\cap_{s \in \R} T^s$, and by $T^{-\infty}$ the set of continuous linear forms on $T^{\infty}$. For $l \in T^{-\infty}$, we define
+	\[ \hat{l}_n \isdef 
+	\displaystyle\begin{cases}
+	\frac{2}{\pi} l(T_n) & \text{ if } n \neq 0\,,\\
+	\frac{1}{\pi} l(T_0) & \text{otherwise}\\
+	\end{cases}\]
+	so that for $u \in T^{\infty}$, 
+	\[l(u) = \pi\hat{u}_0 \hat{l}_0 + \frac{\pi}{2}\sum_{n=1}^{+\infty}\hat{u}_n \hat{l}_n.\]
+	We denote by $\duality{l}{u}_\frac{1}{\omega}$ the previous bilinear form and use it to identify the dual of $L^2_\frac{1}{\omega}$ to itself. Note that when $s=0$, 
+	\[\duality{u}{v}_\frac{1}{\omega} = \int_{-1}^{1} \frac{u(x) l(x)}{\omega(x)}dx\] With this identification, any element of $T^s$ with $s \geq 0$ can also be seen as an element of $T^{-\infty}$.  
 	Furthermore, the space $T^{-s}$ can be defined for all $s \geq 0$ as
-	\[T^{-s} = \enstq{ u \in T^{-\infty}}{ \sum_{n=0}^{+\infty}{(1 + n^2)^{-s} \hat{u}_n^2} < \infty}.\]
+	\[T^{-s} = \enstq{ u \in T^{-\infty}}{ \sum_{n=0}^{+\infty}{(1 + n^2)^{-s} \abs{\hat{u}_n}^2} < \infty}.\]
 	Using the former identification $T^{-s}$ becomes the dual of $T^s$. 
-	For $s < t$, the inclusion $T^s \subset T^t$ is compact.
 \end{Def}
-\begin{Rem}
-	The spaces $T^n$ correspond, up to a variable change, to the spaces $H^n_e$ defined in \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} among other works, that is, the restriction of the usual Sobolev space $H^n$ to even periodic functions, as stated in \autoref{thmChar}. 
-\end{Rem}
 \noindent In a similar fashion, we define the following spaces:
 \begin{Def}
 	For all $s \geq 0$, we set
-	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\check{u}_n^2}.\]
-	We extend as before the definition to negative indices by setting $U^{-s}$ to be the dual of $U^s$ for $s\geq 0$, this time with respect to the duality $\duality{\cdot}{\cdot}_\omega$. 
+	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\abs{\check{u}_n}^2 < \infty}.\]
+	We extend as before the definition to negative indices by setting $U^{-s}$ to be the dual of $U^s$ for $s\geq 0$, this time with respect to the duality
+	\[\duality{u}{v}_\omega = \frac{\pi}{2} \sum_{n=0}^{+\infty} \check{l}_n \check{v}_n\] 
 \end{Def}
+Let $H^s$ the Sobolev space of periodic functions on the torus $\mathbb{T}_{2\pi} \isdef \mathbb{R} / 2\pi\mathbb{\Z}$, and $H^s_e$ (resp. $H^s_o$) the space of even (resp. odd) functions in $H^s$. Let $e_n(\theta) \isdef e^{in\theta}$. Using the $L^2$ scalar product, the dual of $H^s$ can be identified to $H^{-s}$. The resulting duality product is denoted by $\duality{\cdot}{\cdot}_{L^2(\mathbb{T}_{2\pi})}$ The spaces $T^s$ and $U^s$ are then characterized as follows:
+\begin{Lem}
+	There exists a linear map $C$ from $T^s$ to $H^s_e$ satisfying
+	\[\frac{1}{2\pi}\duality{Cu}{e_{-n}}_{L^2(\mathbb{T}_{2\pi})} = \hat{u}_{\abs{n}}\,.\]
+	For $u \in T^s$ and $v \in T^{-s}$, there holds 
+	\[\frac{1}{2\pi}\duality{u}{v}_{\frac{1}{\omega}} = \duality{Cu}{Cv}_{L^2(\mathbb{T}_{2\pi})}\,.\] 
+	When $u$ is a smooth function, we have 
+	\[Cu(\theta) = u(\cos(\theta))\]
+	Similarly, there exists a unique bijective isometry $S$ from $U^s$ to $H^s_o$ satisfying
+	\[\frac{1}{2\pi}\duality{Su}{e_{0}}_{L^2(\mathbb{T}_{2\pi})} = 0\,,\]
+	and for $n \neq 0$,
+	\[\duality{Su}{e_{n}}_{L^2(\mathbb{T}_{2\pi})} =\textup{sign}(n) \hat{u}_{\abs{n}-1}\,,\]
+	For $u \in T^s$ and $v \in T^{-s}$, there holds 
+	\[\duality{u}{v}_{\frac{1}{\omega}} = \duality{Su}{Sv}_{H^s \times H^{-s}}\,.\]
+	When $u$ is a smooth function, we have 
+	\[Su(\theta) = \sin\theta u(\cos(\theta))\]
+	\toDo{Bien vérifier les constantes, déplacer au \autoref{thmChar}}.
+\end{Lem}
+\begin{Rem}
+	The spaces $T^n$ correspond, up to a variable change, to the spaces $H^n_e$ defined in \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} among other works, that is, the restriction of the usual Sobolev space $H^n$ to even periodic functions, as stated in \autoref{thmChar}. 
+\end{Rem}
+
 
 \subsubsection{Basic properties}
 
@@ -272,11 +297,17 @@ Let $\Gamma$ an smooth open curve in $\mathbb{R}^2$ parametrized by a smooth $C^
 
 \begin{The} For all $s \in \R$, $T^s(\Gamma)$ and $U^s(\Gamma)$ are Hilbert spaces for the scalar products 
 \[\duality{u}{v}_{T^s(\Gamma)} = \duality{R^{-1}u}{R^{-1}v}_{T^s}\,,\]
-\[\duality{u}{v}_{U^s(\Gamma)} = \duality{R^{-1}u}{R^{-1}v}_{U^s}\,.\]
+\[\duality{u}{v}_{U^s(\Gamma)} = \frac{\abs{\Gamma}^2}{2}\duality{R^{-1}u}{R^{-1}v}_{U^s}\,.\]
+With these definitions, 
+\[\duality{u}{v}_{T^0(\Gamma)} = \int_{\Gamma} \frac{u(x) v(x)}{ \omega_\Gamma(x)} dx\]
+and
+\[\duality{u}{v}_{U^0(\Gamma)} = \int_{\Gamma} \omega_\Gamma(x) u(x) v(x) dx\]
+thus $T^0(\Gamma) = L^2_\frac{1}{\omega_\Gamma}$ and $U^0(\Gamma) = L^2_{\omega_\Gamma}$. Therefore, $U^0(\Gamma)$ can be identified to the dual of $T^0(\Gamma)$ with respect to the $L^2$ scalar product.
 For $s < t$, the injections $T^s(\Gamma) \subset T^t(\Gamma)$ and $U^s(\Gamma) \subset U^t(\Gamma)$ are compact. For $n \in \N$, an equivalent scalar product on $T^n$ and $U^n$ is 
 \[\duality{u}{v}_{T^n} = \int_{\Gamma} \frac{u(x)v(x) + (\omega_\Gamma \partial_\tau)^n u(x) (\omega_\Gamma \partial_\tau)^n v(x)}{\omega_\Gamma(x)}d\sigma(x)\,,\]
 \[\duality{u}{v}_{U^n} = \int_{\Gamma}(\partial_\tau\omega_\Gamma )^n u(x) (\partial_\tau\omega_\Gamma \partial)^n v(x)\omega_\Gamma(x)d\sigma(x)\,,\]
 For all $s \in \R$, $T^s(\Gamma) \subset U^s(\Gamma)$ and for all $s > \frac{1}{2}$, $U^s(\Gamma) \subset T^{s+1}(\Gamma)$. For $s > \frac{1}{2}$, $T^s(\Gamma) \subset C^0(\Gamma)$ and $U^{s+1} \subset C^0(\Gamma)$. Moreover, $T^\infty(\Gamma) = U^\infty(\Gamma) = C^\infty(\Gamma)$. 
+
 \end{The}
 
 \subsection{Periodic pseudo-differential operators}
@@ -323,7 +354,10 @@ We will use the following result, see \cite{thrunen1998symbol}:
 	where $a$ is $T$-periodic and $C^{\infty}$ in both arguments and $\kappa$ is a $T$-periodic distribution. Assume that the Fourier coefficients $\hat{\kappa}(n)$ of $\kappa$ can be prolonged to a function $\hat{\kappa}(\xi)$ on $\R$ such that
 	\[\forall k \in \N,  \exists C_k > 0: \quad \abs{\partial^k_\xi \hat{\kappa}(\xi)} \leq C_k (1 + \abs{\xi})^{\alpha - k}\,.\]
 	for some $\alpha$. Then $K$ is in $\textit{Op}(\Sigma^\alpha)$ with a symbol satisfying the asymptotic expansion
-	\[\sigma_K(t, \xi) = \sum_{j = 0}^{+ \infty} \frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \hat{\kappa}(\xi) \partial_s^ja(t,s)_{|s = t}\,.\]
+	\begin{equation}
+	\label{FormuleIntegralOperatorSymbol}
+		\sigma_K(t, \xi) = \sum_{j = 0}^{+ \infty} \frac{1}{j!} \left(\frac{\partial}{\partial \xi}\right)^j \hat{\kappa}(\xi) \partial_s^ja(t,s)_{|s = t}\,.
+	\end{equation}
 \end{The}
 \noindent In particular, taking $\kappa = 1$, we see that for all functions $a \in C^{\infty}(\mathbb{T}_T^2)$
 \[Ku = \frac{1}{T}\int_{0}^{T} a(t,s) u(s) ds\]
@@ -422,7 +456,7 @@ We say that $(a_1,a_2) \in S^\alpha_U$ if $\tilde{\sigma}(a_1,a_2) \in \Sigma^\a
 	Let $A \in \textit{Op}(S^\alpha_T)$. Then $-\partial_x A \omega \partial_x \omega \in \textit{Op}(S^{\alpha-2}_U)$, and there exists $B \in S^{\alpha + 2}_U$ such that $A = -\omega \partial_x \omega B \partial_x$.
 	Similarly, let $A \in \textit{Op}(S^\alpha_T)$. Then $-\omega \partial_x \omega A \partial_x  \in \textit{Op}(S^{\alpha-2}_T)$, and there exists $B \in S^{\alpha + 2}_T$ such that $A = -\partial_x B \omega \partial_x \omega + T^\infty$.
 \end{The}
-We define as in the previous paragraph the class $S^\alpha_U(\Gamma)$ for a curve $\Gamma$. 
+We define as in the previous paragraph the class $S^\alpha_U(\Gamma)$ for a curve $\Gamma$ by using a smooth constant speed parametrization. 
 
 %
 %\subsubsection{Classes of operators}
@@ -939,14 +973,27 @@ N_k \mu = u_N\,.
 \label{Nkmu}
 \end{equation}  
 
-\paragraph{Weighted layer potentials.} \autoref{theScatt} implies that even if $u_D$ and $u_N$ are smooth, the solutions $\lambda$ and $\mu$ to the corresponding integral equations have singularities. As a remedy, we consider weighted versions of those integral operators. Let $\omega_\Gamma$ the operator $u \mapsto \omega_\Gamma(x) u(x)$ such that $\omega_\Gamma(r(x)) \isdef \frac{\abs{\Gamma}}{2}\omega(x)$ where $\abs{\Gamma}$ is the length of $\Gamma$, $\omega(x) = \sqrt{1 - x^2}$ as in the previous section, and $r : [-1,1] \to \Gamma$ is a smooth parametrization of $\Gamma$ with constant speed $\abs{r'} = \frac{\abs{\Gamma}}{2}$. Let 
-\[\opFromTo{R}{L^2(\Gamma)}{L^2(-1,1)}\]
-defined by 
-\[Ru(x) = u(r(x))\]
+\paragraph{Parametrization of the curve}
+We fix a smooth parametrization $r : [-1,1] \to \Gamma$ with constant speed: $\abs{r'} = \frac{\abs{\Gamma}}{2}$ where $\abs{\Gamma}$ is the length of $\Gamma$. This is related to the parametrization by the curvilinear abscissa $M(s)$ through
+\[r(x) = M\left( \frac{\abs{\Gamma}}{2}(1+x)\right)\,.\]
+let $\kappa(x)$ the signed curvature of $\Gamma$ at the point $r(x)$, $\tau_\Gamma$ the unit tangential vector at the point $r(x)$ and $N(x)$ the unit normal vector oriented towards the interior of the curve, or in direct orthogonality with $\tau_\Gamma(x)$ when $\kappa(x) = 0$. Then the parametrization $r$ satisfies 
+\[\begin{split}r(y) = 
+&r(x) + (y-x) \frac{\abs{\Gamma}}{2} \tau_\Gamma(x) + \frac{(y-x)^2}{2} \frac{\abs{\Gamma}^2}{4} C(x) N(x)\\ 
++ &\frac{(x-y)^3}{6} \frac{\abs{\Gamma}^3}{8} (\kappa'(x) N(x) - \kappa(x)^2 \tau_\Gamma(x)) + O\left((x-y)^4\right)\,.
+\end{split}\,.\]
+The previous expansion gives the following expansion:
+\begin{equation}
+	\abs{r(x) - r(y)}^2 = \frac{\abs{\Gamma}^2}{4}(y-x)^2 - \frac{(y-x)^4}{192}\abs{\Gamma}^4 C(x)^2 + O(x-y)^5\,. 
+	\label{expansion_r}
+\end{equation}
+In the sequel, use the following notation:
+\[\opFromTo{R}{T^s(\Gamma)}{T^s}\]
+by $Ru(x) = u(r(x))$. For $u,v \in L^2(\Gamma) ( \subset T^0(\Gamma))$, we have
+\[\duality{u}{v}_{L^2(\Gamma)} = \frac{\abs{\Gamma}}{2}\duality{Ru}{Rv}_{L^2(-1,1)} \,.\] 
+\paragraph{Weighted layer potentials.} \autoref{theScatt} implies that even if $u_D$ and $u_N$ are smooth, the solutions $\lambda$ and $\mu$ to the corresponding integral equations have singularities. As a remedy, we consider weighted versions of those integral operators. Let $\omega_\Gamma$ the operator $u \mapsto \omega_\Gamma(x) u(x)$ such that $\omega_\Gamma(r(x)) \isdef \frac{\abs{\Gamma}}{2}\omega(x)$ where $\abs{\Gamma}$ is the length of $\Gamma$, $\omega(x) = \sqrt{1 - x^2}$ as in the previous section.
 Also let $n = Rn_\Gamma$. We have
 \[\omega_\Gamma = \frac{\abs{\Gamma}}{2}R^{-1} \omega R\,, \quad \frac{1}{\omega_\Gamma} = \frac{2}{\abs{\Gamma}}R^{-1} \frac{1}{\omega} R\,, \quad \partial_\tau = \frac{2}{\abs{\Gamma}} R^{-1}\partial_x R\,.\]
-For $u,v \in L^2(\Gamma)$, 
-\[\duality{u}{v}_{L^2(\Gamma)} = \frac{\abs{\Gamma}^2}{4}\duality{Ru}{Rv}_{L^2(-1,1)} \,.\] 
+
 \begin{Def}
 	The weighted layer potentials $S_{k,\omega_\Gamma}$ and $N_{k,\omega_\Gamma}$ are defined as follows:
 	\[S_{k,\omega_\Gamma} \isdef S_k \frac{1}{\omega_\Gamma}, \quad N_{k,\omega_\Gamma} \isdef  N_{k}\omega_\Gamma\,.\]
@@ -957,7 +1004,7 @@ Solving the integral equations \eqref{Sklambda} and \eqref{Nkmu}, is equivalent 
 	N_{k,\omega_\Gamma} \beta &=& u_N
 \end{eqnarray*}
 and letting $\lambda = \frac{\alpha}{\omega_\Gamma}$, $\mu = \omega_\Gamma u_N$. Those weighted integral operators appear in many related works such as \cite{bruno2012second,jerez2012explicit,jiang2004second}. 
-We also define the rescaled parametric representations $S_{k,\omega}$ and $N_{k,\omega}$ from $[-1,1]$ to $\mathbb{C}$ by $S_{k,\omega} \isdef \frac{2}{\abs{\Gamma}} R S_{k,\omega_\Gamma}R^{-1}$ and $N_{k,\omega} \isdef \frac{\abs{\Gamma}}{2} R N_{k,\omega_\Gamma} R^{-1}$. 
+We also define the parametric representations $S_{k,\omega}$ and $N_{k,\omega}$ by $S_{k,\omega} \isdef R S_{k,\omega_\Gamma}R^{-1}$ and $N_{k,\omega} \isdef R N_{k,\omega_\Gamma} R^{-1}$. 
 \begin{Lem}
 	The operator $N_{k,\omega}$ satisfies, for all $\beta, \beta' \in C^\infty([-1,1])$
 	\[\begin{split}
@@ -972,36 +1019,41 @@ We also define the rescaled parametric representations $S_{k,\omega}$ and $N_{k,
 	\begin{split}
 	\duality{N_{k,\omega} \beta}{\beta'}_\omega = 
 	&\duality{N_{k,\omega} \beta}{\omega \beta'}_{L^2(-1,1)}\\
-	=&\left(\frac{2}{\abs{\Gamma}}\right)^2\duality{R^{-1}N_{k,\omega} \beta}{R^{-1}\omega \beta'}_{L^2(\Gamma)}\\
+	=&\left(\frac{2}{\abs{\Gamma}}\right)\duality{R^{-1}N_{k,\omega} \beta}{R^{-1}\omega \beta'}_{L^2(\Gamma)}\\
 	= &\left(\frac{2}{\abs{\Gamma}}\right)^2\duality{N_{k}\omega_\Gamma R^{-1} \beta}{\omega_\Gamma R^{-1}\beta'}_{L^2(\Gamma)}
 	\end{split}
 	\end{equation*}
 	which gives, using the identity \eqref{NkenfonctiondeSk},
-	\begin{equation*}
+	\begin{equation}
 		\duality{N_{k,\omega} \beta}{\beta'}_\omega =\left(\frac{2}{\abs{\Gamma}}\right)^2 \left(I_1 -k^2 I_2\right)\,,
-	\end{equation*}
+		\label{ident_step1}
+	\end{equation}
 	where 
 	\[I_1=\duality{S_{k}\partial_\tau\omega_\Gamma R^{-1} \beta}{\partial_\tau\omega_\Gamma R^{-1}\beta'}_{L^2(\Gamma)}\]
 	and 
 	\[I_2 = \int_{\Gamma \times \Gamma}G_k(x - y) \omega_\Gamma(x) \beta(r^{-1}(x))\omega_\Gamma(y)\beta'(r^{-1}(y)) n_\Gamma(x)\cdot n_\Gamma(y) dxdy\,.\]
 	Using the parametrization $r$ of $\Gamma$, we can rewrite
-	\begin{equation*}
+	\begin{equation}
 		I_2 = \left(\frac{\abs{\Gamma}}{2}\right)^4\int_{-1}^{1} G_k(r(x)-r(y)) \omega(x)\beta(x) \omega(y)\beta(y)n(x) \cdot n(y)dxdy
-	\end{equation*}
+		\label{ident_step2}
+	\end{equation}
 	For $I_1$, we write 
 	\begin{equation*}
 		\begin{split}
-		I_1=\frac{\abs{\Gamma}^2}{4}\duality{RS_{k}\partial_\tau\omega_\Gamma R^{-1} \beta}{R\partial_\tau\omega_\Gamma R^{-1}\beta'}_{L^2(-1,1)}
+		I_1=\frac{\abs{\Gamma}}{2}\duality{RS_{k}\partial_\tau\omega_\Gamma R^{-1} \beta}{R\partial_\tau\omega_\Gamma R^{-1}\beta'}_{L^2(-1,1)}
 		\end{split}
 	\end{equation*}
 	And we have 
 	\[\begin{split}
 	RS_k \partial_\tau \omega_\Gamma R^{-1} &= RS_k\frac{1}{\omega_\Gamma} R^{-1} R \omega_\Gamma R^{-1} R\partial_\tau R^{-1} R \omega_\Gamma R^{-1}\\
-	&=  S_{k,\omega} \omega \partial_x \omega
+	&=  \frac{\abs{\Gamma}}{2} S_{k,\omega} \omega \partial_x \omega
 	\end{split}\]
 	similarly, $R\partial\tau \omega_\Gamma R^{-1} = \partial_x \omega $. Thus, 
-	\[I_1 = \frac{\abs{\Gamma}^2}{2}\duality{S_{k,\omega}(\omega\partial_x \omega) \beta}{\omega \partial_x \omega \beta'}_\frac{1}{\omega}\,,\]
-	and the identity is proved. 
+	\begin{equation}
+		I_1 = \frac{\abs{\Gamma}^2}{4}\duality{S_{k,\omega}(\omega\partial_x \omega) \beta}{\omega \partial_x \omega \beta'}_\frac{1}{\omega}\,,
+		\label{ident_step3}
+	\end{equation}
+	and the identity is proved \eqref{ident_step1}, \eqref{ident_step2} and \eqref{ident_step3}. 
 \end{proof}
 
 \subsection{Operators $S_\omega$ and $N_\omega$ on the flat segment}
@@ -1068,7 +1120,7 @@ thus,
 	N_\omega = \frac{1}{2}\sqrt{-(\partial_x \omega)^2}\,.
 \end{equation}
 As before, we obtain a characterization of $U^{s}$ for $s = \pm \frac{1}{2}$ from the previous formula:
-\begin{Lem} TWe have $U^{1/2} =  \frac{1}{\omega} \tilde{H}^{1/2}(-1,1)$ and for all $u\in \tilde{H}^{1/2}(-1,1)$,
+\begin{Lem} We have $U^{1/2} =  \frac{1}{\omega} \tilde{H}^{1/2}(-1,1)$ and for all $u\in \tilde{H}^{1/2}(-1,1)$,
 \[\norm{u}_{\tilde{H}^{1/2}} \sim \norm{\frac{u}{\omega}}_{U^{1/2}}\,.\]
 Moreover, $U^{-1/2} = H^{1/2}(-1,1)$ and 
 \[\norm{u}_{H^{1/2}} = \norm{u}_{U^{1/2}}\,.\]
@@ -1086,7 +1138,7 @@ In what follows, we show that \eqref{prelude1} and \eqref{prelude2} can be gener
 We first focus on the weighted single-layer operator problem with non-zero frequency, and establish the following result, announced in \cite{alouges2018new}.
 \begin{The}
 	\label{TheSkomega}
-	$S_{k,\omega}$ is in $S^1$ and
+	The operators $\left[-(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right]$ and  $S_{k,\omega_\Gamma}$ are in $\textit{Op}(S^1_T(\Gamma))$ and
 	\[\left[-(\omega_\Gamma \partial_\tau)^2 - k^2\omega_\Gamma^2\right] S_{k,\omega_\Gamma}^2 = \frac{I_d}{4} + T_4.\]
 \end{The}
 \begin{Rem}
@@ -1095,13 +1147,13 @@ We first focus on the weighted single-layer operator problem with non-zero frequ
 	where $R$ is in $\textit{Op}(S^2_T(\Gamma))$. This is also a compact perturbation of the identity. Nevertheless, we have $R = k^2 \omega_\Gamma^2 S_{k,\omega_\Gamma}^2 + T_4$ and therefore, the term $k^2 \omega^2S_{k,\omega}^2$ is the leading first order correction accounting for the wavenumber. The inclusion of this term in the preconditioner leads to a drastic reduction of the number of GMRES iterations in numerical applications, as demonstrated in \cite{alouges2018new}. 
 \end{Rem}
 \begin{proof}
-	Our perturbation analysis hinges on the following property of the Hankel function:
+	The analysis relies on the expansion of the Helmholtz kernel:
 	\begin{equation}
 	\label{decompHankel}
 	H_0(z) = \frac{-1}{2\pi}\ln|z| J_0(z) + F_1(z^2)
 	\end{equation}
 	where $J_0$ is the Bessel function of first kind and order $0$ and where $F_1$ is analytic. One has
-	\[\left(S_{k,\omega} u\right)(x) = \int_{-1}^1 H_0(k|r(x) - r(y)|)\frac{u(y)}{\omega(y)}dy\,.\]
+	\[\left(S_{k,\omega} u\right)(x) = \int_{-1}^1 H_0\left(k\abs{r(x) - r(y)}\right)\frac{u(y)}{\omega(y)}dy\,.\]
 	Using the change of variables $x = \cos\theta$, $y = \cos \theta'$, we get 
 	\[ S_{k,\omega} u(\cos \theta) = \int_{0}^\pi H_0(k \abs{r(\cos \theta) - r(\cos \theta')}) u(\cos(\theta)) d\theta\,.\]
 	We can rewrite this using \eqref{decompHankel}
@@ -1115,10 +1167,15 @@ We first focus on the weighted single-layer operator problem with non-zero frequ
 	By parity, the second integral is equal to 
 	\[\frac{1}{2} \int_{-\pi}^{\pi} F_2(\cos\theta,\cos\theta') Cu(\theta) d\theta.\]
 	By \autoref{thrunen}, this is of the form $RCu$ where $R$ is in $\textit{Op}(\Sigma^{-\infty})$. For the first integral, we make the following classical manipulations. We first write $\cos \theta - \cos\theta' = - 2 \sin \frac{\theta + \theta'}{2}\sin \frac{\theta - \theta'}{2}$. Thus $\ln\abs{\cos \theta - \cos\theta'}= \ln \abs{\sqrt{2} \sin \frac{\theta + \theta'}{2}} + \ln \abs{\sqrt{2}\sin \frac{\theta - \theta'}{2}}.$ Using the change of variables $\theta \to - \theta$, we get 
-	\[C\left(S_{k,\omega}u\right)(\theta) = \frac{-1}{2\pi} \int_{-\pi}^\pi \ln \abs{\sqrt{2} \sin \frac{\theta - \theta'}{2}}J_0(k\abs{\cos\theta - \cos \theta'})Cu(\theta')d\theta' + RCu\,.\]
+	\[C\left(S_{k,\omega}u\right)(\theta) = \frac{-1}{2\pi} \int_{-\pi}^\pi \ln \abs{\sqrt{2} \sin \frac{\theta - \theta'}{2}}J_0(k\abs{r(\cos\theta) - r(\cos \theta')})Cu(\theta')d\theta' + RCu\,.\]
 	Let $\kappa \isdef t \mapsto -\frac{1}{2\pi}\ln \abs{\sqrt{2} \sin \frac{t}{2}}$. It is well-known that $\hat{\kappa}(n) = \frac{1}{2n}$ for $n \neq 0$. We may prolonge this by $\kappa(\xi) = \frac{1}{2\xi}$ away from $\xi = 0$. Let $a(t,s) = J_0(k\abs{r(\cos t ) - r(\cos s)})$, which is a smooth function. Applying \autoref{thrunen}, the operator
 	\[\tilde{S}_k u \mapsto \int_{-\pi}^\pi \kappa(t-s) a(t,s)u(s)ds\]
-	is in $\textit{Op}(\Sigma^{-1})$ with its symbol satisfying, for $\xi > 0$,
+	is in $\textit{Op}(\Sigma^{-1})$ and its symbol can be computed from \eqref{FormuleIntegralOperatorSymbol}. To identify the terms $\partial_s^ja(t,s)_{|t=s}$, we write the following expansion of the parametrization $r$: 
+	\[\begin{split}
+	s_k(\theta,\xi)=&\displaystyle \frac{1}{2\xi}+\frac{k^2\abs{\Gamma}^2\sin(\theta)^2}{16\xi^3}+{\frac {3i{k}^{2}{\abs{\Gamma}}^{2}\sin \theta \cos \theta }{16{\xi}^{4}}}\\
+	+ &\frac{-768 k^2 C(\theta)^2 \sin^4\theta + 64k^2\abs{\Gamma}^2 \sin^2 \theta - 48k^2\abs{\Gamma}^2 \cos^2\theta + 3k^4 \abs{\Gamma}^4 \sin^4\theta}{128 \xi^5}
+	\end{split}\]
+	
 	\[\sigma_{\tilde{S}_k}(t,\xi) = \frac{1}{2\xi} + \frac{\sin^2 t}{4\xi^3} + 3i\frac{k^2 \sin t \cos t}{4\xi^4}  + \frac{4k^2(4\sin^2t - 3 \cos^2t) + 3k^4\sin^4 t}{16 \xi^5} + \Sigma^6\,.\]
 	Since $CS_{k,\omega} = \tilde{S}_{k}C$, we have $CS_{k,\omega}^2 = \tilde{S}_{k}CS_{k,\omega} = \tilde{S}_{k}^2C$. Applying symbolic calculus, the symbol of $\sigma_2$ of $\tilde{S}_k^2$ satisfies
 	\[\sigma_2 = \frac{1}{4\xi^2} + k^2\frac{\sin^2 t}{4 \xi^4} + i k^2 \frac{\sin t \cos t}{\xi^5} + k^2 \frac{13\sin^2 t - 11 \cos^2 t}{8\xi^6} + k^4\frac{ \sin^4(t)}{4\xi^6} + \Sigma^7\,.\]

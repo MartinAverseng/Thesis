@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: source.aux
+The style file: plain.bst
+Database file #1: ../../Biblio/biblio.bib
+Warning--I didn't find a database entry for ""
+Warning--empty year in alouges2018new
+You've used 17 entries,
+            2118 wiz_defined-function locations,
+            610 strings with 6928 characters,
+and the built_in function-call counts, 5353 in all, are:
+= -- 552
+> -- 201
+< -- 2
++ -- 83
+- -- 62
+* -- 368
+:= -- 892
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 79
+chr.to.int$ -- 0
+cite$ -- 18
+duplicate$ -- 205
+empty$ -- 434
+format.name$ -- 62
+if$ -- 1108
+int.to.chr$ -- 0
+int.to.str$ -- 17
+missing$ -- 19
+newline$ -- 88
+num.names$ -- 34
+pop$ -- 67
+preamble$ -- 1
+purify$ -- 64
+quote$ -- 0
+skip$ -- 151
+stack$ -- 0
+substring$ -- 410
+swap$ -- 35
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 64
+warning$ -- 1
+while$ -- 62
+width$ -- 19
+write$ -- 185
+(There were 2 warnings)
