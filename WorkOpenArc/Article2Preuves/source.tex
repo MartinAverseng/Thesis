@@ -30,7 +30,7 @@ Let $\omega$ the operator $u(x) \mapsto \omega(x)u(x)$ with $\omega(x) = \sqrt{1
 	-(\omega\partial_x)^2 T_n &=& n^2T_n\,, \label{cheb1}\\
 	-(\partial_x\omega)^2 U_n &=& (n+1)^2U_n\, .\label{cheb2}
 \end{eqnarray}
-Notice that by $\partial_x\omega$ we do not mean $\omega'(x)$ but the operator \[f \mapsto (\omega f)'\]
+Notice that by $\partial_x\omega$ we do not mean $\omega'(x)$ but the operator \[f \mapsto (\omega f)'\,.\]
 
 \subsection{Spaces $T^s$ and $U^s$}
 
@@ -41,14 +41,15 @@ Both $T_n$ and $U_n$ are polynomials of degree $n$, and form orthogonal families
 $$L^2_{\frac{1}{\omega}} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} \dfrac{\abs{u(x)}^2}{\sqrt{1 - x^2} }dx< + \infty}$$
 and 
 $$L^2_{\omega} \isdef \enstq{u \in L^1_\textup{loc}(-1,1)} {\int_{-1}^{1} {\abs{u(x)}^2}{\sqrt{1 - x^2} }dx< + \infty}.$$
-We denote by $\inner{\cdot}{\cdot}_\frac{1}{\omega}$ and $\inner{\cdot}{\cdot}_\omega$ the inner products in $L^2_{\frac{1}{\omega}}$ and $L^2_{\omega}$ respectively.
+We denote by $\inner{\cdot}{\cdot}_\frac{1}{\omega}$ and $\inner{\cdot}{\cdot}_\omega$ the inner products in $L^2_{\frac{1}{\omega}}$ and $L^2_{\omega}$ respectively, as 
+\[\inner{u}{v}_{\frac{1}{\omega}} \isdef \frac{1}{\pi}\int_{-1}^{1} \frac{u(x) \overline{v(x)}}{\omega(x)}dx\,, \quad \inner{u}{v}_{\omega} \isdef \frac{1}{\pi}\int_{-1}^{1} {u(x) \overline{v(x)}}{\omega(x)}dx\,.\]
 The Chebyshev polynomials satisfy
 \begin{equation}
 	\inner{T_n}{T_m}_\frac{1}{\omega} = \left\{
 	\begin{array}{l}
 	0 \mbox{ if } n\ne m\\
-	\pi \mbox{ if } m=n=0\\
-	\pi/2 \mbox{ otherwise}
+	1 \mbox{ if } m=n=0\\
+	1/2 \mbox{ otherwise}
 	\end{array} 
 	\right.
 \end{equation}
@@ -57,7 +58,7 @@ and
 	\inner{U_n}{U_m}_{\omega} = \left\{
 	\begin{array}{l}
 	0 \mbox{ if } n\ne m\\
-	\pi/2 \mbox{ otherwise}
+	1/2 \mbox{ otherwise}
 	\end{array} 
 	\right.
 \end{equation}
@@ -67,39 +68,26 @@ $u\in L^2_{\frac{1}{\omega}}$ can be decomposed through the first kind Chebyshev
 	u(x) = \sum_{n=0}^{+\infty} \hat{u}_n T_n(x)
 	\label{FCseries}
 \end{equation}
-where the Fourier-Chebyshev coefficients $\hat{u}_n$ are given by 
-\[ \hat{u}_n \isdef \begin{cases}
-\dfrac{2}{\pi}\displaystyle\int_{-1}^{1} \dfrac{u(x) T_n(x)}{\sqrt{1-x^2}}dx & \text{ if } n \neq 0\,,\\
-\dfrac{1}{\pi}\displaystyle\int_{-1}^{1} \dfrac{u(x)}{\sqrt{1-x^2}}dx & \text{ otherwise,}\\
-\end{cases}\]
-and satisfy the Parseval equality
-\[ \int_{-1}^{1} \frac{\abs{u(x)}^ 2}{\sqrt{1-x^2}} dx =  \pi \abs{\hat{u}_0}^2 + \frac{\pi}{2}\sum_{n=1}^{+\infty}\abs{\hat{u}_n}^2\,.\]
+with the Fourier-Chebyshev coefficients given by $\hat{u}_n = \frac{\inner{u}{T_n}_{\frac{1}{\omega}}}{\inner{T_n}{T_n}_{\frac{1}{\omega}}}$ satisfying the Parseval equality
+\[ \inner{u}{v}_\frac{1}{\omega} = \hat{u}_0 \overline{\hat{v}}_0 + \frac{1}{2}\sum_{n=1}^{+\infty}\hat{u}_n \overline{\hat{v}}_n,.\]
 When $u$ is furthermore a smooth function, on can check that the series \eqref{FCseries} converges uniformly to $u$. Similarly, any 
 function $v\in L^2_{\omega}$ can be decomposed along the $U_n$ as
 \[ v(x) = \sum_{n=0}^{+\infty} \check{v}_n U_n(x)\]
-where the coefficients $\check{v}_n$ are given by 
-\[ \check{v}_n \isdef 
-\dfrac{2}{\pi}\displaystyle\int_{-1}^{1} v(x) U_n(x)\sqrt{1-x^2}dx  \]
-with the Parseval identity
-\[ \int_{-1}^{1} \abs{v(x)}^2\sqrt{1-x^2} dx =  \frac{\pi}{2} \sum_{n=0}^{+\infty}\abs{\check{v}_n}^2\,.\]
+where the coefficients $\check{v}_n$ are given by $ \check{v}_n \isdef 
+\frac{\inner{v}{U_n}_\omega}{\inner{U_n}{U_n}_\omega}$ with the Parseval identity
+\[ \inner{u}{v}_\omega =  \frac{1}{2} \sum_{n=0}^{+\infty}\check{u}_n \overline{\check{v}}_n \,.\]
 The preceding analysis can be generalized to define Sobolev-like spaces. 
 \begin{Def}
 	For all $s \geq 0$, we may define 
-	\[T^s = \enstq{ u \in L^2_\frac{1}{\omega}}{ \sum_{n=0}^{+\infty}(1+n^2)^s \hat{u}_n^2 < + \infty}.\]
+	\[T^s = \enstq{ u \in L^2_\frac{1}{\omega}}{ \sum_{n=0}^{+\infty}(1+n^2)^s \abs{\hat{u}_n}^2 < + \infty}.\]
 	This is a Hilbert space for the inner product
-	\[(u,v)_{T^s} = \pi\hat{u}_0 \overline{\hat{v}}_0 + \frac{\pi}{2}\sum_{n=1}^{+\infty}(1+n^2)^s\hat{u}_n \overline{\hat{v}}_n.\]
-	We also define a semi-norm 
-	\[\abs{u}_{T^s} \isdef \frac{\pi}{2}\sum_{n = 1}^{+ \infty}n^{2s} \abs{\hat{u}_n}^2.\]
-	We denote by $T^{\infty}$ the Fr\'echet space $T^{\infty} \isdef \displaystyle\cap_{s \in \R} T^s$, and by $T^{-\infty}$ the set of continuous linear forms on $T^{\infty}$. For $l \in T^{-\infty}$, we define
-	\[ \hat{l}_n \isdef 
-	\displaystyle\begin{cases}
-	\frac{2}{\pi} l(T_n) & \text{ if } n \neq 0\,,\\
-	\frac{1}{\pi} l(T_0) & \text{otherwise}\\
-	\end{cases}\]
-	so that for $u \in T^{\infty}$, 
-	\[l(u) = \pi\hat{u}_0 \hat{l}_0 + \frac{\pi}{2}\sum_{n=1}^{+\infty}\hat{u}_n \hat{l}_n.\]
-	We denote by $\duality{l}{u}_\frac{1}{\omega}$ the previous bilinear form and use it to identify the dual of $L^2_\frac{1}{\omega}$ to itself. Note that when $s=0$, 
-	\[\duality{u}{v}_\frac{1}{\omega} = \int_{-1}^{1} \frac{u(x) l(x)}{\omega(x)}dx\] With this identification, any element of $T^s$ with $s \geq 0$ can also be seen as an element of $T^{-\infty}$.  
+	\[(u,v)_{T^s} = \hat{u}_0 \overline{\hat{v}}_0 + \frac{1}{2}\sum_{n=1}^{+\infty}n^{2s}\hat{u}_n \overline{\hat{v}}_n.\]
+	We define the semi-norm 
+	\[\abs{u}_{T^s}^2 \isdef \frac{1}{2}\sum_{n = 1}^{+ \infty}n^{2s} \abs{\hat{u}_n}^2.\]
+	We denote by $T^{\infty}$ the Fr\'echet space $T^{\infty} \isdef \displaystyle\cap_{s \in \R} T^s$, and by $T^{-\infty}$ the set of continuous linear forms on $T^{\infty}$. For $l \in T^{-\infty}$, we generalize the notion of Fourier-Chebyshev coefficient by $\hat{l}_n \isdef \frac{l(T_n)}{(T_n,T_n)_\frac{1}{\omega}}$ so that for $u \in T^{\infty}$, 
+	\[l(u) =  \hat{l}_0 \hat{u}_0  + \frac{1}{2}\sum_{n=1}^{+\infty}\hat{l}_n\hat{u}_n\,.\]
+	We denote by $\duality{l}{u}_\frac{1}{\omega}$ the previous bilinear form and use it to identify the dual of $L^2_\frac{1}{\omega}$ to itself. Note that when $s=0$, $\duality{u}{v}_\frac{1}{\omega} = \inner{u}{\overline{v}}_\frac{1}{\omega} =\frac{1}{\pi}\int_{-1}^{1} \frac{u(x) v(x)}{\omega(x)}dx\,.$
+	With this identification, any element of $T^s$ with $s \geq 0$ can also be seen as an element of $T^{-\infty}$.  
 	Furthermore, the space $T^{-s}$ can be defined for all $s \geq 0$ as
 	\[T^{-s} = \enstq{ u \in T^{-\infty}}{ \sum_{n=0}^{+\infty}{(1 + n^2)^{-s} \abs{\hat{u}_n}^2} < \infty}.\]
 	Using the former identification $T^{-s}$ becomes the dual of $T^s$. 
@@ -109,30 +97,63 @@ The preceding analysis can be generalized to define Sobolev-like spaces.
 	For all $s \geq 0$, we set
 	\[U^s = \enstq{u \in L^2_\omega}{ \sum_{n=0}^{+\infty} (1 + n^2)^s\abs{\check{u}_n}^2 < \infty}.\]
 	We extend as before the definition to negative indices by setting $U^{-s}$ to be the dual of $U^s$ for $s\geq 0$, this time with respect to the duality
-	\[\duality{u}{v}_\omega = \frac{\pi}{2} \sum_{n=0}^{+\infty} \check{l}_n \check{v}_n\] 
+	\[\duality{u}{v}_\omega = \inner{u}{\overline{v}}_\omega = \frac{1}{2} \sum_{n=0}^{+\infty} \check{u}_n \check{v}_n\] 
 \end{Def}
-Let $H^s$ the Sobolev space of periodic functions on the torus $\mathbb{T}_{2\pi} \isdef \mathbb{R} / 2\pi\mathbb{\Z}$, and $H^s_e$ (resp. $H^s_o$) the space of even (resp. odd) functions in $H^s$. Let $e_n(\theta) \isdef e^{in\theta}$. Using the $L^2$ scalar product, the dual of $H^s$ can be identified to $H^{-s}$. The resulting duality product is denoted by $\duality{\cdot}{\cdot}_{L^2(\mathbb{T}_{2\pi})}$ The spaces $T^s$ and $U^s$ are then characterized as follows:
+The spaces $T^s$ and $U^s$ are related to the standard Sobolev spaces of periodic functions through a variable change. Let $\mathbb{T}_{2\pi} \isdef \R / 2\pi \Z$, a smooth function $u$ on $\R / 2\pi \Z$ can be decomposed in Fourier series 
+\[u(\theta) = \sum_{n \in \Z} \mathcal{F}u(n) e^{in\theta}\]
+with the Fourier coefficients defined as 
+\[\mathcal{F}u(n) \isdef \frac{1}{2\pi}\int_{-\pi}^\pi u(t) e^{-in\theta}d\theta.\]
+For $n\in \Z$, let $e_n : \theta \mapsto e^{in\theta}$. For a periodic distribution $u$ on $\mathbb{T}_{2\pi}$, and for $n \in \Z$, we generalize the definition of Fourier coefficients by $\mathcal{F}u(n) \isdef u(e_{-n})$. The space $H^s$ is the set of functions for which 
+\[\sum_{n \in \Z} (1 + n^2)^s\abs{\mathcal{F}u(n)}^2 < \infty\,.\]
+Introducing the duality product
+\begin{equation}
+\label{dualiteSobolevPer}
+	\duality{u}{v}_{\mathbb{T}_{2\pi}} = \sum_{n \in \Z} \mathcal{F}u(n) \mathcal{F}v(-n)\,,
+\end{equation}
+the dual of $H^s$ can be identified to $H^{-s}$. For $s=0$, $\duality{u}{v}_{\mathbb{T}_{2\pi}} = \frac{1}{2\pi} \int_{-\pi}^{\pi} uv$. The space $H^s$ is the direct sum of the two subspaces $H^s_e$ and $H^s_o$, defined by $H^s_e \isdef \enstq{u \in H^s}{\mathcal{F}u(n) = \mathcal{F}u(-n)}$ and $H^s_o \isdef \enstq{u \in H^s}{\mathcal{F}u(n) = -\mathcal{F}u(-n)}$.
 \begin{Lem}
-	There exists a linear map $C$ from $T^s$ to $H^s_e$ satisfying
-	\[\frac{1}{2\pi}\duality{Cu}{e_{-n}}_{L^2(\mathbb{T}_{2\pi})} = \hat{u}_{\abs{n}}\,.\]
+	There exists a unique bijective isometry $C$ from $T^s$ to $H^s_e$ satisfying
+	\[\forall n \in \Z, \quad \mathcal{F}(Cu)(n) = \begin{cases}
+	\hat{u}_0 & \text{ if } n = 0,\\
+\frac{\hat{u}_{\abs{n}}}{2} & \text{ otherwise.}	\end{cases}\,\]
 	For $u \in T^s$ and $v \in T^{-s}$, there holds 
-	\[\frac{1}{2\pi}\duality{u}{v}_{\frac{1}{\omega}} = \duality{Cu}{Cv}_{L^2(\mathbb{T}_{2\pi})}\,.\] 
-	When $u$ is a smooth function, we have 
-	\[Cu(\theta) = u(\cos(\theta))\]
+	$\duality{u}{v}_{\frac{1}{\omega}} = \duality{Cu}{Cv}_{\mathbb{T}_{2\pi}}$.
+	When $u \in T^s$ for $s \geq 2$, $u$ and $Cu$ are continuous functions, and we have $Cu(\theta) = u(\cos(\theta))\,$.
 	Similarly, there exists a unique bijective isometry $S$ from $U^s$ to $H^s_o$ satisfying
-	\[\frac{1}{2\pi}\duality{Su}{e_{0}}_{L^2(\mathbb{T}_{2\pi})} = 0\,,\]
-	and for $n \neq 0$,
-	\[\duality{Su}{e_{n}}_{L^2(\mathbb{T}_{2\pi})} =\textup{sign}(n) \hat{u}_{\abs{n}-1}\,,\]
-	For $u \in T^s$ and $v \in T^{-s}$, there holds 
-	\[\duality{u}{v}_{\frac{1}{\omega}} = \duality{Su}{Sv}_{H^s \times H^{-s}}\,.\]
-	When $u$ is a smooth function, we have 
-	\[Su(\theta) = \sin\theta u(\cos(\theta))\]
-	\toDo{Bien vérifier les constantes, déplacer au \autoref{thmChar}}.
+	\[\forall n \in \Z, \quad \mathcal{F}(Su)(n) = \begin{cases}
+	0 & \text{ if } n = 0,\\
+	\textup{sign}(n)\frac{\hat{u}_{\abs{n}-1}}{2} & \text{ otherwise.}	\end{cases}\,\]
+	For $u \in U^s$ and $v \in U^{-s}$, there holds $\duality{u}{v}_{\omega} = \duality{Su}{Sv}_{\mathbb{T}_{2\pi}}$. When $u \in U^s$ for $s \geq 2$, $u$ and $Su$ are a continuous functions, and we have $Su(\theta) = \sin\theta u(\cos(\theta))\,$.
 \end{Lem}
+\begin{proof}
+	A distribution $u \in H^s$ is uniquely defined by the quantities $\mathcal{F}u(n)$ as can be seen from the identification of the duality product \eqref{dualiteSobolevPer}. Thus, the maps $C$ and $S$ are unique.  Using \eqref{dualiteSobolevPer} and the definition of $C$, 
+	\[\begin{split}
+	\duality{Cu}{Cv}_{\mathbb{T}_{2\pi}} &= \hat{u}_0 \hat{v}_0 + \sum_{n \in \Z, n \neq 0} \frac{1}{4}\hat{u}_{\abs{n}} \hat{v}_{\abs{n}}\\
+	&= \hat{u}_0 \hat{v}_0 + 2\sum_{n = 1}^{+ \infty} \frac{1}{2}\hat{u}_{\abs{n}} \hat{v}_{\abs{n}} \\
+	&= \duality{u}{v}_{\frac{1}{\omega}}\,.
+	\end{split} \]
+	The identity that $\duality{Su}{Sv}_{\mathbb{T}_{2\pi}} = \duality{u}{v}_\omega$ is proved similarly. Let $u \in T^s$ with $s \geq 2$. Then the Fourier-Chebyshev series of $u$ is normally converging since $\norm{T_n}_\infty = 1$ and
+	\[\sum_{n = 0}^{+ \infty} \abs{\hat{u}_n} \norm{T_n}_\infty = \sum_{n = 0}^{+ \infty} \abs{\hat{u}_n} \leq \sqrt{\sum_{n = 0}^{+ \infty} (1+n^2)^s \abs{\hat{u}_n}^2} \sqrt{\sum_{n = 0}^{+ \infty} (1+n^2)^{-s}} < \infty\,.\]
+	The functions $T_n$ being continuous, $u$ is continuous. Morevoer it is well-known that $H^2 \subset C^0$ thus $Cu$ is continuous. We can write 
+	\[\begin{split}
+		Cu(\theta) &= \sum_{n \in \Z} \mathcal{F}(Cu)(n)e^{in\theta}\\
+		&= \hat{u}_0 + \sum_{n \in \Z, n\neq 0} \frac{\hat{u}_{\abs{n}}}{2} e^{in\theta}\\
+		&= \hat{u}_0 + \frac{1}{2}\sum_{n = 1}^{+\infty} \hat{u}_n \left(e^{in\theta} + e^{-in\theta} \right)\\
+		& = \sum_{n = 0}^{+ \infty} \hat{u}_n \cos(n \theta)\\
+		& = \sum_{n = 0}^{+ \infty} \hat{u}_n T_n(\cos\theta)\\
+		& = u(\cos(\theta))\,.		
+	\end{split}\]
+	One can show similarly that when $u \in U^2$, $u$ is continuous (a more precise result is in fact proved in \autoref{LemInjectionsContinues}), and similar calculations show that $Su(\theta) = \sin\theta u(\cos\theta)$, using this time $\sin((n+1)\theta) = \sin\theta U_n(\cos\theta)$. 
+	To prove the bijectivity of $S$ and $C$, one can check that they have the  explicit inverses $C^{-1}$ and $S^{-1}$ respectively defined on $H^s_e$ and $H^s_o$ as
+	\[\forall n \in \N, \quad \widehat{(C^{-1}u)}_n = \begin{cases}
+	\mathcal{F}u(0) & \text{ if } n = 0,\\
+	2\mathcal{F}u(n) & \text{ otherwise,}	\end{cases}\,\]
+	and
+	\[\forall n \in \N, \quad \widehat{(S^{-1}u)}_n = 2\mathcal{F}u(n+1)\,.\]
+\end{proof}
 \begin{Rem}
-	The spaces $T^n$ correspond, up to a variable change, to the spaces $H^n_e$ defined in \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} among other works, that is, the restriction of the usual Sobolev space $H^n$ to even periodic functions, as stated in \autoref{thmChar}. 
+	In many related works, \cite{bruno2012second,atkinson1991numerical,yan1988integral,yan1990cosine} the spaces $H^s_e$ appear as the underlying family of Hilbert space in the analysis. However, the change of variables $Su$ has not been emphasized, neither the space $H^s_o$, which turns out, here, to be as crucial as $H^s_e$. 
 \end{Rem}
-
 
 \subsubsection{Basic properties}
 
@@ -159,7 +180,7 @@ We deduce the following inclusions:
 \end{Lem}
 Before starting the proof, we introduce the Cesàro operator $C$ defined on $l^2(\N^{*})$ by
 \[(Cu)_n = \frac{1}{n}\sum_{k=1}^n u_k\,.\]
-As is well-known, this is a linear continuous operator on $l^2(\N^*)$. Its adjoint
+As is well-known, this is a linear continuous operator on the Hilbert space $l^2(\N^*)$. Its adjoint
 \[(C^* u)_n = \sum_{k = n}^{+ \infty} \frac{u_k}{k} \,,\]
 is therefore also continuous on $l^2(\N^*)$. In other words, for all $u \in l^2(\N)$, 
 \[ \sum_{n = 1}^{+ \infty} \left(\sum_{k = n}^{+ \infty} \frac{u_k}{k}\right)^2 \leq C \sum_{k = 1}^{+ \infty} u_k^2\, .\]
@@ -198,7 +219,7 @@ is therefore also continuous on $l^2(\N^*)$. In other words, for all $u \in l^2(
 \begin{proof}
 	Assume by contradiction that the functions of $U^{\frac{1}{2}}$ can be identified to elements of $T^{-\infty}$. Then, there must exist a map $I$ continuous from $U^{\frac{1}{2}}$ to $T^{-\infty}$ with the property 
 	\[\forall u \in U^{\infty}, \quad Iu = u.\]
-	Now, let us consider for example the function $u$ defined by $\check{u}_n = \frac{1}{n \ln(n)}$. Note that $u$ is in $U^{1/2}$. Let $u_N = \sum_{n = 0}^{N} \check{u_n}U_n$. Then $(u_N)$ is a sequence of elements of $U^{\infty}$ converging to $u$ in $U^{1/2}$. By continuity of $I$, and since $I u_N = u_N$, the sequence $(\duality{u_N}{T_0}_\frac{1}{\omega})_{N\in \N}$ must converge with limit $\duality{Iu}{T_0}$. This is not the case since 
+	Now, let us consider for example the function $u$ defined by $\check{u}_n = \frac{1}{n \ln(n)}$. Then $u$ is in $U^{1/2}$, so $Iu \in T^{-\infty}$. Let $u_N = \sum_{n = 0}^{N} \check{u_n}U_n$. Then $(u_N)$ is a sequence of elements of $U^{\infty}$ converging to $u$ in $U^{1/2}$. By continuity of $I$, and since $I u_N = u_N$, the sequence $(\duality{u_N}{T_0}_\frac{1}{\omega})_{N\in \N}$ must converge with limit $\duality{Iu}{T_0}_\frac{1}{\omega}$. This is not the case since 
 	\[\duality{u_N}{T_0}_\frac{1}{\omega} = \sum_{n=0}^{N} \check{u}_n\duality{U_n}{T_0}_\frac{1}{\omega} = \sum_{k = 0}^{\lfloor \frac{N}{2} \rfloor} \frac{1}{2k \ln(2k)} \]
 	is diverging. The result for $s \leq \frac{1}{2}$ comes from the fact that $U^{\frac{1}{2}} \subset U^{s}$ for $s \leq \frac{1}{2}$. 
 \end{proof}
@@ -234,7 +255,7 @@ The operator $\partial_x$ is not continuous from $T^s$ to $T^{s-1}$. However, th
 	
 	On the other hand, we have, for $n \geq 2$,
 	\[\omega \partial_x \omega T_n = \omega\partial_x \omega \frac{U_n - U_{n-2}}{2} = \frac{(n+1)T_{n+1} - (n-1)T_{n-1}}{2}\,.\]
-	Therefore $\omega \partial_x \omega$ is continuous from $T^{s+1}$ to $T^s$. Finally, $\omega \partial_x \omega$ is continuous from $U^{s+1}$ to $T^s$ and the inclusion $T^s \subset U^s$ is continuous for all $s$.   
+	Therefore $\omega \partial_x \omega$ is continuous from $T^{s+1}$ to $T^s$. Finally, $\omega \partial_x \omega$ is continuous from $U^{s+1}$ to $T^s$ and the inclusion $T^s \subset U^s$ is continuous for all $s$, thus $\omega \partial_x \omega$ is continuous from $U^{s+1}$ to $U^s$ for all $s$.  
 \end{proof}
 \begin{Lem}
 	\label{LemInjectionsContinues}
@@ -251,8 +272,8 @@ The operator $\partial_x$ is not continuous from $T^s$ to $T^{s-1}$. However, th
 	For the second statement, we use the inclusion $U^{s} \subset T^{s-1}$ valid for $s > 1/2$, as established in \autoref{inclusionsTsUs}. 
 \end{proof}	
 
-\subsubsection{Characterization of $T^n$ and $U^n$.}
-In this section, we provide a characterization of the spaces $T^s$ and $U^s$ in terms of $L^2$ norms of the derivatives. In what follows, $H^s_p(0,T)$ denotes the space of functions in $H^s(\mathbb{T}_{T})$, where $\mathbb{T}_T$ is the torus $\R / (T\Z)$, $H^s_e(0,T)$ (resp. $H^s_o(0,T)$) is the set of even (resp. odd) functions if $H^s_p(0,T)$.
+\subsubsection{Equivalent norms of $T^n$ and $U^n$.}
+In this section, we provide a characterization of the spaces $T^n$ and $U^n$ in terms of weighted $L^2$ norms of the derivatives when $n$ is an integer.
 \begin{Lem}
 	\label{omegadxetdxomga}
 	The operator $\omega \partial_x$ has a continuous extension from $T^1$ to $T^0$. Similarly, the operator $\partial_x \omega$ has a continuous extension from $U^1$ to $U^0$. 
@@ -264,20 +285,13 @@ In this section, we provide a characterization of the spaces $T^s$ and $U^s$ in 
 	\[\partial_x \omega = \frac{1}{\omega} \left(\omega \partial_x \omega\right).\]
 	Where $\omega \partial_x \omega$ is continuous from $U^1$ to $T^0$, and the multiplication by $\frac{1}{\omega}$ is continuous from $T^0$ to $U^0$. 
 \end{proof}
-We can now state the main result of this paragraph. For a function $u$ defined on $[-1,1]$, we denote by $Cu$ the function defined on $\mathbb{T}_{2\pi}$ by
-\[ Cu(\theta) = u(\cos(\theta))\]
-and by $Su$ the function defined as 
-\[Su(\theta) \isdef \sin(\theta) Cu(\theta).\]
 \begin{Lem}
-	A function $u$ belongs to the space $T^n$ if and only if $u = \tilde{u} \circ \arccos$ for some function $\tilde{u} \in H^n_e(0,2\pi)$. In this case, $Cu = \tilde{u}$ and
-	\[ \norm{u}_{T_n}\sim \norm{Cu}_{H^n} \mbox{ and } \abs{u}_{T^n} \sim \abs{Cu}_{H^n}.\]
-	Similarly, $u$ belongs to  the space $U^n$ if and only if $u = \frac{1}{\sqrt{1 - x^2}} \tilde{u}  \circ  \arccos$  for some function $\tilde{u} \in H^n_o(0,2\pi)$. In this case, $Su = \tilde{u}$ and
-	\[\norm{u}_{U_n} \sim \abs{Su}_{H^n}.\]	
-	Moreover, if $ u \in T^n$, then $(\omega \partial_x)^n u$ is in $L^2_\frac{1}{\omega}$ and 
-	\[ \abs{u}_{T^n}^2 \sim \int_{-1}^{1} \frac{((\omega \partial_x)^n u)^2}{\omega}.\]
-	\noindent Similarly, if $u \in U^n$, then $(\partial_x \omega)^n u \in L^2_\omega$ and 
-	\[ \norm{u}_{U_n}^2 = \int_{-1}^{1}\omega ((\partial_x \omega)^n u)^2.\]
-	\label{thmChar}
+	Let $n \in \N$. The space $T^n$ is equal to the set of functions $u$ in $L^2_\frac{1}{\omega}$ such that 
+	\[\int_{-1}^{1} \frac{\abs{(\omega \partial_x)^nu}^2}{\omega} < \infty\]
+	and $u \mapsto \sqrt{\int_{-1}^1 \frac{\abs{u}^2 + \abs{(\omega \partial_x)^nu}^2}{\omega}}$ defines an equivalent norm on $T^n$. Moreover, the semi-norm $\abs{\cdot}_{T^n}$ is equivalent to $u \mapsto \frac{1}{\pi}\int_{-1}^1 \frac{\abs{(\omega \partial_x)^nu}^2}{\omega}$.
+	The space $U^n$ is equal to the set of functions in $L^2_{\omega}$ such that 
+	\[\frac{1}{\pi}\int_{-1}^{1} \omega {\abs{( \partial_x \omega )^nu}^2} < \infty\]
+	and $u \mapsto \sqrt{\frac{1}{\pi}\int_{-1}^{1} \omega {\abs{( \partial_x \omega )^nu}^2}}$ defines an equivalent norm on $U^n$. 
 \end{Lem}
 \begin{proof}
 	The first two equivalences stem from the fact that 
