@@ -43,6 +43,11 @@ Shidong Jiang and Vladimir Rokhlin.
   open surfaces ii.
 \newblock {\em Journal of Computational Physics}, 195(1):1--16, 2004.
 
+\bibitem{mason2002chebyshev}
+John~C Mason and David~C Handscomb.
+\newblock {\em Chebyshev polynomials}.
+\newblock CRC Press, 2002.
+
 \bibitem{mclean1986spectral}
 W~McLean.
 \newblock A spectral galerkin method for a boundary integral equation.
