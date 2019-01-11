@@ -139,7 +139,8 @@ This amounts to solving an explicit linear system. We keep increasing $P$ until 
 \paragraph{Circular quadrature:}In a second step, we use approximations of the form:
 \[J_0(\rho_p \abs{\bs{x}}) \approx \dfrac{1}{M_p}\sum_{m=0}^{M_p-1}e^{i \rho_p \bs{\xi}_p^m \cdot \bs{x}}, \quad p \in \{1,\cdots,P\},\]
 which are discrete versions of the identity:
-\[ J_0(\rho_p\abs{\bs{x}}) = \frac{1}{2\pi}\int_{\abs{\bs{\xi}}=1}{e^{i \rho_p\bs{x} \cdot \bs{\xi}}} d\sigma(\bs{\xi}).\]
+\[ J_0(\rho_p\abs{\bs{x}}) = \frac{1}{2\pi}\int_{\abs{\bs{\xi}}=1}{e^{i \rho_p\bs{x} \cdot \bs{\xi}}} d\sigma(\bs{\xi})\,,\]
+in which $d\sigma(\xi)$ is the uniform measure on the circle $\{\abs{\xi} = 1\}. $
 We sum them to eventually obtain the formula \eqref{Gapprox}. 
 \begin{remark}
 	In the SCSD method \cite{Alouges2015}, the Bessel functions are replaced by cardinal sine functions, since, for $\bs{x} \in \R^3$

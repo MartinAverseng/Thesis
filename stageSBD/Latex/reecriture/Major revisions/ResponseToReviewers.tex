@@ -1,0 +1,65 @@
+\documentclass[10pt]{article}
+
+% Allow Unicode input (alternatively, you can use XeLaTeX or LuaLaTeX)
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype,xparse,tcolorbox}
+\newenvironment{reviewer-comment }{}{}
+\tcbuselibrary{skins}
+\tcolorboxenvironment{reviewer-comment }{empty,
+	left = 1em, top = 1ex, bottom = 1ex,
+	borderline west = {2pt} {0pt} {black!20},
+}
+\ExplSyntaxOn
+\NewDocumentEnvironment {response} { +m O{black!20} } {
+	\IfValueT {#1} {
+		\begin{reviewer-comment~}
+			\setlength\parindent{2em}
+			\noindent
+			\ttfamily #1
+		\end{reviewer-comment~}
+	}
+	\par\noindent\ignorespaces
+} { \bigskip\par }
+
+\NewDocumentCommand \Reviewer { m } {
+	\section*{Comments~by~Reviewer~#1}
+}
+\ExplSyntaxOff
+\AtBeginDocument{\maketitle\thispagestyle{empty}\noindent}
+
+% You can get probably get rid of these definitions:
+\newcommand\meta[1]{$\langle\hbox{#1}\rangle$}
+\newcommand\PaperTitle[1]{``\textit{#1}''}
+
+\title{Minor revisions request for manuscript
+		NUMA-D-17-00638 \\}
+\author{Martin Averseng}
+\date{\today}
+
+\begin{document}
+	
+	I am grateful to the reviewers for their comments on the revised version of this manuscript. 
+	
+	\Reviewer{\#1}
+	
+	I corrected the typo indicated by the reviewer whom I thank for their precise indications. The main comment I wish to answer is the last one:
+	\begin{response}
+		{The complexity $O(P ^2 log P+ ...)$ is wrong. The complexity is proportional to the bandwidth.}
+	\end{response}	
+	I don't understand why the formula is wrong, however, I acknowledge  that I did not provide details on how I obtained this formula. The complexity indicated in the reference is 
+	\[O( |I_N| \log |I_N| + \cdots)\,,\]
+	where, as far as I understand,  $|I_N|$  stands for an upper bound of the largest frequency appearing in the transform. Here, the largest frequency is $\rho_P \approx \pi P = O(P).$ This term is thus negligible compared to the remaining terms in the complexity. I included those details in the revised version of the manuscript and hope that the matter is now clearer. 
+	
+	\Reviewer{\#2}
+	
+	I wish to thank the second reviewer for his encouraging comments on my manuscript. I incorporated his suggestions to the revised versions.
+	
+	
+	
+	
+	 
+	
+	  
+	
+\end{document}

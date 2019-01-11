@@ -48,11 +48,11 @@ Op_opt = {'tol',1e-3,'fullMatrix',true};
 Sw = singleLayer(Vh,...
     'Op_opt',Op_opt,'correcMethod','constantTerm','k',k);
 % 
-% Nw = hyperSingular_w(Vh,'Op_opt',Op_opt,'k',k);
+Nw = hyperSingular_w(Vh,'Op_opt',Op_opt,'k',k);
 Swgalerk = Sw.galerkine(Vh,'U');
 % T0_scal_phi = Vh.phi'*Vh.W;
 % T0_star_galerk = T0_scal_phi*T0_scal_phi'/sum(Vh.W);
-% Nwgalerk = Nw.galerkine;
+Nwgalerk = Nw.galerkine;
 % Prec1 = @(u)(invM(Swgalerk*invM(K*invM(u))));
 PrecDarbas = @(u)(invM(sqrtDarbasK1(invM(u))));
 % clear M L U Q P dM K K1 omega2 

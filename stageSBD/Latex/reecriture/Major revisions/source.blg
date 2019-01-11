@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: source.aux
+The style file: plain.bst
+Database file #1: biblio.bib
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1049 of file plain.bst
+Warning--to sort, need author or key in Fastsum
+Warning--to sort, need author or key in NUFFTGg
+Name 2 in "Olver, F. W. J. and Olde Daalhuis, A. B., and Lozier, D. W. and Schneider, B. I. and Boisvert, R. F. and Clark, C. W. and Miller, B. R. and Saunders, B. V." has a comma at the end for entry NIST:DLMF
+while executing---line 1090 of file plain.bst
+You've used 27 entries,
+            2118 wiz_defined-function locations,
+            667 strings with 7820 characters,
+and the built_in function-call counts, 8375 in all, are:
+= -- 836
+> -- 343
+< -- 5
++ -- 145
+- -- 110
+* -- 582
+:= -- 1375
+add.period$ -- 81
+call.type$ -- 27
+change.case$ -- 131
+chr.to.int$ -- 0
+cite$ -- 29
+duplicate$ -- 312
+empty$ -- 703
+format.name$ -- 110
+if$ -- 1747
+int.to.chr$ -- 0
+int.to.str$ -- 27
+missing$ -- 28
+newline$ -- 136
+num.names$ -- 50
+pop$ -- 144
+preamble$ -- 1
+purify$ -- 109
+quote$ -- 0
+skip$ -- 221
+stack$ -- 0
+substring$ -- 567
+swap$ -- 48
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 98
+warning$ -- 2
+while$ -- 87
+width$ -- 29
+write$ -- 287
+(There were 2 error messages)

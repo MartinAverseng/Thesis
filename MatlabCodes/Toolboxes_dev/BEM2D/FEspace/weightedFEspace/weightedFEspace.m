@@ -218,8 +218,9 @@ classdef weightedFEspace < FEspace
             Nb = feCell.Nb;
             singK = logSingK;
             func = singK.k.func;
-            
-            [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
+            coords = this.mesh.edgesCoords;
+            Ax = coords(:,1); Ay = coords(:,2); Bx = coords(:,3); By = coords(:,4);
+%             [Ax,Bx,Ay,By] = this.mesh.edgesCoords; % edges [A, B] with A = [Ax, Ay], B = [Bx, By]
             lines = cell(Nb,1); cols = cell(Nb,1); vals = cell(Nb,1);
             %             threshold = 4*max(l);
             %             I = isClose(X,this.dofCoords,threshold);
@@ -249,7 +250,7 @@ classdef weightedFEspace < FEspace
                         X_k = X(ks,:); % seclected points in X.
                         %for each k, parameter cb(k) such that phi_b(Y) = cb(k) + C*(X_k(k,:) - Y)
                         % where C is some constant.
-                        approxInt = this.I0approx(func,X_k,segNum);
+                        approxInt = this.I0approx(func,X_k,A,B,segNum);
                         cb = this.fe_cell.constantTerm(b,X_k,A,B);
                         db = this.fe_cell.linearTerm(b,X_k,A,B);
                         [~,~,~,~,~,~,alpha,~,~] = parameters_singInt(X_k,repmat(A,size(X_k,1),1),repmat(B,size(X_k,1),1));
@@ -263,7 +264,7 @@ classdef weightedFEspace < FEspace
                         
                         
                         % Compute the exact integral to replace :
-                        exactInt = this.I0exact(singK, X_k,segNum); % method that computes
+                        exactInt = this.I0exact(singK, X_k,A,B,segNum); % method that computes
                         % exactly \int_{[A,B]} G(X_k(k,:),Y) dY for each k.
                         
                         % Store the correction.
@@ -298,7 +299,7 @@ classdef weightedFEspace < FEspace
             l = me.length; % vector containing length of each segment in the mesh.
 %             L = sum(l);
             ndof = this.ndof;
-%             T = this.dofIndexes;
+            T = this.dofIndexes;
             feCell = this.fe_cell;
             Nb = feCell.Nb;
             singK = logSingK;

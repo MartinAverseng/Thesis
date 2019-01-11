@@ -1,0 +1,140 @@
+% Title:    A LaTeX Template For Responses To a Referees' Reports
+% Author:   Petr Zemek <s3rvac@gmail.com>
+% Homepage: https://blog.petrzemek.net/2016/07/17/latex-template-for-responses-to-referees-reports/
+% License:  CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+\documentclass[10pt]{article}
+
+% Allow Unicode input (alternatively, you can use XeLaTeX or LuaLaTeX)
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype,xparse,tcolorbox}
+\newenvironment{reviewer-comment }{}{}
+\tcbuselibrary{skins}
+\tcolorboxenvironment{reviewer-comment }{empty,
+	left = 1em, top = 1ex, bottom = 1ex,
+	borderline west = {2pt} {0pt} {black!20},
+}
+\ExplSyntaxOn
+\NewDocumentEnvironment {response} { +m O{black!20} } {
+	\IfValueT {#1} {
+		\begin{reviewer-comment~}
+			\setlength\parindent{2em}
+			\noindent
+			\ttfamily #1
+		\end{reviewer-comment~}
+	}
+	\par\noindent\ignorespaces
+} { \bigskip\par }
+
+\NewDocumentCommand \Reviewer { m } {
+	\section*{Comments~by~Reviewer~#1}
+}
+\ExplSyntaxOff
+\AtBeginDocument{\maketitle\thispagestyle{empty}\noindent}
+
+% You can get probably get rid of these definitions:
+\newcommand\meta[1]{$\langle\hbox{#1}\rangle$}
+\newcommand\PaperTitle[1]{``\textit{#1}''}
+
+\title{Letter to the reviewers of
+		NUMA-D-17-00638 \\}
+\author{Martin Averseng}
+\date{\today}
+
+\begin{document}
+	
+	I am grateful to the reviewers for their helpful comments on my manuscript. The revised version I send here is 6 pages shorter, contains the numerical comparison with \cite{potts2004fast} asked by both reviewers, and incorporates the major part of the revision requested. Overall, I tried to make the presentation simpler and improve the organization of the paper. 
+	
+	\Reviewer{\#1}
+	
+	The first reviewer has pointed out the lack of comparison with the algorithm of \cite{potts2004fast}. As in the revised manuscript, I will refer to it as \textit{Fastsum} in this letter. I agree with the reviewer that such a comparison will help the readers and add to the completeness of the study. Because of this, I chose to modify significantly the presentation of my work to stress the differences and novelties of my approach. 
+	
+	The title is now : "Fast discrete convolution in R2 with radial kernels using Non-Uniform Fast Fourier Transform with nonequispaced frequencies" (I no longer include Bessel decomposition in the title). I made this change to stress the fact that the method presented is a variation on the reference method described in \cite{potts2004fast}. 
+	
+	In the abstract, instead of presenting this work as an extension of the SCSD method \cite{alouges2015sparse} in 2D, I describe it as an improved way to choose the frequency samples in the trigonometric representation of the radial kernel, that exploits the radial symmetry. This is the crucial difference between my method and $\textit{Fastsum}$. 
+	
+	A larger part of the introduction is also dedicated to \textit{Fastsum}. I explain the general structure shared by both algorithms and my work is now presented as a variant of \textit{Fastsum}, where the number of frequency samples is reduced by using Bessel decompositions. 
+	
+	I summarize the differences between EBD and \textit{Fastsum} in the conclusion. I state that the EBD method allows a faster convolution to the price of longer precomputations. I also explain that the error control is sharper with EBD (thanks to the reduction to a 1D problem) while the performance still depends on a free parameter that has to be set manually. 
+	
+	Even if the number of frequency samples is smaller the use of the Non-uniform Fast Fourier transform (NUFFT) of type III rather than type I could counterbalance this gain, both in terms of theoretical complexity and effective performance. This is the summarized by the reviewer's comment:
+	
+	\begin{response}{However, there is no theoretical or practical justification that there is an advantage to use the new method.}
+	\end{response}	
+	
+	I will answer to each part (theory and practice) separately.
+	
+	\subsection*{Theoretical point of view}
+	
+	\begin{response}{The complexity O(N log N ) is wrong. The complexity depends also on the nonharmonic bandwidth.}
+		I have modified the analysis to incorporate the correct complexity estimate of the NUFFT of type III. I wish to thank reviewer \#1 for pointing out the reference \cite{keiner2009using}. I had had difficulties finding a precise statement of the complexity of the NUFFT of type III before. It turns out that including this modification doesn't change the complexity estimates. However, this lead me to remove the notation $C_{\textup{NUFFT}}(\varepsilon)$ in Theorem $1$, and because of this, I changed a little bit the statement of the theorem. The definition of the parameter $\alpha$ ($\eta$ in the new version) is now independant of $\varepsilon$. 
+	\end{response}
+		
+	\subsection*{Practical point of view}
+	
+	I have replaced the last section of the first manuscript by a full numerical comparison between the two methods, on various kernels. In general, I show that the offline part of my algorithm is longer that that of \textit{Fastsum} (partly due to the differences of programming language in my opinion) while the online parts are comparable, with significant speed-ups in some cases for my method. I think this result adds to the impact of my work, and am therefore grateful to the reviewer for suggesting it. 
+	
+	\begin{response}{The authors should share the sources in order to follow the idea of reproducible research.}
+	I agree with the reviewer and have added a link to my Matlab code at the end of the introduction of the revised version.
+	\end{response}
+	
+	\Reviewer{\#2}
+	
+	\subsection*{General remarks}
+	
+	\begin{response}{1. Although it is clear from the theory that the trigonometric approximation derived in the present paper is more sparse in comparison to [18] it is not so clear whether this is true in practice. Since an implementation of the algorithm described in [18] is easily available as part of the NFFT package a comparison of the required numbers of Fourier coefficients should be included into this paper.}
+	A comparison has been included in the last section. It confirms the fact that the number of frenquencies is indeed smaller, by one or two orders depending on the cases. 
+	\end{response}
+	\begin{response}{2. Even, if the algorithm described in the paper results in a shorter trigonometric approximation it is still not clear whether it pays of for the fast summation since the presented algorithm relies on the fast Fourier transform with nonequispaced frequencies but the algorithm in \cite{potts2004fast} uses equispaced frequencies. A small comparison would surely help the reader.}
+	I have performed a numerical comparison on several kernels in the last section ($\log(x)$, $x^2 \log(x)$ and $\frac{1}{x^2}$). In every case, my results show that SBD (now EBD) is faster than \textit{Fastsum} in the online stage (by a factor $2$ to $3$ in average) and always slower in the offline stage (which is partly due to my implementation in a high level language). I think that this numerical comparison is indeed a crucial addition to the contents of the paper. 
+	\end{response}
+	\begin{response}{3. The paper uses many `global` variables. In such cases I would appreciate to
+	remember the reader about its definition at least once in a section. It helps a
+	lot to replace `Let $P > 0$` by `Consider a nonnegative bandwidth $P > 0$`. I
+	also think that $\partial B$ for the boundary of $B$ is a more common notation than $\mathcal{C}$.}
+	I agree with the reviewer that the use of global variables should be compensated by reminders at the beginning of each section. I tried to include the appropriate amount of such reminders, without increasing too much the size of the presentation. 
+	For the parameter $P$, though I agree that it is the analog of the bandwith in \textit{Fastsum}, I think in my manuscript it is simpler to see it as the number of terms in the $1D$ approximation problem (which is not Fourier). I don't think it simplifies the message to call it bandwidth here. However, I tried as much as possible to give relevant names to my variables and refer to them in a way that helps the reader remember their definition. I agree with the notation $\partial B$ and have changed it in the new version. I have also changed the name of the ring on which the minimization takes place, it is now $\mathcal{R}(a)$ instead of $\mathcal{A}(a)$. Moreover, the name $G_{\textup{approx}}$ is replaced by $G_{\textup{trig}}$, and the parameter $\alpha$ of theorem $1$ has been renamed $\eta$ to avoid the conflict with the coefficients $\alpha_p$ that I use for the Bessel decomposition. 
+\end{response}
+\begin{response}{4. The paper is not very efficiently organized. Many well known results are included with proofs Lemma 1, Lemma 2 and the overall representation could be much more compact. I think 30 pages for paper that follows mainly the
+ideas of another paper [18] without including a numerical comparison is too	much.}
+I tried to reduce as much as possible the size of the manuscript (24 pages with numerical comparison instead of 30 without the numerical comparison). I replaced the whole section 3.3 `conditioning of the linear system` of the first version by a small paragraph and a figure at the end of the subsection `3.2` entitled `numerical stability`. This also allowed to remove the need for the conjectures I had formulated in the first version of the manuscript. I removed three of the four subfigures in Fig. 4 of the first version (now Fig. 2) to keep only the most relevant. I also removed Fig. 5 and 6. I replaced the last section by a comparison between my algorithm and \textit{Fastsum}. Where I could, I removed the content that is not directly useful to either present my method or show the difference with \textit{Fastsum}. In order to make the method easy to access for all researchers, I tried to give a description as self-contained as possible in the first section, and upon suggestion of the first reviewer, a link to my matlab code. I merged corollary 1 and 2 in the first version. Finally, I made some cuts in the proofs mentioned by the reviewer where the details of the computations were not essential.
+\end{response}
+\subsection*{Minor remarks}
+I will only rewrite the remarks for which I think it was useful to add a comment. For the rest, I changed the grammar issues and errors in redaction pointed out by the reviewer. 
+
+\begin{response}
+	{2. Lemma 3 is the well known aliasing formula and should not be a separate
+		lemma with a proof.}
+	I removed the lemma and refer to it as the aliasing formula in the proof of what is now Proposition 2. 
+\end{response}
+\begin{response}{6. The definition of the Sobolev spaces in section 2.1 is not exact.}
+	I don't see any mistake in the definition. To improve the simplicity of this paragraph, I now define the space $H^1_\textit{rad}(B)$ as the intersection of $H^1(B)$ and $L^2_{\textit{rad}}(B)$. 
+\end{response}
+\begin{response}{7. Include a reference to Theorem 2 and equ. (2.5). Maybe the author should
+		also include the formulae for $(e_p,e_q)$ into the Theorem as it is used later on.}
+	I have removed equation (2.5) because it was only needed for the analysis of the conditioning of the linear system (subsection 3.3 of the first version) which I have removed. I didn't find any reference showing exactly Theorem 2, so I included a very short proof. I didn't do it in the first version because I felt like this was not a new result (the eigenfunctions of the Laplace operator on a disk are well-known, and the radial functions are just a subset of them). However, I included a reference for the eigenfunctions of the Laplace operator. Finally I also added the formulas for the scalar products to the statement of the theorem. I did not include the details of as it would take too much space of elementary computations. 
+\end{response}
+\begin{response}
+	{10. There should be a reference for the second equation in section 2.2.}
+	A reference was included and the second equality was modified to reinforce the analogy with the reference. My normalization is a bit different from that of \cite{watson1995treatise} but the formulas are equivalent. 
+\end{response}
+\begin{response}
+	{11. Section 3.1. in `the minimal $H_0^1$ error on $B$ is reached for $\alpha_p = c_p (g)$` should be $\alpha_p = c_p (f)$.}
+	My sentence is actually `... is reached for $\alpha_p = c_p (G)$`, not $c_p(g)$, and this is what I meant. $G$ is the kernel appearing in the formula just before, while there is no function $f$ defined in this section. I rephrased this paragraph to make it clearer: `In the previous approximation, instead of minimizing the error on  $H^1_0(B)$ (which would lead to the choice $\alpha_p = c_p(G)$, the Fourier-Bessel coefficients of $G$, by orthonormal projection), we minimize the error only on the ring $\mathcal{R}(a)$.`
+\end{response}
+\begin{response}
+	{12. I do not like the name sparse Bessel decomposition as the result is not sparse at all. If the author would like to have it sparse he would at lest uses $l_1$ minimization on the coefficients instead of $l_2$ minimization.}
+	I agree with the reviewer. The name of the method is now `EBD` for `Efficient Bessel Decomposition`. 
+\end{response}
+\begin{response}
+	{13. Figure 4c displays the Bessel coefficients of the SBD. If $P$ is the bandwidth of the approximation, how can we have nonzero coefficients for $p > P$ ?}
+	This graph no longer appears in the new version. The problem was that I mislabeled the $x$-axis: the Bessel coefficients were represented in function of $\rho_p$, and not of $p$. There is approximately a factor $\pi$ between the two which explains the problem. 
+\end{response}
+\section*{An other modification}
+
+I the process of comparing my method with \textit{Fastsum}, I was lead to make the following change to increase the performance of my algorithm. I changed the way I compute the close correction matrix that avoids the use of NUFFT, but uses polynomial interpolation instead. I did not include the details, (if my reviewers think it is necessary, I can easily do so) but it can be shown by some elementary estimations that this doesn't affect the complexity of the method. Moreover, it allowed to reduce greatly the offline time of my algorithm. 
+
+	\bibliographystyle{plain}
+	\bibliography{biblio}
+\end{document}
+

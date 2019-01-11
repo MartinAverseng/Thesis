@@ -1,0 +1,148 @@
+\begin{thebibliography}{10}
+
+\bibitem{Fastsum}
+{NFFT} project.
+\newblock See \url{https://www-user.tu-chemnitz.de/~potts/nfft/download.php}.
+
+\bibitem{NUFFTGg}
+{NUFFT} package.
+\newblock See \url{https://cims.nyu.edu/cmcl/nufft/nufft.html}.
+
+\bibitem{abramowitz1964handbook}
+M.~Abramowitz and I.~A. Stegun.
+\newblock {\em Handbook of mathematical functions: with formulas, graphs, and
+  mathematical tables}, volume~55.
+\newblock Courier Corporation, 1964.
+
+\bibitem{Alouges2015}
+F.~Alouges and M.~Aussal.
+\newblock The sparse cardinal sine decomposition and its application for fast
+  numerical convolution.
+\newblock {\em Numerical Algorithms}, 70(2):427--448, 2015.
+
+\bibitem{EBD}
+M.~Averseng.
+\newblock {EBD} toolbox.
+\newblock See \url{https://github.com/MartinAverseng/EBD}.
+
+\bibitem{bentley1975multidimensional}
+J.~L. Bentley.
+\newblock Multidimensional binary search trees used for associative searching.
+\newblock {\em Communications of the ACM}, 18(9):509--517, 1975.
+
+\bibitem{bentley1977complexity}
+J.~L. Bentley, D.~F. Stanat, and E.~H. Williams.
+\newblock The complexity of finding fixed-radius near neighbors.
+\newblock {\em Information processing letters}, 6(6):209--212, 1977.
+
+\bibitem{cheng1999fast}
+H.~Cheng, L.~Greengard, and V.~Rokhlin.
+\newblock A fast adaptive multipole algorithm in three dimensions.
+\newblock {\em Journal of computational physics}, 155(2):468--498, 1999.
+
+\bibitem{coifman1993fast}
+R.~Coifman, V.~Rokhlin, and S.~Wandzura.
+\newblock The fast multipole method for the wave equation: A pedestrian
+  prescription.
+\newblock {\em IEEE Antennas and Propagation Magazine}, 35(3):7--12, 1993.
+
+\bibitem{cooley1965algorithm}
+J.~W. Cooley and J.~W. Tukey.
+\newblock An algorithm for the machine calculation of complex fourier series.
+\newblock {\em Mathematics of computation}, 19(90):297--301, 1965.
+
+\bibitem{dickerson1990fixed}
+M.~T. Dickerson and R.~S. Drysdale.
+\newblock Fixed-radius near neighbors search algorithms for points and
+  segments.
+\newblock {\em Information Processing Letters}, 35(5):269--273, 1990.
+
+\bibitem{NuFFT}
+A.~Dutt and V.~Rokhlin.
+\newblock Fast fourier transforms for nonequispaced data.
+\newblock {\em SIAM J. Sci. Comput.}, 14(6):1368--1393, November 1993.
+
+\bibitem{grebenkov2013geometrical}
+D.~S Grebenkov and B-T Nguyen.
+\newblock Geometrical structure of laplacian eigenfunctions.
+\newblock {\em SIAM Review}, 55(4):601--667, 2013.
+
+\bibitem{greengard1988rapid}
+L.~Greengard.
+\newblock {\em The rapid evaluation of potential fields in particle systems}.
+\newblock MIT press, 1988.
+
+\bibitem{greengard2004accelerating}
+L.~Greengard and J.~Y. Lee.
+\newblock Accelerating the nonuniform fast fourier transform.
+\newblock {\em SIAM review}, 46(3):443--454, 2004.
+
+\bibitem{keiner2009using}
+J.~Keiner, S.~Kunis, and D.~Potts.
+\newblock Using nfft 3---a software library for various nonequispaced fast
+  fourier transforms.
+\newblock {\em ACM Transactions on Mathematical Software (TOMS)}, 36(4):19,
+  2009.
+
+\bibitem{lee2005type}
+June-Yub Lee and Leslie Greengard.
+\newblock The type 3 nonuniform fft and its applications.
+\newblock {\em Journal of Computational Physics}, 206(1):1--5, 2005.
+
+\bibitem{NIST:DLMF}
+F.~W.~J. Olver, A.~B. Olde~Daalhuis, D.~W. Lozier, B.~I. Schneider, R.~F.
+  Boisvert, C.~W. Clark, B.~R. Miller, and B.~V. Saunders.
+\newblock {\it NIST Digital Library of Mathematical Functions}.
+\newblock http://dlmf.nist.gov/, Release 1.0.16 of 2017-09-18.
+
+\bibitem{poplau2006calculation}
+D.~Potts, G.~P{\"o}plau, , and U.~van Rienen.
+\newblock Calculation of 3d space-charge fields of bunches of charged particles
+  by fast summation.
+\newblock In {\em Scientific Computing in Electrical Engineering}, volume~11,
+  pages 241--246. Springer, 2006.
+
+\bibitem{potts2004fast}
+D.~Potts, G.~Steidl, and A.~Nieslony.
+\newblock Fast convolution with radial kernels at nonequispaced knots.
+\newblock {\em Numerische Mathematik}, 98(2):329--351, 2004.
+
+\bibitem{potts2001fast}
+D.~Potts, G.~Steidl, and M.~Tasche.
+\newblock Fast fourier transforms for nonequispaced data: A tutorial.
+\newblock In {\em Modern sampling theory}, pages 247--270. Springer, 2001.
+
+\bibitem{rokhlin1990rapid}
+V.~Rokhlin.
+\newblock Rapid solution of integral equations of scattering theory in two
+  dimensions.
+\newblock {\em Journal of Computational Physics}, 86(2):414--439, 1990.
+
+\bibitem{rokhlin1993diagonal}
+V.~Rokhlin.
+\newblock Diagonal forms of translation operators for the helmholtz equation in
+  three dimensions.
+\newblock {\em Applied and Computational Harmonic Analysis}, 1(1):82--93, 1993.
+
+\bibitem{tolstov2012fourier}
+G.~P. Tolstov.
+\newblock {\em Fourier series}.
+\newblock Courier Corporation, 2012.
+
+\bibitem{turau1991fixed}
+V.~Turau.
+\newblock Fixed-radius near neighbors search.
+\newblock {\em Information processing letters}, 39(4):201--203, 1991.
+
+\bibitem{watson1995treatise}
+G.~N. Watson.
+\newblock {\em A treatise on the theory of Bessel functions}.
+\newblock Cambridge university press, 1995.
+
+\bibitem{wilcox1975scattering}
+C.~H. Wilcox.
+\newblock {\em Scattering theory for the d'Alembert equation in exterior
+  domains}, volume~4.
+\newblock Springer Berlin, 1975.
+
+\end{thebibliography}

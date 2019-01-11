@@ -17,7 +17,7 @@ p = A(2);
 % Donc y approx x^slope * exp(p);
 
 
-loglog(X,Y,'x');
+loglog(X,Y,'o','Markersize',8);
 hold on
 xl = log(xlim)/log(10);
 yl = log(ylim)/log(10);
@@ -27,10 +27,10 @@ ry = diff(yl)/9;
 t = 10.^(linspace(xcentre,xcentre+rx,2));
 p1 = p + ry;
 p2 = p + 2*ry;
-loglog(X,X.^slope*exp(p),'k--');
-loglog(t,t.^slope*exp(p1),'r');
-loglog(t,[t(2) t(2)].^slope*exp(p1),'r');
-loglog([t(1) t(1)],[t(1) t(2)].^slope*exp(p1),'r');
+loglog(X,X.^slope*exp(p),'k--','HandleVisibility','off');
+loglog(t,t.^slope*exp(p1),'r','HandleVisibility','off');
+loglog(t,[t(2) t(2)].^slope*exp(p1),'r','HandleVisibility','off');
+loglog([t(1) t(1)],[t(1) t(2)].^slope*exp(p1),'r','HandleVisibility','off');
 s = sprintf('p = %.3f',fix(slope*1000)/1000);
 text(t(1),t(2)^slope*exp(p2),s)
 grid on;
