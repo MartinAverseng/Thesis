@@ -610,8 +610,8 @@ To compute $q^{\textup{far}}$, recall the following three steps:
 	\setlength{\itemindent}{0em}
 \end{itemize}
 According to \cite[Sec.	 4.3]{keiner2009using}, the complexity of the NUFFT of type 3 is 
-\[O\left(B\log B + (N_x + N_\xi)\log(N_x+N_\xi)\right)\]
-where the bandwidth parameter $B$ is an upper bound of the largest frequency $\xi_\nu$ appearing in the Fourier transform. Here $B \leq \rho_P = O(P)$. On the other hand, equations \eqref{def_a} and  \eqref{eq:NxiEnFonctionDeP} imply that $N_{\xi} \geq N_z$, and by \eqref{eq:NxiEnFonctionDeP}, $N_\xi = O(P^2)$. By definition \eqref{def_a}, we conclude
+\[O\left(B_1 B_2 \log (B_1 B_2) + \abs{\log\varepsilon}^2(N_x + N_\xi)\right)\]
+where $B_1$ and $B_2$ are the bandwidth parameters along each dimension. Here all frequencies lie in a circle of radius $\rho_P = O(P)$, thus $B_1B_2 = O(P^2)$. On the other hand, equations \eqref{def_a} and  \eqref{eq:NxiEnFonctionDeP} imply that $N_{\xi} \geq N_z$, and by \eqref{eq:NxiEnFonctionDeP}, $N_\xi = O(P^2)$. Therefore, the complexity of the NUFFT is $O(P^2 \log(P) \abs{\log \varepsilon}^2)$. By definition \eqref{def_a} and eq. \eqref{eq:valeurDePenFonctionDe_a}, we conclude
 \begin{equation}
 	\label{Complex:far}
 	C_{\textup{far}}(N_z,\varepsilon,\eta) \leq C N_z^{4/3 - 2\eta}\log(N_z) \abs{\log \varepsilon}^{4} .

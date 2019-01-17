@@ -32,33 +32,32 @@
 \newcommand\meta[1]{$\langle\hbox{#1}\rangle$}
 \newcommand\PaperTitle[1]{``\textit{#1}''}
 
-\title{Minor revisions request for manuscript
+\title{Response to minor revisions request for manuscript
 		NUMA-D-17-00638 \\}
 \author{Martin Averseng}
 \date{\today}
 
 \begin{document}
 	
-	I am grateful to the reviewers for their comments on the revised version of this manuscript. 
+	I am grateful to the reviewers for their comments on the revised version of this manuscript. Here is an answer to their comments.
 	
 	\Reviewer{\#1}
 	
 	I corrected the typo indicated by the reviewer whom I thank for their precise indications. The main comment I wish to answer is the last one:
 	\begin{response}
-		{The complexity $O(P ^2 log P+ ...)$ is wrong. The complexity is proportional to the bandwidth.}
+		{The complexity $O(P ^2 \log P+ ...)$ is wrong. The complexity is proportional to the bandwidth.}
 	\end{response}	
 	I don't understand why the formula is wrong, however, I acknowledge  that I did not provide details on how I obtained this formula. The complexity indicated in the reference is 
-	\[O( |I_N| \log |I_N| + \cdots)\,,\]
-	where, as far as I understand,  $|I_N|$  stands for an upper bound of the largest frequency appearing in the transform. Here, the largest frequency is $\rho_P \approx \pi P = O(P).$ This term is thus negligible compared to the remaining terms in the complexity. I included those details in the revised version of the manuscript and hope that the matter is now clearer. 
+	\[O( |I_N| \log |I_N| + |\log \varepsilon|^2\left(N + M\right))\,,\]
+	where, as far as I understand, $|I_N| = N_1 N_2$  where $N_1$ and $N_2$ are the bandwidth along each dimension. Here, all the frequencies lie in a circle of radius $\rho_P \approx \pi P = O(P).$ Therefore, the term 
+	\[O(|I_N| \log |I_N|)\]
+	gives an order $O(P^2 \log(P))$. 
+	I included more details on this computation in the new revision of the manuscript. I hope that this is indeed correct and if so, that it is clearer than before. 
 	
 	\Reviewer{\#2}
 	
 	I wish to thank the second reviewer for his encouraging comments on my manuscript. I incorporated his suggestions to the revised versions.
-	
-	
-	
-	
-	 
+	Upon his remark, I used the term "annulus" instead of "ring" and replaced every instance of $\mathcal{R}(a)$ by $\mathcal{A}(a)$. 
 	
 	  
 	

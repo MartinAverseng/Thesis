@@ -1,0 +1,62 @@
+\documentclass[]{article}
+\input{../../Definitions.tex}
+%opening
+\title{Démonstration des inégalités de type Poincaré}
+\author{Martin Averseng}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{Def}{Convergence faible}
+	Soit $E$ un espace de Hilbert dont le produit scalaire est noté $\inner{\cdot}{\cdot}_E$. On dit que la suite $(u_n)$ converge faiblement vers $u$ si pour tout $v \in E$, 
+	\[\lim_{n \to + \infty} \inner{u_n}{v}_E = \inner{u}{v}_E.\]
+\end{Def}
+
+Dans ce qui suit, on s'apprête à utiliser le (puissant) résultat d'analyse fonctionnelle suivant: 
+
+\begin{The}
+	Soit $E$ un espace de Hilbert et $(u_n)_n$ une suite bornée dans $E$. Alors $(u_n)_n$ admet une sous-suite faiblement convergente. 
+	\label{Faible}
+\end{The}
+
+On utilise aussi le théorème de Rellich:
+\begin{The}
+	Soit $\Omega$ un ouvert borné et connexe de frontière régulière. Alors toute suite $(u_n)$ bornée dans $H^1(\Omega)$ admet une sous-suite convergente dans $L^2(\Omega)$. 
+\end{The}
+
+
+Soit $H^1_\#(\Omega) \isdef \enstq{ u \in H^1(\Omega)}{ \int_{\Omega} u(x) dx = 0}$.
+\begin{The}
+	Il existe une constante $C > 0$ telle que 
+	\[\forall u \in H^1_\#(\Omega),\quad \int_{\Omega} u^2(x) dx \leq C \int_{\Omega} \abs{\nabla u(x)}^2dx\,.\]
+\end{The}
+
+
+Avant de commencer la démonstration, voici l'idée principale de la preuve. Si le résultat était faux, cela voudrait dire qu'il y a des fonctions $u \in H^1_\#(\Omega)$ telles que leur norme $L^2$ est égale à $1$ et la norme de leur gradient est aussi petite que l'on veut. (C'est ce qu'on va bientôt formaliser en prenant la négation de la phrase avec quantificateurs $\forall, \exists$ dans notre raisonnement par l'absurde). Intuitivement, si la norme $L^2$ du gradient est presque $0$, c'est que la fonction est presque constante. Et si la fonction est presque constante, la contrainte de moyenne nulle oblige la fonction à être presque nulle. Or nous avons supposé que $u$ a sa norme $L^2$ égale à $1$. C'est cette contradiction que nous allons faire ressortir précisément dans la démonstration. 
+
+\begin{proof}
+	Pour commencer, nous allons raisonner par l'absurde et donc supposer que le résultat 
+	\[\exists C > 0 : \forall u \in H^1_{\#}(\Omega), \quad  \int_{\Omega} u^2(x) dx \leq C \int_{\Omega} \abs{\nabla u(x)}^2dx\,.\]
+	Pour prendre la négation d'une phrase avec quantificateurs, on change les $\exists$ en $\forall$ et inversement, et dans les prédicats sans quantificateurs, on change $<$ en $\geq$, $\leq$ en $>$, $=$ en $\neq$ etc. Ici, cela donne donc:
+	\[\forall C > 0 : \exists u \in H^1_{\#}(\Omega), \quad  \int_{\Omega} u^2(x) dx > C \int_{\Omega} \abs{\nabla u(x)}^2dx\,.\]
+	Nous supposons par l'absurde que cette phrase est vraie. Cela nous permet d'affirmer que pour tout $n \in \N$, (en prenant $C = n$), il existe une fonction $u_n \in  H^1_{\#}(\Omega)$ telle que 
+	\[\int_{\Omega} u_n^2(x) dx > n \int_{\Omega} \abs{\nabla u_n(x)}^2dx\,.\]
+	Nous normalisons $u_n$ en posant $v_n = \frac{u}{\norm{u}_{L^2(\Omega}}$. En divisant les deux membres de l'inégalité par $\norm{u}_{L^2(\Omega)}^2$, on obtient 
+	\[1 > n \int_{\Omega} \abs{\nabla v_n(x)}^2 dx \]
+	Nous en déduisons 
+	\[\int_{\Omega} \abs{\nabla v_n(x)}^2 dx < \frac{1}{n}\]
+	et donc la suite $(\nabla v_n)_n$ converge vers $0$ dans $L^2(\Omega)$. Par ailleurs, on a 
+	\[\norm{v_n}_{H^1_{\#}(\Omega)}^2 = \int_{\Omega} v_n(x)^2 dx +  \int_{\Omega} \abs{\nabla v_n(x)}^2 dx < 1 + \frac{1}{n} \leq 2\]
+	donc $(v_n)_n$ est bornée dans $H^1_{\#}(\Omega)$. D'après \autoref{Faible}, puisque $H^1_{\#}(\Omega)$ est un espace de Hilbert, on en déduit que $v_n$ admet une sous-suite $w_n$ faiblement convergente vers une limite $w$ dans $H^1_{\#}(\Omega)$.  Puisque $w_n$ est une sous-suite de $v_n$ et que $\nabla v_n$ converge vers $0$, $\nabla w_n$ converge également vers $0$. Utilisons finalement le théorème de Rellich: puisque  $w_n$ est bornée dans $H^1(\Omega)$, elle admet une sous-suite $z_n$ convergente dans $L^2(\Omega)$, dont la limite est notée $z$. Récapitulons: on a $z_n \to z$ dans $L^2$, $\nabla z_n \to 0$ dans $L^2$ et $z_n$ converge faiblement vers $w$ dans $H^{1}_{\#}(\Omega)$. Il nous reste à jongler avec ces différentes limites pour montrer $z = w = 0$ d'où naîtra une contradiction. Pour ce faire, on se concentre sur la convergence la plus faible, c'est à dire celle de $w$: 
+	\[\forall v \in H^{1}_{\#}(\Omega),\quad \inner{z_n}{v}_{H^1} \to \inner{w}{v}_{H^1}\,.\]
+	Les convergences plus fortes que nous avons pour $z_n$ nous permettent de calculer autrement le membre de gauche:
+	\[\inner{z_n}{v}_{H^1} = \int_{\Omega} z_n(x) v(x)dx + \int_{\Omega} \nabla z_n(x) \cdot \nabla v(x)dx \to \int_{\Omega} z(x)v(x) dx\]
+\end{proof}
+
+
+
+
+\end{document}

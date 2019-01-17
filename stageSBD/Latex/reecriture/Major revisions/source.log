@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.26)  11 JAN 2019 13:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.26)  11 JAN 2019 22:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1563,10 +1563,10 @@ f-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
 mbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on source.pdf (23 pages, 257721 bytes).
+Output written on source.pdf (23 pages, 257922 bytes).
 PDF statistics:
- 504 PDF objects out of 1000 (max. 8388607)
- 449 compressed objects within 5 object streams
+ 505 PDF objects out of 1000 (max. 8388607)
+ 450 compressed objects within 5 object streams
  140 named destinations out of 1000 (max. 500000)
  84 words of extra memory for PDF output out of 10000 (max. 10000000)
 

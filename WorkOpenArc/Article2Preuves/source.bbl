@@ -12,6 +12,12 @@ Oscar~P Bruno and St{\'e}phane~K Lintner.
   open arcs.
 \newblock {\em Radio Science}, 47(6), 2012.
 
+\bibitem{costabel1988convergence}
+Martin Costabel, Vince~J Ervin, and Ernst~P Stephan.
+\newblock On the convergence of collocation methods for symm’s integral
+  equation on open curves.
+\newblock {\em Mathematics of computation}, 51(183):167--179, 1988.
+
 \bibitem{jerez2012explicit}
 Carlos Jerez-Hanckes and Jean-Claude N{\'e}d{\'e}lec.
 \newblock Explicit variational forms for the inverses of integral logarithmic
@@ -50,6 +56,18 @@ Lars M{\"o}nch.
   open sound-hard arc.
 \newblock {\em Journal of computational and applied mathematics},
   71(2):343--356, 1996.
+
+\bibitem{postell1990h}
+FV~Postell and Ernst~P Stephan.
+\newblock On the h-, p-and hp versions of the boundary element
+  method—numerical results.
+\newblock {\em Computer Methods in Applied Mechanics and Engineering},
+  83(1):69--89, 1990.
+
+\bibitem{sauter2011boundary}
+Stefan~A Sauter and Christoph Schwab.
+\newblock Boundary element methods.
+\newblock {\em Boundary Element Methods}, pages 183--287, 2011.
 
 \bibitem{stephan1984augmented}
 Ernst~P Stephan and Wolfgang~L Wendland.
