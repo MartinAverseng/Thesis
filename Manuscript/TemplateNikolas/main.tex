@@ -1,0 +1,48 @@
+\documentclass[11pt,a4paper]{phdthesis}
+\usepackage{subfiles}
+\usepackage{pdfpages}
+\input{env.tex}
+
+\begin{document}
+
+% garde est le pdf de page de garde
+% A compiler séparément
+%\includepdf[pages=1]{garde}
+
+
+\newpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\subfile{thanks}
+
+\tableofcontents
+
+\subfile{intro_fr}
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\subfile{intro_en}
+
+\subfile{mub_charact}
+
+
+\appendix
+
+\subfile{lmisdp}
+
+\bibliographystyle{alpha}
+\bibliography{thesis2}
+
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+% garde est le pdf de 4e de couv
+% A compiler séparément
+%\includepdf[pages=1]{quatr}
+
+\end{document}

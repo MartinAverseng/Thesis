@@ -1,0 +1,591 @@
+\documentclass[main]{subfiles}
+
+\begin{document}
+
+\chapter{Characterization of minimal upper bounds in cones}
+\label{chap:mub_charact}
+
+\section{Cones, duality, order relations and faces }
+\label{sec:cone_dual_recall}
+
+\subsection{Cones and dual cones}
+
+
+
+
+\subsection{Classical cones}
+
+\label{sec:classical_cones}
+
+\subsubsection*{Polyhedral cone}
+
+
+\subsubsection*{Non-negative orthant $(\Rplus)^n$}
+
+\subsubsection*{Lorentz cone $\Lor_n$}
+
+\subsubsection*{The Euclidean Lorentz cone}
+
+\subsubsection*{The cone of positive semidefinite matrices $\Snp$}
+
+
+\subsection{Order relation induced by a cone}
+
+\subsection{The faces and extreme rays of a cone}
+
+Given a convex set $\X$, an element $x \in \X$ is called an \emph{extreme point} if for all $x_1, x_2 \in \X$, the equality $x = \frac{1}{2}(x_1 + x_2)$ implies $x_1 = x_2 = x$.
+More generally, given two convex sets $\X,\Y$ such that $\Y \subseteq \X$, the set $\Y$ is called an \emph{extreme face of $\X$} if for all $y \in \Y$ and $x_1, x_2 \in \X$, the equality $y = \frac{1}{2}(x_1 + x_2)$ implies $x_1, x_2 \in \Y$. It is readily seen that an extreme face of a cone is a cone itself. The cones $\{0\}$ and $\Cone$ are called the \emph{trivial extreme faces} of $\Cone$.
+
+\begin{definition}[see~\cite{barker}]
+\label{def:F_definition}
+Given a subset $\X \subseteq \Cone$,
+we denote by $\F(\X)$
+  the smallest extreme face of the cone $\Cone$ that contains the set $\cup_{x \in \X} \{ y \in \Cone \colon 0 \leq y \leq x \}$.  
+  When the set $\X$ is reduced to a single element $x$, we simply write $\F(x)$.
+%Given an element $x \in \Cone$,
+%we denote by $\F(x)$ the smallest extreme face of the cone $\Cone$ that contains the set $\{ y \in \Cone \colon 0 \leq y \leq x  \}$.  
+\end{definition}
+
+We give in the subsequent lemma two basic properties of the map $\F$ and a computational description of the value $\F(\X)$.
+
+\begin{lemma}
+\label{lem:F_basic}
+The map $\F$ is monotone and idempotent: $\A \subseteq \B \subseteq \Cone$ implies $\F(\A) \subseteq \F(\B)$ and $\F\big(\F(\A) \big) = \F(\A)$. Moreover, we have
+\begin{align*}
+\F(x) = \{ \lambda y \colon 0 \leq y \leq x, \, \lambda \geq 0 \}
+\quad\text{and}\quad
+\F(\X) = \F\big( \sum_{x \in \X} \F(x) \big) \,.
+\end{align*}
+Finally, the elements of the extreme face $\F(\A)$ are exactly the non-negative elements of  $\Span \F(\A)$: $\F(\A) = \Cone \cap \Span \F(\A)$.
+\end{lemma}
+\begin{proof}
+By definition, the set $\F(\B)$ contains the set $\B$, and thus also contains the set $\A$. It follows that $\F(\B)$  is an extreme face that contains $\A$, thus $\F(\A) \subseteq \F(\B)$.
+
+The set $\F(\A)$ is an extreme face, thus, by~\Cref{def:F_definition}, the smallest face of $\C$ containing $\F(\A)$ is itself, i.e. $\F\big(\F(\A)\big) = \F(\A)$.
+
+We denote by $G(x) \coloneqq \{ \lambda y \colon 0 \leq y \leq x, \, \lambda \geq 0 \}$. This set is included in $\Cone$. It is also cone since it is closed under multiplication by a positive scalar and addition since $\lambda y_1 + \mu y_2 = (\lambda + \mu) 
+ \big[ \frac{\lambda}{\lambda + \mu} y_1 + \frac{\mu}{\lambda + \mu} y_2 \big]$. Moreover, it trivially contains the set $\{ y \in \Cone \colon 0 \leq y \leq x \}$, thus we have $\F(x) \subseteq G(x)$. Conversely, let $y \in \F(x)$. Since $\F(x)$ is a cone, it must contain $\lambda y$ for all positive $\lambda$, hence $G(x) \subseteq \F(x)$.
+ 
+We denote by $H(\X) \coloneqq \F\big( \sum_{x \in \X} \F(x) \big)$. We have $\X \subseteq \sum_{x \in X} \F(x)$ since $x \in \F(x)$, thus $\F(\X) \subseteq H(\X)$ by monotony. 
+Conversely, following~\Cref{lem:F_basic}, we can write $H(\X)$ as $\F(\Y)$, with $\Y \coloneqq \big\{ \sum_i \lambda_i y_i \colon \lambda_i \geq 0, \; 0 \leq y_i \leq x_i,\; x_i \in \X \big\}$, where all sums are taken on a finite number of elements. Since $\F(\X)$ is a cone, every element $\sum_i  \lambda_i y_i \in \Y$ must also belong to $\F(\X)$. By monotony and idempotence of the map $\F$, we deduce that $H(\X) = \F(\Y) \subseteq \F\big( \F(\X) \big) = \F(\X)$.
+
+The inclusion $\F(\A) \subseteq \Cone\cap \Span \F(\A)$ holds trivially. Conversely, let $x,y \in \F(\A)$ such that $x - y \in \Cone$. We have $0 \preceq x-y \preceq x$ and $x \in \F(\A)$, so by definition of an extreme face, we must have $x-y \in \F(\A)$.
+\end{proof}
+
+Let us point out the extreme faces of the cones introduced in~\Cref{sec:classical_cones}.
+
+\begin{example}~
+\begin{enumerate}
+\item We have $\F(0) = \{0\}$ and  $\F(x) = \Cone$ when $x$ belongs to the interior of $\Cone$.
+\item In the case of the non-negative orthant $(\Rplus)^n$, we have $y \in \F(x)$ if and only if $y_i = 0$ whenever $x_i = 0$. 
+\item More generally, in the case of the polyhedral cone $\Cone_P$, we have $y \in \F(x)$ if and only if $(Py)_i = 0$ whenever $(Px)_i = 0$.
+\item Let $\norm{\cdot}$ denote a strictly convex norm, and $\Lor_n$ the associated Lorentz cone. Then, for $x \in \partial\Lor_n$, we have $\F(x) = \Rplus x$.
+\item In the cone of positive semidefinite matrices, we have $y \in \F(x)$ if and only if $\ran y \subseteq \ran x$.
+\end{enumerate}
+\end{example}
+
+
+%\subsection{Extreme rays of convex cones}
+ 
+%We recall that an \emph{extreme point} $x$ of a convex set $\X$ is a point that cannot be written as the midpoint of two points $x_1, x_2 \in \X$, unless $x_1 = x_2 =x$.
+
+%We say that $x \in \Cone$ is an \emph{extreme ray} of the cone $\Cone$ if cannot be written as the midpoint of two points $x_1, x_2 \in \clocone$, unless there are $\lambda, \mu \geq 0$ such that $x_1 = \lambda x$ and $x_2 = \mu x$. 
+%Equivalently, $x \in \clocone$ is an extreme ray if $0 \preceq y \preceq x$ implies that $y = \lambda x$ for some nonnegative $\lambda$.
+The smallest non-trivial extreme faces are called \emph{extreme rays}, and consist of  vectors $u \in \Cone$ such that $0 \preceq y \preceq u$ implies that $y = \lambda u$ for some non-negative $\lambda$.
+We denote by $\Extr(\Cone)$ the set of extreme rays of the cone $\Cone$.
+Let us also point out that extreme rays are exactly the extreme points of compact sections of $\Cone$:
+%\todo{find reference}
+\begin{lemma}%[\protect{see~\cite[]{}}]
+\label{lem:ray_extr_sect}
+Let $c$ in the interior of $\Cone^\dual$.
+Then $u \in \Cone$ is an extreme ray of $\Cone $ if and only if $u$ is an extreme point of the compact set $\{ y \in \Cone \colon \scal{c}{u-y} = 0 \}$.
+\end{lemma}
+
+We recall that a vector can be decomposed into \enquote{complementary} positive and negative parts.
+
+\begin{lemma}
+\label{lem:cone_decomp}
+Any vector $x \in E$ can be written as $x = x^+ - x^-$ with $x^+, x^- \succeq 0$ and $\F(x^+) \cap \F(x^-) = \{0\}$.
+\end{lemma}
+\begin{proof}
+Let $x \in E$.
+The cone $\Cone$ has non-empty interior, hence $E = \Cone - \Cone$, hence the existence of $x^+, x^- \in \Cone$ such that $x = x^+ -x^-$.
+Among all such decompositions, we choose one than minimizes the sum of the dimensions of the subspaces spanned by the faces $\F(x^+)$ and $\F(x^-)$ (it exists since the cone $\Cone$ is closed and finite-dimensional). 
+
+Assume that the set $F \coloneqq \F(x^+) \cap \F(x^-)$ is not reduced to $0$, and let $u$ in the relative interior of this set. We also define $\lambda$ by
+\begin{align*}
+\lambda \coloneqq \sup \{ \mu > 0 \colon \mu u \preceq x^+, x^- \} \,,
+\end{align*}
+and denote by $y^\pm \coloneqq x^\pm - \lambda u \succeq 0$, so that $x = y^+ - y^-$. By symmetry, we assume that $\lambda$ saturates the inequality $\lambda u \preceq x^+$.
+The inequality $x^+ \preceq \alpha y^+$ for  $\alpha > 1$ is equivalent to $x^+ - \frac{\alpha}{\alpha - 1}\lambda u \succeq 0$. Since $ \frac{\alpha}{\alpha - 1} > 1$, this inequality cannot be satisfied, otherwise it contradicts the definition of $\lambda$.
+Hence the face $\F(y^+)$ is a proper sub-face of $\F(x^+)$ and $\F(y^-) \subset \F(x^-)$, which contradicts the definition of $x^\pm$.
+\end{proof}
+
+Extreme rays of a cone contain a lot of information, as shown by the following lemmas. First, an element $a \in \Cone$ is the supremum of all extreme rays that it dominates. Moreover, in order to compare two elements in $\Cone$, it is sufficient to compare the extreme rays that they dominate.
+
+%\todo[inline]{reference externe ?}
+
+\begin{lemma}
+\label{lem:extr_mub_a}
+Let $a \in \Cone$. Then $a$ is the supremum of all $u \in \Extr(\Cone)$ that it dominates:
+\begin{align*}
+\{a \} = \mub \{ u \in \Extr(\Cone) \colon u \preceq a \} \,.
+\end{align*}
+\end{lemma}
+\begin{proof}
+For simplicity, we denote by $\M \coloneqq \mub \{ u \in \Extr(\Cone) \colon u \preceq a \}$. By definition of a minimal upper bound, there must be $b \in \M$ such that $b \preceq a$.
+
+Assume that there is $m \in \M$ that does not dominate $a$, i.e. $m-a \notin \Cone$.  Then, by~\Cref{lem:cone_decomp}, we can write $m-a = x^+-x^-$, with $x^- \neq 0$ and $\F(x^+) \cap \F(x^-) = \{ 0\}$. The vector $x^-$ can be written as the sum of non-zero distinct extreme rays $x^- = \sum_i u_i$. Let simply $u \coloneqq u_1$ and $v \coloneqq \sum_{i>1} u_i$, so that $\F(u) \cap \F(v) = \{0\}$. Hence $m+u+v = x^+ +a$. 
+We define the map $\phi$ by
+\begin{align*}
+\phi_u \colon x \mapsto \sup \{ \lambda > 0 \colon \lambda u \preceq x \} \,.
+\end{align*}
+First, note that $\phi_u(a) > 0$.
+Then, since $\F(x^+) \cap \F(u) = \{0\}$, we must have $\phi_u(x+a) = \phi_u(a)$ and similarly $\phi_u(m+u+v) = \phi_u(m) + 1$ since $\F(v) \cap \F(u) = \{0\}$. 
+
+We deduce that the extreme ray $u_0 \coloneqq \phi_u(a) u$ satisfies $u_0 \preceq a$ holds but $u_0 \preceq m$ does not. 
+ This contradicts the fact that $m \in \M$, hence we must have $a \preceq m$.
+In particular, $b \in \M$, hence $b = a$. We deduce that $a \in \M$, so $\M \succeq a$ and $\M = \{a\}$ by minimality.
+\end{proof}
+
+\begin{lemma}
+\label{lem:preceq_extr_mon}
+Let $a, b \in \Cone$.
+If $u \preceq a$ implies $u \preceq b$ for all $u \in \Extr(\Cone)$, then $a \preceq b$.
+\end{lemma}
+\begin{proof}
+By~\Cref{lem:extr_mub_a}, we have
+\begin{align*}
+\{ u \in \Extr(\Cone) \colon u \preceq a \} \preceq \mub \{ u \in \Extr(\Cone) \colon u \preceq b \} = \{ b \}
+\end{align*}
+Hence there must be a minimal upper bound of $\{ u \in \Extr(\Cone) \colon u \preceq a \}$ that is less than $b$. By~\Cref{lem:extr_mub_a}, the vector $a$ is the unique minimal upper bound of this set, hence $a \preceq b$.
+\end{proof}
+
+\subsection{Faces of the dual cone}
+
+We point out a  canonical way to map extreme faces of a cone $\Cone$ to extreme faces of its dual cone $\Cone^\dual$.
+\begin{definition}
+Given an extreme face $\F$ of the cone $\Cone$, we denote by $\F^\sharp$ the set defined by
+\begin{align*}
+\F^\sharp \coloneqq \Cone^\dual \cap \F^\perp \,.
+\end{align*}
+In other words, we have
+\begin{align*}
+y \in \F^\sharp \iff 
+\Big(
+y \in \Cone^\dual \;\text{and}\;\scal{ x }{ y } = 0, \; \forall x \in \F
+\Big) \,.
+\end{align*}
+\end{definition}
+
+
+\begin{lemma}
+\label{lem:dual_face_prop}
+~
+\begin{enumerate}
+\item If $\F$ is an extreme face of the cone $\Cone$, then $\F^\sharp$ is an extreme face of the dual cone $\Cone^\dual$.
+\item We have $( \cap_k \F_k )^\sharp = \sum_k \F_k^\sharp$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Indeed, let $y_1, y_2 \in \Cone^\dual$, $y \in \F^\sharp$ such that $2y = y_1 + y_2$, and $x \in \F$. By definition of the dual cone, we have $\scal{y_i }{ x} \geq 0$ for $i\in\{1,2\}$. Moreover, by definition of $y$, we have $\scal{y_1 + y_2 }{x} = 0$, hence $\scal{y_i }{ x} = 0$  for $i\in\{1,2\}$. This holds for all $x \in \F$, thus $y_1, y_2 \in \F^\sharp$.
+
+By~\Cref{lem:F_basic}, any extreme face $\F$ must satisfy $\F = \Cone \cap \Span \F$.
+We can then deduce from the definition the sequence of equalities:
+\begin{align*}
+( \cap_k \F_k )^\sharp = \Cone^\dual \cap (\cap_k \F_k)^\perp = \Cone^\dual \cap \big( \sum_k \F_k ^\perp \big) = \sum_k \F_k^\sharp \,. \qquad\hfill \qedhere
+\end{align*}
+\end{proof}
+
+
+
+Let us again illustrate the map $\cdot^\sharp$ on the extreme faces of the classical cones.
+
+\begin{example}~
+\begin{enumerate}
+\item We have $\{0\}^\sharp = \Cone^\dual$ and  $\F(x)^\sharp = \{0\}$ when $x$ belongs to the interior of $\Cone$.
+%\item When $\Cone = (\Rplus)^n$, we have $y \in \F(x)^\sharp$ if and only if $y_i = 0$ whenever $x_i \neq 0$. 
+%\item More generally, if the cone $\Cone$ is polyhedral ($x \in \Cone \iff \forall i,\, \scal{p_i \mid  x} \geq 0$), then $y \in \F(x)$ if and only if $ \scal{p_i \mid y} = 0$ whenever $ \scal{p_i \mid x} \neq 0$, i.e. when the constraint $i$ is inactive.
+%\item When $\Cone = \Lor_n$ and $x \in \partial\Cone$, we have $\F(x)^\sharp = \Rplus (Jx)$.
+%\item More generally, if the cone $\Cone$ is polyhedral and generated by the set of vectors $\P$, then $y \in \F(x)^\sharp$ if and only if $ \scal{p }{ y} = 0$ whenever $ \scal{p }{ x} \neq 0$ for $p \in \P$.
+\item In the case of the non-negative orthant $(\Rplus)^n$, we have $y \in \F(x)^\sharp$ if and only if $y_i = 0$ whenever $x_i \neq 0$. 
+\item More generally, in the case of the polyhedral cone $\Cone_P$, a vector $y \in \Cone^\dual$ belongs to the face $\F(x)^\sharp$ 
+% $\scal{y}{x} = 0$. In other words, we have $y \in \F(x)^\sharp$ if and only if 
+if and only if $y_i = 0$ whenever $(Px)_i > 0$.
+\item Let $\norm{\cdot}$ denote a strictly convex norm, and $\Lor_n$ the associated Lorentz cone. Then, for $x \in \partial\Lor_n$, we have $\F(x)^\sharp = \Rplus \big( J_{1,n}x \big)$.
+\item In the cone of positive semidefinite matrices, we have $y \in \F(x)^\sharp$ if and only if $\ran x \perp \ran y$, i.e. $xy = 0$
+\end{enumerate}
+\end{example}
+
+\section{Characterization of minimal upper bounds}
+\label{sec:mub_cone_char}
+
+\subsection{The main result}
+
+We now establish several equivalent characterizations of minimal upper bounds in orderings induced by cones.
+
+\begin{theorem}
+\label{thm:mub_cone_char}
+Let $E$ be a finite dimensional vector space,  $\Cone \subset E$ be a cone and $\preceq $ denote the ordering induced by $\Cone$ on $E$.
+Given a compact subset $\A \subseteq E$ and $x \succeq \A$, the following assertions are equivalent:
+\begin{enumerate}[(i)]
+\item \label{it:mub_cone_1} $x$ is a minimal upper bound of $\A$ in $E$,
+\item \label{it:mub_cone_2} $\cap_{a \in \A} \F(x-a) = \{ 0 \}$,
+\item \label{it:mub_cone_3} $\sum_{a \in \A} \F(x-a) ^\sharp = \Cone^\dual$,
+\item \label{it:mub_cone_4} there is $c \in \interior \Cone^\dual$ such that $\scal{ c }{ x } \leq \scal{ c }{ y}$ for all $y \succeq \A$.
+\end{enumerate}
+Moreover, when $\A \subseteq \Cone$, $x \succeq \A$ is a minimal upper bound of $\A$ if and only if
+\begin{enumerate}[(i)]
+\setcounter{enumi}{4}
+\item \label{it:mub_cone_5}
+$x \in \F(\A)$ and there is $c \in \interior (\Cone^\dual \cap V)$ such that $\scal{c}{x} \leq \scal{c}{y}$ for all $y \in V$ such that $y \succeq \A$,
+with $V = \Span \F(\A)$.
+\end{enumerate}
+\end{theorem}
+
+The proof is given  in~\Cref{sec:mub_cone_char_proof}. We first give a remark and describe the geometric interpretation of each assertion.
+
+
+\begin{remark}
+\label{rem:mlb_cone}
+A similar result holds for maximal lower bounds of the set $\A$ since the map $ x\mapsto -x$ is monotone. In this case, assertions~\eqref{it:mub_cone_2} and~\eqref{it:mub_cone_3} are unchanged, while assertions~\eqref{it:mub_cone_4} and~\eqref{it:mub_cone_5} require instead that $\scal{c}{x} \geq \scal{c}{y}$ for all $y \preceq \A$.
+\end{remark}
+
+The assertions~\eqref{it:mub_cone_2} and~\eqref{it:mub_cone_3} above  are dual versions of one another and mean that, in some sense, the vector $x$ "sticks" to the set $\A$ in a sufficient number of directions,
+and that these directions span the whole space $E$.
+% this number being at least equal to the dimension of the space.
+
+Moreover, the set $\{ y \in E \colon y \succeq \A \}$ is convex and bounded below by $\A$. The map $y \mapsto \scal{c}{y}$ is also strictly increasing when $c \in \interior \Cone^\dual$. Thus there must be $x \succeq \A$ which minimizes the value of this map. Assertion~\eqref{it:mub_cone_4} in~\Cref{thm:mub_cone_char} means that the minimal upper bounds of $\A$ are precisely the minimizers of the maps $y \mapsto \scal{c}{y}$ for $c \in \interior \Cone^\dual$.
+
+Assertion $\eqref{it:mub_cone_5}$ in ~\Cref{thm:mub_cone_char} can be seen as a refinement on assertion $\eqref{it:mub_cone_4}$ in the sense that the characterization no longer depends on the ambient space. Let us illustrate this fact. Let $\Cone_1, \Cone_2$ denote two cones in $E$. Then $\Cone \coloneqq \Cone_1 \times \Cone_2$ is a cone in $E \times E$, and the interior of $\Cone$ is $(\interior \Cone_1) \times \interior( \Cone_2 )$. Now let $\A_1 \subset \interior \Cone_1$, so that $\F(\A_1) = \Cone_1$.
+We also introduce the set $\A \coloneqq \A_1 \times \{0\} = \{ (a,0) \colon a \in \A_1 \}$, so that $\F(\A) = \Cone_1 \times \{0 \}$ and $V = E \times \{0 \}$. The interior of the cone $\Cone_2$ does not appear in the data provided by the set $\A$. Thus, we would expect the  interior of $\Cone_2$ not to appear in the characterization of minimal upper bounds of $\A$. 
+
+However, the latter cone does appear in assertion $\eqref{it:mub_cone_4}$. Indeed, it requires that a minimal upper bound $x = (x_1,x_2) \in \Cone$ minimizes the scalar product $\scal{(c_1,c_2)}{(x_1,x_2))}$ for some $c_1 \in \interior \Cone_1$ and $c_2 \in \interior \Cone_2$.
+
+Assertion~\eqref{it:mub_cone_5} "corrects" this discrepancy: it is sufficient to consider candidates to be minimal upper bounds of $\A$ in $\F(\A)$, and the vector $c$ that selects these minimal upper bounds may be taken in the interior of the dual cone of $\F(\A)$ in the vector space $V$. In the previous example, it is thus sufficient to consider upper bounds of $\A$ of the form $(x_1, 0)$ and variables $c$ of the form $(c_1, 0)$.
+
+
+\subsection{\texorpdfstring{Proof of~\Cref{thm:mub_cone_char}}{Proof of Theorem 1.2}}
+\label{sec:mub_cone_char_proof}
+
+\paragraph{$\eqref{it:mub_cone_1} \iff \eqref{it:mub_cone_2}$}
+Let $x \succeq \A$ and $u \in \cap_{a \in \A} \F(x-a)$. By definition, we have $u \succeq 0$. Since $\A$ is compact and $E$ is finite-dimensional, there must be $\varepsilon > 0$ such that $\varepsilon u \preceq x-a$ for all $a \in \A$. Thus $a \preceq x- \varepsilon u \preceq x$ for all $a \in \A$. It follows that $x$ is a minimal upper bound $\A$ if and only if $u = 0$.
+
+\paragraph{$\eqref{it:mub_cone_2} \iff \eqref{it:mub_cone_3}$}
+This is a trivial consequence of~\Cref{lem:dual_face_prop} and the fact that $\{0\}^\sharp = \Cone^\dual$.
+
+\paragraph{$ \eqref{it:mub_cone_3} \implies \eqref{it:mub_cone_4} $}
+The cone $\Cone^\dual$ has non-empty interior, thus there must, by assertion~\eqref{it:mub_cone_3}, be some vectors $a_k \in \A$ and $\lambda_k \in \F(x-a_k)^\sharp$ such that $c \coloneqq \sum_k \lambda_k \in \interior \Cone^\dual$. We compute the value of $\scal{c}{y}$ for some $y \succeq \A$:
+\begin{align*}
+\scal{c}{y} = \sum_k \scal{\lambda_k}{y -a_k} + \sum_k \scal{\lambda_k}{a_k} 
+\geq \scal{\sum_k \lambda_k}{x} 
+= \scal{c}{x} \,, 
+\end{align*}
+since, by definition of $\F(x-a_k)^\sharp$, we have $\scal{\lambda_k}{y-a_k} \geq 0$ and $\scal{\lambda_k}{x-a_k} = 0$.
+
+\paragraph{$ \eqref{it:mub_cone_4} \implies \eqref{it:mub_cone_1} $}
+Assume that $x \succeq \A$ is not a minimal upper bound of $\A$, so there is a vector $z \neq x$ such that $\A \preceq z \preceq x$.
+By assertion~\eqref{it:mub_cone_4}, there is a vector $c$ in the interior of $\Cone^\dual$ such that $\scal{c}{x} \leq \scal{c}{y}$ for all $y \succeq \A$. This holds in particular for $y = z$, so we have $\scal{c}{x} \leq \scal{c}{z}$.
+Moreover, since the vector $c$ belongs to the interior of the dual cone, the map $y \mapsto \scal{c}{y}$ is strictly monotone, thus $\scal{c}{z} < \scal{c}{x}$, which contradicts the previous inequality. Hence $x$ must be a minimal upper bound.
+
+\paragraph{$ \eqref{it:mub_cone_4} \implies \eqref{it:mub_cone_5} $}
+First we show that $x \in \F(\A)$. For all $a \in \A$, we can write $x = (x-a) + a$, with $a, x-a \succeq 0$, thus we have $x \in \F(\A) + \F(x-a)$. This inclusion holds for all $a$. We deduce that
+\begin{align*}
+x \in \cap_{a \in \A} \big[ \F(\A) + \F(x-a) \big] \subseteq \big[ \cap_{a\in \A} \F(x-a) \big] + \F(\A)  \,.
+\end{align*}
+ By assertion~\eqref{it:mub_cone_2}, we have $\cap_{a\in \A} \F(x-a) = \{0\}$, hence $x \in \F(\A)$.
+Next, since $\F(\A) = \Cone \cap V$, we have $\F(\A)^\dual = \Cone^\dual + V^\dual = \Cone^\dual + V^\perp$. We deduce that $\Cone^\dual \cap V = \F(\A)^\dual \cap V$.
+The cone $\F(\A)$ has non-empty interior in the vector space $V$, thus assertion~\eqref{it:mub_cone_5} is a direct consequence of applying assertion~\eqref{it:mub_cone_4} in the space $V$. 
+
+\paragraph{$ \eqref{it:mub_cone_5} \implies \eqref{it:mub_cone_4}$}
+Since a minimal upper bound of $\A$ in $\Span \F(\A)$ is a minimal upper bound of $\A$ in $E$, this proof is the same as $\eqref{it:mub_cone_4} \implies \eqref{it:mub_cone_1}$, except the vector space $E$ has been replaced by the vector space $V$. 
+
+
+\section{Application to classical cones}
+\label{sec:mub_cone_coro}
+
+We now specialize~\Cref{thm:mub_cone_char} to each of the $3$ types of cones that have been introduced in~\Cref{sec:classical_cones}. We illustrate in each case the meaning of each condition, and provide some additional description of the set of minimal upper bounds in each case.
+
+%It will be convenient to represent an upper bound $x$ of elements $a \in \A$ by looking at the intersections of the sets $ x - \Cone$ (resp. $ a - \Cone$) with an affine hyperplane $\H \coloneqq \{ z \colon \scal{c}{z} = \alpha \}$, which are denoted by $\P_x$ (resp. $\P_a$), with $c \in \Cone^\dual$ and $\alpha < \min_{a \in \A} \scal{c}{a}$.
+%
+% The sets $\P_x$ (resp. $\P_a$), also called \emph{penumbras}, can be interpreted as the subset of $\H$ lit by a light source placed at $x$ (resp. $a$) whose light cone is $-\Cone$.
+%
+%We call the space $\{ z + s\P \colon z \in \H, s\geq 0 \}$ the space of \emph{$\P$-penumbras}.
+%
+%Clearly, given two upper bounds $x,y \succeq \A$, the fact that $x \preceq y$ is equivalent to $\P_x \subseteq \P_y$. 
+%Moreover, $x$ is a minimal upper bound of $\A$ if and only if $\P_x$ is a minimal upper bound of $\{ \P_a \colon a \in \A\}$ in the inclusion order in the space  of $\P$-penumbras.
+%
+
+\subsection{Polyhedral cones}
+\label{sec:appli_poly}
+
+In this section, let $\Cone_P$ denote the polyhedral cone associated with the full-rank matrix $P = \begin{pmatrix}
+p_1^T \dots p_m^T
+\end{pmatrix}^T$
+and $\preceq$ the induced ordering.
+
+\begin{corollary}[Minimal upper upper bounds in polyhedral cones]
+\label{cor:mub_poly}
+Given a compact subset $\A \subset \R^n$ and $x \succeq \A$, the following assertions are equivalent:
+\begin{enumerate}
+\item $x$ is a minimal upper bound of $\A$ in $(E, \preceq)$,
+\item \label{it:mub_pol_2}
+There are  linearly independent rows $\{p_i\}_{i\in I}$ of the matrix $P$ and vectors $a_i \in \A$ such that
+$\scal{p_i}{x-a_i} = 0 $ for all $i \in I$ and $\sum_{i\in I} p_i \in \interior \Cone_P^\dual$.
+%The sum of vectors $p_i$ such that $\scal{p_i}{x-a} = 0 $ for some $a$ (depending on $i$) belongs to the interior of $\Cone_{P}^\dual$,
+\item There is a subset $I \subset \{1, \cdots,m\}$ such that $\scal{\sum_{i\in I} p_i}{y - x}$ is non-negative for all $y \succeq \A$ and $\sum_{i\in I} p_i \in \interior \Cone_P^\dual$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+This proof is a translation of~\Cref{thm:mub_cone_char} to the special case of polyhedral cones.
+Let $I \subset \{1,\cdots,m\}$ such that $i \in I$ if and only if there is some $a \in \A$ such that $\scal{p_i}{x-a} = 0$.
+%For all $a \in \A$, let $I_{x-a}$ denote the set of indices $i$ such that $\scal{p_i}{x-a} = 0$.
+Let $y \in \cap_{a \in \A} \F(x-a)$.
+Then, for all $i\in I$, we must have $\scal{p_i}{y} = 0$.
+The fact that such a vector $y$ is equal to $0$ if and only if the vector $\sum_{i\in I}p_i$ is in the interior of $\Cone_P^\dual$.
+\end{proof}
+
+In the case of polyhedral cones, we can provide some additional structural properties of the set of minimal upper bounds of a \emph{finite set} $\A$. In particular, the set of minimal upper bounds is a polyhedral complex, (see~\cite{DeLoera2010} for more background).
+
+\begin{proposition}
+The set of minimal upper bounds of a \emph{finite set} $\A \subset E$ with respect to $\preceq$ is a compact polyhedral complex: it is given as  the union of finitely many closed polyhedral cells $C_I$ in $E$ and $C_I \cap C_J$ is also a cell for all $I,J$.
+
+Each cell $C_I$ corresponds to a subset $I \subset \{ 1, \cdots, m\}$ for which the rows $\{p_i\}_{i \in I}$ satisfy $\sum_{i\in I} p_i \in \Cone_P^\dual$. It consists of 
+% elements of $\A$ indexed as $\{a_i\}_{i \in I}$, and consists of 
+ the vectors $x$ such that
+\begin{align*}
+x \succeq \A\;\text{and}\; \scal{ p_i}{x -a_i } = 0 \,, \forall i \in I \,.
+\end{align*}
+
+Moreover, the dimension of the cell $C$ (i.e. the dimension of its affine hull) is equal to the co-dimension of $\Span \{p_i\}_{i \in I}$ .
+%and such that $\sum_{i\in I(C)} p_i \in \Cone_P^\dual$, elements of $\A$ indexed as $\{a_i\}_{i \in I(C)}$ in $\E$.
+
+Finally, the number of such cells is bounded by $\sum_{k = 2}^n \binom{m}{k}$.
+\end{proposition}
+
+\begin{proof}
+The set of minimal upper bounds is closed because the cone $\Cone_P$ is closed.
+
+By~\Cref{cor:mub_poly}, an upper bound $x$ of the set $\A$ is a minimal upper bound if and only if there is a subset $I \subset \{1,\cdots,m\}$ such that for all $i \in I$ there is a vector $a_i \in \A$ such that $\scal{p_i}{x-a_i} = 0$, and such that $\sum_{i \in I} p_i \in \Cone_P^\dual$.
+
+We consider the set $S(I)$ of all minimal upper bounds $y$ such that $\scal{p_i}{x-a_i} = 0$ for all $i \in I$.
+The fact that $y$ is an upper bound is written $\scal{p_i}{y-a} \geq 0$ for all $p_i$ and $a$. 
+In combination with the previous equalities, we deduce that $S(I)$ is a polyhedron. Moreover, the vector $y$ belongs to the intersection of the translated cone $a_1 + \Cone$ and the affine subspace defined by $\scal{\sum_{i\in I} p_i}{y} = \sum_{i\in I} \scal{p_i}{a_i}$ with $\sum_{i\in I} p_i \in \Cone_P^\dual$. Hence, by~\Cref{lem:ray_extr_sect}, the polyhedron $S(I)$ is bounded.
+%Hence a minimal upper bound $y$ is characterized by finitely many such equations, and constitutes a polyhedron.
+Since the cone $\Cone_P$ is pointed, no combination of inequalities of the form $\scal{p_i}{x-a} \geq 0$ implies that $x$ belongs to a lower dimensional subspace. Hence only equations of the form $\scal{p_i}{x-a_i} = 0$ impact the dimension of the polyhedron, from which we deduce that its dimension equals the co-dimension of $\Span \{p_i\}_{i \in I}$.
+This characterization also shows that the intersection of two cells is again a (possibly empty) cell.
+
+The set of minimal upper bounds $S(I)$ is the result of choosing a subset $I \subset \{1, \cdots, m\}$ such that $\sum_{i\in I} p_i \in \Cone_P^\dual$. By~\Cref{thm:mub_cone_char}, it is sufficient that $\card I \leq n$. 
+There are only finitely such subsets, hence the whole set of minimal upper bounds is bounded.
+We deduce at once the estimate on the number of cells by counting the number of such subsets.
+\end{proof}
+
+We illustrate this results on the polyhedral cone from~\Cref{fig:ex_poly_cone}. Given two vectors in $\R^n$, we plot in~\Cref{fig:ex_mub_poly}
+ the section of the cones emanating from these elements as well as sections from the ones emanating from  minimal upper bounds. In this case, the set of minimal upper bounds is constituted of the reunion of $5$ segments. 
+
+
+%\begin{figure}[t]
+%\centering
+%%\begin{animateinline}[autoplay,loop,every=2,palindrome,poster=first]{30}
+%%  \multiframe{320}{i=20+1}{%
+%%      \includegraphics[width=.45\textwidth,angle=90,origin=c]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_\zeropad{12345}{\i}}
+%%  }
+%%\end{animateinline}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00031}
+%}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00091}
+%}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00151}
+%}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00211}
+%}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00271}
+%}
+%\fbox{
+%\includegraphics[width=0.29\textwidth]{tikz/mub_poly/Ex_mub_poly_anim/Ex_mub_poly_anim_00331}
+%}
+%\caption[Representation of the minimal upper bounds of two elements with respect to a polyhedral cone]{Representation of the minimal upper bounds of two elements with respect to a polyhedral cone
+%\footnotemark
+%}
+%\label{fig:ex_mub_poly}
+%\end{figure}
+
+\footnotetext{If the animation does not run due to reader compatibility issues, an online version is available at~\url{http://www.cmap.polytechnique.fr/~stott/assets/thesis/animations/Ex_mub_poly_anim.mp4}
+}
+
+%
+%Moreover, we show that there are two elements $a,b \in \E$ which are not comparable and yet have a unique minimal upper bound with respect to $\preceq$. This is proved in the subsequent proposition.
+%
+%\begin{proposition}
+%A polyhedral cone $\Cone_P$ never induces an anti-lattice structure on the space $\E$.
+%\end{proposition} 
+%\begin{proof}
+%%We give a geometric proof using the penumbras and the notation defined in~\Cref{sec:mub_cone_coro}. 
+%
+%We denote by $\P$ the polyhedron defined by $\P \coloneqq \Cone \cap \H$.
+%Let $h \in \H$ which exposes a vertex of $\P$, that is the set of minimizers of $\scal{h}{z}$ for $z\in \P$ is a single point.  We denote the associated vertex by $v_0$.
+%
+%Let $0 < s < 1$.
+%We claim that the choices:
+%\begin{align*}
+%a &\coloneqq \argmin \scal{h}{z} \;\text{s.t.}\; z + s\P \subseteq \P \\
+%b & \in \argmin \scal{-h}{v} \;\text{s.t.}\; v \in \text{vertex}(\P)
+%\end{align*}
+%provide two polyhedra $\P_a = a + s\P$ and $\P_b = \{b\}$ whose only minimal upper bound is $\P$.
+%
+%First, since $s<1$, we cannot have $b \in \P_a$, hence $\P_a$ and $\P_b$ are not comparable in the inclusion order.
+
+
+%
+%\end{proof}
+
+
+
+\subsection{The (generalized) Lorentz cone}
+\label{sec:lor_interp_geo}
+In this section, 
+let $\norm{\cdot}$ denote a strictly convex norm on $\R^{n+1}$, $\Lor_n$ denote the associated Lorentz cone and $\preceq$ the order induced by this cone. For convenience, we write elements of $\Lor_n$ as $\hat x = (t \; x)$, so that $\hat x \in \Lor_n \iff \norm{x} \leq t$.
+
+\begin{corollary}[Minimal upper bounds in $\Lor_n$]
+\label{cor:mub_lor}
+Given a compact subset $\A \subset \R^{n+1}$ and $\hat x \succeq \A$, the following assertions are equivalent:
+\begin{enumerate}
+\item $\hat x$ is a minimal upper bound of $\A$,
+\item there are $\hat a,\hat b \in \A$ such that $(\hat x-\hat a)$ and $ (\hat x-\hat b)$ are not colinear and belong to the boundary of the Lorentz cone $\partial \Lor_n$,
+ \item there is $\hat c = (r \; c)^T \in E$ such that $\norm{c} < r$ and $\scal{\hat c}{\hat y-\hat x} \geq 0$ for all $\hat y \succeq \A$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Non-trivial extreme faces of the Lorentz cone associated with a strictly convex norm are $1$-dimensional cones of the form $\F(\hat x) = \Rplus \hat x$ for some $\hat x \in \partial \Lor_n$. Thus, in order for the intersection of $\F(\hat x- \hat a)$  over all $\hat a \in \A$ to be zero, it is both necessary and sufficient to have two elements $\hat a,\hat b \in \Lor_n$ such that $\Rplus (\hat x-\hat a) \cap \Rplus (\hat x-\hat b)$ is zero.
+Finally, the vector $(r\;c)^T$ belongs to the interior of the Lorentz cone $\Lor_n$ if and only if $\norm{c} < r$.
+\end{proof}
+
+%It will be convenient to introduce a geometric interpretation of elements of the Lorentz cone and the resulting interpretation of minimal upper bounds.
+It will be convenient to represent elements $\A \subset \R^{n+1}$ and upper bounds $\hat x$ of $\A$ by  the intersections of the sets $ \hat x - \Lor_n$ (resp. $ a - \Lor_n$) with an affine hyperplane $\H \coloneqq \{ z \colon \scal{c}{z} = \alpha \}$ with $c \in \interior \Lor_n$ and $\alpha < \min_{a \in \A} \scal{c}{a}$. We use the notation $\plong(\hat x) = ( \hat x - \Lor_n)\cap \H$.
+
+ The sets $\plong(\hat x)$ (resp. $\plong(\hat a)$), also called \emph{penumbras}, can be interpreted as the subset of $\H$ lit by a light source placed at $\hat x$ (resp. $\hat a$) whose light cone is $-\Lor_n$. This interpretation is a generalization of the physical case when the norm is the Euclidean norm.
+
+In the special case where $\hat{x} = (t\;x)^T \in \Lor_n$, the penumbra $\plong(\hat x)$ is the $\norm{\cdot}$-ball centered at $x$ with radius $t$:
+\begin{align*}
+\plong(\hat{x})  \coloneqq B(x,t) = \{ y \in E \colon \norm{x-y} \leq t \} \,.
+\end{align*}
+The fact that $\hat{x} \in \Lor_n$ is equivalent to $0 \in \plong(\hat{x})$. Moreover,  $\hat{x} \preceq \hat{y}$ if and only if $\plong(\hat{x}) \subseteq \plong(\hat{y})$, because $\norm{y-x} \leq t-s$ is equivalent to $s + \norm{y-x} \leq t$.
+Moreover, recall that the vector $\hat y - \hat x = (t-s\;\; y-x)^T$ belongs is an extreme face of the Lorentz cone if and only if $t-s = \norm{y-x}$, i.e. if and only if the balls $\plong(\hat x)$ and $\plong(\hat y)$ are tangent to one another.
+Thus $\hat{x} \in \R^{n+1}$ is a minimal upper bound of $\A$ if and only if $\plong(\hat x)$ is a minimal upper bound of $\cup_{\hat a \in \A} \plong(\hat a)$ in the inclusion order on the space of penumbras.
+
+By~\Cref{cor:mub_lor}, a necessary and sufficient condition for an upper bound $\hat x$ of $\A$ to be a minimal upper bound is the existence of vectors $\hat a$ and $\hat b$ such that either
+\begin{enumerate}
+\item $\hat a = \hat b = \hat x$ or
+\item $(\hat x-\hat a), (\hat x-\hat b)$ belong to  distinct extreme faces.
+\end{enumerate}
+
+In the first case, the vector $\hat a \in \A$ is an upper bound of $\A$, thus it is the only minimal upper bound of $\A$.
+In the second case, we show that there are infinitely many minimal upper bound that constitute a non-compact set. This aspect separates strictly convex Lorentz cones from polyhedral cones which are not strictly convex, since we have shown in~\Cref{sec:appli_poly} that the set of minimal upper bounds of a finite set with respect to a polyhedral cone is compact. This is summarized in the following proposition.
+
+\begin{proposition}
+Let $\Lor_n$ denote the Lorentz cone associated with a strictly convex norm.
+The space $(E, \Lor_n)$ is an \emph{anti-lattice}, i.e. two elements $\hat a, \hat b$ have a unique minimal upper bound if and only if they are comparable.
+When $\hat a$ and $\hat b$ are not comparable, the set of their minimal upper bounds is closed, unbounded and it can be identified to $\R^{n-1}$.
+\end{proposition}
+
+\begin{proof}
+Let us first consider the case $n = 2$. 
+Assume that $\hat a, \hat b$ are not comparable. Then the sets $(\hat a + \Lor_n)$ and $(\hat b + \Lor_n)$ are not comparable in the inclusion order either.
+By~\Cref{cor:mub_lor}, the set of minimal upper bounds of $\hat a, \hat b$ is exactly given by the intersection of the boundaries of the latter sets, i.e.
+\begin{align*}
+\mub \{ \hat a,\hat b\} = ( \hat a + \partial \Lor_n) \cap ( \hat b + \partial \Lor_n) \,.
+\end{align*}
+This intersection is a (continuous) curve in $\R^3$ that is unbounded in two directions, i.e. it can be identified with $\R$.
+
+Now, let $n \geq 2$. Let $\V$ denote any $2$-dimensional affine subspace that contains the centers of the $\norm{\cdot}$-ball $\plong(\hat a), \plong(\hat b)$. We denote by $\D(\hat x)$ the disk obtained as the intersection of the $\norm{\cdot}$-ball $\plong(\hat x)$ and the subspace $\V$ for any $\hat x = (t\;x)^T$ such that $x \in \V$. We then have the equivalence: $\D(\hat x) \subseteq \D(\hat y)$ if and only if $\plong(\hat x) \preceq \plong(\hat y)$. Indeed, if there were an element $z \in \R^n$ such that $z \in \plong(s, x)$ and $z \notin \plong(t,y)$, we would have
+\begin{align*}
+\norm{x} + s \leq t < \norm{z} \leq  \norm{x} + \norm{z - x} \leq \norm{x} + s \,.
+\end{align*}
+By the first part of the proof, the set of minimal upper bounds whose penumbra's center belongs to $\V$ is unbounded and can be identified with $\R$. 
+
+The set of $2$-dimensional affine subspaces in $\R^n$ that contains the centers of the balls $\plong(\hat a), \plong(\hat b)$ is homeomorphic to
+\begin{align*}
+\bigslant{\O(n-1)}{\big(\O(1) \times \O(n-2)\big)} \cong \R^{n-2}
+\end{align*}
+hence the whole space of minimal upper bounds can be identified with $\R \times \R^{n-2}$.
+\end{proof}
+
+
+ Given two vectors in $\R^{3}$, we plot in~\Cref{fig:ex_mub_lor}
+the \emph{penumbras} of these elements as well as the penumbras of some of  their minimal upper bounds. In this case, the set of minimal upper bounds is parametrized by a single real variable. 
+
+%\begin{figure}[t]
+%\centering
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00031}
+%}
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00091}
+%}
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00151}
+%}
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00211}
+%}
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00271}
+%}
+%\fbox{
+%\includegraphics[angle=-90,width=0.29\textwidth]{tikz/mub_poly/Ex_mub_lor_anim_2/Ex_mub_lor_anim_2_00331}
+%}
+%
+%\caption[Partial representation of the minimal upper bounds of two elements with respect to the Euclidean Lorentz cone]{Partial representation of the minimal upper bounds of two elements with respect to the Euclidean Lorentz cone
+%\footnotemark
+%}
+%\label{fig:ex_mub_lor}
+%\end{figure}
+
+%
+%Hence, a vector $(t\;x)^T$ is a minimal upper bound of some set $\A$ in the Lorentz order if and only if the ball $B(x,t)$ is  enclosing the balls associated with every element $a \in \A$ and tangent to their union at at least two points, as shown in~\Cref{fig:lor_mub_tangent}.
+%Moreover, we provide at~\url{www.cmap.polytechnique.fr/~stott/thesis/animations}~several animations that describe the set of minimal upper bounds with respect to the Euclidean Lorentz cone.
+%
+%\todo[inline]{explain why the strict convexity of the norm and the non-strict convexity of the convex hull of the union of two balls implies the non-boundedness}
+
+
+
+\subsection{The cone of positive semidefinite matrices}
+
+In this section, we consider the space of symmetric matrices $\Sn$ endowed with the L\"owner order $\preceq$ arising from the cone of positive semidefinite matrices $\snp$.
+We specialize~\Cref{thm:mub_cone_char} to this case:
+
+\begin{theorem}[Minimal upper bounds in $\Sn$]
+\label{cor:mub_snp}
+Let $\A$ be a compact subset of $\Sn$ and $X \in \Sn$ such that $X \succeq \A$, where $\succeq$ denotes the L\"owner order.
+The following assertions are equivalent:
+\begin{enumerate}
+\item $X$ is a minimal upper bound of $\A$,
+\item $\cap_{A \in \A} \ran(X-A) = \{ 0 \}$,
+\item $\sum_{A  \in \A} \ker(X-A) = \R^n$,
+\item there is a positive definite matrix $C$ such that $\scal{C}{X} \leq \scal{C}{Y}$ for all $Y \succeq \A$.
+\end{enumerate}
+Moreover, if $\A$ is a compact subset of $\Snp$, the matrix $X \succeq \A$ is a minimal upper bound of $\A$ if and only if 
+\begin{enumerate}
+\item[5.]
+$\ran X = \sum_{A \in \A} \ran A$ and there is a positive semidefinite matrix $C$ such that
+$\scal{C}{X} \leq \scal{C}{Y}$  for all $Y \succeq \A$ and $\ran C \supseteq \sum_{A \in \A} \ran A$.
+\end{enumerate}
+ \end{theorem}
+ 
+ \begin{proof}
+ We have previously shown that $y \in \F(x)$ if and only if $\ran y \subseteq \ran x$, thus $y \in \cap_{a \in \A} \F(x-a)$ if and only $\ran y \subseteq \cap_{a \in \A} \ran(x-a)$. Thus we must have $\cap_{a \in \A} \ran(x-a) = \{0\}$.
+Taking the orthogonal complement on each side of the last equation yields $\sum_{a \in \A} \ker(x-a) = \R^n$.
+Moreover, since the cone $\Snp$ is self-dual, the interior of its dual cone is exactly the set of positive definite matrices.
+ \end{proof}
+
+We study the structure of the set of minimal upper bounds in more detail in~\Cref{chap:mub_sn_param},~\Cref{chap:mub_sn_char}.
+
+
+\end{document}

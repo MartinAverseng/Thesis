@@ -154,7 +154,8 @@ classdef MeshCurve < handle
             if nargin==1
                 i = 1:this.nseg;
             end
-            [x1,x2,y1,y2] = this.edgesCoords;
+            X = this.edgesCoords;
+            x1 = X(:,1); y1 = X(:,2); x2 = X(:,3); y2 = X(:,4);
             t = [x2(i)-x1(i),y2(i)-y1(i)];
         end
         function[n] = normalVector(this,i)

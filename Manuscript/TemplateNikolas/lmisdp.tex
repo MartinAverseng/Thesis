@@ -1,0 +1,58 @@
+\documentclass[main]{subfiles}
+
+\chapter{Elements of Semidefinite Programming}
+\label{chap:lmisdp}
+
+
+A linear matrix inequality (LMI for short) refers to a constraint of the form
+\begin{align}
+\label{eq:lmi}
+A_0 + \sum_{k=1}^d x_k A_k \succeq 0 \,,
+\end{align}
+where $x \in \R^d$ is the  variable, $(A_k)_{1\leq k\leq d}$ are given symmetric $n\times n$
+matrices and $\preceq$ is the L\"owner order.
+In other words, given a symmetric matrix $A(x_1, \dots, x_d)$ whose entries depend
+in an affine way on $x \in \R^d$, the constraint \enquote{$A(x_1, \dots, x_d)$ is positive semidefinite} is an LMI. 
+
+Several LMIs can be combined into a single LMI, since
+\begin{align*}
+A(x) \succeq 0 \wedge B(x) \succeq 0 \iff 
+\begin{psmallmatrix}
+A(x) & 0 \\ 0 & B(x)
+\end{psmallmatrix} \succeq 0 \,.
+\end{align*}
+A constraint of the form $X \succeq A_0$ is an LMI in the variable $X \in \Sn$, since  
+\begin{align*}
+X \succeq A_0 \iff \sum_{i \leq j} x_{ij} E^s_{i,j} \succeq A_0
+\end{align*}
+ in the variables $X = (x_{ij})_{1 \leq i \leq j \leq n}$, where $E^s_{i,j}$ denotes the matrix with zeroes everywhere except for a $1$ in the $(i,j)$-th and $(j,i)$-th entry.
+
+Finally, the combination of the LMIs $A(x) \preceq 0$ and $A(x) \succeq 0$ allows one to consider equality constraints $A(x) = 0$.
+
+The problem of minimizing a convex function in the variable $x$ that satisfies the LMI in \Cref{eq:lmi} is called a semidefinite program (SDP).
+We refer to~\cite{boyd} for introductive background on these programs.
+
+
+Semidefinite programs can be solved in ``polynomial time'' in 
+the following approximate sense (semidefinite feasibility is not known to
+be polynomial time in the Turing model of computation). 
+Given an accuracy parameter $\varepsilon>0$, one can obtain,
+in particular by interior point methods (the most efficient in practice),
+a $\varepsilon$-approximate solution of a SDP in a number of arithmetic
+operations 
+which is polynomial in $n$, $d$, $\log\varepsilon$, and $\log (R/r)$, assuming
+that the set $\mathcal{F}$ of vectors
+which satisfy~\eqref{eq:lmi} is such that $B(a,r)\subset \mathcal{F}\subset
+B(a,R)$ for some point $a\in \R^n$, where $B(a,r)$
+denotes the Euclidean ball of center $a$ and radius $r$,
+see~\cite{deklerk_vallentin}. 
+%% In the present approach, $\log (R/r)$ will remain small unless
+%% we deal with nearly flat ellipsoids. Hence, the present
+%% semidefinite programs will be effectively solvable in polynomial time
+%% with a prescribed accuracy.
+We warn the reader, however, that the exponent of the polynomial
+is relatively high.
+ (see Section~\ref{sec:alt_app} for details).
+Hence, it is essential for scalability purposes to limit as far
+as possible the growth of the dimension $n$ and of the number
+of variables $d$, which is one of our main goals in this thesis.

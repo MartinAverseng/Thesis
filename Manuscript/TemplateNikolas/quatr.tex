@@ -1,0 +1,126 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{geometry}
+\geometry{
+left=16mm,
+top=30mm,
+right=16mm,
+bottom=30mm
+}
+
+\usepackage{xcolor}
+\definecolor{bordeau}{rgb}{0.3515625,0,0.234375}
+
+\usepackage[absolute,overlay]{textpos}
+\usepackage{graphicx}
+
+\usepackage{array}
+\usepackage{caption}
+\usepackage{multicol}
+\setlength{\columnseprule}{1pt}
+\setlength\columnsep{10pt}
+\usepackage[frenchb]{babel}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{textblock*}{61mm}(3mm,3mm)
+	\noindent\includegraphics[height=24mm]{images/image5}
+\end{textblock*}
+
+\small
+
+\begin{center}
+\fbox{\parbox{0.95\textwidth}{
+{\bf Titre:} Majorants minimaux dans l'ordre de L\"owner et application au calcul d'invariants de systèmes commutés
+\medskip
+
+{\bf Mots clés:} Ordre de L\"owner, majorant minimal, invariant, syst\`eme commut\'e, rayon spectral commun, contrôle optimal
+\vspace{-2mm}
+\begin{multicols}{2}
+{\bf Résumé:} 
+\small
+Le calcul d'ensembles invariants est un élément crucial en vérification de programme et en théorie du contrôle, car de tels ensembles certifient l'absence de comportements indésirables. Nous étudions en particulier les systèmes commutés, pour lesquel le calcul d'un ensemble invariant est déjà difficile. Plusieurs approches récentes utilisant des techniques d'optimisation telles la programmation semidéfinie ont été appliquées avec succès au calcul d'invariants quadratiques par morceaux pour des systèmes commutés. En revanche, ces méthodes ne sont pas utilisables en grande dimension car elles nécessitent trop de ressources informatiques.
+Nous développons dans cette thèse une nouvelle classe d'algorithmes pour calculer des invariants quadratiques par morceaux. Ces algorithmes reposent sur les propriétés géométriques et métriques de l'espace des matrices positive semidéfinies équipées de l'ordre de Löwner.
+Tout d'abord, nous caractérisons l'ensemble des majorants minimaux dans cet ordre. Nous montrons que l'ensemble des majorants minimaux de deux matrices s'identifie au quotient d'un groupe orthogonal indéfini, donnant ainsi un raffinement "quantitatif" d'un théorème de Kadison. Plus généralement, nous caractérisons les majorants minimaux dans un ordre défini par un cône et nous prouvons qu'il existe pour une grande famille de cônes une sélection de majorant minimal canonique, définie à partir des fonctions génératrices de ces cônes. Ceci généralise la définition de l'ellipsoïde de Löwner. dans le cas du cône des matrices positives semidéfinies, nous montrons que cette sélection canonique satisfait plusieurs inégalités matricielles et nous donnons des estimations de sa constante de Lipschitz par rapport à plusieurs métriques convenables définies sur l'intérieur du cône (métrique Riemannienne, métrique de Thompson).
+Nous appliquons ensuite ces résultats au calcul d'invariants quadratiques par morceaux. Nous formulons ce dernier comme un problème de point fixe non-linéaire sur un produit de cônes de matrices positives semidéfinies. Ce problème fait intervenir un opérateur qui peut s'interpréter comme l'analogue tropical d'une application de Kraus (un canal quantique) qui apparaît en théorie d'information quantique. Nous obtenons ainsi une classe de schémas itératifs rapides, n'utilisant les inégalités linéaires matricielles, dont nous prouvons la convergence sous quelques restrictions. Nous avons implémenté cette approche en développant l'outil MEGA (``Minimal ellipsoid geometric
+analyser''). Nos résultats expérimentaux démontrent une amélioration de l'ordre de quelques ordres de grandeur en termes de scalabilité (par exemple, approximation du "rayon spectral joint" en dimension 500). Nous avons aussi appliqué cette méthode à l'approximation de la fonction valeur d'un problème de contrôle optimal commutant entre des modèles linéaires-quadratiques.
+\end{multicols}
+}}
+\end{center}
+
+\vspace*{0mm}
+
+\begin{center}
+\fbox{\parbox{0.95\textwidth}{
+{\bf Title:} Minimal upper bounds in the L\"owner order and application to invariant computation of switched systems
+
+\medskip
+{\bf Keywords:} L\"owner order, minimal upper bound, invariant set, switched system, joint spectral radius, optimal control
+\vspace{-2mm}
+\begin{multicols}{2}
+{\bf Abstract:} 
+The computation of invariant sets for dynamical systems is a crucial
+element of program verification and control theory, as such sets
+certify the absence of unwanted behaviors.  We consider in particular
+switched systems, for which the computation of invariants is already
+difficult.  Recently, several approaches based on optimization
+techniques such as semi-definite programming have been applied
+successfully to compute piecewise quadratic invariants of switched
+systems. However, their high computational cost becomes prohibitive on
+large instances.
+In this thesis, we develop a new class of algorithms to compute
+piecewise quadratic invariants. These algorithms rely on geometrical and metric
+properties of the space of positive semidefinite matrices equipped
+with the L\"owner order.
+First, we characterize minimal upper bounds in this order. We show in
+particular that the set of minimal upper bounds of two matrices can be
+identified to a quotient of an indefinite orthogonal group, providing
+a ``quantitative'' refinement of a theorem of Kadison. More generally,
+we characterize minimal upper bounds with respect to a cone ordering,
+and show that for a wide family of cones, there is a canonical
+selection of a minimal upper bound, defined in terms of the generating
+function of the cones. This extends the construction of the L\"owner
+ellipsoid. In the case of the cone of positive semidefinite matrices,
+we show that this canonical selection satisfies several matrix
+inequalities, and we estimate its Lipschitz constant with respect to
+convenient invariant metrics defined on the interior of the cone
+(Riemannian metric, Thompson metric).
+Then, we apply these results to the computation of piecewise-quadratic
+invariants. We formulate the latter as a non-linear fixed point
+problem over a product of spaces of positive definite matrices. This
+problem involves an operator which may be thought of as the tropical
+analogue of the Kraus maps (quantum channels) arising in quantum
+information theory. This leads to a class of fast iterative numerical
+schemes, avoiding the recourse to linear matrix inequalities, which we
+show to converge, under some restrictions. We implemented this
+approach, by developing the tool MEGA (``Minimal ellipsoid geometric
+analyzer''), and report experimental results, on switched linear and
+affine systems, showing an improvement of several orders of magnitude
+in terms of scalability, on some instances (with e.g., approximations
+of the joint spectral radius in dimension 500).  We also applied this
+method to the approximation of the value function of switched linear
+quadratic optimal control problems.
+\end{multicols}
+}}
+\end{center}
+
+
+\begin{textblock*}{161mm}(10mm,270mm)
+\color{bordeau}
+{\bf\noindent Université Paris-Saclay	         }
+
+\noindent Espace Technologique / Immeuble Discovery 
+
+\noindent Route de l’Orme aux Merisiers RD 128 / 91190 Saint-Aubin, France 
+\end{textblock*}
+
+\begin{textblock*}{20mm}(182mm,255mm)
+\includegraphics[width=20mm]{images/image36}
+\end{textblock*}
+
+\end{document}

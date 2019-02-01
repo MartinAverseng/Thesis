@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{1}
 
 \bibitem{alouges2018new}
 François Alouges and Martin Averseng.
@@ -6,29 +6,11 @@ François Alouges and Martin Averseng.
   curves.
 \newblock {\em arXiv preprint :}.
 
-\bibitem{bruno2012second}
-Oscar~P Bruno and St{\'e}phane~K Lintner.
-\newblock Second-kind integral solvers for te and tm problems of diffraction by
-  open arcs.
-\newblock {\em Radio Science}, 47(6), 2012.
-
-\bibitem{costabel1988convergence}
-Martin Costabel, Vince~J Ervin, and Ernst~P Stephan.
-\newblock On the convergence of collocation methods for symm’s integral
-  equation on open curves.
-\newblock {\em Mathematics of computation}, 51(183):167--179, 1988.
-
 \bibitem{jerez2012explicit}
 Carlos Jerez-Hanckes and Jean-Claude N{\'e}d{\'e}lec.
 \newblock Explicit variational forms for the inverses of integral logarithmic
   operators over an interval.
 \newblock {\em SIAM Journal on Mathematical Analysis}, 44(4):2666--2694, 2012.
-
-\bibitem{jiang2004second}
-Shidong Jiang and Vladimir Rokhlin.
-\newblock Second kind integral equations for the classical potential theory on
-  open surfaces ii.
-\newblock {\em Journal of Computational Physics}, 195(1):1--16, 2004.
 
 \bibitem{aversengSymbolicCalculus}
 {Martin Averseng}.
@@ -49,31 +31,6 @@ W~McLean.
 William Charles~Hector McLean.
 \newblock {\em Strongly elliptic systems and boundary integral equations}.
 \newblock Cambridge university press, 2000.
-
-\bibitem{monch1996numerical}
-Lars M{\"o}nch.
-\newblock On the numerical solution of the direct scattering problem for an
-  open sound-hard arc.
-\newblock {\em Journal of computational and applied mathematics},
-  71(2):343--356, 1996.
-
-\bibitem{postell1990h}
-FV~Postell and Ernst~P Stephan.
-\newblock On the h-, p-and hp versions of the boundary element
-  method—numerical results.
-\newblock {\em Computer Methods in Applied Mechanics and Engineering},
-  83(1):69--89, 1990.
-
-\bibitem{sauter2011boundary}
-Stefan~A Sauter and Christoph Schwab.
-\newblock Boundary element methods.
-\newblock {\em Boundary Element Methods}, pages 183--287, 2011.
-
-\bibitem{stephan1984augmented}
-Ernst~P Stephan and Wolfgang~L Wendland.
-\newblock An augmented galerkin procedure for the boundary integral method
-  applied to two-dimensional screen and crack problems.
-\newblock {\em Applicable Analysis}, 18(3):183--219, 1984.
 
 \bibitem{wendland1990hypersingular}
 Ernst~P Stephan and Wolfgang~L Wendland.

@@ -1,0 +1,42 @@
+\documentclass[11pt,a4paper]{phdthesis}
+\usepackage{subfiles}
+\usepackage{pdfpages}
+\input{env.tex}
+
+\begin{document}
+
+% garde est le pdf de page de garde
+% A compiler séparément
+\includepdf[pages=1]{garde/garde}
+
+%\subfile{thanks}
+\newpage 
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+
+\tableofcontents
+
+\subfile{intro_fr}
+
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\subfile{intro_en}
+
+\subfile{EBD/EBD}
+\subfile{OpenArc/openArc}
+
+
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+% garde est le pdf de 4e de couv
+% A compiler séparément
+%\includepdf[pages=1]{quatr}
+
+\end{document}

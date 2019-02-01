@@ -19,7 +19,7 @@ k = nn*2*pi/l;
 % plot(curve);
 
 
-N = fix(100*nn);
+N = fix(10*k);
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
     'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);

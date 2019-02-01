@@ -24,11 +24,16 @@ figure
 loglogTrislope(1./Ns(:),errU0(:))
 hold on
 loglogTrislope(1./Ns(:),1/10*errU1(:))
-set(gca,'Fontsize',15)
+
+legend({'$L^2_\omega$ error','$ U^1 $ error'},'Interpreter','LaTeX');
 
 
 set(gca,'XTick',1./(fliplr([50 100 200 400])))
 xlabel('mesh size $h$','Interpreter','LaTeX')
+ylabel('$L^2_\frac{1}{\omega}$ error $e_1(h)$','Interpreter','LaTeX')
+
+set(gca,'XTick',1./(fliplr([50 100 200 400])))
+xlabel('mesh size $h$','Interpreter','LaTeX')
 ylabel('Approximation error','Interpreter','LaTeX')
-legend({'$L^2_\omega$ error','$U^1 error$'},'Interpreter','LaTeX');
 legend('location','southeast');
+set(gca,'Fontsize',15)

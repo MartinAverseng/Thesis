@@ -12,7 +12,7 @@
 \maketitle
 
 \begin{abstract}
-Studying wave scattering problems in 2D by open arcs leads to ill-conditioned systems. This is partly due to the singular behavior
+Studying wave scattering problems in 2D by open arcs leads on to ill-conditioned systems. This is partly due to the singular behavior
 of the solutions near the edges of the arc. We introduce two new preconditioners to tackle this problem either with Dirichlet or Neumann 
 boundary data, that take the form of square roots of local operators. We introduce an adapted analytical setting to analyze them and 
 demonstrate the efficiency of this method on several numerical examples. A complete suitable pseudo-differential calculus for the
@@ -97,11 +97,11 @@ respectively. In order for the problem to be well posed, we also need to impose 
 with $r=|x|$ for $x\in \mathbb{R}^2$ .
 Notice that in equation \eqref{Neumann}, $n$ stands for a smooth unit vector normal to $\Gamma$. 
 
-\noindent Existence and uniqueness of solutions to the previous problems are guaranteed by the following theorem.
-\begin{theorem}
+\noindent Existence and uniqueness of solutions to the previous problems are guaranteed by the proposition.
+\begin{proposition}
 \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}. Assume $u_D \in H^{1/2}(\Gamma)$, and $u_N \in H^{-1/2}(\Gamma)$. 
 Then problems (\ref{Helmholtz},\ref{Dirichlet},\ref{Sommerfeld}) and (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) both possess a unique solution 
-$u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. \end{theorem}
+$u \in H^1_\textup{loc}(\R^2 \setminus \Gamma)$, which is of class $C^{\infty}$ outside $\Gamma$. \end{proposition}
 \noindent For the definition of Sobolev spaces on smooth open curves, we follow
 \cite{mclean2000strongly} by considering any smooth closed curve $\tilde{\Gamma}$ containing $\Gamma$, and defining 
 \[H^s(\Gamma) = \enstq{U_{|\Gamma}}{ U \in H^s(\tilde{\Gamma}) }.\]
@@ -162,7 +162,7 @@ $\mu$ and $\nu$ that vanish at the extremities of $\Gamma$:
 \end{eqnarray}
 
 
-It is also known that $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously \cite[Theorem 1.4]{wendland1990hypersingular}, and that the solution $u$ to the Neumann 
+The operator $N_k$ maps $\tilde{H}^{1/2}(\Gamma)$ to $H^{-1/2}(\Gamma)$ continuously \cite[Theorem 1.4]{wendland1990hypersingular}, and that the solution $u$ to the Neumann 
 problem (\ref{Helmholtz},\ref{Neumann},\ref{Sommerfeld}) can be written as
 \begin{equation}
 	u = \mathcal{D}_k \mu
@@ -173,8 +173,7 @@ where $\mu \in \tilde{H}^{1/2}(\Gamma)$ solves
 	\label{Nkmu}
 \end{equation}  
 
-It is also known that $\lambda$ and $\mu$ are singular singular near the edges of the arc $\Gamma$ their 
-respective asymptotics are given by the following proposition.
+It is known that the jumps $\lambda$ and $\mu$ are singular singular near the edges of the arc $\Gamma$. Their respective asymptotics are given by the following proposition.
  
 \begin{proposition}
 \cite{stephan1984augmented,wendland1990hypersingular,monch1996numerical}.
@@ -582,7 +581,7 @@ The key ingredient, beside the graded mesh, to recover optimal convergence is to
 We state here the orders of convergence that one gets with this new method, and refer again the reader to \cite{averseng} for rigorous proofs. To 
 keep the exposition simple, we also restrict our presentation to the case where $\Gamma = [-1,1]\times\{0\}$ and $k = 0$. 
 
-\paragraph{Dirichlet problem} For the of resolution the single-layer equation \eqref{Slambda} we use a variational formulation of \eqref{Somegaalpha} 
+\paragraph{Dirichlet problem.} For the resolution of the single-layer equation \eqref{Slambda} we use a variational formulation of \eqref{Somegaalpha} 
 to compute an approximation $\alpha_h$ of $\alpha$. Namely, let $V_h$ the Galerkin space of (discontinuous) piecewise affine functions 
 defined on the mesh $(x_i)_{0\leq i \leq N}$ defined above, and $\alpha_h$ the unique solution in $V_h$ to
 \[ \inner{S_{0,\omega} \alpha_h}{\alpha_h'}_\frac{1}{\omega} = \inner{u_D}{\alpha_h'}_\frac{1}{\omega}, \quad \forall \alpha_h' \in V_h\,.\]
@@ -608,29 +607,31 @@ Then, the proposed approximation for $\mu$, given by $\mu_h = \omega \beta_h$, s
 	\[\norm{\mu - \mu_h}_{\tilde{H}^{1/2}} \leq C h^{s - \frac{1}{2}}\norm{\frac{\mu}{\omega}}_{U^{s}}\leq C h^{s - \frac{1}{2}}\norm{u_N}_{U^{s-1}}.\]
 	\label{theOrdreCVNeumann}
 \end{theorem}
-In fact, in \cite{averseng}, we prove that, for the Dirichlet problem,
+
+\paragraph{Numerical validation.}
+In fact, in \cite{averseng}, the following is established for the Dirichlet problem,
 \[\forall s,t \in \left[-\frac{1}{2},2\right], \quad \norm{\alpha - \alpha_h}_{T^t} \leq C h^{s - t}\norm{\alpha}_{T^s}\,.\] 
-The case $t = 0$ gives a convergence rate in $O(h^s)$ for the weighted $L^2 $ error $e_1(h) = \norm{\alpha - \alpha_h}_{L^2_\frac{1}{\omega}}$, where $s$ is such that $\alpha \in T^s$. A numerical validation is shown in \autoref{fig:errL2dir}. We consider here the case where $\alpha_1(x) = \omega(x) \in T^{s}$ for $s < \frac{3}{2}$ and $\alpha_1 \notin T^{3/2}$ and $\alpha_2 = \omega(x)^3 \in T^2$. We indeed observe the respective rates $O(h^{3/2})$ and $O(h^2)$ predicted by the theory. \\
-Similarly for the Neumann case it is shown in \cite{averseng} that
+The case $t = 0$ gives a convergence rate in $O(h^s)$ for the weighted $L^2 $ error $e_1(h) = \norm{\alpha - \alpha_h}_{L^2_\frac{1}{\omega}}$, where $s$ is such that $\alpha \in T^s$. Those rates can be verified numerically. To this aim, we solve the two test cases $S_{0,\omega} \alpha_1 = u_1$ and $S_{0,\omega} \alpha_2 = u_2$ having explicit solutions $\alpha_1(x) = \omega(x)$ and $\alpha_2 = \omega(x)^3$, with corresponding rhs $u_1$ and $u_2$. One can check that $\alpha_1 \in T^{s}$ for $s < \frac{3}{2}$ and $\alpha_1 \notin T^{3/2}$, while $\alpha_2 \in T^2$. The $L^2_\omega$ error is plotted in \autoref{fig:errL2dir} in each case as a function of the mesh size $h$. We find that the expected rates $O(h^{3/2})$ and $O(h^2)$ predicted by the theory are precisely observed in practice.  
+
+Similarly, for the Neumann case, it is shown in \cite{averseng} that
 \begin{equation}
-\forall s,t \in\left[0, 2\right], \quad \norm{\beta - \beta_h}_{U^t} \leq Ch^{s - t}\norm{\beta}_{U^s}
+\forall s,t \in\left[0, 2\right], \quad \norm{\beta - \beta_h}_{U^t} \leq Ch^{s - t}\norm{\beta}_{U^s}\,.
 \label{estimUsUt}
 \end{equation} 
-A numerical validation is shown in \autoref{fig:errL2Neu} in the case $\beta = U_2 \in U^{\infty}$.The error in $L^2_\omega$ and $U^1$ norms are plotted, and the rates of convergence observed predicted by the theory are recovered in practice. 
+We can also illustrate those estimates with a test case $N_{0,\omega} \beta = u_N$ where the solution $\beta$ is explicit. We take $u_N = U_2$ the second Chebyshev polynomial of the second kind. The corresponding solution $\beta$ is proportional to $U_2$ and thus belongs to $U^\infty$. The theory therefore predicts a convergence rate respectively of the $L^2_\omega$ and $U^1$ error in $O(h^2)$ and $O(h)$. This behavior is again very well confirmed by our numerical results, exposed in \autoref{fig:errL2Neu}. 
 
 \begin{figure}[H]
 	\centering
 	\hspace{-1cm}\includegraphics[scale = 0.4]{figs/ordreCVDir}
-	\caption{Effective order of convergence of the approximation of the solution $\alpha$ to \eqref{Somegaalpha} by the weighted Galerkin method. The blue data correspond to a case where $\alpha \in T^{s}$ for all $s < \frac{3}{2}$ but $\alpha \notin T^{3/2}$. In this case, the theory predicts a $O(h^{3/2})$ rate of convergence, which is what we observe in practice. The red data corresponds to a case where $\alpha \in T^s$. In this case, a $O(h^2)$ rate of convergence is predicted by the theory and indeed observed here.} 
+	\caption{Effective order of convergence of the approximation of the solution $\beta$ to \eqref{Nomegabeta} by the weighted Galerkin method. Two cases are considered where $\alpha \in T^s$ for all $s < 3/2$ but $\alpha \notin T^{3/2}$ (solid line and circles) and $\alpha \in T^2$ (dashed line, crosses) respectively. Theoretical convergence rates, respectively $O(h^{3/2})$ and $O(h^2)$ are recovered in practice.} 
 	\label{fig:errL2dir}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\hspace{-1cm}\includegraphics[scale = 0.4]{figs/ordreCVNeu}
-	\caption{Effective order of convergence of the approximation of the solution $\beta$ to \eqref{Nomegabeta} by the weighted Galerkin method. The second member is taken as $u_N = U_2 \in U^{\infty}$, and the solution is therefore $\beta = \frac{2}{3}U_2$. We plot in blue the $L^2_\omega$ error $\norm{\beta - \beta_h}_{\omega}$ and in red the $U^1$ error $\norm{\beta - \beta_h}_{U^1}$. Here the theory predicts the $O(h)$ order of convergence for the second curve. The $O(h^2)$ order of the first curve is not yet explained by our theory.} 
+	\caption{Effective order of convergence of the approximation of the solution $\beta$ to \eqref{Nomegabeta} by the weighted Galerkin method. In this test, the solution $\beta$ lies in $U^2$ and we measure the error in two different norms, respectively $L^2_\omega$ (solid line, circles) and $U^1$ (dashed line, crosses). Theoretical orders of convergence, respectively $O(h^2)$ and $O(h)$ are recovered in practice. } 
 	\label{fig:errL2Neu}
 \end{figure}
-
 
 %\subsection{Numerical quadratures and compression method}
 %\paragraph{Weakly singular kernels.} 
@@ -663,7 +664,7 @@ A numerical validation is shown in \autoref{fig:errL2Neu} in the case $\beta = U
 %
 \subsection{Preconditioning the linear systems}
 Let $X_h$ the considered finite element space ($X_h = V_h$ or $W_h$), and $(\phi_i)_{i}$ the basis functions. For an operator $A$, we denote by $\left[A\right]_p$ 
-the Galerkin matrix of the operator \toDo{for the relevant weight $p(x) = \frac{1}{\omega(x)}$ or $\omega(x)$}, defined by
+the Galerkin matrix of the operator for the relevant weight $p(x) = \frac{1}{\omega(x)}$ or $\omega(x)$, defined by
 $$
 [A]_{p,ij} = \int_\Gamma (A\phi_j)(x) \phi_i(x) p(x)\,dx\,.
 $$
@@ -681,18 +682,18 @@ $$
 
 The preconditioners introduced in this work are in the form of square roots of local operators. More precisely, we introduced two preconditioners $P_1$ and $P_2$ with 
 \begin{eqnarray*}
-	P_1(k) &=& \left(-(\omega \partial_x)^2 - k^2 \omega^2\right)^{1/2}\\
-	P_2(k) &=& \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1/2}
+	P_1(k) &=& \left(-(\omega \partial_x)^2 - k^2 \omega^2\right)^{1/2}\,,\\
+	P_2(k) &=& \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1/2}\,.
 \end{eqnarray*}
 For the second equation, we rewrite 
-\[P_2(k) = \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1} \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{1/2},\]
-which brings us back to computing the square root of a sparse matrix. When the frequency is $0$, we use the method exposed in \cite{hale2008computing}. 
+\[P_2(k) = \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{-1} \left(-(\partial_x \omega)^2 - k^2 \omega^2 \right)^{1/2}\,.\]
+This brings us back to computing Galerkin matrix of the square root of a differential operator. When the frequency is $0$, we use the method exposed in \cite{hale2008computing}. 
 When the frequency is non-zero, the previous method fails since the spectrum of the matrix contains negative values. In \cite{antoine2007generalized}, a 
 method involving a Pad\'e approximation of the square root, with a rotated branch cut, is used to compute the matrix of an operator of the form 
 $\sqrt{X - k^2 I_d}$ where $X$ is a positive definite operator. This method gives excellent results in our context when using 
-$X = -(\partial \omega_x)^2 + k^2 \left(I_d - \omega^2\right)$. Specifically, we build a rational approximation of the function $X \mapsto \sqrt{X - k^2}$ in the form
-\[\sqrt{X - k^2} = a_0 + \sum_{i = 0}^{N_p} \frac{a_i}{b_i + X}\,.\]
-We then take
+$X = -(\partial \omega_x)^2 + k^2 \left(I_d - \omega^2\right)$. More specifically, we build a rational approximation of the function $X \mapsto \sqrt{X - k^2}$ in the form
+\[\sqrt{X - k^2} = a_0 + \sum_{i = 0}^{N_p} \frac{a_i}{b_i + X}\,,\]
+and then take
 \[\left[\sqrt{X - k^2 I_d}\right]_p \approx a_0[I_d]_p + \sum_{i = 0}^{N_p} a_i\left(b_i[I_d]_p + [X]_p\right)^{-1}\,.\]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -700,7 +701,7 @@ We then take
 \label{sec:NumericalResutls}
 
 All the numerical results exposed here are obtained on a personal laptop running on an eight cores intel i7 processor with a clock rate of 2.8GHz. 
-The Galerkin method has been implemented in the language Matlab R2018. 
+The Galerkin method has been implemented in the language Matlab R2018. For problems such that $\frac{\abs{\Gamma}}{\lambda} \leq 200$, where $\lambda$ stands for the wavelength, the problems are solved in full BEM without compression method. For the cases with $\frac{\abs{\Gamma}}{\lambda} > 200$, ($N > 10^4$ where $N$ is the number of unknowns) the memory of the computer is insufficient to store the full problem, and in this case the EBD method \cite{averseng2017} is used to compress and accelerate the matrix-vector products. 
 
 
 \paragraph{Flat segment, Laplace-Dirichlet problem.} 
@@ -719,23 +720,23 @@ side in \eqref{Somegaalpha} is chosen as $u_D(x) = (x^2 + 0.001)^{-1/2}, x \in [
 			\hline
 			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 7 & 0.11 & 35 & 0.21\\
+			50 & 7 & 0.05 & 30 & 0.05\\
 			\hline
-			200 & 7 & 0.14 & 53 & 0.55\\
+			200 & 8 & 0.05 & 58 & 0.05\\
 			\hline
-			800 & 7 & 0.29 & 76 & 2.0 \\
+			800 & 8 & 0.06 & 93 & 0.10 \\
 			\hline
-			3200 & 7 & 0.95 & 107 & 9.5\\
+			3200 & 8 & 0.13 & 141 & 0.90\\
 			\hline
-		\end{tabular}
+		\end{tabular}	
 		\caption{Number of iteration and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
 		\label{TableNitTimeLaplaceDirichlet}
 	\end{center}
 \end{table}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.7]{figs/PrecondDirichletLaplaceSeg.png}
-	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 1600$.}
+	\includegraphics[scale=0.5]{figs/PrecondDirichletLaplaceSegbis.png}
+	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N = 1600$ respectively without preconditioner (circles) and with our square roots preconditioners (crosses).}
 	\label{FigureNitLaplaceDirichlet}
 \end{figure}
 
@@ -754,13 +755,13 @@ $u_N(x) = (x^2 + 0.001)^{1/2}, x \in [-1,1]$. The decay of the residual along th
 			\hline
 			$N$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 4 & 0.09 & 50 & 0.31\\
+			50 & 5 & 0.05 & 29 & 0.05\\
 			\hline
-			200 & 4 & 0.12 & 200 & 2.0\\
+			200 & 5 & 0.05 & 127 & 0.1\\
 			\hline
-			800 & 4 & 0.56 & 799 & 30 \\
+			800 & 4 & 0.05 & 530 & 1.0 \\
 			\hline
-			3200 & 4 & 17.7 & 3007 & 630\\
+			3200 & 4 & 0.07 & 2153 & 43\\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -770,8 +771,8 @@ $u_N(x) = (x^2 + 0.001)^{1/2}, x \in [-1,1]$. The decay of the residual along th
 \vspace{-0.7cm}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figs/PrecondNeumannLaplaceSeg.png}
-	\caption{Number of iteration in the resolution of the hypersingular  integral equation with a mesh of size $N = 1600$. The importance of preconditioning 
+	\includegraphics[scale=0.5]{figs/PrecondNeumannLaplaceSegbis.png}
+	\caption{Number of iteration in the resolution of the hypersingular  integral equation with a mesh of size $N = 1600$ espectively without preconditioner (circles) and with our square roots preconditioners (crosses). The importance of preconditioning 
 	in this case is even more spectacular than in the case of the single-layer equation.}
 	\label{FigureNitLaplaceNeumann}
 \end{figure}
@@ -791,7 +792,6 @@ compared to the case where no preconditioner is used.  We take, for the Dirichle
 \autoref{FigureNitHelmDirichlet}, the value of the relative residual in the GMRES method along the iterations, with and without preconditioner, 
 for a problem with $L = 800 \lambda$. As before, we see that the number of iterations needed to reach a given precision decreases significantly but, this time, 
 we observe a very slight increase with respect to the wavenumber. 
-\todo{en maillage à fréquence fixée, c'est bien indépentdant donc j'ai remplacé with respect to "mesh size" par "wavenumber"}
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{m{4em} | m{4em} | m{4em} | m{4em} | m{4em}} 
@@ -799,31 +799,30 @@ we observe a very slight increase with respect to the wavenumber.
 			\multicolumn{1}{c|}{ }&
 			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c}{without Prec.}\\
 			\hline
-			$L/\lambda$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 8 & 0.1 & 73 & 0.28\\
+			50 & 9 & 0.07 & 79 & 0.21\\
 			\hline
-			200 & 10 & 1.3 & 116 & 17\\
+			200 & 11 & 0.37 & 106 & 1.35\\
 			\hline
-			800 & 15 & 34 & 148 & 300\\
+			800 & 15 & 15 & 155 & 110\\
 			\hline
 		\end{tabular}
 	\end{center}
 	\caption{Number of iterations and time needed for the numerical resolution of \eqref{Somegaalpha} using Galerkin finite elements with and without preconditioner.}
 	\label{TableNitTimeHemholtzDirichlet}
 \end{table}
-\vspace{-1cm}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figs/PrecondDirichletHelmSegPDF}
-	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N \approx 3700$, $L = 800 \lambda$.}
+	\includegraphics[scale=0.5]{figs/PrecondDirichletHelmSegPDFbis}
+	\caption{Number of iteration in the resolution of the single layer integral equation with a mesh of size $N \approx 3000$, $L = 200 \lambda$.}
 	\label{FigureNitHelmDirichlet}
 \end{figure}
 
 \paragraph{Flat segment, Helmholtz-Neumann problem.} 
 Finally, to end up this validation stage, we run the same numerical comparisons, this time solving \eqref{Nkmu} and considering the preconditioning operator 
 $\left(-(\partial_x \omega)^2 - k^2 \omega^2\right)^{-1/2}$. Results are given in \autoref{TableNitTimeHemholtzNeumann} for different meshes and in
-\autoref{FigureNitHelmNeumann} for the evolution of the residual along the iterations. Huge differences, btoh in time and number of iterations are
+\autoref{FigureNitHelmNeumann} for the evolution of the residual along the iterations. We take, for the Neumann data, the normal derivative of a plane wave $u_N = \frac{\partial}{\partial n} e^{ikx}$. Huge differences, both in time and number of iterations are
 shown in favor of the preconditioned system.
 \begin{table}[H]
 	\begin{center}
@@ -832,13 +831,13 @@ shown in favor of the preconditioned system.
 			\multicolumn{1}{c|}{ }&
 			\multicolumn{2}{c|}{with Prec.}&\multicolumn{2}{c}{without Prec.}\\
 			\hline
-			$L/\lambda$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 8 & 0.08 & 785 & 9.4\\
+			50 & 9 & 0.07		 & 785 & 7 \\
 			\hline
-			200 & 10 & 3.6 & $> 2000$ &  $>$ 2min\\
+			200 & 12 & 0.5 & 3115 &  6 min\\
 			\hline
-			800 & 17 & 73 & $>2000$ &  $>$ 2min\\
+			800 & 18 & 28 & ? &  $>$ 1 hour \\
 			\hline
 		\end{tabular}
 	\end{center}	
@@ -848,12 +847,16 @@ shown in favor of the preconditioned system.
 \vspace{-1cm}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{figs/PrecondNeumannHelmSegPDF}
-	\caption{Number of iteration in the resolution of Hypersingular integral equation with a mesh of size $N \approx 800$, $L = 50 \lambda$.}
+	\includegraphics[scale=0.5]{figs/PrecondNeumannHelmSegPDFbis}
+	\caption{Number of iteration in the resolution of Hypersingular integral equation with a mesh of size $N \approx 800$, $L = 50 \lambda$. }
 	\label{FigureNitHelmNeumann}
 \end{figure}
 
-\paragraph{Non-flat arc.} Here, we also report numerical results when the curve is a portion of spiral (see \autoref{ArcOfSpiral}), for both boundary conditions. This shows that the preconditioning strategy is also efficient in presence of non-zero curvature. 
+\paragraph{Non-flat arc.} We also consider a spiral shaped arc of equation \[\begin{split}
+x(t) &= e^{ 0.1 (s + s_0)} \cos(2(s - 0.2))\,,\\
+y(t) &= e^{ 0.1 (s + s_0)} \sin(2(s - 0.2))\,.\\
+\end{split}\] 
+and report in Tables \ref{SpiralDir} and \ref{SpiralNeu} the number of iterations and computing times respectively for the Dirichlet and Neumann problems. The results shows that the preconditioning strategy is also efficient in presence of non-zero curvature, especially for the Dirichlet problem. For the Neumann problem, it might be necessary to add a curvature term in the preconditioner for a faster resolution. The scattering problem with Dirichlet condition is illustrated in \autoref{ArcOfSpiral} for this geometry. 
 \begin{table}[H]
 	\begin{center}
 		\begin{tabular}{m{4em} | m{4em} | m{4em} | m{4em} | m{4em}} 
@@ -861,19 +864,39 @@ shown in favor of the preconditioned system.
 			\multicolumn{1}{c|}{ }&
 			\multicolumn{2}{c|}{With prec.}&\multicolumn{2}{c}{Without prec.}\\
 			\hline
-			$L/\lambda$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 23 & 0.6 & 785 & 9.4\\
+			50 & 20 & 0.19 & 117 & 0.46\\
 			\hline
-			200 & 27 & 9 & $> 2000$ &  $>$ 2min\\
+			200 & 25 & 1.2 & 163 &  4.8\\
 			\hline
-			800 & 40 & 35& $> 2000$ &  $>$ 2min\\
+			800 & 31 & 28 & 220 &  2min 30s\\
 			\hline
 		\end{tabular}
 	\end{center}
-	\caption{Computing times and number of iterations for the spiral-shaped arc.}
+	\caption{Computing times and number of iterations for the Dirichlet problem on the spiral-shaped arc.}
+	\label{SpiralDir}
 \end{table}
-\vspace{-1cm}
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{m{4em} | m{4em} | m{4em} | m{4em} | m{4em}} 
+			\hline
+			\multicolumn{1}{c|}{ }&
+			\multicolumn{2}{c|}{With prec.}&\multicolumn{2}{c}{Without prec.}\\
+			\hline
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			\hline\hline
+			50 & 64 & 0.34 & 800 & 7\\
+			\hline
+			200 & 155 & 4.2 & 3250 & 7 min \\
+			\hline
+			800 &  345 &  6 min &  ? & $>$ 1 hour \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Computing times and number of iterations for the spiral-shaped arc for the Neumann problem. }
+	\label{SpiralNeu}
+\end{table}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{figs/arcOfSpiral800_3}
@@ -886,9 +909,8 @@ shown in favor of the preconditioned system.
 \paragraph{Comparison with the generalized Calderon relations.} Eventually, we test the idea that was presented in \cite{bruno2012second}, namely 
 to use $S_{k,\omega}$ and $N_{k,\omega}$ as mutual preconditioners. This alternative method is also very efficient in our numerical setting (here, we use 
 simple piecewise affine functions, whereas in \cite{bruno2012second}, spectral discretization with trigonometric polynomials is used). We report in 
-\autoref{TableBrunoVsSqrt} the number of iterations and computing times for the Neumann problem with an angle of incidence $\frac{\pi}{4}$ on the 
-flat segment. The number of iterations is comparable for both methods. However, the matrix-vector product time in our method is significantly 
-slower as it only involves sparse operators. This leads to a faster resolution of the linear system. 
+the number of iterations and computing times respectively for the Dirichlet and Neumann problem in Tables  \ref{TableBrunoVsSqrtDir} and \ref{TableBrunoVsSqrtNeu}. The second members are respectively $u_D = u_{inc}$ and $u_N = \frac{\partial}{\partial n} u_{inc}$ where $u_{inc}$ is a plane wave of wavenumber $k$ and angle of incidence $\frac{\pi}{4}$. The number of iterations is comparable for both methods in each case. However, the matrix-vector product time in our method is significantly 
+slower as it only involves sparse operators. This leads to a faster resolution of the linear system particularly for the Dirichlet problem.
 
 \begin{table}[H]
 	\begin{center}
@@ -897,18 +919,38 @@ slower as it only involves sparse operators. This leads to a faster resolution o
 			\multicolumn{1}{c|}{ }&
 			\multicolumn{2}{c|}{Calderon Prec.}&\multicolumn{2}{c}{Square root Prec.}\\
 			\hline
-			$L/\lambda$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
 			\hline\hline
-			50 & 14 & 0.1 & 8 & 0.1\\
+			50 & 15 & 0.1 & 9 & 0.07\\
 			\hline
-			200 & 15 & 7.5 & 11 &  3.6\\
+			200 & 15 & 0.47 & 9 &  0.35\\
 			\hline
-			800 & 16 & 130 & 15 & 70\\
+			800 & 16 & 41 & 16 & 16.2\\
 			\hline
 		\end{tabular}
 	\end{center}
-	\caption{Number of iteration and time needed for the numerical resolution of \eqref{Sklambda} using Galerkin finite elements with and without preconditioner.}
-	\label{TableBrunoVsSqrt}
+	\caption{Number of iteration and time needed for the Dirichlet problem respectively for the Calderon preconditioners and our square root preconditioners.}
+	\label{TableBrunoVsSqrtDir}
+\end{table}
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{m{4em} | m{4em} | m{4em} | m{4em} | m{4em}} 
+			\hline
+			\multicolumn{1}{c|}{ }&
+			\multicolumn{2}{c|}{Calderon Prec.}&\multicolumn{2}{c}{Square root Prec.}\\
+			\hline
+			${\abs{\Gamma}}/{\lambda}$ & $n_{it}$& t(s) & $n_{it}$ & t(s)\\
+			\hline\hline
+			50 & 15 & 0.1 & 9 & 0.07\\
+			\hline
+			200 & 16 & 0.5 & 12 & 0.4 \\
+			\hline
+			800 & 17 & 44 & 18 & 32\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Number of iteration and time needed for the Neumann problem respectively for the Calderon preconditioners and our square root preconditioners.}
+	\label{TableBrunoVsSqrtNeu}
 \end{table}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1025,7 +1067,8 @@ K.~E. Atkinson and I.~H. Sloan.
   equations on smooth open arcs.
 \newblock {\em mathematics of computation}, 56(193):119--139, 1991.
 
-\bibitem{averseng}M. Averseng,
+\bibitem{averseng}
+M. Averseng.
 \newblock New preconditioners for Laplace and  Helmholtz integral equation on open curves: II. Theoretical analysis.
 \newblock {\em Submitted}.
 
@@ -1042,7 +1085,7 @@ T.~Betcke, J.~Phillips, and E. A.~Spence.
 
 \bibitem{bruno2012second}
 O.~P. Bruno and S.~K. Lintner.
-\newblock Second-kind integral solvers for te and tm problems of diffraction by
+\newblock Second-kind integral solvers for TE and TM problems of diffraction by
   open arcs.
 \newblock {\em Radio Science}, 47(6), 2012.
 
@@ -1066,18 +1109,18 @@ M.~Darbas.
 
 \bibitem{hale2008computing}
 N. Hale, N.~J. Higham, and L.~N. Trefethen.
-\newblock Computing a\^{}$\alpha$,$\backslash$log(a), and related matrix
+\newblock Computing $A^{\alpha}$, $\log(A)$, and related matrix
   functions by contour integrals.
 \newblock {\em SIAM Journal on Numerical Analysis}, 46(5):2505--2523, 2008.
 
 \bibitem{hiptmair2014mesh}
-R. Hiptmair, C. Jerez-Hanckes, and C. Urzua-Torres.
+R. Hiptmair, C. Jerez-Hanckes, and C.~A. Urz{\'u}a~Torres.
 \newblock Mesh-independent operator preconditioning for boundary elements on
   open curves.
 \newblock {\em SIAM Journal on Numerical Analysis}, 52(5):2295--2314, 2014.
 
 \bibitem{hiptmair2017closed}
-R. Hiptmair, C. Jerez-Hanckes, and C. Urzua-Torres.
+R. Hiptmair, C. Jerez-Hanckes, and C.~A. Urz{\'u}a~Torres.
 \newblock Closed-form exact inverses of the weakly singular and hypersingular
   operators on disks.
 \newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
@@ -1124,7 +1167,7 @@ W. C.~H. McLean.
 
 
 \bibitem{monch1996numerical}
-Lars M{\"o}nch.
+L. M{\"o}nch.
 \newblock On the numerical solution of the direct scattering problem for an
   open sound-hard arc.
 \newblock {\em Journal of computational and applied mathematics},
@@ -1155,6 +1198,11 @@ P. Ramaciotti and J.-C. N{\'e}d{\'e}lec.
   the laplace equation.
 \newblock {\em SIAM Journal on Numerical Analysis}, 55(4):1892--1914, 2017.
 
+\bibitem{schulze1} S. Rempel and B. Schulze. \newblock Parametrices and boundary symbolic calculus for elliptic boundary problems without the transmission property, \newblock{\em Math. Nachr.} 105:45--149, 1982.
+
+
+\bibitem{schulze2} S. Rempel and B. Schulze. Asymptotics for elliptic mixed boundary problems. Pseudo-differential and Mellin operators in spaces with conormal singularity. \newblock{\em  Mathematical Research} 50, 1989.
+
 \bibitem{saad1986gmres} Y.~Saad and M.~H.~Schultz. 
 \newblock GMRES: A generalized minimal residual algorithm for solving nonsymmetric linear systems.
 \newblock{\em SIAM J. Sci. Stat. Comput.}, 7:856--869, 1986.
@@ -1164,9 +1212,8 @@ S.~A. Sauter and C. Schwab.
 \newblock Boundary element methods.
 \newblock {\em Boundary Element Methods}, pages 183--287, 2011.
 
-\bibitem{schulze1} S. Rempel and B. Schulze. \newblock Parametrices and boundary symbolic calculus for elliptic boundary problems without the transmission property, \newblock{\em Math. Nachr.} 105:45--149, 1982.
 
-\bibitem{schulze2} S. Rempel and B. Schulze. Asymptotics for elliptic mixed boundary problems. Pseudo-differential and Mellin operators in spaces with conormal singularity. \newblock{\em  Mathematical Research} 50, 1989.
+
 
 \bibitem{sloan1992collocation}
 I.~H. Sloan and E. P.~Stephan.
@@ -1200,9 +1247,11 @@ E.~P. Stephan and W.~L. Wendland.
   1990.
 
 \bibitem{urzua2014optimal}
-C.~A. Urz{\'u}a~Torres et~al.
+C.~A. Urz{\'u}a~Torres.
 \newblock Optimal preconditioners for solving two-dimensional fractures and
   screens using boundary elements.
+\newblock {\em PhD dissertation},
+\newblock Pontifica universidad catolica de Chile,
 \newblock 2014.
 
 \bibitem{yan1989mesh}

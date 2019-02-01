@@ -1,50 +1,48 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: source.aux
 The style file: plain.bst
 Database file #1: ../../Biblio/biblio.bib
-Warning--I didn't find a database entry for "averseng"
-Warning--I didn't find a database entry for ""
 Warning--empty year in alouges2018new
-You've used 15 entries,
+You've used 8 entries,
             2118 wiz_defined-function locations,
-            596 strings with 6505 characters,
-and the built_in function-call counts, 4509 in all, are:
-= -- 458
-> -- 176
-< -- 1
-+ -- 72
-- -- 54
-* -- 302
-:= -- 761
-add.period$ -- 45
-call.type$ -- 15
-change.case$ -- 70
+            548 strings with 5289 characters,
+and the built_in function-call counts, 2217 in all, are:
+= -- 218
+> -- 86
+< -- 0
++ -- 36
+- -- 26
+* -- 137
+:= -- 382
+add.period$ -- 24
+call.type$ -- 8
+change.case$ -- 35
 chr.to.int$ -- 0
-cite$ -- 16
-duplicate$ -- 170
-empty$ -- 370
-format.name$ -- 54
-if$ -- 929
+cite$ -- 9
+duplicate$ -- 85
+empty$ -- 190
+format.name$ -- 26
+if$ -- 454
 int.to.chr$ -- 0
-int.to.str$ -- 15
-missing$ -- 16
-newline$ -- 78
-num.names$ -- 30
-pop$ -- 66
+int.to.str$ -- 8
+missing$ -- 9
+newline$ -- 43
+num.names$ -- 16
+pop$ -- 43
 preamble$ -- 1
-purify$ -- 57
+purify$ -- 29
 quote$ -- 0
-skip$ -- 125
+skip$ -- 59
 stack$ -- 0
-substring$ -- 317
-swap$ -- 24
-text.length$ -- 1
+substring$ -- 139
+swap$ -- 8
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 56
+type$ -- 28
 warning$ -- 1
-while$ -- 51
-width$ -- 17
-write$ -- 161
-(There were 3 warnings)
+while$ -- 24
+width$ -- 9
+write$ -- 84
+(There was 1 warning)

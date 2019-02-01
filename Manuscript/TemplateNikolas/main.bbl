@@ -1,0 +1,25 @@
+\begin{thebibliography}{BEFB94}
+
+\bibitem[Bar81]{barker}
+G.~P. Barker.
+\newblock Theory of cones.
+\newblock {\em Linear Algebra and its Applications}, 39:263 -- 291, 1981.
+
+\bibitem[BEFB94]{boyd}
+S.~Boyd, L.~{El~{G}haoui}, E.~Feron, and V.~Balakrishnan.
+\newblock {\em Linear Matrix Inequalities in System and Control Theory},
+  volume~15 of {\em Studies in Applied Mathematics}.
+\newblock {SIAM}, Philadelphia, PA, June 1994.
+
+\bibitem[dKV16]{deklerk_vallentin}
+E.~de~Klerk and F.~Vallentin.
+\newblock On the {T}uring model complexity of interior point methods for
+  semidefinite programming.
+\newblock {\em SIAM J. Optim.}, 26(3):1944--1961, 2016.
+
+\bibitem[DLRS10]{DeLoera2010}
+Jesus~A. De~Loera, Jorg Rambau, and Francisco Santos.
+\newblock {\em Triangulations: Structures for Algorithms and Applications}.
+\newblock Springer Publishing Company, Incorporated, 1st edition, 2010.
+
+\end{thebibliography}
