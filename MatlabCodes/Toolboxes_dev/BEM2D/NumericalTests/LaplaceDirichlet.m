@@ -11,7 +11,7 @@ X = R2toRfunc.X;
 incWave = 1./sqrt(((X^2 + 0.001^2)));
 
 
-N = 12800;
+N = 500;
 meshAdapt = MeshCurve(curve,N,@cos,[-pi,0]);
 Vh =  weightedFEspace(meshAdapt,'P1','1/sqrt(1-t^2)',...
     'quadNum',3,'specialQuadSegs',1:meshAdapt.nseg);

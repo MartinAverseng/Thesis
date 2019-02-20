@@ -26,14 +26,9 @@ a = 2/(sqrt(Ngeom)); % This value may be chosen by user, or optimized
 % constants)
 % Here the choice in 1/sqrt(N) is dictated by distribution density 
 
-b = 1; % For usual kernels (Log, J0 and Y0), always set b to 1. 
-% For user-defined kernel, it can be worth trying to choose b <1 although
-% no theory available to justify convergence...
-
-
 % Build operator
-A = Op(X,Y,kernel,a,b,tol);
-B = Op(X,X,kernel,a,b,tol);
+A = Op(X,kernel,Y,'a',a,'tol',tol);
+B = Op(X,kernel,X,'a',a,'tol',tol);
 A.show;
 
 % Perform matrix-vector product and validate
@@ -69,14 +64,9 @@ a = 2/(sqrt(Ngeom)); % This value may be chosen by user, or optimized
 % constants)
 % Here the choice in 1/sqrt(N) is dictated by distribution density 
 
-b = 1; % For usual kernels (Log, J0 and Y0), always set b to 1. 
-% For user-defined kernel, it can be worth trying to choose b <1 although
-% no theory available to justify convergence...
-
-
 % Build operator
-A1 = Op(X,Y,y0kern,a,b,tol);
-A2 = Op(X,Y,j0kern,0,1,tol);
+A1 = Op(X,y0kern,Y,'a',a,'tol',tol);
+A2 = Op(X,j0kern,Y,'a',0,'tol',tol);
 A1.show;
 
 % Perform matrix-vector product and validate
@@ -113,13 +103,9 @@ a = 2/(sqrt(Ngeom)); % This value may be chosen by user, or optimized
 % constants)
 % Here the choice in 1/sqrt(N) is dictated by distribution density 
 
-b = 1; % For usual kernels (Log, J0 and Y0), always set b to 1. 
-% For user-defined kernel, it can be worth trying to choose b <1 although
-% no theory available to justify convergence...
-
 
 % Build operator
-A = Op(X,Y,kernel,a,b,tol);
+A = Op(X,kernel,Y,'a',a,'tol',tol);
 A.show;
 
 % Perform matrix-vector product and validate
@@ -168,10 +154,10 @@ b = 1; % For usual kernels (Log, J0 and Y0), always set b to 1.
 
 
 % Build operator
-A1 = Op(X,Y,y0kern,a,b,tol);
-A2 = Op(X,Y,j0kern,a,b,tol);
-A3 = Op(X2,Y2,y0kern2,a,b,tol);
-A4 = Op(X2,Y2,j0kern2,a,b,tol);
+A1 = Op(X,y0kern,Y,'a',a,'tol',tol);
+A2 = Op(X,j0kern,Y,'a',a,'tol',tol);
+A3 = Op(X2,y0kern2,Y2,'a',a,'tol',tol);
+A4 = Op(X2,j0kern2,Y2,'a',a,'tol',tol);
 A1.show;
 
 % Perform matrix-vector product and validate
@@ -219,7 +205,7 @@ b = 1; % For usual kernels (Log, J0 and Y0), always set b to 1.
 
 
 % Build operator
-A1 = Op(X,Y,y0kern,a,b,tol,'noCloseField',true); % we know that no close interactions are required
+A1 = Op(X,y0kern,Y,a,tol,'noCloseField',true); % we know that no close interactions are required
 A2 = Op(X,Y,j0kern,0,b,tol,'noCloseField',true); % we know that no close interactions are required
 A1.show;
 

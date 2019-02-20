@@ -1,9 +1,9 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="2572449359" file="/home/martin/MatlabCodes/Toolboxes_dev/BEM2D.prj" location="/home/martin/MatlabCodes/Toolboxes_dev" name="BEM2D" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="2572449359" file="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev/BEM2D.prj" location="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev" name="BEM2D" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>BEM2D</param.appname>
     <param.authnamewatermark>Martin Averseng</param.authnamewatermark>
-    <param.email>martin.averseng@polytechnique.edu</param.email>
-    <param.company>CMAP polytechnique</param.company>
+    <param.email>martin.averseng@gmail.com</param.email>
+    <param.company>CMAP Ecole Polytechnique</param.company>
     <param.summary>Toolbox for BEM method in R^2</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}/BEM2D/BEM.png</param.screenshot>
@@ -37,17 +37,26 @@
 BEM.png
 Validation/
 Main.m</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
     <param.apps />
+    <param.registered.apps />
     <param.docs />
+    <param.getting.started.guide />
     <param.matlabpath.excludes>
       <item>/Validation</item>
     </param.matlabpath.excludes>
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.release.start />
+    <param.release.end />
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
     <unset>
-      <param.authnamewatermark />
-      <param.email />
-      <param.company />
       <param.description />
       <param.version />
       <param.output />
@@ -55,10 +64,22 @@ Main.m</param.exclude.filters>
       <param.products.id />
       <param.products.version />
       <param.platforms />
+      <param.exclude.pcodedmfiles />
       <param.examples />
       <param.demosxml />
       <param.apps />
+      <param.registered.apps />
       <param.docs />
+      <param.getting.started.guide />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.release.start />
+      <param.release.end />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
     </unset>
     <fileset.rootdir>
       <file>${PROJECT_ROOT}/BEM2D</file>
@@ -68,50 +89,83 @@ Main.m</param.exclude.filters>
       <file>${PROJECT_ROOT}/BEM2D/FEspace</file>
       <file>${PROJECT_ROOT}/BEM2D/Geometry</file>
       <file>${PROJECT_ROOT}/BEM2D/IntegrationEnv</file>
+      <file>${PROJECT_ROOT}/BEM2D/NumericalTests</file>
       <file>${PROJECT_ROOT}/BEM2D/Operators</file>
       <file>${PROJECT_ROOT}/BEM2D/singularIntegrals</file>
       <file>${PROJECT_ROOT}/BEM2D/utils</file>
       <file>${PROJECT_ROOT}/BEM2D/variationalSol.m</file>
     </fileset.rootfiles>
     <fileset.depfun.included>
-      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
-      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/sumStruct.m</file>
+      <file>/home/emile/Documents/Martin/Thesis/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
+      <file>/home/emile/Documents/Martin/Thesis/MatlabCodes/usefulMatlabFunctions/sumStruct.m</file>
     </fileset.depfun.included>
     <fileset.depfun.excluded>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/AbstractMatrix/AbstractMatrix.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Cp.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/H0Kernel.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/J0Kernel.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/Kernel.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/LogKernel.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Kernels/Y0Kernel.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/Op.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/Quad2D/Quad2D.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/RadialQuadrature.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/besselJroots.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/besselYroots.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/mergeQuads.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/newton.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/nextY0root.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/Subfunctions/scalProds.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/coeff2der.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/coeff2func.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Op/RadialQuad/radialQuad.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/libGgNufft2D/nufft2d.mexa64</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/libGgNufft2D/nufft2d3.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/Utils/printStarLine.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/gramMatrix.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/scalarProdsDictionary/helmholtzSP.m</file>
-      <file>/home/martin/Documents/MATLAB/Add-Ons/Toolboxes/BEM2D/code/home/martin/MatlabCodes/ToolboxDev/SBD/scalarProdsDictionary/laplaceSP.m</file>
+      <file>${PROJECT_ROOT}/AbstractMatrix/AbstractMatrix.m</file>
+      <file>${PROJECT_ROOT}/SBD/Cp.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels/H0Kernel.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels/J0Kernel.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels/Kernel.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels/LogKernel.m</file>
+      <file>${PROJECT_ROOT}/SBD/Kernels/Y0Kernel.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/Op.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/Quad2D/Quad2D.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/RadialQuadrature.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/besselJroots.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/besselYroots.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/mergeQuads.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/newton.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/nextY0root.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/Subfunctions/scalProds.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/coeff2der.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/coeff2func.m</file>
+      <file>${PROJECT_ROOT}/SBD/Op/RadialQuad/radialQuad.m</file>
+      <file>${PROJECT_ROOT}/SBD/Utils/Gauss_Legendre1D.m</file>
+      <file>${PROJECT_ROOT}/SBD/Utils/libGgNufft2D/nufft2d.mexa64</file>
+      <file>${PROJECT_ROOT}/SBD/Utils/libGgNufft2D/nufft2d3.m</file>
+      <file>${PROJECT_ROOT}/SBD/Utils/printStarLine.m</file>
+      <file>${PROJECT_ROOT}/SBD/gramMatrix.m</file>
+      <file>${PROJECT_ROOT}/SBD/scalarProdsDictionary/helmholtzSP.m</file>
+      <file>${PROJECT_ROOT}/SBD/scalarProdsDictionary/laplaceSP.m</file>
     </fileset.depfun.excluded>
     <fileset.package />
     <build-deliverables>
-      <file location="/home/martin/MatlabCodes/Toolboxes_dev" name="BEM2D.mltbx" optional="false">/home/martin/MatlabCodes/Toolboxes_dev/BEM2D.mltbx</file>
+      <file location="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev" name="BEM2D.mltbx" optional="false">/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev/BEM2D.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/usr/local/MATLAB/R2016a</root>
-      <toolboxes />
+      <root>/usr/local/MATLAB/R2018a</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
     </matlab>
     <platform>
       <unix>true</unix>
@@ -122,7 +176,7 @@ Main.m</param.exclude.filters>
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>4.13.0-36-generic</osver>
+      <osver>4.15.0-43-generic</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

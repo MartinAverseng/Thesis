@@ -1,0 +1,71 @@
+//Constants
+// Dimension constants
+
+real L            = 1;
+real l            = 1;
+
+// Discretization constants
+int Nx             = 20;
+int Ny             = 10;
+int steps          = 100;      // nombre d'etapes temporelles
+real dt            = 0.05;     // intervalle de temps entre chaque etape
+
+// Triangular Mesh with references
+int dirichlet = 1;
+int neumann = 0;
+int[int] labs = [dirichlet,neumann,neumann,neumann];
+mesh Th1 = square(Nx,Ny,[L*x,l*y],label=labs);
+mesh Th2 = square(Nx,Ny,[L*x,l*y],label=labs);
+
+// FE Spaces and functions
+fespace Vh1(Th1,P2);
+fespace Vh2(Th2,P2);
+Vh1 u11,u12,v11,v12;
+Vh2 u21,u22,v21,v22;
+
+fespace Ph1(Th1,P1);
+fespace Ph2(Th2,P1);
+Ph1 p1,q1;
+Ph2 p2,q2;
+
+
+// Variationnal formulations
+
+//FV1
+problem LaplaceAbsorbDirichlet1([u11,u12,p1],[v11,v12,q1])
+= int2d(Th1)(dx(u11)*dx(v11) + dy(u11)*dy(v11)
++ dx(u12)*dx(v12) + dy(u12)*dy(v12))
+- int2d(Th1)(p1*(dx(v11)+dy(v12)))
+- int2d(Th1)(q1*(dx(u11)+dy(u12)))
+- int2d(Th1)(-v12)
++ on(dirichlet, u11=0 ,u12=0);
+
+//FV2
+problem LaplaceAbsorbDirichlet2([u21,u22,p2],[v21,v22,q2])
+= int2d(Th2)(2*dx(u21)*dx(v21) + 2*dy(u22)*dy(v22) + dy(u21)*dy(v21)
++ dx(u22)*dx(v22) + dy(u21)*dx(v22) + dx(u22)*dy(v21))
+- int2d(Th2)(p2*(dx(v21)+dy(v22)))
+- int2d(Th2)(q2*(dx(u21)+dy(u22)))
+- int2d(Th2)(-v22)
++ on(dirichlet, u21=0, u22=0);
+
+LaplaceAbsorbDirichlet1;
+Th1 = movemesh(Th1,[x,y]+dt*[u11,u12]);
+Th1 = adaptmesh(Th1,u11^2+u12^2);
+plot(Th1, wait=1, cmm="Fluide au debut de l'ecoulement", ps="q11_deb.eps");
+
+for (int i=1;i<=steps;i++) // debut de la boucle sur les maillages
+{
+LaplaceAbsorbDirichlet1;
+Th1 = movemesh(Th1,[x,y]+dt*[u11,u12]);
+Th1 = adaptmesh(Th1,u11^2+u12^2);
+
+LaplaceAbsorbDirichlet2;
+Th2 = movemesh(Th2,[x,y]+dt*[u21,u22]);
+Th2 = adaptmesh(Th2,u21^2+u22^2);
+
+cout << "Step " << i << " done"<<endl;
+}
+
+plot(Th1, wait=1, cmm="Ecoulement apres 5 secondes avec FV1", ps="q11_fin_FV1.eps");
+plot(Th2, wait=1, cmm="Ecoulement apres 5 secondes avec FV2", ps="q11_fin_FV2.eps");

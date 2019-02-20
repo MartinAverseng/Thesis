@@ -1,0 +1,26 @@
+\begin{thebibliography}{1}
+
+\bibitem{gautschi1959some}
+Walter Gautschi.
+\newblock Some elementary inequalities relating to the gamma and incomplete
+  gamma function.
+\newblock {\em Journal of Mathematics and Physics}, 38(1-4):77--81, 1959.
+
+\bibitem{hiptmair2017closed}
+Ralf Hiptmair, Carlos Jerez-Hanckes, and Carolina Urzua-Torres.
+\newblock Closed-form exact inverses of the weakly singular and hypersingular
+  operators on disks.
+\newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
+
+\bibitem{kershaw1983some}
+D~Kershaw.
+\newblock Some extensions of w. gautschi's inequalities for the gamma function.
+\newblock {\em Mathematics of Computation}, pages 607--611, 1983.
+
+\bibitem{ramaciotti2016theoretical}
+Pedro Ramaciotti~Morales.
+\newblock {\em Theoretical and numerical aspects of wave propagation phenomena
+  in complex domains and applications to remote sensing}.
+\newblock PhD thesis, Paris Saclay, 2016.
+
+\end{thebibliography}

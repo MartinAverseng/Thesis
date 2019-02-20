@@ -1,9 +1,9 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="612121741" file="/home/martin/MatlabCodes/Toolboxes_dev/AbstractMatrix.prj" location="/home/martin/MatlabCodes/Toolboxes_dev" name="AbstractMatrix" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="612121741" file="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev/AbstractMatrix.prj" location="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev" name="AbstractMatrix" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>AbstractMatrix</param.appname>
     <param.authnamewatermark>Martin Averseng</param.authnamewatermark>
-    <param.email>martin.averseng@polytechnique.edu</param.email>
-    <param.company>CMAP polytechnique</param.company>
+    <param.email>martin.averseng@gmail.com</param.email>
+    <param.company>CMAP Ecole Polytechnique</param.company>
     <param.summary>Algebra of compressed matrix.</param.summary>
     <param.description />
     <param.screenshot>${PROJECT_ROOT}/AbstractMatrix/image.jpg</param.screenshot>
@@ -35,15 +35,24 @@
 %
 
 image.jpg</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
     <param.apps />
+    <param.registered.apps />
     <param.docs />
+    <param.getting.started.guide />
     <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.release.start />
+    <param.release.end />
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
     <unset>
-      <param.authnamewatermark />
-      <param.email />
-      <param.company />
       <param.description />
       <param.version />
       <param.output />
@@ -51,11 +60,23 @@ image.jpg</param.exclude.filters>
       <param.products.id />
       <param.products.version />
       <param.platforms />
+      <param.exclude.pcodedmfiles />
       <param.examples />
       <param.demosxml />
       <param.apps />
+      <param.registered.apps />
       <param.docs />
+      <param.getting.started.guide />
       <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.release.start />
+      <param.release.end />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
     </unset>
     <fileset.rootdir>
       <file>${PROJECT_ROOT}/AbstractMatrix</file>
@@ -65,17 +86,48 @@ image.jpg</param.exclude.filters>
       <file>${PROJECT_ROOT}/AbstractMatrix/Example.m</file>
     </fileset.rootfiles>
     <fileset.depfun.included>
-      <file>/home/martin/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
+      <file>/home/emile/Documents/Martin/Thesis/MatlabCodes/usefulMatlabFunctions/Bytes2str.m</file>
     </fileset.depfun.included>
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="/home/martin/MatlabCodes/Toolboxes_dev" name="AbstractMatrix.mltbx" optional="false">/home/martin/MatlabCodes/Toolboxes_dev/AbstractMatrix.mltbx</file>
+      <file location="/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev" name="AbstractMatrix.mltbx" optional="false">/home/emile/Documents/Martin/Thesis/MatlabCodes/Toolboxes_dev/AbstractMatrix.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>/usr/local/MATLAB/R2016a</root>
-      <toolboxes />
+      <root>/usr/local/MATLAB/R2018a</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabcoder" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
     </matlab>
     <platform>
       <unix>true</unix>
@@ -86,7 +138,7 @@ image.jpg</param.exclude.filters>
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>4.13.0-36-generic</osver>
+      <osver>4.15.0-43-generic</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>

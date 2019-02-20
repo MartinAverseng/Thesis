@@ -1,0 +1,60 @@
+//Constants
+// Dimension constants
+real L            = 1;
+real l            = 1;
+
+// Discretization constants
+int Nx             = 8;
+int Ny             = 8;
+
+// Triangular Mesh with references
+
+int dirichlet = 1;
+int neumann = 0;
+int[int] labs = [dirichlet,neumann,neumann,neumann];
+mesh Th = square(Nx,Ny,[L*x,l*y],label=labs);
+plot(Th, wait=1, cmm="Mesh");
+
+// FE Spaces and functions
+fespace Vh(Th,P2);
+Vh u1,u2,v1,v2;
+
+fespace Ph(Th,P1);
+Ph p,q;
+
+
+// Variationnal formulations
+
+//FV1
+problem LaplaceAbsorbDirichlet1([u1,u2,p],[v1,v2,q])
+= int2d(Th)(dx(u1)*dx(v1) + dy(u1)*dy(v1) \\
++ dx(u2)*dx(v2) + dy(u2)*dy(v2))
+- int2d(Th)(p*(dx(v1)+dy(v2)))
+- int2d(Th)(q*(dx(u1)+dy(u2)))
+- int2d(Th)(-v2)
++ on(dirichlet, u1=0 ,u2=0);
+
+//FV2
+problem LaplaceAbsorbDirichlet2([u1,u2,p],[v1,v2,q])
+= int2d(Th)(2*dx(u1)*dx(v1) + 2*dy(u2)*dy(v2) + dy(u1)*dy(v1)
++ dx(u2)*dx(v2) + dy(u1)*dx(v2) + dx(u2)*dy(v1))
+- int2d(Th)(p*(dx(v1)+dy(v2)))
+- int2d(Th)(q*(dx(u1)+dy(u2)))
+- int2d(Th)(-v2)
++ on(dirichlet, u1=0, u2=0);
+
+
+// Solution
+LaplaceAbsorbDirichlet1;
+
+plot([u1,u2],coef=0.5,wait=1,fill=1,value=10, \\
+cmm="Vitesse par FV1",ps="FV1_vitesse.eps");
+plot(p,fill=1,wait=1,value=10, \\
+cmm="Pression par FV1",ps="FV1_pression.eps");
+
+LaplaceAbsorbDirichlet2;
+
+plot([u1,u2],coef=0.5,wait=1,fill=1,value=10, \\
+cmm="Vitesse par FV2",ps="FV2_vitesse.eps");
+plot(p,fill=1,wait=1,value=10, \\
+cmm="Pression par FV2",ps="FV2_pression.eps");

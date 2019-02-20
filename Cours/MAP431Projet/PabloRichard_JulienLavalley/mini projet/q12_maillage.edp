@@ -1,0 +1,15 @@
+// code question 12
+
+border a(t=0,1){x=t;y=0;label = 1;};
+border b(t=0,1){x=1-t/2;y=t/2;label = 2;};
+border c(t=0,1){x=0.5-t/2;y=0.5-t/2;label = 3;};
+mesh Th = buildmesh (a(3)+b(3)+c(3));
+plot(Th, wait=1, cmm="Maillage initial",ps="q12_forme.eps");
+
+func f = 0.35*exp(-10*(x-0.5)^2-20*(y-0.18)^2);
+fespace Vh(Th,P2);
+Vh fh = f;
+
+Th = movemesh(Th,[x,y]+[f,0]);
+plot(Th, wait=1, cmm="Transformation non
+homogene du maillage",ps="q12_deforme.eps");

@@ -1,0 +1,175 @@
+\documentclass[]{article}
+\input{../Definitions.tex}
+%opening
+\title{Concis disque}
+\author{Martin, François}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	We do the same as for the segment but this time with the disk.
+\end{abstract}
+
+\section{Laplace}
+
+We define 
+$$D = \enstq{x \in \R^3}{ x_1^2 + x_2^2 \leq  1,\quad  z = 0}$$ 
+the unit disk in the plane $z = 0$ and 
+$$\mathbbm{S}^2 = \enstq{x \in \R^3}{x_1^2 + x_2^2 + x_3^2 = 1}$$
+the unit sphere in dimension $3$. 
+
+\begin{Def}
+	For $x \in D$, we put 
+	\[\omega(x) = \sqrt{1 - \rho^2}\]
+	where $\rho^2 = x_1^2 + x_2^2$. 
+	
+	We define the single layer operator $\mathcal{S}$ by 
+	\begin{equation}
+		\mathcal{S \varphi}(x) = \int_{D} \frac{1}{4\pi \norm{x - y}}\varphi(y) dD(y)
+		\label{defS}
+	\end{equation}
+	and $S \isdef \gamma \mathcal{S}$, where $\norm{x} = \sqrt{x_1^2 + x_2^2 + x_3^2}$ denotes the Euclidean norm of $x$ and $dD$ is the surface measure on $D$. The hypersingular operator is
+	\begin{equation}
+		N \varphi(x) \isdef \textup{f.p.} \int \frac{\partial^2}{\partial n_x n_y}\frac{1}{\norm{x - y}} \varphi(y) dD(y) 
+		\label{defN}
+	\end{equation}
+	We let $S_\omega = S \frac{1}{\omega}$ and $N_\omega = N \omega$.
+\end{Def}
+
+Let us review some properties of the spherical harmonics $Y_{l}^m$. 
+
+\begin{Def}
+	For $l \in \N$ and $- l \leq m \leq l$, the function $Y_l^m(\theta,\varphi)$ is defined by 
+	\[Y_{l}^m(\theta,\varphi) = \gamma_l^m P_{lm}(\cos\theta) e^{im\varphi}\,,\]
+	where $P_{lm}(x)$ is the so-called "Associated Legendre" polynomial which is the solution of the differential equation 
+	\[(1 - x^2)\frac{d^2}{dx^2}P_{lm}(x) - 2 x \frac{d}{dx} P_{lm}(x) + \left[l(l+1) - \frac{m^2}{1 - x^2} \right] P_{lm} (x) = 0.\]
+	
+	The spherical harmonics are eigenfunctions of the Laplace-Beltrami operator on $\mathbb{S}^2$ which takes the following form on the sphere: 
+	\[\Delta_{\mathbbm{S}^2} u(\theta,\varphi) = \frac{1}{\sin\theta} \partial_\theta \left(\sin\theta \frac{\partial}{\partial_{\theta}} u\right) - \frac{1}{\sin^2 \theta} \frac{\partial^2 u}{\partial \varphi^2}\,.\]
+	With this definition, one has
+	\[-\Delta_{\mathbbm{S}^2} Y_{l}^m = l(l+1) Y_{l}^m \] 
+\end{Def}
+
+\begin{Prop}
+	The single-layer operator and the hypersingular operator $S_{\mathbbm{S^2}}$ and $N_{\mathbbm{S^2}}$ defined as in \cref{defS,defN} replacing the domain of integration by $\mathbbm{S}^2$, satisfy
+	\[S_{\mathbbm{S^2}} Y_{l}^m = \frac{1}{2l+1} Y_l^m\]
+	\[N_{\mathbbm{S^2}} Y_{l}^m = -\frac{l(l+1)}{2l + 1} Y_l^m\]
+\end{Prop}
+This proposition illustrates the fact that $S_{\mathbbm{S^2}}N_{\mathbbm{S^2}}$ is an order $0$ operator on the unit sphere, with a spectrum concentrated towards $\frac{1}{4}$. Moreover, both operators have the property that they map smooth functions to smooth functions bijectively. This fails to be the case for the operators $S$ and $N$ on the disk. However, once they are appropriately weighted, we have explicit eigenfunctions and eigenvalues. Let us introduce the "projected spherical harmonics" PSH:
+\begin{Def}
+	We define the PSH $y_{l}^m$ by 
+	\[y_{lm}(\rho,\varphi) = \eta_{l}^m e^{im \varphi} P_{lm}(\sqrt{1 - \rho^2}) \propto Y_{lm}(\pi/2 - \arccos(\rho),\varphi)\]
+	where $\rho,\varphi$ is a system of cylindrical coordinates on $D$. The constant $\eta_{l}^m$ is defined by 
+	\[\eta_{l}^m = (-1)^m \sqrt{\frac{(2l+1)}{4\pi}\frac{(l-m)!}{(l+m)!}}\,.\]
+	If $l_1$ and $m_1$ and $l_2$ $m_2$ have the same parity, there holds 
+	\[\int_{D} \frac{y_{l_1}^{m_1}y_{l_2}^{m_2}}{\omega} = \delta_{l_1 = l_2}\delta_{m_1 = m_2}\,.\]
+\end{Def}
+
+\begin{Def}
+	To reinforce the connection between this work and our previous work in 2d, we denote 
+	\[T_{l}^m(x) = y_{l}^m(x,\varphi)\] 
+	\[U_{l}^m(x) = \frac{y_{l+1}^m(x,\varphi)}{\sqrt{1 - x^2}}\]
+	where $l+m$ is even.
+	Both $T_{l}^m$ and $U_{l}^m$ are polynomials of order $l$ in $\rho$. 
+\end{Def}
+\begin{Prop}
+	The functions $T_{l}^m$ form an orthogonal basis of $L^2_\frac{1}{\omega}(D)$ and the functions $U_{l}^m$ an orthogonal basis of $L^2_\omega(D)$. 
+\end{Prop}
+\begin{Prop}
+	Let $l,m \in \N$ with $l + m$ even. Then
+	\[S_\omega T_{l}^m = \frac{1}{2\lambda_{l}^m} T_{l}^m \]
+	and 
+	\[N_\omega U_{l}^m = \frac{\lambda_{l+1}^m}{2} U_{l}^m\]
+	where
+	\[\lambda_{l}^m = 2\frac{\Gamma\left(\frac{l+m+2}{2}\right) \Gamma\left(\frac{l-m+2}{2}\right)}{\Gamma\left(\frac{l+m+1}{2}\right) \Gamma\left(\frac{l-m+1}{2}\right)}\]
+\end{Prop}
+
+\begin{Def}
+	We define the "angular moments" $\mathcal{L}_+$ and $\mathcal{L}_-$ on the disk by the following formulas for smooth functions
+	\[\mathcal{L}_\pm u(\rho,\varphi) \isdef e^{\pm i \varphi}\left(\pm \frac{\partial u}{\partial\rho} + i \frac{1}{\rho}\frac{\partial u}{\partial \varphi}\right)\]
+\end{Def}
+
+One has
+
+\[\nabla_D = \frac{1}{2}\begin{pmatrix}\mathcal{L}_+ - \mathcal{L}- \\ -i(\mathcal{L}_+ + \mathcal{L}_-)  \end{pmatrix}\]
+
+therefore, using $\Delta_D = \nabla_D \cdot \nabla_D$, 
+\[\Delta_D = -\frac{1}{2}(\mathcal{L}_+ \mathcal{L}_{-} + \mathcal{L}_{-}\mathcal{L}_+)\]
+\toDo{Ici je pense qu'il y a une erreur dans la thèse de Pedro, les deux termes ne sont pas égaux (p. 62)}
+Later on, we drop the subscript $D$. 
+\begin{Prop}
+	Let $l,m$ such that $l+m$ is even. Then 
+	\[\mathcal{L}_{\pm} T_{l,m} = \sqrt{(l\pm m)(l\pm m+1)}U_{l-1}^{m \pm 1}\]
+	while
+	\[\omega \mathcal{L}_\pm \omega U_{l}^m = \sqrt{(l \pm m)(l\pm m +1)} T_{l+1}^{m \pm 1}\]
+\end{Prop}
+\begin{proof}
+	Those identities are easily deduced from the formulas for $\mathcal{L}_{+} y_{l}^m$ and $\mathcal{L}_- y_{l}^m$ established in \cite{ramaciotti2016theoretical} and summarized in \cite{hiptmair2017closed}.
+\end{proof}
+One can deduce the following identities
+
+\begin{Cor}
+	\[\omega \mathcal{L}_{+} \omega \mathcal{L}_{-} T_{l}^m = (l(l+1) - m^2 + m)T_{l,m} \]
+	\[\omega \mathcal{L}_{-} \omega \mathcal{L}_{+} T_{l}^m = (l(l+1) - m^2 - m)T_{l,m} \]
+	while
+	\[\mathcal{L}_{+} \omega \mathcal{L}_{-}\omega U_{l}^m = ((l+1)(l+2) - m^2 + m)U_{l,m} \]
+	\[\omega \mathcal{L}_{-} \omega \mathcal{L}_{+} U_{l}^m = ((l+1)(l+2) - m^2 - m)U_{l,m} \]
+\end{Cor}
+
+We further introduce two other operators, $(\omega \nabla \omega) \cdot \nabla $ and $\nabla \cdot (\omega \nabla \omega)$ which satisfy 
+\[(\omega \nabla \omega) \cdot \nabla = \frac{1}{2}\left(\omega \mathcal{L}_{+} \omega \mathcal{L}_{-} + \omega \mathcal{L}_{-} \omega \mathcal{L}_{+}\right)\]
+and
+\[\nabla \cdot (\omega \nabla \omega)  = \frac{1}{2}\left( \mathcal{L}_{+} \omega \mathcal{L}_{-}\omega + \mathcal{L}_{-} \omega \mathcal{L}_{+}\omega \right)\]
+
+\begin{Cor}
+	One has, for $l+m$ even,
+	\[(\omega \nabla \omega) \cdot \nabla T_{l}^m = (l(l+1) - m^2)T_{l,m}\,,\]
+	and
+	\[\nabla \cdot (\omega \nabla \omega) U_{l}^m = ((l+1)(l+2) - m^2)U_{l,m}\,.\]
+\end{Cor}
+
+\begin{Prop}
+	Let $l \in \N$ and $-l \leq m \leq l$, such that $l$ and $m$ are not both zero. Then
+	\begin{equation}
+		1 \leq \frac{4 \left(\lambda_{l}^m\right)^2}{l(l+1) - m^2} \leq 2
+		\label{PropinegalitesEq}
+	\end{equation}
+\end{Prop}
+\begin{proof}
+ 	By Gauschi's inequality \cite{gautschi1959some}, there holds for all $x > 0$ and $s \in (0,1)$, 
+ 	\[x^{1-s} \leq \frac{\Gamma(x + 1)}{\Gamma(x + s)} \leq (x+1)^{1-s}\]
+ 	This inequality, applied with $s = \frac{1}{2}$ and $x = \frac{l \pm m}{2}$ yields 
+ 	\[\frac{3}{4} \leq \frac{4 \left(\lambda_{l}^m\right)^2}{l(l+1) - m^2} \leq 4\,.\]
+ 	Note that for $s = \frac{1}{2}$, both sides of Gautstchi's inequality remain valid for $x = 0$, so the cases $m = \pm l$ are permitted. To find the constants $1$ and $2$ instead of $\frac{3}{4}$ and $4$, one can use the following improvement of Gautschi's inequality \cite{kershaw1983some}:
+ 	\[\left(x + \frac{s}{2}\right)^{1-s} < \frac{\Gamma(x + 1)}{\Gamma(x + s)} < \left(x - \frac{1}{2} + \sqrt{s + \frac{1}{4}}\right)^{1 - s}\,.\]
+ 	Again, this inequality remains valid in the case $x = 0$ for $s = \frac{1}{2}$. Taking again $x = \frac{ l \pm m }{2}$, multiplying the squares of the resulting inequalities, and multiplying by $\frac{4}{l(l+1) - m^2}$, one finds
+ 	\begin{equation}
+ 		\frac{(l+ \frac{1}{2})^2 - m^2}{l(l+1) - m^2} < \frac{4 \left(\lambda_{l}^m\right)^2}{l(l+1) - m^2} < \frac{(l+ \frac{\sqrt{3} - 1}{2})^2 - m^2}{l(l+1) - m^2}
+ 		\label{inegaliteCle}
+ 	\end{equation}
+ 	Some manipulations on those	 inequalities yields
+ 	\[1 + \frac{1}{4(l(l+1) - m^2)} <  \frac{4 \left(\lambda_{l}^m\right)^2}{l(l+1) - m^2} < 1 + \frac{(2\sqrt{3} - 3)l}{l(l+1) - m^2} + \frac{4 - 2\sqrt{3}}{l(l+1) - m^2}\]
+ 	The left side of the latter inequality immediately implies the left inequality of \eqref{PropinegalitesEq}. For the right side, we obtain the result after using $l(l+1) - m^2 \geq l$ for the denominator of the second term, and $l(l+1) - m^2 \geq 1$ for the third term.  
+\end{proof}
+As it can be seen in the proof, the lower bound is sharp, since for $m = 0$ and in the limit $l \to \infty$, the two sides of \eqref{inegaliteCle} converge to $1$. For the upper bound, it seems, based on numerical evidence, that the highest value of the quantity being estimated is reached for $l = 1$ and $m =\pm 1$. In this case, one has $\frac{4 \left(\lambda_{l}^m\right)^2}{l(l+1) - m^2} = \frac{16}{\pi^2} \approx 1.6$. 
+
+\section{Helmholtz}
+
+Much like in the 2-dimensional case, the following commutation holds.
+\begin{The}
+	There holds the commutations
+	\[\left[(\omega \nabla \omega)\cdot \nabla - k^2 \omega^2\right]  S_{k,\omega} =S_{k,\omega} \left[(\omega \nabla \omega)\cdot \nabla - k^2 \omega^2\right]\]
+	and 
+	\[\left[\nabla \cdot (\omega \nabla \omega)  - k^2 \omega^2\right] N_{k,\omega} = N_{k,\omega} \left[\nabla \cdot (\omega \nabla \omega)  - k^2 \omega^2\right] \]
+\end{The}
+\begin{proof}
+	
+\end{proof}
+
+
+\bibliographystyle{plain}
+\bibliography{../Biblio/biblio}
+
+\end{document}

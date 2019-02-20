@@ -1,0 +1,40 @@
+\documentclass{letter}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\makeatletter
+\newif\if@xl@logo
+\@xl@logofalse
+\def\setlogo#1{\@xl@logotrue\gdef\xl@companylogo{#1}}
+\setlogo{HSlogo}
+
+\def\printlogo{%
+	\if@xl@logo
+	\includegraphics[width=.1\textwidth]{logo}\par%
+	\fi
+}
+
+\AtBeginDocument{\printlogo}
+
+
+%opening
+\title{Recommandation pour Erwan NISOL}
+\author{Martin Averseng}
+
+\begin{document}
+
+Madame, Monsieur, \\
+
+
+J'ai été en contact avec Erwan NISOL à l'Ecole Polytechnique (Palaiseau), à l'occasion de l'enseignement intitulé "Mise en oeuvre de méthodes numériques". Derrière cet intitulé de cours, se cache un tour d'horizon des méthodes numériques de base utilisées quotidiennement dans divers secteurs de recherche des mathé\-matiques appliquées. Le programme va des algorithmes d'optimisation tels que le gradient conjugué et certaines techniques de préconditionnement, à la discrétisation d'équations aux dérivées partielles en passant par la résolution des équations eikonales, les méthodes de Monte-Carlo, l'apprentissage statistique, entre autres. L'un des objectifs du cours est que les étudiants connaissent le fonctionnement de ces routines désormais classiques et souvent utilisées comme des "boîtes noires" par les chercheurs et ingénieurs. Il est évident que pour un chercheur en mathématique, il n'est pas suffisant de savoir utiliser ces méthodes, mais aussi de comprendre leur fonctionnement pour pouvoir en construire des variantes, des améliorations ou les combiner intelligemment. 
+
+Concrètement, au cours de cet enseignement, les étudiants créent leur propre version de ces algorithmes sous forme de routines scilab / matlab, en partant de zéro. Les séances, qui durent 4h, se déroulent entièrement derrière un ordinateur et chaque étudiant développe son propre code avec une aide ponctuelle des encadrants. \\
+
+J'ai été l'une personnes chargées de ce cours et ai particulièrement remarqué la participation enthousiaste d'Erwan. C'est un élève très curieux, posant de nombreuses questions souvent profondes. J'ai fortement apprécié l'autonomie dont il a fait preuve lors de ce cours et la qualité des codes qu'il a produit. Son attitude m'a pleinement convaincu de ses excellentes capacités académiques et personnelles, notamment pour un master de type recherche. C'est pourquoi je recommande sans hésiter sa candidature pour la maîtrise de recherche en mathématiques appliquées de l'Ecole Polytechnique de Montreal. \\
+
+
+N'hésitez pas à me contacter pour plus d'informations\\.
+
+Cordialement, \\ 
+
+
+\end{document}

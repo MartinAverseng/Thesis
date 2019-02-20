@@ -1,0 +1,54 @@
+//Constants
+// Dimension constants
+real L            = 1;
+real l            = 1;
+
+// Discretization constants
+int Nx             = 20;
+int Ny             = 20;
+int steps          = 100;      // nombre d'étapes temporelles
+real dt            = 1;     // intervalle de temps entre chaque étape
+
+// Triangular Mesh with references
+int dirichlet = 1;
+int neumann = 0;
+
+border Cext(t=0,2*pi){x=cos(t); y=sin(t); label = dirichlet;};
+border Cint(t=0,2*pi){x=0.5*cos(t); y=0.5*sin(t); label = neumann;};
+mesh Th = buildmesh (Cext(50)+Cint(-50));
+
+
+// FE Spaces and functions
+fespace Vh(Th,P2);
+Vh u1,u2,v1,v2;
+
+fespace Ph(Th,P1);
+Ph p,q;
+
+
+// Variationnal formulations
+
+//FV1
+problem LaplaceAbsorbDirichlet1([u1,u2,p],[v1,v2,q])
+= int2d(Th)(dx(u1)*dx(v1) + dy(u1)*dy(v1) + dx(u2)*dx(v2) + dy(u2)*dy(v2))
+- int2d(Th)(p*(dx(v1)+dy(v2)))
+- int2d(Th)(q*(dx(u1)+dy(u2)))
+- int2d(Th)(-v2)
++ on(dirichlet, u1=0 ,u2=0);
+
+LaplaceAbsorbDirichlet1;
+
+Th = movemesh(Th,[x,y]+dt*[u1,u2]);
+Th = adaptmesh(Th,u1^2+u2^2);
+plot(Th, wait=1, cmm="Bulle d'air initiale",ps="q13_bulle_air_deb.eps");
+
+for (int i=1;i<=steps;i++) // début de la boucle sur les maillages
+{
+LaplaceAbsorbDirichlet1;
+
+Th = movemesh(Th,[x,y]+dt*[u1,u2]);
+Th = adaptmesh(Th,u1^2+u2^2);
+plot(Th, wait=0, cmm="Mesh");
+cout << "Step " << i << " done"<<endl;
+}
+plot(Th, wait=1, cmm="Bulle d'air apres 100 secondes",ps="q13_bulle_air_fin.eps");

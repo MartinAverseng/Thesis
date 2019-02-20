@@ -1,0 +1,78 @@
+//Constants
+// Dimension constants
+real L            = 1;
+real l            = 1;
+
+// Discretization constants
+int Nx             = 25;
+int Ny             = 25;
+
+// Triangular Mesh with references
+
+int dirichlet = 1;
+int[int] labs = [dirichlet,dirichlet,dirichlet,dirichlet];
+mesh Th = square(Nx,Ny,[L*x,l*y],label=labs);
+
+
+real alpha = pi;
+func a1 = cos(alpha*x)*sin(alpha*y);
+func a2 = -sin(alpha*x)*cos(alpha*y);
+
+// FE Spaces and functions
+fespace Vh(Th,P2);
+Vh u1,u2,v1,v2;
+Vh a1h = a1;
+Vh a2h = a2;
+
+fespace Ph(Th,P1);
+Ph p,q;
+
+
+// Variationnal formulations
+
+//FV1
+problem LaplaceAbsorbDirichlet1([u1,u2,p],[v1,v2,q])
+= int2d(Th)(dx(u1)*dx(v1) + dy(u1)*dy(v1)
++ dx(u2)*dx(v2) + dy(u2)*dy(v2))
+- int2d(Th)(p*(dx(v1)+dy(v2)))
+- int2d(Th)(q*(dx(u1)+dy(u2))) // pas de forces
++ on(dirichlet, u1=a1h ,u2=a1h);
+
+//FV2
+problem LaplaceAbsorbDirichlet2([u1,u2,p],[v1,v2,q])
+= int2d(Th)(2*dx(u1)*dx(v1) + 2*dy(u2)*dy(v2) + dy(u1)*dy(v1)
++ dx(u2)*dx(v2) + dy(u1)*dx(v2) + dx(u2)*dy(v1))
+- int2d(Th)(p*(dx(v1)+dy(v2)))
+- int2d(Th)(q*(dx(u1)+dy(u2))) // pas de forces
++ on(dirichlet, u1=a1h, u2=a2h);
+
+
+// Solution
+LaplaceAbsorbDirichlet1;
+
+plot([u1,u2],coef=0.5,wait=1,fill=1,value=10);
+plot([a1h,a2h],coef=0.5,wait=1,fill=1,value=10);
+
+real err1 = (int2d(Th)((u1-a1h)^2+(u2-a2h)^2))^0.5;  //erreur L2 de u
+real err2 = (int2d(Th)( (dx(p)+(alpha^2)*a1h)^2
++(dy(p)-(alpha^2)*a2h)^2))^0.5;  //erreur L2 de grad p
+real err3 = (int2d(Th)((dx(u1)+dy(u2))^2))^0.5;  //norme L2 de div(u)
+cout << "*******************************************" << endl;
+cout << "Erreur L2 de u pour FV1 : " << err1 << endl;
+cout << "Erreur L2 de grad p pour FV1 : " << err2 << endl;
+cout << "Norme L2 de div(u) pour FV1 : " << err3 << endl;
+cout << "*******************************************" << endl;
+
+LaplaceAbsorbDirichlet2;
+
+err1 = (int2d(Th)((u1-a1h)^2+(u2-a2h)^2))^0.5;  //erreur L2 de u
+err2 = (int2d(Th)( (dx(p)+(alpha^2)*a1h)^2
++(dy(p)-(alpha^2)*a2h)^2))^0.5;  //erreur L2 de grad p
+err3 = (int2d(Th)((dx(u1)+dy(u2))^2))^0.5;  //norme L2 de div(u)
+cout << "*******************************************" << endl;
+cout << "Erreur L2 de u pour FV2 : " << err1 << endl;
+cout << "Erreur L2 de grad p pour FV2 : " << err2 << endl;
+cout << "Norme L2 de div(u) pour FV2 : " << err3 << endl;
+cout << "*******************************************" << endl;
+plot([u1,u2],coef=0.5,wait=1,fill=1,value=10);
+plot([a1h,a2h],coef=0.5,wait=1,fill=1,value=10);
