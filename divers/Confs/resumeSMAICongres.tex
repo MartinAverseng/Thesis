@@ -1,0 +1,169 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               PRIERE DE NE RIEN MODIFIER CI-DESSOUS                      %
+%       JUSQU'A LA LIGNE "PRIERE DE NE RIEN MODIFIER CI-DESSUS"            %
+%   TOUT LE BLOC QUI SUIT SERA SUPPRIME LORS DE L'EDITION FINALE DU POLY   %
+%   CONTENANT LES RESUMES                                                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[10pt]{article}
+%===  Priere de ne pas utiliser d'autres modules
+\usepackage{latexsym}
+\usepackage{bbm}              % fontes doubles (pour les ensembles, par ex.)
+\usepackage{graphicx}         % pour d'eventuelles figures
+\usepackage{epsfig}           % (preferer graphicx, si possible)
+\usepackage{amsmath}          % AMSTEX
+\usepackage{amsfonts}
+%
+\setlength{\paperheight}{297mm}\setlength{\paperwidth}{210mm}
+\setlength{\oddsidemargin}{10mm}\setlength{\evensidemargin}{10mm}
+\setlength{\topmargin}{0mm}\setlength{\headheight}{10mm}\setlength{\headsep}{8mm}
+\setlength{\textheight}{240mm}\setlength{\textwidth}{160mm}
+\setlength{\marginparsep}{0mm}\setlength{\marginparwidth}{0mm}
+\setlength{\footskip}{10mm}
+\voffset -13mm\hoffset -10mm\parindent=0cm
+\def\titre#1{\begin{center}{\Large{\bf #1}}\end{center}}
+\def\orateur#1#2{\begin{center}{\underline{\large{\bf #1}}}, {#2}\end{center}}
+\def\auteur#1#2{\begin{center}{\large{\bf #1}}, {#2}\end{center}}
+\def\auteurenbasdepage#1#2#3{\small{\bf #1}, \small{#2}\\ \small{\tt #3}\\ }
+\def\motscles#1{%
+	\ifx#1\IsUndefined\relax\else\noindent{\normalsize{\bf Mots-cl\'es :}} #1\\ \fi}
+\renewcommand{\refname}{\normalsize R\'ef\'erences}
+%
+\begin{document}
+	\thispagestyle{empty}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%               PRIERE DE NE RIEN MODIFIER CI-DESSUS                       %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%
+	% DANS TOUTE LA SUITE NOUS PRIONS LES AUTEURS DE BIEN VOULOIR UTILISER
+	% LA SYNTAXE TeX STRICTE POUR LES LETTRES ACCENTUEES.
+	% ON PEUT AU BESOIN LES REMPLACER APR\'ES LA FRAPPE DU DOCUMENT
+	% PAR LEUR \'EQUIVALENT TeX.
+	% DANS LE CAS CONTRAIRE LES LETTRES ACCENTU\'ES N'APPARA\^ITRONT PAS
+	% DANS LE DOCUMENT FINAL.
+	%
+	%                   ORATEUR ET CO-AUTEURS
+	%---------------------------------------------------------------
+	%
+	% LES AUTEURS SONT PRIES DE FOURNIR LES BONS ARGUMENTS AUX MACROS CI-DESSOUS :
+	%   \Titre         : Titre de la communication
+	%   \NomOrateur    : Pr\'enom(s) NOM de l'Orateur
+	%   \AdresseCourteOrateur : Exemple : Universit\'e de Rennes 1
+	%   \AdresseLongueOrateur : Exemple : IRMAR, Universit\'e de Rennes 1, 263 avenue du G\'en\'eral Leclerc, 35000 Rennes
+	%   \EmailOrateur : Adresse electronique
+	%
+	% ET DE MEME POUR LES EVENTUELS CO-AUTEURS :
+	%   \NomAuteurI ...
+	%   \AdresseCourteAuteurI ...
+	%---------------------------------------------------------------
+	% DEFINIR ICI LE TITRE DE VOTRE COMMUNICATION
+	\def\Titre{\'El\'ements finis de fronti\`ere sur des domaines singuliers}
+	%
+	% DEFINIR ICI LES NOMS, ADRESSES, ... DE l'ORATEUR OU UNIQUE AUTEUR
+	\def\NomOrateur{Martin AVERSENG}
+	\def\AdresseCourteOrateur{CMAP, \'Ecole Polytechnique}
+	\def\AdresseLongueOrateur{CMAP, \'Ecole Polytechnique, Route de Saclay, 91128 Palaiseau }
+	\def\EmailOrateur{martin.averseng@polytechnique.edu}
+	%
+	% DEFINIR ICI LES NOMS, ADRESSES, ... DES EVENTUELS CO-AUTEURS
+	%\def\NomAuteurI{Pr\'enom NOM}
+	%\def\AdresseCourteAuteurI{Adresse Courte}
+	%\def\AdresseLongueAuteurI{Adresse Longue}
+	%\def\EmailAuteurI{email}
+	%=== et ainsi de suite II, III, IV, V ... pour les suivants
+	%
+	%=== Liste des mots-cles separes par des virgules si besoin
+	% N'enlever le signe % que si necessaire
+	\def\listmotcles{\'Eléments finis de fronti\`ere, Pr\'econditionnement, Singularit\'es.}
+	%
+	%
+	%                   DEBUT DE LA COMMUNICATION
+	%---------------------------------------------------------------
+	% NE PAS MODIFIER LA LIGNE SUIVANTE
+	% Le titre est a definir dans la macro \Titre (23 lignes plus haut)
+	\titre{\Titre}%
+	%---------------------------------------------------------------
+	% TITRE & AUTEUR(S)
+	% RETIRER LES SIGNES % SI NECESSAIRE ET PLACER DANS L'ORDRE SOUHAITE
+	% DANS LES LIGNES SUIVANTES NE MODIFIER QUE LES SIGNES COMMENTAIRES '%'
+	% Les noms, adresses, email de l'orateur et des co-auteurs sont a definir
+	% dans les macros \NomOrateur, \AdresseCourteOrateur etc. plus haut
+	%---------------------------------------------------------------
+	\orateur{\NomOrateur}{\AdresseCourteOrateur}
+	% NE PAS MODIFIER LES 4 LIGNES SUIVANTES sauf a retirer le signe commentaire '%'
+	%\auteur{\NomAuteurI}{\AdresseCourteAuteurI}
+	%\auteur{\NomAuteurII}{\AdresseCourteAuteurII}
+	%\auteur{\NomAuteurIII}{\AdresseCourteAuteurIII}
+	%\auteur{\NomAuteurIV}{\AdresseCourteAuteurIV}
+	%
+	\motscles{\listmotcles}
+	%---------------------------------------------------------------
+	% TEXTE DE LA COMMUNICATION
+	%---------------------------------------------------------------
+	
+	Les \'el\'ements finis de fronti\`ere sont une m\'ethode num\'erique largement utilis\'ee pour r\'esoudre les porbl\`emes de diffraction d'une onde (acoustique, \'elastique, \'el\'ectromag\'tique...) par un objet $\mathcal{O}$. Ces probl\`emes trouvent de nombreuses applications industrielles. Pour calculer le champ diffract\'e $u_d$ d\'efinit sur le {\bf domaine volumique non born\'e} $\mathbb{R}^3\setminus \mathcal{O}$, on r\'esout une \'equation dite int\'egrale de la forme
+	\[\forall x \in \partial \mathcal{O}, \quad \int_{\mathcal{O}} G(x,y) \lambda(y) d\sigma(y) = u_{\text{inc}}(x)\]
+	dont l'inconnue $\lambda$ est une fonction d\'efinie sur un {\bf domaine surfacique born\'e}: la fronti\`ere de l'objet diffractant. La solution $u_d$ est ensuite donn\'ee par $\forall x \in \mathbb{R}^3\setminus \mathcal{O}, \quad u_d(x) = \mathcal{F} \lambda(x)$
+	o\`u $\mathcal{F}\lambda(x)$  est une fonction que l'on peut \'evaluer rapidement une fois que $\lambda$ a \'et\'e d\'etermin\'e.
+	Cette approche permet ainsi de r\'eduire consid\'erablement la taille du maillage utilis\'e pour discr\'etiser le probl\`eme, et donc le nombre d'inconnues dans le syst\`eme lin\'eaire qui en r\'esulte. En contrepartie, la matrice du syst\`eme est {\bf dense}, et il est donc difficile de  l'inverser directement dans les applications int\'eressantes. L'approche la plus r\'epandue consiste \`a r\'esoudre le syst\`eme par une m\'ethode it\'erative de type Krylov, dont la complexit\'e d\'epend de mani\`ere cruciale du conditionnement du syst\`eme. Lorsque l'objet diffractant a une g\'eom\'etrie r\'eguli\`ere, de bonnes strat\'egies de pr\'econditionnement sont connues pour r\'eduire le nombre d'it\'erations, ce qui fait que cette approche se r\'ev\`ele particuli\`erement comp\'etitive. 
+	
+	Malheureusement, dans beaucoup d'applications r\'eelles, l'hypoth\`ese d'une g\'eom\'etrie r\'eguli\`ere n'est pas satisfaite. Par exemple, pour le probl\`eme du radar, l'objet diffractant est un avion, dont les ailes pr\'esentent des bords en lesquels la courbure est tr\`es grande. En pr\'esence de telles singularit\'es g\'eom\'etriques, deux difficult\'es apparaissent dans la m\'ethode d\'ecrite pr\'ec\'edemment.
+	\begin{itemize}
+		\item[(i)] Au voisinage des singularit\'es g\'eom\'etriques, l'inconnue $\lambda$ est singuli\`ere. Ceci se traduit num\'eriquement par des taux de convergence en maillage s\'ev\`erement d\'egrad\'es. 
+		\item[(ii)] Les approches connues pour construire de bons pr\'econditionneurs s'effondrent car elles utilisent de mani\`ere essentielle la r\'egularit\'e de la fronti\`ere de l'objet. 
+	\end{itemize} 
+	\`A ce jour, il n'existe pas de m\'ethode qui rem\'edie simultan\'ement aux deux points ci-dessus. En particulier, un raffinement de maillage pr\`es de la singularit\'e, s'il permet de retrouver un bon taux de convergence en maillage, m\`ene \`a des syst\`emes lin\'eaires catastrophiquement mal conditionn\'es. 
+
+	Dans notre expos\'e, nous d\'ecrivons un cadre th\'orique et num\'erique qui permet de r\'esoudre ces deux difficult\'es, en combinant plusieurs id\'ees apparues r\'ecemment dans la litt\'erature \cite{bruno2012second,hiptmair2017closed,ramaciotti2017some}. L'approche passe par l'introduction d'op\'erateurs int\'egraux "\`a poids", d'un maillage raffin\'e (d'une mani\`ere explicite) et par des pr\'econditionneurs construits \`a l'aide d'un nouveau calcul pseudo-diff\'rentiel sur ces g\'eom\'etries singuli\`eres, g\'en\'eralisant l'approche de \cite{antoine2007generalized}. 
+	
+	
+	%---------------------------------------------------------------
+	% REFERENCES BIBLIOGRAPHIQUES
+	%---------------------------------------------------------------
+	% NE PAS MODIFIER LES 2 LIGNES SUIVANTES
+	\bibliographystyle{plain}
+	\begin{thebibliography}{99}
+		
+		\bibitem{bruno2012second}
+		O.~P. Bruno and S.~K. Lintner.
+		\newblock Second-kind integral solvers for TE and TM problems of diffraction by
+		open arcs.
+		\newblock {\em Radio Science}, 47(6), 2012.
+		
+		\bibitem{hiptmair2017closed}
+		R. Hiptmair, C. Jerez-Hanckes, and C.~A. Urz{\'u}a~Torres.
+		\newblock Closed-form exact inverses of the weakly singular and hypersingular
+		operators on disks.
+		\newblock {\em arXiv preprint arXiv:1703.08556}, 2017.
+		
+		\bibitem{ramaciotti2017some}
+		P. Ramaciotti and J.-C. N{\'e}d{\'e}lec.
+		\newblock About some boundary integral operators on the unit disk related to
+		the laplace equation.
+		\newblock {\em SIAM Journal on Numerical Analysis}, 55(4):1892--1914, 2017.
+		
+		\bibitem{antoine2007generalized}
+		X. Antoine and M. Darbas.
+		\newblock Generalized combined field integral equations for the iterative
+		solution of the three-dimensional helmholtz equation.
+		\newblock {\em ESAIM: Mathematical Modelling and Numerical Analysis},
+		41(1):147--167, 2007.
+		
+		% NE PAS MODIFIER LA LIGNE SUIVANTE
+	\end{thebibliography}
+	%
+	%---------------------------------------------------------------
+	% NOM & ADRESSE COMPLETE & EMAIL DU OU DES AUTEURS
+	% RETIRER LES SIGNES % SI NECESSAIRE ET PLACER DANS L'ORDRE SOUHAITE
+	% DANS LES LIGNES SUIVANTES NE MODIFIER QUE LES SIGNES COMMENTAIRES '%'
+	%---------------------------------------------------------------
+	\vfill
+	\auteurenbasdepage{\NomOrateur}{\AdresseLongueOrateur}{\EmailOrateur}
+	% Les noms, adresses, email de l'orateur et des co-auteurs sont a definir
+	% dans les macros \NomOrateur, \AdresseCourteOrateur etc. plus haut
+	%
+	%\auteurenbasdepage{\NomAuteurI}{\AdresseLongueAuteurI}{\EmailAuteurI}
+	%\auteurenbasdepage{\NomAuteurII}{\AdresseLongueAuteurII}{\EmailAuteurII}
+	%\auteurenbasdepage{\NomAuteurIII}{\AdresseLongueAuteurIII}{\EmailAuteurIII}
+	%\auteurenbasdepage{\NomAuteurIV}{\AdresseLongueAuteurIV}{\EmailAuteurIV}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
