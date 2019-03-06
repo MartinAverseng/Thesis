@@ -29,7 +29,8 @@ function [X,W,elt2qud] = domQuadrature(domain)
 %| ( === ) |   SYNOPSIS   : Discrete quadrature for edges, triangle       |
 %|  `---'  |                and tetrahedre meshes                         |
 %+========================================================================+
-    
+
+
 % Reference quadrature
 [x,w] = domReference(domain);
 

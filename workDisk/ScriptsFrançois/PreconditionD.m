@@ -18,7 +18,6 @@ addpath('../Gypsilab/OpenHmx');
 N   = 10
 tol = 1e-4
 typ = 'P1'
-gss = 3;
 
 % Mesh the disk and the half sphere S2
 Disku = mshMyDisk(N,1);
@@ -40,19 +39,13 @@ Disk2.wgt = S2.ndv./Disk.ndv;
 surface = sum(Disk2.ndv)
 
 % Domain
-sigmaw = dom(Disk2, gss);
+sigmaw = weightedDom(Disk2, 2);
 
 % Finite elements on the sphere
 Vh = fem(Disk2,typ);
 
 % Incident wave
 PW = @(X) ones(size(X,1),1);
-
-% Weighted Delta matrix 
-weight = @(X) 1.000000001 - X(:,1).^2 - X(:,2).^2;
-tic
-Delta = integral(sigmaw,grad(Vh),weight,grad(Vh));
-tDelta = toc
 
 % Mass matrix
 tic
@@ -62,6 +55,15 @@ tMw = toc
 %[L,U,P,Q] = lu(Mw);
 %invM = @(u)(Q*(U\(L \(P*u))));
 invM = @(u)(Mw\u);
+
+
+
+% Weighted Delta matrix 
+weight = @(X) (1. - X(:,1).^2 - X(:,2).^2);
+tic
+Delta = integral(sigmaw,grad(Vh),weight,grad(Vh));
+tDelta = toc
+
 
 N = size(Mw,1);
 lambda = 32/pi^3;
@@ -87,19 +89,19 @@ RHSw = integral(sigmaw,Vh,PW);
 %sqr = TrefethenSqrt(Delta,5,[],Mw,1,3000);
 %Tref = toc
 
-Prec = @(u) (invM(TrefethenSqrt(Delta+Mw,3,invM(u),Mw,0.7,15000)) - invM(u) + dot(Mphi0,u)*diagM);
+Prec = @(u) (invM(TrefethenSqrt(Delta ,5,invM(u),Mw,0.7,1000)));
 Prec2 = @(u) (invM(Delta*invM(Sw*u) + Mphi0*dot(Mphi0,invM(Sw*u))));
 
 t1 = tic;
-[lambda1,flag,relres,it,res1] = gmres(Sw,RHSw,100,1e-15,3000,Prec);
+[lambda1,flag,relres,it,res1] = gmres(Sw,RHSw,100,1e-8,3000,Prec);
 t1 = toc(t1);
 
 t3 = tic;
-[lambda1,flag,relres,it,res3] = gmres(Sw,RHSw,100,1e-15,3000,Prec2);
+[lambda1,flag,relres,it,res3] = gmres(Sw,RHSw,100,1e-8,3000,Prec2);
 t3 = toc(t3);
 
 t2 = tic;
-[lambda2,flag,relres,it,res2] = gmres(Sw,RHSw,100,1e-15,3000);
+[lambda2,flag,relres,it,res2] = gmres(Sw,RHSw,100,1e-8,3000);
 t2 = toc(t2);
 
 N1 = size(res1,1);

@@ -8,17 +8,16 @@
 clear all
 close all
 
-addpath('../Gypsilab/OpenMsh');
-addpath('../Gypsilab/OpenMmg');
-addpath('../Gypsilab/OpenDom');
-addpath('../Gypsilab/OpenFem');
-addpath('../Gypsilab/OpenHmx');
+% addpath('../Gypsilab/OpenMsh');
+% addpath('../Gypsilab/OpenMmg');
+% addpath('../Gypsilab/OpenDom');
+% addpath('../Gypsilab/OpenFem');
+% addpath('../Gypsilab/OpenHmx');
 
 % Parameters
-N   = 20
+N   = 6;
 tol = 1e-4
-typ = 'P1'
-gss = 3;
+typ = 'P0'
 
 % % Incident wave
 % PW = @(X) ones(size(X,1),1);
@@ -44,11 +43,11 @@ Disk2.wgt = S2.ndv./Disk.ndv;
 % Nrm = S2.nrm;
 %Disk2.alpha = sum(S2.vtx(S2.elt(:,1),:).*Nrm,2);
 % Check weighted integral 
-surface = sum(Disk2.ndv)
+surface = sum(Disk2.ndv);
 
 % Domain
-sigma  = dom(Disk,gss);   
-sigmaw = dom(Disk2, gss);
+sigma  = dom(Disk,3);   
+sigmaw = weightedDom(Disk2, 2);
 
 
 % Projected Green kernel  
@@ -56,12 +55,8 @@ sigmaw = dom(Disk2, gss);
 Gxy = @(X,Y) femGreenKernel(X,Y,'[1/r]',0);
 
 % Finite elements on the sphere
-Vh = fem(Disk,typ);
-x = [-1:0.001:1]';
-theta = 0;
-X = x*[cos(theta) sin(theta) 0];
-X = Disk2.ctr;
-X = X+ 0.0002*[ones(size(X,1),1),ones(size(X,1),1),zeros(size(X,1),1)];
+X = sigmaw.quadPoints;
+Vh = fem(Disk2,'P1');
 % Finite element boundary operator --> \int_Sx \int_Sy psi(x)' G(x,y) psi(y) dx dy 
 tic
 Sw = 1/(4*pi) .* integral(X,sigmaw,Gxy,Vh);
@@ -78,4 +73,6 @@ plot(Sw*ones(size(Sw,2),1))
 % % Finite element incident wave trace --> \int_Sx psi(x)' pw(x) dx
 % RHSw = integral(sigmaw,Vh,PW);
 
-
+exactVal = pi/4;
+hold on;
+plot(Sw*ones(size(Sw,2),1)*0 + exactVal,'--');
