@@ -61,29 +61,82 @@ if isa(domain,'weightedDom')
         end
     end
     % Gauss points in barycentric coordinates:
-    S = domain.msh.elt;
-    for el = 1:Nelt
-        A = domain.msh.vtx(S(el,1),:);
-        B = domain.msh.vtx(S(el,2),:);
-        C = domain.msh.vtx(S(el,3),:);
-        gP = Xqud((3*(el-1)+1):3*el,:);
-        detT = (B(2) - C(2)).*(A(1) - C(1)) + (C(1) - B(1))*(A(2) - C(2));
-        lambda1 = ((C(2) - A(2))*(gP(:,1) - A(1)) + (A(1) - C(1))*(gP(:,2) - A(2)))/detT;
-        lambda2 = ((A(2) - B(2))*(gP(:,1) - A(1)) + (B(1) - A(1))*(gP(:,2) - A(2)))/detT;
-        F(el,1,:) = 1 - lambda1 - lambda2;
-        F(el,2,:) = lambda1;
-        F(el,3,:) = lambda2;
-    end
     
-    bas = zeros(Nelt,Nbas,Ngss);
-    for i = 1:Nbas
-        for j = 1:Ngss
-            bas(:,i,j) = F(:,i,j);
+    if strcmp(fe.opr,'[psi]')
+        
+        S = domain.msh.elt;
+        for el = 1:Nelt
+            A = domain.msh.vtx(S(el,1),:);
+            B = domain.msh.vtx(S(el,2),:);
+            C = domain.msh.vtx(S(el,3),:);
+            gP = Xqud((Ngss*(el-1)+1):Ngss*el,:);
+            detT = (B(2) - C(2)).*(A(1) - C(1)) + (C(1) - B(1))*(A(2) - C(2));
+            lambda1 = ((C(2) - A(2))*(gP(:,1) - A(1)) + (A(1) - C(1))*(gP(:,2) - A(2)))/detT;
+            lambda2 = ((A(2) - B(2))*(gP(:,1) - A(1)) + (B(1) - A(1))*(gP(:,2) - A(2)))/detT;
+            F(el,1,:) = 1 - lambda1 - lambda2;
+            F(el,2,:) = lambda1;
+            F(el,3,:) = lambda2;
         end
+        
+        bas = zeros(Nelt,Nbas,Ngss);
+        for i = 1:Nbas
+            for j = 1:Ngss
+                bas(:,i,j) = F(:,i,j);
+            end
+        end
+        M = sparse(idx(:),jdx(:),bas(:),Nqud,Ndof);
+        
+    else
+        assert(strcmp(fe.opr,'grad[psi]'));
+        
+        % Vector basis
+        E1 = mesh.vtx(mesh.elt(:,2),:) - mesh.vtx(mesh.elt(:,1),:);
+        E2 = mesh.vtx(mesh.elt(:,3),:) - mesh.vtx(mesh.elt(:,1),:);
+        
+        % Gramm matrix coefficients
+        a = E1(:,1).^2 + E1(:,2).^2 + E1(:,3).^2;
+        b = E1(:,1).*E2(:,1) + E1(:,2).*E2(:,2) + E1(:,3).*E2(:,3);
+        c = b;
+        d = E2(:,1).^2 + E2(:,2).^2 + E2(:,3).^2;
+        
+        % Determinant
+        detG = a.*d - b.*c;
+        
+        % Inverse by co-factor
+        Dx1 = d  ./ detG;
+        Dx2 = -b ./ detG;
+        Dy1 = -c ./ detG;
+        Dy2 = a  ./ detG;
+        
+        dxF = zeros(dim,Ngss);
+        dyF = zeros(dim,Ngss);
+        
+        dxF(1,:) = - 1;
+        dxF(2,:) = 1;
+        
+        dyF(1,:) = - 1;
+        dyF(3,:) = 1;
+        
+        % Gradient projection to integration points
+        dbas = cell(1,3);
+        for n = 1:3
+            dbas{n} = zeros(Nelt,Nbas,Ngss);
+            DCVx    = Dx1.*E1(:,n) + Dx2.*E2(:,n);
+            DCVy    = Dy1.*E1(:,n) + Dy2.*E2(:,n);
+            for i = 1:Nbas
+                for j = 1:Ngss
+                    dbas{n}(:,i,j) = DCVx(:)*dxF(i,j) + DCVy(:)*dyF(i,j);
+                end
+            end
+        end
+        % Dof to quadrature matrix
+        M = cell(1,3);
+        for n = 1:3
+            M{n} = sparse(idx(:),jdx(:),dbas{n}(:),Nqud,Ndof);
+        end
+        
     end
-    M = sparse(idx(:),jdx(:),bas(:),Nqud,Ndof);
-    
-    return;
+    return
 end
 
 

@@ -1,0 +1,48 @@
+// Question 8
+
+//Constante de discrétisation
+
+int N = 10;
+
+// Le maillage
+
+int dirichlet = 1;
+int neumann = 0;
+int[int] labs = [dirichlet, dirichlet, neumann, neumann];
+
+mesh Ch = square(N, N, [x, y], label = labs);
+
+
+// Espaces d'approximation et fonctions
+
+fespace Vh(Ch, P1);
+
+Vh uh1, uh2, vh1, vh2, ph, qh;
+
+func f1 = 1;
+func f2 = 2;
+
+macro Grad(u) [dx(u), dy(u)] //EOM
+
+problem FV1(uh1, uh2, ph, vh1, vh2, qh)
+= int2d(Ch)(Grad(uh1)'*Grad(vh1) + Grad(uh2)'*Grad(vh2))
+- int2d(Ch)( ph*(dx(vh1)+dy(vh2)) + qh*(dx(uh1)+dy(uh2)) )
+- int2d(Ch)(f1*vh1 + f2*vh2)
++ on(dirichlet, uh1=0) + on(dirichlet, uh2 = 0);
+
+FV1;
+
+plot([uh1, uh2], wait =1, fill = 1, dim = 3, value = 10);
+
+
+problem FV2(uh1, uh2, ph, vh1, vh2, qh)
+= int2d(Ch)(Grad(uh1)'*Grad(vh1) + Grad(uh2)'*Grad(vh2))
++ int2d(Ch)( dx(uh1)*dx(vh1) + dx(uh2)*dy(vh1) + dy(uh1)*dx(vh2) + dy(uh2)*dy(vh2) )
+- int2d(Ch)( ph*(dx(vh1)+dy(vh2)) + qh*(dx(uh1)+dy(uh2)) )
+- int2d(Ch)(f1*vh1 + f2*vh2)
++ on(dirichlet, uh1=0) + on(dirichlet, uh2 = 0);
+
+FV2;
+
+plot([uh1, uh2], wait =1, fill = 1, dim = 3, value = 10);
+

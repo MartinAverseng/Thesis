@@ -1,0 +1,97 @@
+// Question 9.1.FV1
+
+// SAVE FILE
+ofstream myfile("result-9-4-fv1.csv"); // file name and format
+int nold = myfile.precision(30); // precision
+myfile.scientific; // scientific notation
+myfile << "Pas, erru, errp" << endl ;
+
+// LE PROGRAMME
+
+int k = 1;
+
+while(1)
+{
+
+if (k>10)
+{ 
+break;
+}
+
+else
+{
+
+int N = 10*k;
+real h = 1.0/N;
+
+k++;
+
+// LE MAILLAGE
+
+int dirichlet = 1;
+int neumann = 0;
+int[int] labs = [dirichlet, dirichlet, dirichlet, dirichlet];
+
+mesh Ch = square(N, N, [x, y], label = labs);
+
+
+// FONCTIONS
+
+func uex1 = cos(2*pi*x + pi/2)*sin(2*pi*y);
+func uex2 = cos(2*pi*x + pi/2)*sin(2*pi*y);
+func pex = sin(x+2*y);
+func f1 = cos(x+2*y) + 8*pi*pi*cos(2*pi*x + pi/2)*sin(2*pi*y);
+func f2 = 2*cos(x+2*y) + 8*pi*pi*cos(2*pi*x + pi/2)*sin(2*pi*y);
+
+
+macro Grad(u) [dx(u), dy(u)] //EOM
+
+// ESPACES
+
+fespace Vh0(Ch, P0);
+fespace Vh1(Ch, P1);
+fespace Vh1b(Ch, P1b);
+fespace Vh2(Ch, P2);
+
+// P2 ET P1
+
+Vh2 uh1, uh2, vh1, vh2;
+Vh1 ph, qh;
+
+problem FV1(uh1, uh2, ph, vh1, vh2, qh)
+= int2d(Ch)(Grad(uh1)'*Grad(vh1) + Grad(uh2)'*Grad(vh2))
+- int2d(Ch)( ph*(dx(vh1)+dy(vh2)) + qh*(dx(uh1)+dy(uh2)) )
+- int2d(Ch)(f1*vh1 + f2*vh2)
++ on(dirichlet, uh1 = 0, uh2 = 0);
+
+FV1;
+
+
+// ERREURS
+
+Vh2 diffu1 = uex1- uh1;
+Vh2 diffu2 = uex2 - uh2;
+Vh1 diffp = pex - ph;
+
+
+real erru = 
+sqrt( 
+int2d(Ch)( (diffu1)*(diffu1) )
++ int2d(Ch)( Grad(diffu1)'*Grad(diffu1) ) 
++ int2d(Ch)( (diffu2)*(diffu2) )
++ int2d(Ch)( Grad(diffu2)'*Grad(diffu2) )
+);
+
+real errp = 
+sqrt( 
+int2d(Ch)( (diffp)*(diffp) )
++ int2d(Ch)( Grad(diffp)'*Grad(diffp) )
+);
+
+myfile << h << ", " << erru << ", " << errp << endl ;
+
+
+
+}
+
+}

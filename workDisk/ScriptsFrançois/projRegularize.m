@@ -65,7 +65,7 @@ for el = 1:Nelt
     edga = Sel(2,:) - Sel(1,:);
     edgb = Sel(3,:) - Sel(1,:);
     edgc = Sel(3,:) - Sel(2,:);
-    rMin = 1.5*max([norm(edga),norm(edgb),norm(edgc)]);       %%% DEBUG %%%
+    rMin = 1.1*max([norm(edga),norm(edgb),norm(edgc)]);       %%% DEBUG %%%
     % Quadratures points in interaction
     Iy = elt2qud(el,:);
     Ix = sort(Ielt{el}(Relt{el}<rMin))';
@@ -82,6 +82,8 @@ for el = 1:Nelt
     %     pause(1)
     
     % If interactions
+    tTotIntegralTri = 0;
+    tTot = tic;
     if ~isempty(Ix)
         %%% CORRECTION WITH SEMI-ANALYTIC INTEGRATION
         % Analytical integration
@@ -110,13 +112,13 @@ for el = 1:Nelt
             % The tangent plane is parametrized by the coordinates (t,s) where O =
             % (0,0)
             % Coordinates of the projections of A,B, and C on this plane:
-            
-            %             sphere
-            %             hold on
-            %             plot3(A(1),A(2),A(3),'.','Markersize',20);
-            %             plot3(B(1),B(2),B(3),'.','Markersize',20);
-            %             plot3(C(1),C(2),C(3),'.','Markersize',20);
-            %             plotOnSphere(theta_X,phi_X);
+%             
+%                         sphere
+%                         hold on
+%                         plot3(A(1),A(2),A(3),'.','Markersize',20);
+%                         plot3(B(1),B(2),B(3),'.','Markersize',20);
+%                         plot3(C(1),C(2),C(3),'.','Markersize',20);
+%                         plotOnSphere(theta_X,phi_X);
             %
             % Coordinates of A, B and C in the polar basis (O,X)
             [thetaA,phiA] = angles(A,theta_X,phi_X);
@@ -127,21 +129,21 @@ for el = 1:Nelt
             sC = tan(thetaC).*cos(phiC); tC = tan(thetaC).*sin(phiC);
             
             
-            %             Debug : plot the gnomonic projection of the triangle on the tangent plane
-            %             G = @(Y)(Y + (1./dot(Xi,Y) - 1)*Y);
-            %             Ap = G(A); Bp = G(B); Cp = G(C);
-            
-            %             hold on
-            %             plot3(Ap(1),Ap(2),Ap(3),'.','Markersize',20);
-            %             plot3(Bp(1),Bp(2),Bp(3),'.','Markersize',20);
-            %             plot3(Cp(1),Cp(2),Cp(3),'.','Markersize',20);
-            
+%                         Debug : plot the gnomonic projection of the triangle on the tangent plane
+%                         G = @(Y)(Y + (1./dot(Xi,Y) - 1)*Y);
+%                         Ap = G(A); Bp = G(B); Cp = G(C);
+%             
+%                         hold on
+%                         plot3(Ap(1),Ap(2),Ap(3),'.','Markersize',20);
+%                         plot3(Bp(1),Bp(2),Bp(3),'.','Markersize',20);
+%                         plot3(Cp(1),Cp(2),Cp(3),'.','Markersize',20);
+%             
             
             % Debug : plot the tangent plane
-            %             [x y] = meshgrid((Xi(1)-0.2):0.01:(Xi(1)+0.2),(Xi(2)-0.2):0.01:(Xi(2)+0.2));
-            %             z = -1/Xi(3)*(Xi(1)*x + Xi(2)*y - 1);
-            %             surf(x,y,z)
-            %             axis equal
+%                         [x y] = meshgrid((Xi(1)-0.2):0.01:(Xi(1)+0.2),(Xi(2)-0.2):0.01:(Xi(2)+0.2));
+%                         z = -1/Xi(3)*(Xi(1)*x + Xi(2)*y - 1);
+%                         surf(x,y,z)
+%                         axis equal
             
             J = @(s,t)(1./(1 + s.^2 + t.^2).^(3/2)); % Jacobian on the plane
             theta_x = @(s,t)(atan(sqrt(s.^2 + t.^2)));
@@ -151,15 +153,28 @@ for el = 1:Nelt
             % Norme du projeté:
             Kernel = @(s,t)(reshape(1./PiNormFunX(G_1(s,t),Xi(1),Xi(2)),size(s,1),size(s,2)));
             fun = @(s,t)(Kernel(s,t).*J(s,t));
+            %             funTest = @(s,t)(1./sqrt(t.^2 + s.^2*cos(theta_X)^2));
             %             figure
             %             plotFunOnTri([sA,tA],[sB,tB],[sC,tC],fun);
-            Rm1(i,:) = integral2tri(fun,[sA,tA],[sB,tB],[sC,tC]);
-            %             for j = 1:2
-            %                 coordj = @(s,t)(reshape(sph2cart(theta_X,phi_X,theta_x(s(:),t(:)),phi_x(s(:),t(:)),j) - Xi(j),size(s,1),size(s,2)));
-            %                 fun = @(s,t)(coordj(s,t).*Kernel(s,t).*J(s,t));
-            %                 plotFunOnTri([sA,tA],[sB,tB],[sC,tC],fun);
-            %                 rRm1(i,j) = integral2tri(fun,[sA,tA],[sB,tB],[sC,tC]);
-            %             end
+            %             Rm1(i,:) = 1;
+            %            tIntegralTri = tic;
+            
+            I = ComputeByGaussianQuad(sA,tA,sB,tB,sC,tC,theta_X,Kernel,J);
+%             I = integral2tri(fun,[sA,tA],[sB,tB],[sC,tC]);
+            Rm1(i,:) = I;
+%            if isInTri([0,0],[sA,tA],[sB,tB],[sC,tC])
+%                Rm1(i,:) = integral2tri(fun,[0,0],[sB,tB],[sC,tC])...
+%                + integral2tri(fun,[sA,tA],[0,0],[sC,tC])...
+%                + integral2tri(fun,[sA,tA],[sB,tB],[0,0]);
+%            else
+%                Rm1(i,:) = integral2tri(fun,[sA,tA],[sB,tB],[sC,tC]);
+%            end
+%             for j = 1:2
+%                 coordj = @(s,t)(reshape(sph2cart(theta_X,phi_X,theta_x(s(:),t(:)),phi_x(s(:),t(:)),j) - Xi(j),size(s,1),size(s,2)));
+%                 fun = @(s,t)(coordj(s,t).*Kernel(s,t).*J(s,t));
+%                 plotFunOnTri([sA,tA],[sB,tB],[sC,tC],fun);
+%                 rRm1(i,j) = integral2tri(fun,[sA,tA],[sB,tB],[sC,tC]);
+%             end
         end
         %         try
         %             disp(Rm1 - Rm1Guess);
@@ -268,7 +283,7 @@ for el = 1:Nelt
         end
     end
 end
-
+tTot = toc(tTot);
 
 %%% LEFT INTEGRATION AND RIGHT REDUCTION
 % Left integration matrix

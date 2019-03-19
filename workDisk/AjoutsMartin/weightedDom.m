@@ -25,8 +25,8 @@ classdef weightedDom < dom
                 X = [X zeros(n,1)]; % Recast as 3D points
                 domain.quadPoints = [domain.quadPoints; X];
                 domain.weights = [domain.weights; W];
-                domain.elt2qud(i,:) = [j+1, j+2, j+3];
-                j = j+3;
+                domain.elt2qud(i,:) = j + [1:n];
+                j = j+n;
             end
             domain.gss = n;
         end

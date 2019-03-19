@@ -14,7 +14,7 @@ ymin = 0; ymax = @(x)(1 - x);
 
 F = @(x,y)(f(P(x,y),Q(x,y)));
 
-I = 2*AT*integral2(F,xmin,xmax,ymin,ymax);
+I = 2*AT*integral2(F,xmin,xmax,ymin,ymax,'AbsTol',1e-5,'RelTol',1e-5);
 
 
 
